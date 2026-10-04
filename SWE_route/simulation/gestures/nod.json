@@ -1,0 +1,13 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "nod",
+  "label": "Nod",
+  "description": "Tilt the head, pause, then return. Reverse the tilt near a joint limit.",
+  "units": "radians",
+  "steps": [
+    {"offsets": {"head_pitch_joint": 0.3}, "on_limit": "reverse"},
+    {"hold_seconds": 0.25},
+    {"return_to_start": true}
+  ]
+}

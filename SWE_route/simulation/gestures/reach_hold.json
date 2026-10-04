@@ -1,0 +1,10 @@
+{
+  "$schema": "../gesture.schema.json", "schema_version": 1,
+  "name": "reach_hold", "label": "Reach and hold", "units": "radians",
+  "description": "Hold an offset arm pose to measure steady tracking error and effort.",
+  "steps": [
+    {"targets": {"shoulder_pitch_joint": 0.6, "elbow_pitch_joint": -0.6, "head_pitch_joint": 0.2}, "duration_seconds": 1.0},
+    {"hold_seconds": 2.0},
+    {"return_to_start": true, "duration_seconds": 1.0}
+  ]
+}

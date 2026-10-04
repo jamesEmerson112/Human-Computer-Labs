@@ -1,0 +1,14 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "shake",
+  "label": "Shake head",
+  "description": "Swivel the neck side to side while keeping the lower arm still.",
+  "units": "radians",
+  "steps": [
+    {"offsets": {"neck_yaw_joint": 0.3}},
+    {"offsets": {"neck_yaw_joint": -0.3}},
+    {"offsets": {"neck_yaw_joint": 0.3}},
+    {"return_to_start": true}
+  ]
+}

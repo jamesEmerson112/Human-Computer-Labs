@@ -1,0 +1,21 @@
+[project]
+name = "lamp-simulation"
+version = "0.1.0"
+description = "MuJoCo physics and gesture playground for the five-joint character lamp"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "jsonschema>=4,<5",
+    "mujoco>=3.3,<4",
+    "numpy>=1.26,<3",
+    "psutil>=7,<8",
+    "trimesh>=4,<6",
+    "viser>=1.0,<2",
+    "yourdfpy>=0.0.58,<0.1",
+]
+
+[dependency-groups]
+dev = ["pytest>=8,<10"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

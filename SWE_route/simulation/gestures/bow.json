@@ -1,0 +1,10 @@
+{
+  "$schema": "../gesture.schema.json", "schema_version": 1,
+  "name": "bow", "label": "Bow", "units": "radians",
+  "description": "A slow coordinated bow for comparing motion under gravity.",
+  "steps": [
+    {"offsets": {"shoulder_pitch_joint": -0.3, "elbow_pitch_joint": -0.35, "head_pitch_joint": 0.35}, "duration_seconds": 1.0},
+    {"hold_seconds": 0.6},
+    {"return_to_start": true, "duration_seconds": 1.0}
+  ]
+}

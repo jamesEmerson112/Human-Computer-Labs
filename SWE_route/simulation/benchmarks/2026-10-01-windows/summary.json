@@ -1,0 +1,139 @@
+{
+  "metadata": {
+    "timestamp_utc": "2026-10-02T03:34:25.731474+00:00",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "cpu": "AMD Ryzen 5 2600X Six-Core Processor",
+    "physical_cores": 6,
+    "logical_cores": 12,
+    "ram_gib": 31.9393310546875,
+    "available_ram_gib_at_start": 6.738712310791016,
+    "python": "3.12.10",
+    "packages": {
+      "mujoco": "3.14.0",
+      "numpy": "2.5.3",
+      "yourdfpy": "0.0.60",
+      "viser": "1.1.1",
+      "psutil": "7.2.2"
+    },
+    "repeats": 3,
+    "speed": 0.5,
+    "control_hz": 30,
+    "physics_hz": 240,
+    "settling_tail_s": 1.0,
+    "servo_gains_kp_kv": {
+      "base_yaw_joint": [
+        80.0,
+        4.0
+      ],
+      "shoulder_pitch_joint": [
+        120.0,
+        8.0
+      ],
+      "elbow_pitch_joint": [
+        100.0,
+        6.0
+      ],
+      "neck_yaw_joint": [
+        40.0,
+        2.0
+      ],
+      "head_pitch_joint": [
+        25.0,
+        1.5
+      ]
+    },
+    "armature_kg_m2": 0.02,
+    "gravity_m_s2": [
+      0,
+      0,
+      -9.81
+    ],
+    "filtered_contact_exclusions": [
+      [
+        "upper_arm_link",
+        "lamp_head_link"
+      ]
+    ],
+    "source_sha256": {
+      "starter_pack/robot/dummy_lamp_5dof.urdf": "5f023d845b92e29a369a3b4fb9be8077e9c7ea4b132a4558afbefddb0765f4bb",
+      "starter_pack/robot/assets/lamp_shade.stl": "793784757fbabeb6757315c6d211d9b71a7b490afdd242573453df436d13b980",
+      "simulation/uv.lock": "66909e5a58358a1afa68c6106adb5d376cdf6324d218ef8a5c789c0acc11694d",
+      "simulation/gesture.schema.json": "855b89add4f985d7255f253bb2358ac8d55114a14427175830ccbe9f5e9b12c0",
+      "simulation/gestures/bow.json": "d546ae4ec599caef0f736163da567de245b9d412061809f60baa2ebb661bbc4c",
+      "simulation/gestures/curious.json": "97dfdad2d972395a3bef9b49574d9e29e942a2146ffe34babeafd03cf87f5bb2",
+      "simulation/gestures/excited.json": "aca91187257b5c21187871ebb044804a4a4267c8f1057afe9839f19517e7864e",
+      "simulation/gestures/idle_hold.json": "8d2dfae1e6474bbb1cdba70022c6e2fb14931c21df365a7550594bde5ad390d3",
+      "simulation/gestures/limit_sweep.json": "ae40cbc60e62c3f374519771a1d2103bd2df1d018896fbb5651841e5f356f34a",
+      "simulation/gestures/nod.json": "cca99497029e43e2032301601da4257f0cf29b34fa16b1c69a84bbc9d2a999c3",
+      "simulation/gestures/reach_hold.json": "d9c15e6e825270c485ce083af01631b10872face2a0594773a6f9f118fe7c62c",
+      "simulation/gestures/scan.json": "d6e46112184c86082681edeb7733910ecc0ca8183fb1f243811414c3d1599aee",
+      "simulation/gestures/shake.json": "4d6932e6e779b5e7cfaac34111237835bec260986f646c7f007259f7122574c3",
+      "simulation/lamp_sim/__init__.py": "ee715108375d44b5a172975e66c77650903c9bd275f4fbd5cb629a150d91a840",
+      "simulation/lamp_sim/__main__.py": "9e86c5d9bd9e7c9902bfcd0e215cf42c0824083b8dbefe6a26e66062cec1c09a",
+      "simulation/lamp_sim/backends.py": "6d36a10cea42d8289a77cc81e9c1dc0023ddd0013b74ae3dcba0412fa864fb15",
+      "simulation/lamp_sim/benchmark.py": "ed8f35130fc0f79d9db06ac03e77419170187e02278ef8218eda3ccc2929407c",
+      "simulation/lamp_sim/gestures.py": "8faf7aab41e49880dc2ea4cd64314335af835a0118c5cb53983d10f48bd9f8da",
+      "simulation/lamp_sim/motion.py": "de7a0b512d3c812df4b6e6fd9cb4ea0193f3ff8e5e9d155a50189d42d58c7c6d",
+      "simulation/lamp_sim/viewer.py": "00f286cc0c291c43e51978695ed590cd09473c5f9abbd90ae8dcdc0c0f656ec1"
+    },
+    "scope": "headless single-lamp comparison; no browser FPS measurement"
+  },
+  "summary": [
+    {
+      "backend": "kinematic",
+      "median_realtime_factor": 91.8841089644418,
+      "worst_trial_p95_ms": 0.79135,
+      "peak_rss_mib": 108.94921875,
+      "tracking_rmse_deg": 0.0,
+      "max_error_deg": 0.0,
+      "max_penetration_mm": null,
+      "over_budget_frames": 0,
+      "physics_warning_count": 0,
+      "max_soft_limit_violation_deg": 0.0,
+      "max_velocity_ratio": 0.4999919624485738,
+      "median_cpu_ms_per_simulated_s": 11.295180722891567
+    },
+    {
+      "backend": "mujoco-kinematic",
+      "median_realtime_factor": 261.22068812084626,
+      "worst_trial_p95_ms": 0.49305499999999997,
+      "peak_rss_mib": 125.1796875,
+      "tracking_rmse_deg": 0.0,
+      "max_error_deg": 0.0,
+      "max_penetration_mm": 0.0,
+      "over_budget_frames": 0,
+      "physics_warning_count": 0,
+      "max_soft_limit_violation_deg": 0.0,
+      "max_velocity_ratio": 0.4999919624485738,
+      "median_cpu_ms_per_simulated_s": 3.5511363636363633
+    },
+    {
+      "backend": "mujoco-source",
+      "median_realtime_factor": 33.92926200903767,
+      "worst_trial_p95_ms": 2.074989999999999,
+      "peak_rss_mib": 125.6875,
+      "tracking_rmse_deg": 2.7651733145990907,
+      "max_error_deg": 31.791912971674382,
+      "max_penetration_mm": 0.9999999999998658,
+      "over_budget_frames": 0,
+      "physics_warning_count": 0,
+      "max_soft_limit_violation_deg": 1.0390532616416783,
+      "max_velocity_ratio": 0.5285816172688523,
+      "median_cpu_ms_per_simulated_s": 28.953057442865965
+    },
+    {
+      "backend": "mujoco",
+      "median_realtime_factor": 58.13277527846375,
+      "worst_trial_p95_ms": 1.27413,
+      "peak_rss_mib": 125.05859375,
+      "tracking_rmse_deg": 1.1349146925349596,
+      "max_error_deg": 4.430199573918169,
+      "max_penetration_mm": 0.0,
+      "over_budget_frames": 0,
+      "physics_warning_count": 0,
+      "max_soft_limit_violation_deg": 1.027361488524806,
+      "max_velocity_ratio": 0.5284266082816179,
+      "median_cpu_ms_per_simulated_s": 17.045454545454547
+    }
+  ]
+}

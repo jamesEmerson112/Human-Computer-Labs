@@ -1,0 +1,19 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "curious",
+  "label": "Curious lean",
+  "description": "Move the shoulder, elbow, and head together, pause, then return.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "shoulder_pitch_joint": -0.12,
+        "elbow_pitch_joint": -0.16,
+        "head_pitch_joint": -0.16
+      }
+    },
+    {"hold_seconds": 0.5},
+    {"return_to_start": true}
+  ]
+}

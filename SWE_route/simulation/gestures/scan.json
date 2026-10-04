@@ -1,0 +1,12 @@
+{
+  "$schema": "../gesture.schema.json", "schema_version": 1,
+  "name": "scan", "label": "Look around", "units": "radians",
+  "description": "Look left and right with the base and neck, then return.",
+  "steps": [
+    {"offsets": {"base_yaw_joint": 0.6, "neck_yaw_joint": 0.25}, "duration_seconds": 0.8},
+    {"hold_seconds": 0.3},
+    {"offsets": {"base_yaw_joint": -0.6, "neck_yaw_joint": -0.25}, "duration_seconds": 1.2},
+    {"hold_seconds": 0.3},
+    {"return_to_start": true, "duration_seconds": 0.8}
+  ]
+}

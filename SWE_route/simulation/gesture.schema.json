@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Lamp gesture",
+  "description": "Angles are radians. Step durations are playback seconds, scaled by the viewer's Pace setting.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "name", "label", "units", "steps"],
+  "properties": {
+    "$schema": {"type": "string"},
+    "schema_version": {"const": 1, "type": "integer"},
+    "name": {"type": "string", "pattern": "^[a-z][a-z0-9_]*$", "maxLength": 64},
+    "label": {"type": "string", "minLength": 1, "maxLength": 60, "pattern": "\\S"},
+    "description": {"type": "string", "maxLength": 500},
+    "units": {"const": "radians"},
+    "steps": {
+      "type": "array", "minItems": 1, "maxItems": 128,
+      "items": {"$ref": "#/$defs/step"}
+    }
+  },
+  "$defs": {
+    "angles": {
+      "type": "object", "minProperties": 1,
+      "additionalProperties": {"type": "number"}
+    },
+    "duration": {"type": "number", "exclusiveMinimum": 0, "maximum": 60},
+    "step": {
+      "oneOf": [
+        {
+          "type": "object", "additionalProperties": false, "required": ["targets"],
+          "properties": {
+            "targets": {"$ref": "#/$defs/angles"},
+            "duration_seconds": {"$ref": "#/$defs/duration"}
+          }
+        },
+        {
+          "type": "object", "additionalProperties": false, "required": ["offsets"],
+          "properties": {
+            "offsets": {"$ref": "#/$defs/angles"},
+            "on_limit": {"enum": ["clamp", "reverse"]},
+            "duration_seconds": {"$ref": "#/$defs/duration"}
+          }
+        },
+        {
+          "type": "object", "additionalProperties": false, "required": ["hold_seconds"],
+          "properties": {"hold_seconds": {"$ref": "#/$defs/duration"}}
+        },
+        {
+          "type": "object", "additionalProperties": false, "required": ["return_to_start"],
+          "properties": {
+            "return_to_start": {"const": true, "type": "boolean"},
+            "duration_seconds": {"$ref": "#/$defs/duration"}
+          }
+        }
+      ]
+    }
+  }
+}
