@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Current state
 
-This repository holds two take-home challenge briefs and no code yet. There is no build system, dependency manifest, linter, or test suite, so there are no commands to run. No route has been chosen. Confirm which route the user is taking before scaffolding anything, and update this file with real build, run, and test commands once code exists.
+This repository holds two take-home challenge briefs and a SWE lamp playground in `SWE_route/simulation/`. Current implementation work targets SWE simulation. From that directory, run `uv sync --locked`, `uv run --locked python -m lamp_sim`, and `uv run --locked pytest -q` with Python 3.12. MuJoCo physics is the default; the viser browser retains original kinematic playback as a comparison mode. Nine JSON gestures and a headless benchmark log requested/actual motion, timing, memory, and contacts; see `SWE_route/simulation/benchmarks/README.md` for evidence and assumptions. No formatter or linter is configured. See the simulation README for controls, limitations, and Ubuntu instructions. `parameter_golf/` is reference code copied unchanged from the user's earlier `DL-Team-Proposal` repo (small-language-model trainers, data download scripts, and plotting tools). It is not part of either challenge, and several of its trainers import the Unix-only `fcntl` module, so they do not run natively on Windows.
 
 ## The two routes
 
