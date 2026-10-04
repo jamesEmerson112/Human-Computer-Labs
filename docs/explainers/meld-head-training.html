@@ -1,0 +1,674 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Saved copy of the artifact https://claude.ai/artifact/D7XqirEfGAJDvMPBq1xemQ. Open this file directly in a browser. -->
+<style>body { margin: 0; }</style>
+</head>
+<body>
+<title>MELD Head Training</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Familjen+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+/* Layout: one reading column; wide figures scroll inside their own frame. Ice = frozen, heat = trained. */
+:root {
+  --bg: #F4F6F8;
+  --surface: #FFFFFF;
+  --fg: #16202B;
+  --muted: #586676;
+  --line: #D3DBE3;
+  --ice: #3B78AD;
+  --ice-soft: #E2EDF7;
+  --heat: #B95A14;
+  --heat-soft: #FBE9DA;
+  --code-bg: #ECF0F4;
+  --syn-kw: #8237A0;
+  --syn-str: #2C7A4B;
+  --syn-com: #6F7C89;
+  --syn-num: #A9500F;
+  --syn-fn: #2A60A0;
+  --f-display: "Familjen Grotesk", "Segoe UI", system-ui, sans-serif;
+  --f-body: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0E1318; --surface: #151C23; --fg: #E2E8EE; --muted: #95A3B2; --line: #2B3641;
+    --ice: #7EB3E0; --ice-soft: #172838; --heat: #F0A35E; --heat-soft: #362314; --code-bg: #10171E;
+    --syn-kw: #D39CE8; --syn-str: #8DCBA0; --syn-com: #7E8B98; --syn-num: #F2B27C; --syn-fn: #8EBEF0;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0E1318; --surface: #151C23; --fg: #E2E8EE; --muted: #95A3B2; --line: #2B3641;
+  --ice: #7EB3E0; --ice-soft: #172838; --heat: #F0A35E; --heat-soft: #362314; --code-bg: #10171E;
+  --syn-kw: #D39CE8; --syn-str: #8DCBA0; --syn-com: #7E8B98; --syn-num: #F2B27C; --syn-fn: #8EBEF0;
+  color-scheme: dark;
+}
+
+body { background: var(--bg); color: var(--fg); font-family: var(--f-body); font-size: 17px; line-height: 1.6; }
+.wrap { max-width: 920px; margin: 0 auto; padding-inline: 20px; padding-block: 40px 72px; display: grid; gap: 56px; }
+section { display: grid; gap: 16px; min-width: 0; }
+h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; margin: 0; line-height: 1.15; }
+h1 { font-size: clamp(30px, 5vw, 44px); font-weight: 700; letter-spacing: -0.01em; }
+h2 { font-size: 26px; font-weight: 600; }
+h3 { font-size: 19px; font-weight: 600; }
+p { margin: 0; max-width: 66ch; }
+a { color: var(--ice); }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--ice); outline-offset: 2px; border-radius: 4px; }
+.eyebrow { font-family: var(--f-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.lede { font-size: 19px; }
+header { display: grid; gap: 14px; }
+.key { display: flex; flex-wrap: wrap; gap: 10px 22px; font-size: 15px; color: var(--muted); }
+.key span { display: inline-flex; align-items: center; gap: 8px; }
+.sw { width: 14px; height: 14px; border-radius: 3px; border: 1.5px solid; display: inline-block; }
+.sw.ice { background: var(--ice-soft); border-color: var(--ice); }
+.sw.heat { background: var(--heat-soft); border-color: var(--heat); }
+code { font-family: var(--f-mono); font-size: 0.88em; background: var(--code-bg); padding: 1px 5px; border-radius: 4px; }
+
+/* figures */
+figure { margin: 0; display: grid; gap: 10px; min-width: 0; }
+.frame { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 12px; }
+.frame svg { display: block; width: 100%; min-width: 760px; height: auto; color: var(--muted); }
+figcaption { font-size: 15px; color: var(--muted); max-width: 70ch; }
+
+svg text { font-family: var(--f-body); fill: var(--fg); font-size: 13px; }
+svg .tt { font-family: var(--f-display); font-weight: 600; font-size: 15px; }
+svg .ts { fill: var(--muted); font-size: 12px; }
+svg .tm { font-family: var(--f-mono); font-size: 12px; }
+svg .tband { font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.08em; fill: var(--muted); }
+svg .tarrow { font-size: 11.5px; fill: var(--muted); }
+svg .theat { fill: var(--heat); font-weight: 700; }
+svg .tice { fill: var(--ice); font-weight: 700; }
+svg .band { fill: var(--bg); }
+svg .box { fill: var(--surface); stroke: var(--line); stroke-width: 1.5; }
+svg .out { fill: var(--surface); stroke: var(--fg); stroke-width: 1.5; }
+svg .frozen { fill: var(--ice-soft); stroke: var(--ice); stroke-width: 1.5; }
+svg .trained { fill: var(--heat-soft); stroke: var(--heat); stroke-width: 2; }
+svg .wire { fill: none; stroke: var(--muted); stroke-width: 1.5; }
+svg .wire.heat { stroke: var(--heat); stroke-width: 2; stroke-dasharray: 6 4; }
+svg .wire.soft { stroke-dasharray: 3 4; }
+svg .mk-ink { fill: var(--muted); }
+svg .mk-heat { fill: var(--heat); }
+svg .cell { fill: var(--ice-soft); stroke: var(--ice); stroke-width: 1; }
+svg .cell.b { fill: var(--ice); }
+svg .bar { fill: var(--line); }
+svg .bar.pick { fill: var(--fg); }
+svg .lock { fill: none; stroke: var(--ice); stroke-width: 1.6; }
+svg .lockbody { fill: var(--ice); }
+svg .pill rect { fill: var(--fg); }
+svg .pill text { fill: var(--bg); font-family: var(--f-mono); font-size: 11px; font-weight: 600; }
+svg a.pill:hover rect, svg a.pill:focus rect { fill: var(--ice); }
+svg .dot { fill: var(--muted); }
+
+/* MELD label counts */
+.counts { display: grid; grid-template-columns: max-content 1fr max-content; gap: 6px 12px; align-items: center; font-size: 15px; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px; }
+.counts .lab { color: var(--fg); }
+.counts .track { height: 14px; min-width: 0; }
+.counts .fill { height: 100%; background: var(--ice); border-radius: 0 4px 4px 0; min-width: 2px; }
+.counts .n { font-family: var(--f-mono); font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; text-align: right; }
+.counts .hd { font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+
+/* parameter budget */
+.budget { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px; display: grid; gap: 14px; min-width: 0; }
+.bar6 { display: flex; gap: 2px; height: 34px; position: relative; }
+.seg { height: 100%; border: 1.5px solid; }
+.seg.fz { background: var(--ice-soft); border-color: var(--ice); }
+.seg.tr { background: var(--heat); border-color: var(--heat); min-width: 3px; }
+.seg.free { background: transparent; border-color: var(--line); border-style: dashed; }
+.seg:first-child { border-radius: 5px 0 0 5px; }
+.seg:last-child { border-radius: 0 5px 5px 0; }
+.scale { display: flex; justify-content: space-between; font-family: var(--f-mono); font-size: 12px; color: var(--muted); }
+.legend { display: grid; grid-template-columns: max-content 1fr max-content max-content; gap: 6px 14px; align-items: center; font-size: 15px; }
+.legend .v { font-family: var(--f-mono); font-size: 13px; text-align: right; font-variant-numeric: tabular-nums; }
+.legend .s { font-size: 13px; color: var(--muted); }
+.legend .tot { border-top: 1px solid var(--line); padding-top: 6px; font-weight: 700; }
+.legend .tot.v { font-weight: 600; }
+
+/* steps */
+.steps { display: grid; gap: 28px; }
+.step { display: grid; grid-template-columns: 52px 1fr; gap: 6px 18px; min-width: 0; scroll-margin-top: 16px; }
+.num { font-family: var(--f-mono); font-weight: 600; font-size: 13px; color: var(--bg); background: var(--fg); border-radius: 999px; height: 28px; display: grid; place-items: center; align-self: start; margin-top: 2px; }
+.step.heat .num { background: var(--heat); }
+.step .body { display: grid; gap: 10px; min-width: 0; }
+.ste { font-family: var(--f-display); font-weight: 600; font-size: 19px; line-height: 1.3; }
+.code { position: relative; min-width: 0; }
+.code pre { margin: 0; background: var(--code-bg); border: 1px solid var(--line); border-radius: 8px; padding: 14px 16px; overflow-x: auto; font-family: var(--f-mono); font-size: 13.5px; line-height: 1.55; }
+.code pre code { background: none; padding: 0; font-size: inherit; }
+.copy { position: absolute; top: 8px; right: 8px; font-family: var(--f-mono); font-size: 12px; color: var(--muted); background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 3px 9px; cursor: pointer; }
+.copy:hover { color: var(--fg); border-color: var(--muted); }
+.hljs-keyword, .hljs-built_in.hljs-keyword { color: var(--syn-kw); }
+.hljs-string, .hljs-subst .hljs-string { color: var(--syn-str); }
+.hljs-comment { color: var(--syn-com); font-style: italic; }
+.hljs-number, .hljs-literal { color: var(--syn-num); }
+.hljs-title, .hljs-title.function_, .hljs-built_in { color: var(--syn-fn); }
+.hljs-meta { color: var(--syn-kw); }
+.hljs-variable, .hljs-params { color: var(--fg); }
+
+.note { border-left: 3px solid var(--line); padding-left: 14px; color: var(--muted); font-size: 15px; }
+footer { display: grid; gap: 10px; font-size: 15px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 20px; }
+footer ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
+footer h3 { color: var(--fg); font-size: 18px; margin-top: 10px; }
+footer ol { margin: 0; padding-left: 22px; display: grid; gap: 8px; }
+footer li { max-width: 72ch; }
+footer ol li::marker { font-family: var(--f-mono); color: var(--fg); }
+
+@media (max-width: 560px) {
+  body { font-size: 16px; }
+  .step { grid-template-columns: 1fr; }
+  .num { width: 52px; }
+  .legend { grid-template-columns: max-content 1fr max-content; }
+  .legend .s { display: none; }
+}
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+</style>
+
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">ML route · MELD emotion prototype</div>
+  <h1>Train a small head, keep the big models frozen</h1>
+  <p class="lede">A pretrained model already knows general patterns in words and in voices. It does not know MELD's seven emotions. You freeze it, which means its parameters never change. Then you train a small new network on top of it, called the head.</p>
+  <div class="key" aria-label="Colour key">
+    <span><i class="sw ice"></i>Frozen: parameters never change</span>
+    <span><i class="sw heat"></i>Trained: parameters change with MELD</span>
+  </div>
+</header>
+
+<section aria-labelledby="meld-h">
+  <div class="eyebrow">The data</div>
+  <h2 id="meld-h">What MELD gives you</h2>
+  <p>MELD has 13,708 lines of dialogue from Friends, split into 9,989 training lines, 1,109 dev lines and 2,610 test lines. Each line has the words, a short video clip with its sound, and one emotion label. The labels are very uneven. Neutral lines outnumber fear lines by about 18 to 1.</p>
+  <div class="counts" role="table" aria-label="MELD training lines per emotion">
+    <div class="hd" role="columnheader">Emotion</div><div class="hd" role="columnheader">Training lines</div><div class="hd" role="columnheader" style="text-align:right">Count</div>
+  </div>
+</section>
+
+<section aria-labelledby="train-h">
+  <div class="eyebrow">The process</div>
+  <h2 id="train-h">How training works</h2>
+  <p>Training happens in two stages. The first stage runs the frozen encoders over every line once and saves what they produce. The second stage trains only the head on those saved numbers, many times over. The numbered chips link to the matching code below.</p>
+  <figure>
+    <div class="frame">
+      <svg viewBox="0 0 1000 560" role="img" aria-label="Stage 1 runs each MELD line once through two frozen encoders and saves 1,536 numbers per line to a file. Stage 2 repeatedly feeds those saved numbers to the head, compares its guess with the label, and updates only the head.">
+        <defs>
+          <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk-ink" d="M0,0 L10,5 L0,10 z"/></marker>
+          <marker id="ahh" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk-heat" d="M0,0 L10,5 L0,10 z"/></marker>
+          <g id="lock"><path class="lock" d="M-5,0 V-4 a5,5 0 0 1 10,0 V0"/><rect class="lockbody" x="-7" y="0" width="14" height="10" rx="2"/></g>
+        </defs>
+
+        <!-- Stage 1 -->
+        <rect class="band" x="0" y="0" width="1000" height="256" rx="10"/>
+        <text class="tband" x="16" y="26">STAGE 1 · RUNS ONCE</text>
+
+        <rect class="box" x="16" y="56" width="190" height="190" rx="8"/>
+        <text class="tt" x="30" y="82">One MELD line</text>
+        <text class="tm ts" x="30" y="101">dia6_utt1.mp4</text>
+        <text class="ts" x="30" y="126">words</text>
+        <text x="30" y="143">“You liked it? You</text>
+        <text x="30" y="159">really liked it?”</text>
+        <text class="ts" x="30" y="182">sound</text>
+        <text x="30" y="198">1.6 s of Joey’s voice</text>
+        <text class="ts" x="30" y="220">label</text>
+        <text x="30" y="236" font-weight="700">surprise</text>
+        <a class="pill" href="#step-1"><rect x="176" y="46" width="26" height="20" rx="10"/><text x="189" y="60" text-anchor="middle">1</text></a>
+
+        <path class="wire" d="M206,138 H236 V80 H286" marker-end="url(#ah)"/>
+        <text class="tarrow" x="261" y="73" text-anchor="middle">words</text>
+        <path class="wire" d="M206,194 H236 V210 H286" marker-end="url(#ah)"/>
+        <text class="tarrow" x="261" y="203" text-anchor="middle">sound</text>
+
+        <rect class="frozen" x="290" y="40" width="180" height="80" rx="8"/>
+        <text class="tt" x="306" y="66">RoBERTa-base</text>
+        <text x="306" y="86">reads the words</text>
+        <text class="ts" x="306" y="106">124.7M parameters</text>
+        <use href="#lock" x="448" y="96"/>
+        <a class="pill" href="#step-2"><rect x="428" y="30" width="38" height="20" rx="10"/><text x="447" y="44" text-anchor="middle">2–3</text></a>
+
+        <rect class="frozen" x="290" y="170" width="180" height="80" rx="8"/>
+        <text class="tt" x="306" y="196">WavLM Base+</text>
+        <text x="306" y="216">hears the voice</text>
+        <text class="ts" x="306" y="236">about 95M parameters</text>
+        <use href="#lock" x="448" y="226"/>
+
+        <path class="wire" d="M470,80 H526" marker-end="url(#ah)"/>
+        <path class="wire" d="M470,210 H526" marker-end="url(#ah)"/>
+        <text class="ts" x="590" y="64" text-anchor="middle">768 numbers</text>
+        <g>
+          <rect class="cell" x="530" y="72" width="10" height="16"/><rect class="cell" x="540" y="72" width="10" height="16"/><rect class="cell" x="550" y="72" width="10" height="16"/><rect class="cell" x="560" y="72" width="10" height="16"/><rect class="cell" x="570" y="72" width="10" height="16"/><rect class="cell" x="580" y="72" width="10" height="16"/><rect class="cell" x="590" y="72" width="10" height="16"/><rect class="cell" x="600" y="72" width="10" height="16"/><rect class="cell" x="610" y="72" width="10" height="16"/><rect class="cell" x="620" y="72" width="10" height="16"/><rect class="cell" x="630" y="72" width="10" height="16"/><rect class="cell" x="640" y="72" width="10" height="16"/>
+        </g>
+        <text class="ts" x="590" y="194" text-anchor="middle">768 numbers</text>
+        <g>
+          <rect class="cell b" x="530" y="202" width="10" height="16"/><rect class="cell b" x="540" y="202" width="10" height="16"/><rect class="cell b" x="550" y="202" width="10" height="16"/><rect class="cell b" x="560" y="202" width="10" height="16"/><rect class="cell b" x="570" y="202" width="10" height="16"/><rect class="cell b" x="580" y="202" width="10" height="16"/><rect class="cell b" x="590" y="202" width="10" height="16"/><rect class="cell b" x="600" y="202" width="10" height="16"/><rect class="cell b" x="610" y="202" width="10" height="16"/><rect class="cell b" x="620" y="202" width="10" height="16"/><rect class="cell b" x="630" y="202" width="10" height="16"/><rect class="cell b" x="640" y="202" width="10" height="16"/>
+        </g>
+        <a class="pill" href="#step-4"><rect x="577" y="130" width="26" height="20" rx="10"/><text x="590" y="144" text-anchor="middle">4</text></a>
+
+        <path class="wire" d="M650,80 H690 V210 H650"/>
+        <circle class="dot" cx="690" cy="140" r="3.5"/>
+        <path class="wire" d="M690,140 H736" marker-end="url(#ah)"/>
+        <text class="tarrow" x="713" y="133" text-anchor="middle">join</text>
+
+        <rect class="box" x="740" y="96" width="244" height="88" rx="8"/>
+        <text class="tm" x="756" y="122" font-weight="600">train_features.pt</text>
+        <text x="756" y="144">9,989 lines × 1,536 numbers</text>
+        <text class="ts" x="756" y="164">plus the 9,989 labels</text>
+        <a class="pill" href="#step-4"><rect x="950" y="86" width="26" height="20" rx="10"/><text x="963" y="100" text-anchor="middle">5</text></a>
+
+        <!-- connector -->
+        <path class="wire soft" d="M862,184 V276 H101 V336" marker-end="url(#ah)"/>
+        <text class="tarrow" x="480" y="270" text-anchor="middle">the same file, loaded into memory</text>
+
+        <!-- Stage 2 -->
+        <rect class="band" x="0" y="290" width="1000" height="270" rx="10"/>
+        <text class="tband" x="16" y="316">STAGE 2 · REPEATS FOR 20 PASSES</text>
+
+        <rect class="box" x="16" y="340" width="170" height="90" rx="8"/>
+        <text class="tm" x="30" y="366" font-weight="600">train_features.pt</text>
+        <text x="30" y="388">features + labels</text>
+        <text class="ts" x="30" y="408">no encoders needed</text>
+
+        <path class="wire" d="M186,385 H286" marker-end="url(#ah)"/>
+        <text class="tarrow" x="236" y="377" text-anchor="middle">64 lines at a time</text>
+
+        <rect class="trained" x="290" y="330" width="190" height="110" rx="8"/>
+        <text class="tt" x="306" y="356">Head</text>
+        <text class="tm" x="306" y="377">1,536 → 256 → 7</text>
+        <text x="306" y="398">395,271 parameters</text>
+        <text class="theat" x="306" y="422">trained</text>
+        <a class="pill" href="#step-6"><rect x="450" y="320" width="26" height="20" rx="10"/><text x="463" y="334" text-anchor="middle">6</text></a>
+
+        <path class="wire" d="M480,385 H532" marker-end="url(#ah)"/>
+        <text class="ts" x="610" y="344" text-anchor="middle">7 scores</text>
+        <g>
+          <rect class="bar" x="543" y="413" width="14" height="7"/>
+          <rect class="bar" x="563" y="417" width="14" height="3"/>
+          <rect class="bar" x="583" y="416" width="14" height="4"/>
+          <rect class="bar pick" x="603" y="356" width="14" height="64"/>
+          <rect class="bar" x="623" y="392" width="14" height="28"/>
+          <rect class="bar" x="643" y="414" width="14" height="6"/>
+          <rect class="bar" x="663" y="392" width="14" height="28"/>
+        </g>
+        <text class="tm ts" x="550" y="434" text-anchor="middle">an</text>
+        <text class="tm ts" x="570" y="434" text-anchor="middle">di</text>
+        <text class="tm ts" x="590" y="434" text-anchor="middle">fe</text>
+        <text class="tm" x="610" y="434" text-anchor="middle" font-weight="600">jo</text>
+        <text class="tm ts" x="630" y="434" text-anchor="middle">ne</text>
+        <text class="tm ts" x="650" y="434" text-anchor="middle">sa</text>
+        <text class="tm ts" x="670" y="434" text-anchor="middle">su</text>
+
+        <path class="wire" d="M684,385 H736" marker-end="url(#ah)"/>
+        <rect class="box" x="740" y="330" width="244" height="110" rx="8"/>
+        <text class="tt" x="756" y="356">Compare with the label</text>
+        <text x="756" y="378">guess joy, label surprise</text>
+        <text class="ts" x="756" y="399">the loss says how wrong it is</text>
+        <text class="ts" x="756" y="418">rare emotions weigh more</text>
+        <a class="pill" href="#step-7"><rect x="950" y="320" width="26" height="20" rx="10"/><text x="963" y="334" text-anchor="middle">7</text></a>
+
+        <path class="wire heat" d="M862,440 V500 H385 V446" marker-end="url(#ahh)"/>
+        <text class="theat" x="624" y="492" text-anchor="middle" font-size="13">update the head’s parameters only</text>
+
+        <text class="ts" x="16" y="466">The encoders are not</text>
+        <text class="ts" x="16" y="483">in this loop, so their</text>
+        <text class="ts" x="16" y="500">parameters cannot change.</text>
+      </svg>
+    </div>
+    <figcaption>The line, its clip length and its label are real MELD data (dia6_utt1). The seven scores and the wrong guess are example values. The head shown is the one built in step 6.</figcaption>
+  </figure>
+</section>
+
+<section aria-labelledby="budget-h">
+  <div class="eyebrow">The 6B limit</div>
+  <h2 id="budget-h">How much of the model you train</h2>
+  <p>The challenge counts every model in the live system against a 6 billion parameter limit. Here is one example setup, drawn to scale. The trained head is about 0.02% of it, too thin to see as more than a line.</p>
+  <div class="budget">
+    <div class="bar6" id="bar6" role="img" aria-label="Six billion parameter budget: Silero VAD, Whisper small, RoBERTa-base, WavLM Base+, the head and Qwen3-1.7B use about 2.16 billion; about 3.84 billion is unused."></div>
+    <div class="scale"><span>0</span><span>2B</span><span>4B</span><span>6B</span></div>
+    <div class="legend" id="legend" role="table" aria-label="Parameters per part"></div>
+  </div>
+</section>
+
+<section aria-labelledby="code-h">
+  <div class="eyebrow">The procedure</div>
+  <h2 id="code-h">The ten steps, with code</h2>
+  <p>The step headings are the ten steps of the procedure. The examples use PyTorch and the Hugging Face Transformers library, with RoBERTa-base for the words and WavLM Base+ for the voice.</p>
+
+  <div class="steps">
+
+    <div class="step" id="step-1">
+      <div class="num">1</div>
+      <div class="body">
+        <div class="ste">Download the MELD dataset.</div>
+        <p>The encoders need 16 kHz mono sound, so this step also pulls the sound out of each video clip with ffmpeg.</p>
+        <div class="code"><pre><code class="language-bash"># The labels: one CSV row per line of dialogue
+wget https://raw.githubusercontent.com/declare-lab/MELD/master/data/MELD/train_sent_emo.csv
+wget https://raw.githubusercontent.com/declare-lab/MELD/master/data/MELD/test_sent_emo.csv
+
+# The clips (about 10.9 GB): train, dev and test archives of .mp4 files named dia6_utt1.mp4 and so on
+wget https://huggingface.co/datasets/declare-lab/MELD/resolve/main/MELD.Raw.tar.gz
+tar -xzf MELD.Raw.tar.gz
+# Unpack the inner train archive too, then point CLIPS at its folder of .mp4 files
+CLIPS=MELD.Raw/train_splits
+
+mkdir -p wav/train
+for f in "$CLIPS"/*.mp4; do
+  ffmpeg -loglevel error -i "$f" -ac 1 -ar 16000 "wav/train/$(basename "${f%.mp4}").wav"
+done</code></pre></div>
+      </div>
+    </div>
+
+    <div class="step" id="step-2">
+      <div class="num">2–3</div>
+      <div class="body">
+        <div class="ste">Load the pretrained model. Freeze all the parameters in the pretrained model.</div>
+        <p>Setting <code>requires_grad = False</code> tells PyTorch never to compute an update for those parameters.</p>
+        <div class="code"><pre><code class="language-python">import torch
+from transformers import AutoTokenizer, AutoModel, AutoFeatureExtractor
+
+# Step 2: load the two pretrained encoders
+text_tok  = AutoTokenizer.from_pretrained("FacebookAI/roberta-base")
+text_enc  = AutoModel.from_pretrained("FacebookAI/roberta-base").eval()
+audio_fx  = AutoFeatureExtractor.from_pretrained("microsoft/wavlm-base-plus")
+audio_enc = AutoModel.from_pretrained("microsoft/wavlm-base-plus").eval()
+
+# Step 3: freeze them, so training can never change their parameters
+for p in list(text_enc.parameters()) + list(audio_enc.parameters()):
+    p.requires_grad = False</code></pre></div>
+      </div>
+    </div>
+
+    <div class="step" id="step-4">
+      <div class="num">4–5</div>
+      <div class="body">
+        <div class="ste">Send each MELD line through the pretrained model. Record the output numbers for each line.</div>
+        <p>The encoders never change, so their output for a line never changes either. You compute it once and save it. Run the same loop on <code>test_sent_emo.csv</code> to make <code>test_features.pt</code>.</p>
+        <div class="code"><pre><code class="language-python">import os
+import pandas as pd
+import soundfile as sf
+
+LABELS = ["anger", "disgust", "fear", "joy", "neutral", "sadness", "surprise"]
+
+@torch.no_grad()
+def features(text, audio):
+    t = text_tok(text, return_tensors="pt", truncation=True)
+    t_vec = text_enc(**t).last_hidden_state[:, 0]          # 768 numbers for the words
+    a = audio_fx(audio, sampling_rate=16000, return_tensors="pt")
+    a_vec = audio_enc(**a).last_hidden_state.mean(dim=1)   # 768 numbers for the voice
+    return torch.cat([t_vec, a_vec], dim=1)                # 1,536 numbers per line
+
+# Step 4: send every training line through the frozen encoders
+rows = pd.read_csv("train_sent_emo.csv")
+X, y = [], []
+for r in rows.itertuples():
+    path = f"wav/train/dia{r.Dialogue_ID}_utt{r.Utterance_ID}.wav"
+    if not os.path.exists(path):       # a few clips are missing or broken
+        continue
+    audio, _ = sf.read(path, dtype="float32")
+    X.append(features(r.Utterance, audio))
+    y.append(LABELS.index(r.Emotion))
+
+# Step 5: record the features, so this slow part runs only once
+torch.save({"X": torch.cat(X), "y": torch.tensor(y)}, "train_features.pt")</code></pre></div>
+      </div>
+    </div>
+
+    <div class="step heat" id="step-6">
+      <div class="num">6</div>
+      <div class="body">
+        <div class="ste">Connect a head that has seven outputs.</div>
+        <p>This head takes the 1,536 numbers, mixes them through 256 hidden numbers, and gives one score per emotion. It is the only part with parameters that training will change.</p>
+        <div class="code"><pre><code class="language-python">import torch.nn as nn
+
+head = nn.Sequential(
+    nn.Linear(1536, 256),
+    nn.ReLU(),
+    nn.Dropout(0.2),
+    nn.Linear(256, 7),     # one score per emotion
+)
+print(sum(p.numel() for p in head.parameters()))   # 395271</code></pre></div>
+      </div>
+    </div>
+
+    <div class="step heat" id="step-7">
+      <div class="num">7</div>
+      <div class="body">
+        <div class="ste">Train the head with the features from the training lines.</div>
+        <p>Each pass shows the head every training line once. The loss measures how wrong each guess is. The optimizer then adjusts the head's parameters, and only those, to make the loss smaller. Because MELD is so uneven, the loss counts a mistake on a rare emotion more heavily. A real run would also check the dev set after each pass and keep the best head.</p>
+        <div class="code"><pre><code class="language-python">data = torch.load("train_features.pt")
+X, y = data["X"], data["y"]
+
+# Rare emotions weigh more: fear has 268 training lines, neutral has 4,710
+counts = torch.bincount(y, minlength=7).float()
+loss_fn = nn.CrossEntropyLoss(weight=counts.sum() / (7 * counts))
+opt = torch.optim.AdamW(head.parameters(), lr=1e-3)   # the head's parameters only
+
+head.train()
+for epoch in range(20):
+    order = torch.randperm(len(y))
+    for i in range(0, len(y), 64):
+        batch = order[i:i + 64]
+        loss = loss_fn(head(X[batch]), y[batch])
+        opt.zero_grad()
+        loss.backward()
+        opt.step()
+    print(epoch, round(loss.item(), 3))</code></pre></div>
+      </div>
+    </div>
+
+    <div class="step" id="step-8">
+      <div class="num">8–9</div>
+      <div class="body">
+        <div class="ste">Measure the head with the test lines. Record the weighted F1 score.</div>
+        <p>The weighted F1 score is a number from 0 to 1 that shows how correct the labels are. Each emotion counts in proportion to how often it appears in the test lines. MELD papers report this score, so you can compare with them.</p>
+        <div class="code"><pre><code class="language-python">from sklearn.metrics import f1_score, classification_report
+
+test = torch.load("test_features.pt")
+head.eval()
+with torch.no_grad():
+    guess = head(test["X"]).argmax(dim=1)
+
+# Step 8: measure the head on 2,610 lines it never saw
+print(classification_report(test["y"].numpy(), guess.numpy(), target_names=LABELS))
+
+# Step 9: record the weighted F1 score
+print("weighted F1:", f1_score(test["y"].numpy(), guess.numpy(), average="weighted"))</code></pre></div>
+      </div>
+    </div>
+
+    <div class="step" id="step-10">
+      <div class="num">10</div>
+      <div class="body">
+        <div class="ste">Save the head.</div>
+        <p>The saved file is about 1.6 MB. The encoders are not saved, because they are still exactly as you downloaded them.</p>
+        <div class="code"><pre><code class="language-python">torch.save(head.state_dict(), "head.pt")</code></pre></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section aria-labelledby="live-h">
+  <div class="eyebrow">After training</div>
+  <h2 id="live-h">Live use</h2>
+  <p>In the live system, a voice detector cuts each spoken line out of the microphone sound. Whisper turns that clip into words. The frozen encoders and the trained head turn the words and the clip into an emotion. A small language model then writes a reply from the words and the emotion. One line therefore produces both outputs the challenge asks for.</p>
+  <figure>
+    <div class="frame">
+      <svg viewBox="0 0 1000 330" role="img" aria-label="Live path: the microphone feeds a voice detector, which sends one clip to Whisper for words and the same clip to the encoders and head. The head gives output 1, the emotion state. The language model takes the words and the emotion and gives output 2, the reply.">
+        <defs>
+          <marker id="ah2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk-ink" d="M0,0 L10,5 L0,10 z"/></marker>
+        </defs>
+
+        <rect class="box" x="16" y="135" width="110" height="60" rx="8"/>
+        <text class="tt" x="30" y="160">Microphone</text>
+        <text class="ts" x="30" y="180">live sound</text>
+        <path class="wire" d="M126,165 H162" marker-end="url(#ah2)"/>
+
+        <rect class="box" x="166" y="135" width="140" height="60" rx="8"/>
+        <text class="tt" x="180" y="160">Silero VAD</text>
+        <text class="ts" x="180" y="180">cuts out one line</text>
+
+        <path class="wire" d="M306,165 H330 V70 H556" marker-end="url(#ah2)"/>
+        <circle class="dot" cx="330" cy="165" r="3.5"/>
+        <text class="tarrow" x="445" y="62" text-anchor="middle">the clip’s sound</text>
+        <path class="wire" d="M330,165 V260 H342" marker-end="url(#ah2)"/>
+        <text class="tarrow" x="338" y="212">same clip</text>
+
+        <rect class="box" x="346" y="230" width="150" height="60" rx="8"/>
+        <text class="tt" x="360" y="255">Whisper small</text>
+        <text class="ts" x="360" y="275">speech to words</text>
+
+        <path class="wire" d="M496,248 H520 V110 H556" marker-end="url(#ah2)"/>
+        <text class="tarrow" x="538" y="103" text-anchor="middle">words</text>
+        <path class="wire" d="M496,276 H556" marker-end="url(#ah2)"/>
+        <text class="tarrow" x="526" y="270" text-anchor="middle">words</text>
+
+        <rect class="frozen" x="560" y="40" width="170" height="90" rx="8"/>
+        <text class="tt" x="576" y="66">Encoders + head</text>
+        <text class="tice" x="576" y="88" font-size="12.5">encoders frozen</text>
+        <text class="theat" x="576" y="108" font-size="12.5">head from step 10</text>
+
+        <path class="wire" d="M730,85 H786" marker-end="url(#ah2)"/>
+        <text class="tarrow" x="758" y="78" text-anchor="middle">emotion</text>
+        <rect class="out" x="790" y="40" width="194" height="90" rx="8"/>
+        <text class="tband" x="806" y="62">OUTPUT 1 · STATE</text>
+        <text class="tm" x="806" y="86">emotion: surprise</text>
+        <text class="tm" x="806" y="106">confidence: 0.64</text>
+
+        <path class="wire" d="M645,130 V246" marker-end="url(#ah2)"/>
+        <text class="tarrow" x="652" y="192">emotion</text>
+
+        <rect class="box" x="560" y="250" width="170" height="60" rx="8"/>
+        <text class="tt" x="576" y="275">Qwen3-1.7B</text>
+        <text class="ts" x="576" y="295">writes the reply</text>
+
+        <path class="wire" d="M730,280 H786" marker-end="url(#ah2)"/>
+        <rect class="out" x="790" y="240" width="194" height="80" rx="8"/>
+        <text class="tband" x="806" y="262">OUTPUT 2 · REPLY</text>
+        <text x="806" y="285">“Yes, I really did!</text>
+        <text x="806" y="304">It was great.”</text>
+      </svg>
+    </div>
+    <figcaption>The emotion, confidence and reply are example values. The voice detector (VAD, short for voice activity detection) tells when someone starts and stops talking.</figcaption>
+  </figure>
+
+  <div class="code"><pre><code class="language-python">from faster_whisper import WhisperModel
+from transformers import pipeline
+
+asr  = WhisperModel("small", device="cpu", compute_type="int8")
+chat = pipeline("text-generation", model="Qwen/Qwen3-1.7B")
+head.load_state_dict(torch.load("head.pt"))
+head.eval()
+
+def on_line(audio):
+    """Runs once for each line the voice detector cuts out (16 kHz mono)."""
+    segments, _ = asr.transcribe(audio, language="en")
+    text = " ".join(s.text for s in segments).strip()
+
+    with torch.no_grad():
+        probs = head(features(text, audio)).softmax(dim=1)[0]
+    state = {"emotion": LABELS[probs.argmax().item()],
+             "confidence": round(probs.max().item(), 2)}            # output 1
+
+    prompt = (f'Someone said "{text}" and sounds {state["emotion"]}. '
+              "Reply in one short, kind sentence. /no_think")
+    out = chat([{"role": "user", "content": prompt}], max_new_tokens=40)
+    reply = out[0]["generated_text"][-1]["content"].split("&lt;/think&gt;")[-1].strip()  # output 2
+    return state, reply</code></pre></div>
+  <p class="note">The voice detector loop that calls <code>on_line</code> is left out. Silero VAD's README shows how to read the microphone in short chunks and cut out each spoken line.</p>
+</section>
+
+<footer>
+  <h3>Read next</h3>
+  <ol class="reads">
+    <li><a href="https://docs.pytorch.org/tutorials/beginner/transfer_learning_tutorial.html" target="_blank" rel="noopener">PyTorch transfer learning tutorial</a>, section “ConvNet as fixed feature extractor”. It freezes a pretrained image network and trains only a new last layer, which is the method on this page.</li>
+    <li><a href="https://aclanthology.org/P19-1050/" target="_blank" rel="noopener">MELD paper</a>. It explains how the dataset was built from Friends, defines the seven emotions, and reports the baseline scores to compare against.</li>
+    <li><a href="https://huggingface.co/learn/llm-course/chapter1/4" target="_blank" rel="noopener">Hugging Face LLM Course, chapter 1, section 4: How do Transformers work?</a> It explains pretraining and why a pretrained model can be reused for a new task.</li>
+    <li><a href="https://huggingface.co/learn/llm-course/chapter3/4" target="_blank" rel="noopener">Hugging Face LLM Course, chapter 3, section 4: A full training loop</a>. It trains a model in plain PyTorch, like step 7 above. Unlike this page, it updates every parameter of its model.</li>
+  </ol>
+  <p>The full list of 20 readings is in <code>docs/research/ml-reading-list.md</code> in the repo.</p>
+  <h3>Where the numbers come from</h3>
+  <p>These code samples are a teaching sketch. They have not been run, and they leave out GPU placement, the dev set and error handling. The MELD counts come from MELD's own training CSV. The parameter counts come from <code>docs/research/ml-models.md</code>, except WavLM Base+, which comes from the WavLM paper. Silero VAD's README gives only its file size, about 2 MB, so the page shows a safe upper bound for it.</p>
+  <ul>
+    <li><a href="https://github.com/declare-lab/MELD" target="_blank" rel="noopener">MELD repository</a>, for the training CSV and the split sizes</li>
+    <li><a href="https://arxiv.org/abs/2110.13900" target="_blank" rel="noopener">WavLM paper</a>, for the WavLM Base+ parameter count</li>
+    <li><a href="https://github.com/snakers4/silero-vad" target="_blank" rel="noopener">Silero VAD README</a>, for the voice detector's file size</li>
+  </ul>
+</footer>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>
+(function () {
+  var counts = [["neutral", 4710], ["joy", 1743], ["surprise", 1205], ["anger", 1109], ["sadness", 683], ["disgust", 271], ["fear", 268]];
+  var box = document.querySelector(".counts");
+  counts.forEach(function (c) {
+    var lab = document.createElement("div"); lab.className = "lab"; lab.textContent = c[0]; lab.setAttribute("role", "cell");
+    var tr = document.createElement("div"); tr.className = "track"; tr.setAttribute("role", "cell");
+    var fill = document.createElement("div"); fill.className = "fill";
+    fill.style.width = (c[1] / 4710 * 100).toFixed(2) + "%";
+    fill.title = c[0] + ": " + c[1].toLocaleString("en-US") + " training lines";
+    tr.appendChild(fill);
+    var n = document.createElement("div"); n.className = "n"; n.textContent = c[1].toLocaleString("en-US"); n.setAttribute("role", "cell");
+    box.appendChild(lab); box.appendChild(tr); box.appendChild(n);
+  });
+
+  var parts = [
+    { name: "Silero VAD", role: "finds each spoken line", m: 1, kind: "fz", label: "under 1M", thin: true },
+    { name: "Whisper small", role: "speech to words", m: 241.7, kind: "fz" },
+    { name: "RoBERTa-base", role: "reads the words", m: 124.7, kind: "fz" },
+    { name: "WavLM Base+", role: "hears the voice", m: 94.7, kind: "fz" },
+    { name: "Head", role: "trained on MELD", m: 0.395, kind: "tr", label: "395,271", thin: true },
+    { name: "Qwen3-1.7B", role: "writes the reply", m: 1700, kind: "fz" }
+  ];
+  var total = parts.reduce(function (s, p) { return s + p.m; }, 0);
+  var bar = document.getElementById("bar6");
+  var legend = document.getElementById("legend");
+  function fmt(m, p) { return p && p.label ? p.label : m.toLocaleString("en-US", { maximumFractionDigits: 1 }) + "M"; }
+  parts.concat([{ name: "Unused", role: "room left under the limit", m: 6000 - total, kind: "free" }]).forEach(function (p) {
+    var s = document.createElement("div");
+    s.className = "seg " + p.kind;
+    s.style.flex = p.thin ? "0 0 3px" : "0 1 " + (p.m / 6000 * 100).toFixed(3) + "%";
+    if (p.thin) { s.style.minWidth = "3px"; }
+    s.title = p.name + ": " + fmt(p.m, p) + " parameters";
+    bar.appendChild(s);
+    var sw = document.createElement("i");
+    sw.className = "sw " + (p.kind === "tr" ? "heat" : p.kind === "fz" ? "ice" : "");
+    if (p.kind === "free") { sw.style.borderStyle = "dashed"; sw.style.borderColor = "var(--line)"; }
+    var nm = document.createElement("span"); nm.textContent = p.name;
+    var rl = document.createElement("span"); rl.className = "s"; rl.textContent = p.role;
+    var v = document.createElement("span"); v.className = "v"; v.textContent = fmt(p.m, p);
+    [sw, nm, rl, v].forEach(function (el) { el.setAttribute("role", "cell"); legend.appendChild(el); });
+  });
+  var t1 = document.createElement("span"); t1.setAttribute("role", "cell");
+  var t2 = document.createElement("span"); t2.className = "tot"; t2.textContent = "In use"; t2.setAttribute("role", "cell");
+  var t3 = document.createElement("span"); t3.className = "tot s"; t3.textContent = "of the 6,000M limit"; t3.setAttribute("role", "cell");
+  var t4 = document.createElement("span"); t4.className = "tot v"; t4.textContent = "about " + Math.round(total).toLocaleString("en-US") + "M"; t4.setAttribute("role", "cell");
+  [t1, t2, t3, t4].forEach(function (el) { legend.appendChild(el); });
+
+  document.querySelectorAll(".code").forEach(function (wrap) {
+    var btn = document.createElement("button");
+    btn.className = "copy"; btn.type = "button"; btn.textContent = "Copy";
+    btn.addEventListener("click", function () {
+      var text = wrap.querySelector("code").innerText;
+      function done(msg) { btn.textContent = msg; setTimeout(function () { btn.textContent = "Copy"; }, 1500); }
+      function fallback() {
+        var r = document.createRange(); r.selectNodeContents(wrap.querySelector("code"));
+        var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r);
+        done("Press Ctrl+C");
+      }
+      try {
+        navigator.clipboard.writeText(text).then(function () { done("Copied"); }, fallback);
+      } catch (e) { fallback(); }
+    });
+    wrap.appendChild(btn);
+  });
+
+  if (window.hljs) { window.hljs.highlightAll(); }
+})();
+</script>
+
+</body>
+</html>
