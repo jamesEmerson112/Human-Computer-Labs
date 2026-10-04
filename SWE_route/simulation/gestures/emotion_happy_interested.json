@@ -1,0 +1,57 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_happy_interested",
+  "label": "Happy / Interested",
+  "group": "Happy",
+  "description": "Lean toward the subject and examine it with a small head sweep.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": 0.08,
+        "shoulder_pitch_joint": -0.22,
+        "elbow_pitch_joint": -0.18,
+        "neck_yaw_joint": -0.1,
+        "head_pitch_joint": -0.14
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.75
+    },
+    {
+      "hold_seconds": 0.65
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.08,
+        "shoulder_pitch_joint": -0.22,
+        "elbow_pitch_joint": -0.18,
+        "neck_yaw_joint": 0.08,
+        "head_pitch_joint": -0.18
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.75
+    },
+    {
+      "hold_seconds": 0.39
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.08,
+        "shoulder_pitch_joint": -0.22,
+        "elbow_pitch_joint": -0.18,
+        "neck_yaw_joint": -0.28,
+        "head_pitch_joint": -0.12
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.75
+    },
+    {
+      "hold_seconds": 0.52
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 0.75
+    }
+  ]
+}

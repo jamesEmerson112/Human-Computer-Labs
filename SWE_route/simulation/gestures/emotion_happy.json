@@ -1,0 +1,73 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_happy",
+  "label": "Happy",
+  "group": "Happy",
+  "description": "Lift the shade and make two welcoming bobs.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": 0.0,
+        "shoulder_pitch_joint": -0.096,
+        "elbow_pitch_joint": -0.072,
+        "neck_yaw_joint": 0.048,
+        "head_pitch_joint": -0.12
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.55
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.0,
+        "shoulder_pitch_joint": -0.16,
+        "elbow_pitch_joint": -0.12,
+        "neck_yaw_joint": 0.08,
+        "head_pitch_joint": -0.1
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.55
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.0,
+        "shoulder_pitch_joint": -0.16,
+        "elbow_pitch_joint": -0.18,
+        "neck_yaw_joint": 0.08,
+        "head_pitch_joint": -0.3
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.55
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.0,
+        "shoulder_pitch_joint": -0.16,
+        "elbow_pitch_joint": -0.12,
+        "neck_yaw_joint": 0.08,
+        "head_pitch_joint": -0.1
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.55
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.0,
+        "shoulder_pitch_joint": -0.16,
+        "elbow_pitch_joint": -0.18,
+        "neck_yaw_joint": 0.08,
+        "head_pitch_joint": -0.3
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.55
+    },
+    {
+      "hold_seconds": 0.3
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 0.6
+    }
+  ]
+}

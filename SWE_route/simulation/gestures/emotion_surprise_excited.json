@@ -1,0 +1,95 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_surprise_excited",
+  "label": "Surprise / Excited",
+  "group": "Surprise",
+  "description": "Alternate brisk head and arm bobs with a raised gaze.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": -0.048,
+        "shoulder_pitch_joint": -0.12,
+        "elbow_pitch_joint": -0.108,
+        "neck_yaw_joint": 0.132,
+        "head_pitch_joint": -0.144
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.4
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.08,
+        "shoulder_pitch_joint": -0.2,
+        "elbow_pitch_joint": -0.18,
+        "neck_yaw_joint": 0.34,
+        "head_pitch_joint": -0.1
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.4
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.08,
+        "shoulder_pitch_joint": -0.2,
+        "elbow_pitch_joint": -0.24,
+        "neck_yaw_joint": 0.22,
+        "head_pitch_joint": -0.38
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.4
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.08,
+        "shoulder_pitch_joint": -0.2,
+        "elbow_pitch_joint": -0.18,
+        "neck_yaw_joint": 0.1,
+        "head_pitch_joint": -0.1
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.4
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.08,
+        "shoulder_pitch_joint": -0.2,
+        "elbow_pitch_joint": -0.24,
+        "neck_yaw_joint": 0.22,
+        "head_pitch_joint": -0.38
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.4
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.08,
+        "shoulder_pitch_joint": -0.2,
+        "elbow_pitch_joint": -0.18,
+        "neck_yaw_joint": 0.34,
+        "head_pitch_joint": -0.1
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.4
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.08,
+        "shoulder_pitch_joint": -0.2,
+        "elbow_pitch_joint": -0.24,
+        "neck_yaw_joint": 0.22,
+        "head_pitch_joint": -0.38
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.4
+    },
+    {
+      "hold_seconds": 0.25
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 0.6
+    }
+  ]
+}

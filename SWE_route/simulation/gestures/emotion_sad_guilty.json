@@ -1,0 +1,57 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_sad_guilty",
+  "label": "Sad / Guilty",
+  "group": "Sad",
+  "description": "Dip into a small apologetic bow and hold the lowered gaze.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": -0.08,
+        "shoulder_pitch_joint": 0.06,
+        "elbow_pitch_joint": -0.28,
+        "neck_yaw_joint": -0.12,
+        "head_pitch_joint": 0.38
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.05
+    },
+    {
+      "hold_seconds": 0.45
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.08,
+        "shoulder_pitch_joint": 0.0,
+        "elbow_pitch_joint": -0.28,
+        "neck_yaw_joint": -0.12,
+        "head_pitch_joint": 0.54
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.05
+    },
+    {
+      "hold_seconds": 0.9
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.08,
+        "shoulder_pitch_joint": 0.06,
+        "elbow_pitch_joint": -0.28,
+        "neck_yaw_joint": -0.12,
+        "head_pitch_joint": 0.38
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.05
+    },
+    {
+      "hold_seconds": 0.36
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 1.05
+    }
+  ]
+}

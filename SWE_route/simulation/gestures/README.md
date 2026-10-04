@@ -1,7 +1,8 @@
 # Editing lamp gestures
 
 Each `.json` file in this folder defines one gesture. The viewer creates a button
-from its `label`. Edit or add a file, save it, then click **Reload gestures**.
+from its `label`, or a dropdown entry inside its optional `group` folder.
+Edit or add a file, save it, then click **Reload gestures**.
 The whole folder is validated before replacing the loaded library. A failed
 reload shows the filename and error and keeps the previous working gestures.
 An already-playing gesture finishes its original sequence unless interrupted.
@@ -69,6 +70,12 @@ show both. Stop requests a physical hold rather than freezing the simulated body
 
 ## Gesture comparison suite
 
+The library contains **123 gestures**: the original nine below and
+[114 emotion-wheel gestures](emotions.md) spanning every entry in all three
+rings of the supplied wheel. The catalog preserves repeated words in their
+respective branches. Choose a family and emotion in the viewer, then click
+**Play emotion**. Every emotion clip returns to its starting pose.
+
 | File | What it exercises |
 |---|---|
 | `nod.json`, `shake.json` | Single-axis pitch and yaw, pauses, reversals. |
@@ -101,8 +108,12 @@ syntax with double quotes, no comments, and no trailing commas.
 
 When copying a gesture, give it a unique `name` and `label`; use a name such as
 `small_nod` and a matching filename for clarity. `schema_version` must be `1`,
-`units` must be `"radians"`, and `description` is optional hover text. Buttons
-follow filename order. Adding a file requires no Python changes.
+`units` must be `"radians"`, and `description` is optional hover text (shown below
+the selector for grouped gestures). An optional `group`, such as `"Happy"`,
+places a gesture in a collapsed folder with a selector and **Play emotion**
+button. Labels must remain unique across the whole library; emotion labels
+include their wheel path. Groups sort alphabetically and entries follow filename
+order. Adding a file requires no Python changes.
 
 ## Validate without starting the viewer
 

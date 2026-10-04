@@ -83,9 +83,18 @@ may still settle. **Reset pose** smoothly requests zero.
 
 ## Edit movements as JSON
 
-The nine gesture buttons load their movements from [`gestures/`](gestures/README.md).
+The library loads **123 gestures** from [`gestures/`](gestures/README.md): the
+original nine above plus [114 emotion-wheel entries](gestures/emotions.md).
+In **Try a movement > Gestures**, expand Anger, Disgust, Sad, Happy, Surprise,
+or Fear, choose an **Emotion**, and click **Play emotion**. The new clips cover
+all three rings of the supplied wheel, including context-specific variants of
+repeated words. Each has a distinct motion sequence and returns to its starting
+pose. These are expressive interpretations that need human evaluation for
+recognizability. Restart an older running viewer to load the grouped controls.
+
 Edit a file and click **Reload gestures**.
-Add a JSON file with a unique name and label to get another button. An invalid
+Add a JSON file with a unique name and label to get another button, or use the
+optional `group` field to put it in a family selector. An invalid
 file displays an error and leaves the previous working library available.
 
 Files describe joint targets or starting-pose offsets, explicit pauses, and
@@ -142,7 +151,7 @@ the laptop's real camera.
 ## Benchmarks and future comparison
 
 See [benchmark methodology and upgrade evidence](benchmarks/README.md).
-Record all nine gestures in each of the four modes:
+Record every installed gesture in each of the four modes:
 
 ```powershell
 uv run --locked python -m lamp_sim.benchmark --repeats 3 --speed 0.5
@@ -153,6 +162,9 @@ summary CSV/JSON, per-trial metrics, compressed per-frame traces, package versio
 and source hashes. Keep existing runs unchanged. Add a gesture JSON, validate it,
 then rerun with the same settings to compare. These are headless measurements;
 they do not measure browser FPS or establish Ubuntu performance.
+The preserved October 1 baseline covers the original nine gestures only.
+With the full emotion library, three repeats across four modes produce 1,476
+measured trials plus warmups, so allow more time for a complete run.
 
 ## Development and validation
 

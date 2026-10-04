@@ -227,13 +227,36 @@ class LampViewer:
             button.remove()
         self.gesture_buttons.clear()
         with self.gesture_folder:
+            groups = {}
             for gesture in self.gestures.values():
+                if gesture.group:
+                    groups.setdefault(gesture.group, []).append(gesture)
+                    continue
                 button = self.server.gui.add_button(gesture.label, hint=gesture.description)
                 self.gesture_buttons.append(button)
 
                 @button.on_click
                 def on_gesture(event, selected=gesture):
                     self.commands.put(("gesture", selected))
+
+            for group, gestures in sorted(groups.items()):
+                folder = self.server.gui.add_folder(group, expand_by_default=False)
+                with folder:
+                    choices = {gesture.label: gesture for gesture in gestures}
+                    selection = self.server.gui.add_dropdown("Emotion", options=tuple(choices))
+                    description = self.server.gui.add_markdown(choices[selection.value].description)
+                    play = self.server.gui.add_button("Play emotion")
+
+                    @selection.on_update
+                    def on_selection(event, library=choices, notice=description):
+                        notice.content = library[event.target.value].description
+
+                    @play.on_click
+                    def on_emotion(event, library=choices, dropdown=selection):
+                        self.commands.put(("gesture", library[dropdown.value]))
+
+                    # Remove children before their folder when reloading the library.
+                    self.gesture_buttons.extend((selection, description, play, folder))
 
     def reload_gestures(self) -> None:
         try:

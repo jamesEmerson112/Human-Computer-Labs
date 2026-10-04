@@ -1,0 +1,57 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_sad_guilty_remorseful",
+  "label": "Sad / Guilty / Remorseful",
+  "group": "Sad",
+  "description": "Make a deeper, slower bow with a long pause.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": 0.0,
+        "shoulder_pitch_joint": -0.12,
+        "elbow_pitch_joint": -0.4,
+        "neck_yaw_joint": 0.08,
+        "head_pitch_joint": 0.4
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.35
+    },
+    {
+      "hold_seconds": 0.55
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.0,
+        "shoulder_pitch_joint": -0.18,
+        "elbow_pitch_joint": -0.4,
+        "neck_yaw_joint": 0.08,
+        "head_pitch_joint": 0.56
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.35
+    },
+    {
+      "hold_seconds": 1.1
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.0,
+        "shoulder_pitch_joint": -0.12,
+        "elbow_pitch_joint": -0.4,
+        "neck_yaw_joint": 0.08,
+        "head_pitch_joint": 0.4
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.35
+    },
+    {
+      "hold_seconds": 0.44
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 1.35
+    }
+  ]
+}

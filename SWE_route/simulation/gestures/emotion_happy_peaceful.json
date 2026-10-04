@@ -1,0 +1,54 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_happy_peaceful",
+  "label": "Happy / Peaceful",
+  "group": "Happy",
+  "description": "Rise and settle through a slow, shallow breathing-like motion.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": 0.0,
+        "shoulder_pitch_joint": -0.04,
+        "elbow_pitch_joint": -0.2,
+        "neck_yaw_joint": 0.06,
+        "head_pitch_joint": -0.08
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.5
+    },
+    {
+      "hold_seconds": 0.36
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.0,
+        "shoulder_pitch_joint": -0.075,
+        "elbow_pitch_joint": -0.2,
+        "neck_yaw_joint": 0.06,
+        "head_pitch_joint": -0.125
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.5
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.0,
+        "shoulder_pitch_joint": -0.015,
+        "elbow_pitch_joint": -0.2,
+        "neck_yaw_joint": 0.06,
+        "head_pitch_joint": -0.045
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.5
+    },
+    {
+      "hold_seconds": 0.9
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 1.5
+    }
+  ]
+}

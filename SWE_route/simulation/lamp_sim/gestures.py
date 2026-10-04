@@ -28,6 +28,7 @@ class Gesture:
     label: str
     description: str
     steps: tuple[GestureStep, ...]
+    group: str = ""
 
 
 @lru_cache(maxsize=1)
@@ -61,7 +62,7 @@ def parse_gesture(data: object, joint_names: Collection[str]) -> Gesture:
             kind=kind, angles=tuple((name, float(value)) for name, value in angles.items()),
             seconds=float(seconds), on_limit=step.get("on_limit", "clamp"),
         ))
-    return Gesture(data["name"], data["label"], data.get("description", ""), tuple(steps))
+    return Gesture(data["name"], data["label"], data.get("description", ""), tuple(steps), data.get("group", ""))
 
 
 def _unique_keys(pairs: list[tuple[str, object]]) -> dict:

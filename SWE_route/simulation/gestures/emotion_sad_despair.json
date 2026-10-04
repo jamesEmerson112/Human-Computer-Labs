@@ -1,0 +1,43 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_sad_despair",
+  "label": "Sad / Despair",
+  "group": "Sad",
+  "description": "Fold down in two heavy stages with a long still pause.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": 0.0,
+        "shoulder_pitch_joint": 0.09,
+        "elbow_pitch_joint": -0.225,
+        "neck_yaw_joint": 0.036,
+        "head_pitch_joint": 0.189
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.4
+    },
+    {
+      "hold_seconds": 0.48
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.0,
+        "shoulder_pitch_joint": 0.2,
+        "elbow_pitch_joint": -0.5,
+        "neck_yaw_joint": 0.08,
+        "head_pitch_joint": 0.42
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.4
+    },
+    {
+      "hold_seconds": 1.2
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 1.4
+    }
+  ]
+}

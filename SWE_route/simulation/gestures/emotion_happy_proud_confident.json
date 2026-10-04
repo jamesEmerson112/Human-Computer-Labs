@@ -1,0 +1,57 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_happy_proud_confident",
+  "label": "Happy / Proud / Confident",
+  "group": "Happy",
+  "description": "Lean forward with one steady, decisive nod.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": -0.14,
+        "shoulder_pitch_joint": -0.22,
+        "elbow_pitch_joint": -0.14,
+        "neck_yaw_joint": 0.1,
+        "head_pitch_joint": -0.24
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.7
+    },
+    {
+      "hold_seconds": 0.325
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.14,
+        "shoulder_pitch_joint": -0.22,
+        "elbow_pitch_joint": -0.14,
+        "neck_yaw_joint": 0.1,
+        "head_pitch_joint": -0.08
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.7
+    },
+    {
+      "hold_seconds": 0.65
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.14,
+        "shoulder_pitch_joint": -0.22,
+        "elbow_pitch_joint": -0.14,
+        "neck_yaw_joint": 0.1,
+        "head_pitch_joint": -0.24
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.7
+    },
+    {
+      "hold_seconds": 0.26
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 0.7
+    }
+  ]
+}

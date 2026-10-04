@@ -1,0 +1,57 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_fear_anxious_worried",
+  "label": "Fear / Anxious / Worried",
+  "group": "Fear",
+  "description": "Search side to side with long uncertain pauses.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": -0.08,
+        "shoulder_pitch_joint": 0.14,
+        "elbow_pitch_joint": -0.26,
+        "neck_yaw_joint": 0.28,
+        "head_pitch_joint": 0.16
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.85
+    },
+    {
+      "hold_seconds": 0.85
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.08,
+        "shoulder_pitch_joint": 0.14,
+        "elbow_pitch_joint": -0.26,
+        "neck_yaw_joint": 0.56,
+        "head_pitch_joint": 0.12
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.85
+    },
+    {
+      "hold_seconds": 0.51
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.08,
+        "shoulder_pitch_joint": 0.14,
+        "elbow_pitch_joint": -0.26,
+        "neck_yaw_joint": 0.0,
+        "head_pitch_joint": 0.18
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.85
+    },
+    {
+      "hold_seconds": 0.68
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 0.85
+    }
+  ]
+}

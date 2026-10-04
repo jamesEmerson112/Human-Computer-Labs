@@ -1,0 +1,65 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_anger_mad_furious",
+  "label": "Anger / Mad / Furious",
+  "group": "Anger",
+  "description": "Make a broad, brisk refusing sweep from a forward stance.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": 0.12,
+        "shoulder_pitch_joint": -0.3,
+        "elbow_pitch_joint": -0.2,
+        "neck_yaw_joint": 0.18,
+        "head_pitch_joint": 0.34
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.3
+    },
+    {
+      "hold_seconds": 0.08
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.12,
+        "shoulder_pitch_joint": -0.3,
+        "elbow_pitch_joint": -0.2,
+        "neck_yaw_joint": 0.43,
+        "head_pitch_joint": 0.34
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.3
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.12,
+        "shoulder_pitch_joint": -0.3,
+        "elbow_pitch_joint": -0.2,
+        "neck_yaw_joint": -0.07,
+        "head_pitch_joint": 0.34
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.3
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.12,
+        "shoulder_pitch_joint": -0.3,
+        "elbow_pitch_joint": -0.2,
+        "neck_yaw_joint": 0.18,
+        "head_pitch_joint": 0.41
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.3
+    },
+    {
+      "hold_seconds": 0.2
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 0.6
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_anger_hurt_devastated",
+  "label": "Anger / Hurt / Devastated",
+  "group": "Anger",
+  "description": "Fold down in two stages and linger low.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": 0.0,
+        "shoulder_pitch_joint": 0.081,
+        "elbow_pitch_joint": -0.225,
+        "neck_yaw_joint": 0.036,
+        "head_pitch_joint": 0.189
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.25
+    },
+    {
+      "hold_seconds": 0.44
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.0,
+        "shoulder_pitch_joint": 0.18,
+        "elbow_pitch_joint": -0.5,
+        "neck_yaw_joint": 0.08,
+        "head_pitch_joint": 0.42
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.25
+    },
+    {
+      "hold_seconds": 1.1
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 1.25
+    }
+  ]
+}

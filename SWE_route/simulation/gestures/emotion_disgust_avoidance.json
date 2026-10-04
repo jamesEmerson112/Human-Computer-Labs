@@ -1,0 +1,43 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_disgust_avoidance",
+  "label": "Disgust / Avoidance",
+  "group": "Disgust",
+  "description": "Rotate away and keep the shade averted through the pause.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": 0.2,
+        "shoulder_pitch_joint": 0.07,
+        "elbow_pitch_joint": -0.11,
+        "neck_yaw_joint": 0.11,
+        "head_pitch_joint": 0.16
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.85
+    },
+    {
+      "hold_seconds": 0.35
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.4,
+        "shoulder_pitch_joint": 0.14,
+        "elbow_pitch_joint": -0.22,
+        "neck_yaw_joint": 0.22,
+        "head_pitch_joint": 0.12
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.85
+    },
+    {
+      "hold_seconds": 0.7
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 0.85
+    }
+  ]
+}

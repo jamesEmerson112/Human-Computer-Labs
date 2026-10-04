@@ -1,0 +1,54 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_anger_aggressive_provoked",
+  "label": "Anger / Aggressive / Provoked",
+  "group": "Anger",
+  "description": "Flinch back and answer with a sharp forward head accent.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": -0.035,
+        "shoulder_pitch_joint": 0.042,
+        "elbow_pitch_joint": -0.042,
+        "neck_yaw_joint": 0.077,
+        "head_pitch_joint": -0.03
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.245
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.1,
+        "shoulder_pitch_joint": 0.18,
+        "elbow_pitch_joint": -0.17,
+        "neck_yaw_joint": 0.22,
+        "head_pitch_joint": 0.2
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.245
+    },
+    {
+      "hold_seconds": 0.3
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.1,
+        "shoulder_pitch_joint": -0.13,
+        "elbow_pitch_joint": -0.12,
+        "neck_yaw_joint": 0.22,
+        "head_pitch_joint": 0.32
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.245
+    },
+    {
+      "hold_seconds": 0.15
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 0.6
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_anger_frustrated",
+  "label": "Anger / Frustrated",
+  "group": "Anger",
+  "description": "Shake the head, droop briefly, and recover.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": 0.0,
+        "shoulder_pitch_joint": -0.08,
+        "elbow_pitch_joint": -0.25,
+        "neck_yaw_joint": 0.12,
+        "head_pitch_joint": 0.28
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.5
+    },
+    {
+      "hold_seconds": 0.12
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.0,
+        "shoulder_pitch_joint": -0.08,
+        "elbow_pitch_joint": -0.25,
+        "neck_yaw_joint": 0.37,
+        "head_pitch_joint": 0.28
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.5
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.0,
+        "shoulder_pitch_joint": -0.08,
+        "elbow_pitch_joint": -0.25,
+        "neck_yaw_joint": -0.13,
+        "head_pitch_joint": 0.28
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.5
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.0,
+        "shoulder_pitch_joint": -0.08,
+        "elbow_pitch_joint": -0.25,
+        "neck_yaw_joint": 0.12,
+        "head_pitch_joint": 0.35
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.5
+    },
+    {
+      "hold_seconds": 0.3
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 0.6
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_anger_aggressive_hostile",
+  "label": "Anger / Aggressive / Hostile",
+  "group": "Anger",
+  "description": "Present a forward stance and sustain a rigid sideways stare.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": 0.18,
+        "shoulder_pitch_joint": -0.28,
+        "elbow_pitch_joint": -0.18,
+        "neck_yaw_joint": -0.12,
+        "head_pitch_joint": 0.26
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.55
+    },
+    {
+      "hold_seconds": 0.8
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.18,
+        "shoulder_pitch_joint": -0.28,
+        "elbow_pitch_joint": -0.18,
+        "neck_yaw_joint": -0.03,
+        "head_pitch_joint": 0.22
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.55
+    },
+    {
+      "hold_seconds": 0.48
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.18,
+        "shoulder_pitch_joint": -0.28,
+        "elbow_pitch_joint": -0.18,
+        "neck_yaw_joint": -0.21,
+        "head_pitch_joint": 0.28
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.55
+    },
+    {
+      "hold_seconds": 0.64
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 0.6
+    }
+  ]
+}

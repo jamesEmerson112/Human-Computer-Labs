@@ -1,0 +1,71 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_sad_abandoned_ignored",
+  "label": "Sad / Abandoned / Ignored",
+  "group": "Sad",
+  "description": "Offer a small forward movement, wait, and let it fall back.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": -0.075,
+        "shoulder_pitch_joint": -0.12,
+        "elbow_pitch_joint": -0.09,
+        "neck_yaw_joint": 0.11,
+        "head_pitch_joint": -0.02
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.0
+    },
+    {
+      "hold_seconds": 0.51
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.045,
+        "shoulder_pitch_joint": 0.076,
+        "elbow_pitch_joint": -0.054,
+        "neck_yaw_joint": 0.066,
+        "head_pitch_joint": 0.128
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.0
+    },
+    {
+      "hold_seconds": 0.425
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.15,
+        "shoulder_pitch_joint": -0.26,
+        "elbow_pitch_joint": -0.18,
+        "neck_yaw_joint": 0.22,
+        "head_pitch_joint": 0.08
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.0
+    },
+    {
+      "hold_seconds": 0.85
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.15,
+        "shoulder_pitch_joint": -0.08,
+        "elbow_pitch_joint": -0.18,
+        "neck_yaw_joint": 0.22,
+        "head_pitch_joint": 0.16
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.0
+    },
+    {
+      "hold_seconds": 0.85
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 1.0
+    }
+  ]
+}

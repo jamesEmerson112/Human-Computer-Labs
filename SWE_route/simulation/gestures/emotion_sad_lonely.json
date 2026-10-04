@@ -1,0 +1,57 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_sad_lonely",
+  "label": "Sad / Lonely",
+  "group": "Sad",
+  "description": "Search widely and slowly, then lower the shade.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": -0.18,
+        "shoulder_pitch_joint": 0.1,
+        "elbow_pitch_joint": -0.3,
+        "neck_yaw_joint": 0.26,
+        "head_pitch_joint": 0.2
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.2
+    },
+    {
+      "hold_seconds": 1.0
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.18,
+        "shoulder_pitch_joint": 0.1,
+        "elbow_pitch_joint": -0.3,
+        "neck_yaw_joint": 0.54,
+        "head_pitch_joint": 0.16
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.2
+    },
+    {
+      "hold_seconds": 0.6
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.18,
+        "shoulder_pitch_joint": 0.1,
+        "elbow_pitch_joint": -0.3,
+        "neck_yaw_joint": -0.02,
+        "head_pitch_joint": 0.22
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.2
+    },
+    {
+      "hold_seconds": 0.8
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 1.2
+    }
+  ]
+}

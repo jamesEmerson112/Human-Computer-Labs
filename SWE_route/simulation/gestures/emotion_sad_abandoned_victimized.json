@@ -1,0 +1,57 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_sad_abandoned_victimized",
+  "label": "Sad / Abandoned / Victimized",
+  "group": "Sad",
+  "description": "Draw inward and hold a protective, lowered posture.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": -0.12,
+        "shoulder_pitch_joint": 0.26,
+        "elbow_pitch_joint": -0.42,
+        "neck_yaw_joint": 0.16,
+        "head_pitch_joint": 0.32
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.9
+    },
+    {
+      "hold_seconds": 1.0
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.12,
+        "shoulder_pitch_joint": 0.26,
+        "elbow_pitch_joint": -0.42,
+        "neck_yaw_joint": 0.3,
+        "head_pitch_joint": 0.28
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.9
+    },
+    {
+      "hold_seconds": 0.6
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.12,
+        "shoulder_pitch_joint": 0.26,
+        "elbow_pitch_joint": -0.42,
+        "neck_yaw_joint": 0.02,
+        "head_pitch_joint": 0.34
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.9
+    },
+    {
+      "hold_seconds": 0.8
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 0.9
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_happy_interested_inquisitive",
+  "label": "Happy / Interested / Inquisitive",
+  "group": "Happy",
+  "description": "Lean closer and check two viewing angles.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": 0.12,
+        "shoulder_pitch_joint": -0.3,
+        "elbow_pitch_joint": -0.24,
+        "neck_yaw_joint": -0.24,
+        "head_pitch_joint": -0.18
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.7
+    },
+    {
+      "hold_seconds": 0.55
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.12,
+        "shoulder_pitch_joint": -0.3,
+        "elbow_pitch_joint": -0.24,
+        "neck_yaw_joint": 0.04,
+        "head_pitch_joint": -0.22
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.7
+    },
+    {
+      "hold_seconds": 0.33
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.12,
+        "shoulder_pitch_joint": -0.3,
+        "elbow_pitch_joint": -0.24,
+        "neck_yaw_joint": -0.52,
+        "head_pitch_joint": -0.16
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.7
+    },
+    {
+      "hold_seconds": 0.44
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 0.7
+    }
+  ]
+}

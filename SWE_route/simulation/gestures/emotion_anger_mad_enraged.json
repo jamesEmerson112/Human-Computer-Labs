@@ -1,0 +1,95 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_anger_mad_enraged",
+  "label": "Anger / Mad / Enraged",
+  "group": "Anger",
+  "description": "Deliver three tightly spaced downward accents.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": -0.06,
+        "shoulder_pitch_joint": -0.204,
+        "elbow_pitch_joint": -0.144,
+        "neck_yaw_joint": -0.096,
+        "head_pitch_joint": 0.228
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.3
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.1,
+        "shoulder_pitch_joint": -0.34,
+        "elbow_pitch_joint": -0.24,
+        "neck_yaw_joint": -0.16,
+        "head_pitch_joint": 0.51
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.3
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.1,
+        "shoulder_pitch_joint": -0.34,
+        "elbow_pitch_joint": -0.24,
+        "neck_yaw_joint": -0.16,
+        "head_pitch_joint": 0.25
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.3
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.1,
+        "shoulder_pitch_joint": -0.34,
+        "elbow_pitch_joint": -0.24,
+        "neck_yaw_joint": -0.16,
+        "head_pitch_joint": 0.51
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.3
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.1,
+        "shoulder_pitch_joint": -0.34,
+        "elbow_pitch_joint": -0.24,
+        "neck_yaw_joint": -0.16,
+        "head_pitch_joint": 0.25
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.3
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.1,
+        "shoulder_pitch_joint": -0.34,
+        "elbow_pitch_joint": -0.24,
+        "neck_yaw_joint": -0.16,
+        "head_pitch_joint": 0.51
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.3
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.1,
+        "shoulder_pitch_joint": -0.34,
+        "elbow_pitch_joint": -0.24,
+        "neck_yaw_joint": -0.16,
+        "head_pitch_joint": 0.25
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.3
+    },
+    {
+      "hold_seconds": 0.15
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 0.6
+    }
+  ]
+}

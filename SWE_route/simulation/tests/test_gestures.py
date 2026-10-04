@@ -117,10 +117,18 @@ def test_invalid_steps_are_rejected(steps):
 @pytest.mark.parametrize("changes", [
     {"schema_version": 2}, {"schema_version": True}, {"units": "degrees"},
     {"name": "../nod"}, {"label": " "}, {"unexpected": 1},
+    {"group": " "}, {"group": 7},
 ])
 def test_invalid_metadata_is_rejected(changes):
     with pytest.raises(ValueError):
         parse_gesture(definition([{"hold_seconds": 1}], **changes), load_limits())
+
+
+def test_group_metadata_is_optional_and_preserved():
+    data = definition([{"hold_seconds": 1}])
+    assert parse_gesture(data, load_limits()).group == ""
+    data["group"] = "Happy"
+    assert parse_gesture(data, load_limits()).group == "Happy"
 
 
 @pytest.mark.parametrize("text", [

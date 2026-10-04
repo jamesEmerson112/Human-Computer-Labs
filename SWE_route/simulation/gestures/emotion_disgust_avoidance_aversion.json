@@ -1,0 +1,54 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_disgust_avoidance_aversion",
+  "label": "Disgust / Avoidance / Aversion",
+  "group": "Disgust",
+  "description": "Pull back first, then rotate away from the imagined stimulus.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": -0.147,
+        "shoulder_pitch_joint": 0.084,
+        "elbow_pitch_joint": -0.091,
+        "neck_yaw_joint": -0.063,
+        "head_pitch_joint": -0.023
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.42
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.42,
+        "shoulder_pitch_joint": 0.3,
+        "elbow_pitch_joint": -0.31,
+        "neck_yaw_joint": -0.18,
+        "head_pitch_joint": 0.22
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.42
+    },
+    {
+      "hold_seconds": 0.8
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.42,
+        "shoulder_pitch_joint": 0.24,
+        "elbow_pitch_joint": -0.26,
+        "neck_yaw_joint": -0.18,
+        "head_pitch_joint": 0.32
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.72
+    },
+    {
+      "hold_seconds": 0.4
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 0.6
+    }
+  ]
+}

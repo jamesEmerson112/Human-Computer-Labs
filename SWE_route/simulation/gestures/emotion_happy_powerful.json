@@ -1,0 +1,57 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_happy_powerful",
+  "label": "Happy / Powerful",
+  "group": "Happy",
+  "description": "Expand forward in two controlled, deliberate movements.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": 0.0,
+        "shoulder_pitch_joint": -0.13,
+        "elbow_pitch_joint": -0.06,
+        "neck_yaw_joint": 0.0,
+        "head_pitch_joint": -0.13
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.65
+    },
+    {
+      "hold_seconds": 0.26
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.0,
+        "shoulder_pitch_joint": -0.26,
+        "elbow_pitch_joint": -0.12,
+        "neck_yaw_joint": 0.0,
+        "head_pitch_joint": -0.26
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.65
+    },
+    {
+      "hold_seconds": 0.325
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.0,
+        "shoulder_pitch_joint": -0.34,
+        "elbow_pitch_joint": -0.12,
+        "neck_yaw_joint": 0.0,
+        "head_pitch_joint": -0.2
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.65
+    },
+    {
+      "hold_seconds": 0.65
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 0.65
+    }
+  ]
+}

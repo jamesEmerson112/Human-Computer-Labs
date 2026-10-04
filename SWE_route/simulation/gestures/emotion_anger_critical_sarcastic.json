@@ -1,0 +1,57 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_anger_critical_sarcastic",
+  "label": "Anger / Critical / Sarcastic",
+  "group": "Anger",
+  "description": "Offer an exaggerated slow nod from a tilted, sideways stance.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": -0.12,
+        "shoulder_pitch_joint": -0.06,
+        "elbow_pitch_joint": -0.18,
+        "neck_yaw_joint": 0.32,
+        "head_pitch_joint": -0.16
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.0
+    },
+    {
+      "hold_seconds": 0.15
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.12,
+        "shoulder_pitch_joint": -0.06,
+        "elbow_pitch_joint": -0.18,
+        "neck_yaw_joint": 0.32,
+        "head_pitch_joint": 0.0
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.0
+    },
+    {
+      "hold_seconds": 0.3
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.12,
+        "shoulder_pitch_joint": -0.06,
+        "elbow_pitch_joint": -0.18,
+        "neck_yaw_joint": 0.32,
+        "head_pitch_joint": -0.16
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.0
+    },
+    {
+      "hold_seconds": 0.12
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 1.0
+    }
+  ]
+}

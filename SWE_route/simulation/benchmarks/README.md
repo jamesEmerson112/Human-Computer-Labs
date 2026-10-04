@@ -45,6 +45,12 @@ inspector's interactive controls and Ubuntu deployment were not exercised.
 
 ## Reproduce or extend
 
+The library now has 123 gestures, including 114 entries from the supplied
+emotion wheel. The [emotion-library smoke check](2026-10-04-emotions-smoke/report.md)
+records functional validation and one default-MuJoCo trial per new clip.
+The original nine-gesture baseline above remains unchanged; a full run now
+includes 1,476 measured trials at three repeats across four backends.
+
 From `SWE_route/simulation/`:
 
 ```powershell

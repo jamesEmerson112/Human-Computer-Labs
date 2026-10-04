@@ -1,0 +1,57 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_happy_powerful_courageous",
+  "label": "Happy / Powerful / Courageous",
+  "group": "Happy",
+  "description": "Begin with a brief retreat, then move decisively forward.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": -0.05,
+        "shoulder_pitch_joint": -0.04,
+        "elbow_pitch_joint": -0.09,
+        "neck_yaw_joint": 0.06,
+        "head_pitch_joint": -0.18
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.75
+    },
+    {
+      "hold_seconds": 0.39
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.03,
+        "shoulder_pitch_joint": 0.124,
+        "elbow_pitch_joint": -0.054,
+        "neck_yaw_joint": 0.036,
+        "head_pitch_joint": 0.032
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.75
+    },
+    {
+      "hold_seconds": 0.325
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.1,
+        "shoulder_pitch_joint": -0.22,
+        "elbow_pitch_joint": -0.18,
+        "neck_yaw_joint": 0.12,
+        "head_pitch_joint": -0.26
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.75
+    },
+    {
+      "hold_seconds": 0.65
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 0.75
+    }
+  ]
+}

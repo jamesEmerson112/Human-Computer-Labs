@@ -1,0 +1,57 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_happy_optimistic",
+  "label": "Happy / Optimistic",
+  "group": "Happy",
+  "description": "Lift into an alert raised pose with a small confirming nod.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": 0.032,
+        "shoulder_pitch_joint": -0.064,
+        "elbow_pitch_joint": -0.04,
+        "neck_yaw_joint": -0.048,
+        "head_pitch_joint": -0.096
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.8
+    },
+    {
+      "hold_seconds": 0.21
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.08,
+        "shoulder_pitch_joint": -0.16,
+        "elbow_pitch_joint": -0.1,
+        "neck_yaw_joint": -0.12,
+        "head_pitch_joint": -0.28
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.8
+    },
+    {
+      "hold_seconds": 0.6
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.08,
+        "shoulder_pitch_joint": -0.16,
+        "elbow_pitch_joint": -0.1,
+        "neck_yaw_joint": -0.12,
+        "head_pitch_joint": -0.2
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.64
+    },
+    {
+      "hold_seconds": 0.24
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 0.8
+    }
+  ]
+}

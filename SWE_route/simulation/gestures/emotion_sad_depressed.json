@@ -1,0 +1,43 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_sad_depressed",
+  "label": "Sad / Depressed",
+  "group": "Sad",
+  "description": "Settle into a deep droop with a very slow recovery.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": 0.018,
+        "shoulder_pitch_joint": 0.081,
+        "elbow_pitch_joint": -0.216,
+        "neck_yaw_joint": 0.0,
+        "head_pitch_joint": 0.171
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.65
+    },
+    {
+      "hold_seconds": 0.52
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.04,
+        "shoulder_pitch_joint": 0.18,
+        "elbow_pitch_joint": -0.48,
+        "neck_yaw_joint": 0.0,
+        "head_pitch_joint": 0.38
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.65
+    },
+    {
+      "hold_seconds": 1.3
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 1.65
+    }
+  ]
+}
