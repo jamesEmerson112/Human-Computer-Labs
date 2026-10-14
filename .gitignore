@@ -1,0 +1,36 @@
+# macOS zip-extraction artifacts
+__MACOSX/
+.DS_Store
+._*
+
+# Windows folder metadata
+Thumbs.db
+desktop.ini
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.pytest_cache/
+
+# API keys for cloud perception and speech
+.env
+.env.*
+!.env.example
+
+# Downloaded datasets: hymenoptera for example.py, MELD for the ML route
+/data/
+/wav/
+MELD.Raw/
+MELD.Raw.tar.gz
+*_sent_emo.csv
+
+# Model weights and cached features
+*.pt
+*.pth
+
+# parameter_golf training outputs
+parameter_golf/data/datasets/
+parameter_golf/data/tokenizers/
+parameter_golf/logs/

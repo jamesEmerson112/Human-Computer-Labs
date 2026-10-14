@@ -32,4 +32,4 @@ The origin of `head_pitch_joint` carries a 180° yaw. At zero configuration, the
 
 ## Repository hygiene
 
-`SWE_route/__MACOSX/` and the `.DS_Store` files are macOS zip-extraction artifacts, not challenge content. The repository has no `.gitignore` yet. `.gitattributes` sets `* text=auto`, so line endings are normalized to LF on commit.
+`SWE_route/__MACOSX/` and the `.DS_Store` files are macOS zip-extraction artifacts, not challenge content. The root `.gitignore` excludes them, along with Python caches, `.env` files, downloaded datasets, and `*.pt` weights, so a trained head that belongs in the submission needs `git add -f`. `.gitattributes` sets `* text=auto`, so line endings are normalized to LF on commit.
