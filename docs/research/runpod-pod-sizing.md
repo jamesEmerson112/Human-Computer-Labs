@@ -6,11 +6,7 @@ This file turns the six research notes in this folder into pod sizes. GPU and CP
 
 The SWE route needs no GPU at all. All three SWE notes reach that conclusion independently, and the target laptop has no GPU anyway. A CPU pod with 4 vCPUs and 8 GB of RAM mirrors the target exactly for $0.12 per hour, but it cannot test the camera, microphone or speaker, so it is optional.
 
-The ML route needs a GPU only for fine-tuning, unless you decide to run the demo on a pod. Fine-tuning needs 24 GB of GPU memory at minimum and 48 GB to be comfortable. In today's catalog the cheapest comfortable option is an A40 with 48 GB at $0.49 per hour, which also has the best stock of any GPU listed. That is less than your existing RTX PRO 4000 Blackwell pods cost ($0.57 per hour), and it has twice the memory.
-
-## An open question for the ML route
-
-The ML brief says that remote inference does not satisfy the core task, and that the complete local inference path is what the 6 billion parameter cap applies to. A Runpod pod is a remote machine. Training on a pod is clearly allowed, because the constraint is about inference. Running the live demo on a pod is the doubtful case. This file sizes both cases, but deciding whether a pod counts as local is your call, and it may be worth asking the reviewers.
+The ML route needs a GPU for fine-tuning and for the demo. On 2026-10-14 the user chose to run both on a pod, with the demo playing MELD scenes from the pod's own disk. Fine-tuning needs 24 GB of GPU memory at minimum and 48 GB to be comfortable. In today's catalog the cheapest comfortable option is an A40 with 48 GB at $0.49 per hour, which also has the best stock of any GPU listed. That is less than your existing RTX PRO 4000 Blackwell pods cost ($0.57 per hour), and it has twice the memory.
 
 ## Scenario 1: an ML pod for data preparation and fine-tuning
 
@@ -42,13 +38,13 @@ The pod's RAM and vCPU count depend on the GPU type and host, and the catalog do
 
 ## Scenario 2: an ML pod as the demo machine
 
-This applies only if you decide a pod counts as local. The numbers come from `ml-models.md` and `ml-realtime-inference.md`.
+The user chose this setup on 2026-10-14. The numbers come from `ml-models.md` and `ml-realtime-inference.md`.
 
 Every example inference path in `ml-models.md` fits under 12 GB of weights at fp16. A full path near the 6B cap needs about 13.5 to 15 GB of GPU memory at bf16 once runtime overhead is included, or 5 to 7 GB with a 4-bit generator (estimates). Any 24 GB card therefore covers it, including your existing pods and the RTX A5000 at $0.27 per hour. A 16 GB card is tight. The demo also needs about 32 GB of RAM, 8 vCPUs and 25 GB of disk (estimates).
 
 Latency is the reason to use a GPU at all for the demo. A 3B model at 4-bit decodes at 335 tokens per second on an RTX 4090 but 12 to 24 tokens per second on CPUs, and its first token arrives in about 40 ms on the GPU versus several seconds on a CPU (estimate).
 
-A pod demo has a practical catch. The camera and microphone would be on your laptop and the models on the pod, so audio and video would have to stream over the network. Runpod pods expose only TCP and HTTP ports, not UDP (`swe-deployment.md`), which rules out the usual WebRTC media path unless it is tunneled over TCP.
+The demo reads MELD scenes from the pod's own disk, so no audio or video streams over the network. Live input from a laptop camera or microphone would have to stream to the pod instead. Runpod pods expose only TCP and HTTP ports, not UDP (`swe-deployment.md`), which rules out the usual WebRTC media path unless it is tunneled over TCP.
 
 ## Scenario 3: the SWE route
 

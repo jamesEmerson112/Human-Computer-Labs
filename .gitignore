@@ -21,6 +21,7 @@ venv/
 
 # Downloaded datasets: hymenoptera for example.py, MELD for the ML route
 /data/
+ML_route/data/
 /wav/
 MELD.Raw/
 MELD.Raw.tar.gz
@@ -34,3 +35,7 @@ MELD.Raw.tar.gz
 parameter_golf/data/datasets/
 parameter_golf/data/tokenizers/
 parameter_golf/logs/
+.gstack/
+
+# Rust build output
+target/

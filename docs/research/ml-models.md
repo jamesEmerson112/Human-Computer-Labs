@@ -2,6 +2,8 @@
 
 Researched 2026-10-01 to size a Runpod pod for the MELD emotion prototype. The cap counts every learned parameter on the local inference path, so this note lists total parameters, not active or trainable ones.
 
+On 2026-10-14 the user removed every model a newer successor has replaced, including Whisper small and the text-only Qwen3 models used in the examples below. The `removed` list in `ml-model-catalog.json` names each one and its successor, so read the examples here as history.
+
 ## How the numbers were checked
 
 Most parameter counts come from the safetensors header that the Hugging Face Hub reports for each checkpoint (readable at `https://huggingface.co/api/models/<repo-id>`, field `safetensors.total`). The rest come from the model card or paper named in the table. VRAM marked "doc" is a figure the vendor published. VRAM marked "est" is weights only, computed as 2 bytes per parameter at fp16/bf16, 1 byte at int8, and about 0.5 bytes at int4. Weight-only estimates leave out the KV cache (the per-token attention memory a generator keeps), activations, and the roughly 0.5 to 1 GB CUDA context.
@@ -18,7 +20,7 @@ Qwen3-0.6B and Qwen3-1.7B tie their input and output embeddings, but the publish
 | ModernBERT-large (Dec 2024) | text | 395.9M | 0.79 GB est | https://huggingface.co/answerdotai/ModernBERT-large |
 | all-mpnet-base-v2 | text | 109.5M | 0.22 GB est | https://huggingface.co/sentence-transformers/all-mpnet-base-v2 |
 | emotion2vec (base) | speech emotion | 93.79M | 0.19 GB est | https://arxiv.org/abs/2312.15185 (Table 2) |
-| emotion2vec+ base / large | speech emotion | about 90M / about 300M (repo wording) | 0.18 / 0.60 GB est | https://github.com/ddlBoJack/emotion2vec |
+| emotion2vec+ base / large | speech emotion | 93.18M / 162.14M, counted from the weight files on 2026-10-14 (the repo says about 90M / about 300M) | 0.19 / 0.32 GB est | https://github.com/ddlBoJack/emotion2vec |
 | WavLM-base+ / WavLM-large | speech | 94.70M / 316.62M | 0.19 / 0.63 GB est | https://arxiv.org/abs/2312.15185 (Table 2) |
 | HuBERT-large, data2vec-audio-base | speech | 316.61M, 93.75M | 0.63, 0.19 GB est | https://arxiv.org/abs/2312.15185 (Table 2) |
 | Whisper small | ASR (speech-to-text) | 241.7M | about 2 GB doc | https://github.com/openai/whisper |
