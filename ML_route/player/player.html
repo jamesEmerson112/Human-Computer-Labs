@@ -104,6 +104,9 @@ main {
 .tag { max-width: calc(100% - 20px); }
 .reply { font-style: italic; color: var(--muted); margin-top: 2px; }
 .reply span { font-style: normal; font-weight: 600; }
+.live { margin-top: 2px; }
+.livelabel { font-weight: 600; color: var(--accent); }
+.livetime { color: var(--muted); font-size: 12.5px; }
 .now { margin: 10px 0 4px; min-height: 1.5em; color: var(--muted); }
 .controls { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 10px 0; }
 .controls label { display: flex; align-items: center; gap: 6px; font-size: 14px; }
@@ -181,7 +184,6 @@ kbd {
   <div class="group">
     <label>Text
       <select id="version">
-        <option value="clean">MELD.Clean</option>
         <option value="completed">MELD.Completed</option>
         <option value="whisper">Whisper</option>
       </select>
@@ -223,6 +225,8 @@ kbd {
           <option value="off">Off</option>
         </select>
       </label>
+      <label><input type="checkbox" id="live"> Live Whisper</label>
+      <span class="small" id="livestatus">checking…</span>
     </div>
     <div class="tabs" role="tablist">
       <button role="tab" id="tab-output" aria-selected="true" aria-controls="panel-output">Output</button>
@@ -235,6 +239,7 @@ kbd {
         <label><input type="radio" name="fmt" value="text"> Text</label>
         <span class="spacer"></span>
         <span class="small" id="switch" title="Time from the end of one clip to the first frame of the next"></span>
+        <span class="small" id="liveavg" title="Time from the end of a clip to its live transcript"></span>
         <button id="copy">Copy</button>
         <button id="download">Download</button>
         <button id="clear">Clear</button>
@@ -274,7 +279,9 @@ kbd {
     <p class="hint">Each line gets a random emotion and a random reply for that
     emotion when its clip ends. The grey
     tag is MELD's own label, and the guess turns green when the two agree. The
-    time beside the guess is how long the emotion took after the clip ended.</p>
+    time beside the guess is how long the emotion took after the clip ended.
+    With <code>serve.py</code> running, Live Whisper transcribes each clip's
+    audio on the GPU when the clip ends and shows how long that took.</p>
     <div class="lines" id="lines"></div>
   </section>
 </main>
@@ -305,7 +312,7 @@ for (const split of Object.keys(DATA)) {
 const $ = (id) => document.getElementById(id);
 const players = [$("videoA"), $("videoB")];
 let active = 0;
-const state = { split: "train", pos: 0, version: "clean", format: "json" };
+const state = { split: "train", pos: 0, version: "completed", format: "json" };
 let selected = new Set();
 let queue = [];
 let playing = null;
@@ -333,7 +340,6 @@ function clipSrc(utt) { return `${FOLDERS[state.split]}/${clipName(utt)}.mp4`; }
 function key(utt) { return `${state.split}-${dialogueId()}-${utt}`; }
 
 function textOf(line) {
-  if (state.version === "completed") return line[4] || line[3];
   if (state.version === "whisper") return line[5] ?? "(no Whisper transcript)";
   return line[3];
 }
@@ -371,14 +377,14 @@ function renderLines() {
       : "";
     const note = missing.has(key(utt)) ? `<div class="note">no clip</div>` : "";
     const fixed = line[4] && state.version !== "whisper"
-      ? `<div class="fix" title="MELD.Completed: ${esc(line[4])}">audio fix</div>` : "";
+      ? `<div class="fix" title="Before the audio fix: ${esc(line[4])}">audio fix</div>` : "";
     return `${gap}<div class="${cls.join(" ")}" data-utt="${utt}">
       <input type="checkbox" aria-label="Select line ${utt}"
         ${selected.has(utt) ? "checked" : ""}>
       <button class="play" title="Play this line only" aria-label="Play line ${utt}">&#9654;</button>
       <div class="text" title="Click to play this line"><span class="utt">${utt}</span><span class="who">${esc(speaker)}</span>:
         ${esc(textOf(line))}${guess
-          ? `<div class="reply"><span>Reply:</span> ${esc(guess.reply)}</div>` : ""}</div>
+          ? `<div class="reply"><span>Reply:</span> ${esc(guess.reply)}</div>` : ""}${liveHtml(utt)}</div>
       <div class="tags"><div class="label">${emotion}</div>${guessHtml}${note}${fixed}</div>
     </div>`;
   }).join("");
@@ -595,6 +601,88 @@ function renderSwitch() {
   $("switch").textContent = `Clip switch ${Math.round(mean)} ms on average`;
 }
 
+/* ---------- live Whisper (needs serve.py) ---------- */
+
+let liveReady = false;
+const live = {};
+const liveTimes = [];
+
+function seconds(ms) { return `${(ms / 1000).toFixed(2)} s`; }
+
+async function checkLive() {
+  try {
+    const res = await fetch("api/status", { cache: "no-store" });
+    const status = await res.json();
+    liveReady = Boolean(status.ready);
+    $("livestatus").textContent = liveReady
+      ? `ready (${status.model}, ${status.compute}, ${status.device})`
+      : "the server is still loading Whisper";
+  } catch (e) {
+    liveReady = false;
+    $("livestatus").textContent = "off, start serve.py to turn it on";
+  }
+  $("live").disabled = !liveReady;
+  $("live").checked = liveReady && recall("live") !== "0";
+}
+
+function startLive(split, dia, utt, record) {
+  if (!liveReady || !$("live").checked) return;
+  const lineKey = `${split}-${dia}-${utt}`;
+  const sent = performance.now();
+  live[lineKey] = { pending: true };
+  fetch(`api/transcribe?split=${split}&clip=dia${dia}_utt${utt}`, { cache: "no-store" })
+    .then(async (res) => {
+      const body = await res.json();
+      const total = performance.now() - sent;
+      if (!res.ok) {
+        live[lineKey] = { error: body.error || `HTTP ${res.status}` };
+        record.live_error = live[lineKey].error;
+        return;
+      }
+      live[lineKey] = { ...body, total_ms: total };
+      liveTimes.push(total);
+      record.live_text = body.text;
+      record.transcribe_ms = Math.round(total);
+    })
+    .catch((err) => {
+      live[lineKey] = { error: String(err) };
+      record.live_error = live[lineKey].error;
+    })
+    .finally(() => {
+      renderLines();
+      renderLog();
+      renderLiveAverage();
+    });
+}
+
+function shortError(error) {
+  if (error.includes("moov atom not found")) return "the clip file is broken";
+  return error.split("\n")[0].slice(0, 60);
+}
+
+function liveHtml(utt) {
+  const result = live[key(utt)];
+  if (!result) return "";
+  const label = `<span class="livelabel">Live Whisper:</span>`;
+  if (result.pending) return `<div class="live">${label} transcribing&hellip;</div>`;
+  if (result.error) {
+    return `<div class="live">${label} could not transcribe ` +
+      `<span class="small" title="${esc(result.error)}">(${esc(shortError(result.error))})</span></div>`;
+  }
+  const queued = result.wait_ms > 20 ? `, waiting for the GPU ${seconds(result.wait_ms)}` : "";
+  return `<div class="live">${label} ${esc(result.text || "(no speech heard)")}` +
+    `<div class="livetime">${seconds(result.total_ms)} after the clip ended ` +
+    `(Whisper ${seconds(result.whisper_ms)}, audio decode ${seconds(result.decode_ms)}` +
+    `${queued}, ${result.audio_s.toFixed(1)} s of audio)</div></div>`;
+}
+
+function renderLiveAverage() {
+  if (!liveTimes.length) return;
+  const mean = liveTimes.reduce((a, b) => a + b, 0) / liveTimes.length;
+  $("liveavg").textContent =
+    `Live Whisper ${seconds(mean)} on average over ${liveTimes.length} lines`;
+}
+
 function showFirstFrame(utt) {
   const video = current();
   const src = clipSrc(utt);
@@ -642,11 +730,13 @@ for (const video of players) {
     const reply = replies[Math.floor(Math.random() * replies.length)];
     const latency = performance.now() - started;
     guesses[key(playing)] = { guess, reply, label: line[2], latency };
-    output.push({
+    const record = {
       clip: clipName(playing), split: state.split, speaker: line[1],
       text: textOf(line), emotion: guess, reply, meld_label: line[2],
       latency_ms: Number(latency.toFixed(3)),
-    });
+    };
+    output.push(record);
+    startLive(state.split, dialogueId(), playing, record);
     $("tag").innerHTML = `${esc(clipName(playing))} &rarr; <b>${guess}</b>: ` +
       `&ldquo;${esc(reply)}&rdquo;`;
     renderLog();
@@ -902,7 +992,10 @@ applyTheme(recall("theme") || "auto");
 
 (function start() {
   const version = recall("version");
-  if (version) { state.version = version; $("version").value = version; }
+  if (version === "completed" || version === "whisper") {
+    state.version = version;
+    $("version").value = version;
+  }
   const format = recall("format");
   if (format) {
     state.format = format;
@@ -912,6 +1005,8 @@ applyTheme(recall("theme") || "auto");
   const speed = recall("speed");
   if (speed) $("speed").value = speed;
   $("continue").checked = recall("continue") === "1";
+  $("live").addEventListener("change", () => store("live", $("live").checked ? "1" : "0"));
+  checkLive();
   const captionMode = recall("caption-mode");
   if (["line", "words", "off"].includes(captionMode)) $("captions").value = captionMode;
   const tab = recall("tab");

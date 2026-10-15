@@ -1,7 +1,10 @@
 """Builds a local HTML page that plays MELD dialogues clip by clip.
 
 Contents:
-- load_split: reads one split's lines from the three label versions
+- read_rows: reads a label file keyed by clip
+- read_word_times: reads Whisper's word timings for one split
+- read_audio_fixes: reads the text each audio fix replaced
+- load_split: reads one split's lines from MELD.Completed and MELD.Whisper
 - main: writes ML_route/data/meld-player.html next to MELD.Raw
 """
 
@@ -13,6 +16,7 @@ HERE = Path(__file__).resolve().parent
 DATA = HERE.parent / "data"
 TEMPLATE = HERE / "player.html"
 OUTPUT = DATA / "meld-player.html"
+AUDIO_FIXES = HERE.parent / "text_fixes" / "audio_fixes.csv"
 SPLITS = ("train", "dev", "test")
 
 
@@ -48,31 +52,40 @@ def read_word_times(path):
     return times
 
 
-def load_split(split):
+def read_audio_fixes(path):
     """
-    Description: Reads one split's lines from MELD.Clean, MELD.Completed and
-    MELD.Whisper.
+    Description: Reads the text each audio fix replaced.
+    Inputs:
+    - path: audio_fixes.csv.
+    Outputs: {(split, clip): text before the audio fix}.
+    """
+    with path.open(encoding="utf-8", newline="") as f:
+        return {(r["split"], r["clip"]): r["old"] for r in csv.DictReader(f)}
+
+
+def load_split(split, audio_fixes):
+    """
+    Description: Reads one split's lines from MELD.Completed and MELD.Whisper.
     Inputs:
     - split: "train", "dev" or "test".
-    Outputs: {dialogue: [[utterance, speaker, emotion, clean, completed,
-    whisper, words], ...]}, where completed is 0 when it equals clean,
-    whisper is None when the clip has no transcript, and words holds
+    - audio_fixes: the lookup from read_audio_fixes.
+    Outputs: {dialogue: [[utterance, speaker, emotion, completed, before,
+    whisper, words], ...]}, where before is the text an audio fix replaced or
+    0, whisper is None when the clip has no transcript, and words holds
     Whisper's word timings or 0.
     """
     name = f"{split}_sent_emo.csv"
-    clean = read_rows(DATA / "MELD.Clean" / name)
     completed = read_rows(DATA / "MELD.Completed" / name)
     whisper = read_rows(DATA / "MELD.Whisper" / name)
     word_times = read_word_times(DATA / "MELD.Whisper" / f"{split}_whisper.jsonl")
     dialogues = {}
-    for (dia, utt), row in sorted(clean.items()):
-        text = row["Utterance"]
-        done = completed[(dia, utt)]["Utterance"]
+    for (dia, utt), row in sorted(completed.items()):
+        clip = f"dia{dia}_utt{utt}"
         heard = whisper.get((dia, utt), {}).get("Utterance") or None
         dialogues.setdefault(dia, []).append([
-            utt, row["Speaker"], row["Emotion"], text,
-            0 if done == text else done, heard,
-            word_times.get(f"dia{dia}_utt{utt}", 0),
+            utt, row["Speaker"], row["Emotion"], row["Utterance"],
+            audio_fixes.get((split, clip), 0), heard,
+            word_times.get(clip, 0),
         ])
     return dialogues
 
@@ -83,7 +96,8 @@ def main():
     Inputs: none
     Outputs: none
     """
-    data = {split: load_split(split) for split in SPLITS}
+    audio_fixes = read_audio_fixes(AUDIO_FIXES)
+    data = {split: load_split(split, audio_fixes) for split in SPLITS}
     payload = json.dumps(data, ensure_ascii=False, separators=(",", ":"))
     page = TEMPLATE.read_text(encoding="utf-8")
     page = page.replace("__DATA__", payload.replace("</", "<\\/"))

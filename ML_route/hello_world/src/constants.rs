@@ -12,14 +12,16 @@
 //! - `REPLIES`: three placeholder replies for each emotion
 
 /**
- * Description: Path to the cleaned MELD training label file, relative to this crate's folder.
+ * Description: Path to the fixed MELD training label file in MELD.Completed,
+ * relative to this crate's folder.
  */
-pub const TRAIN_CSV: &str = "../data/MELD.Clean/train_sent_emo.csv";
+pub const TRAIN_CSV: &str = "../data/MELD.Completed/train_sent_emo.csv";
 
 /**
- * Description: Path to the cleaned MELD dev label file, relative to this crate's folder.
+ * Description: Path to the fixed MELD dev label file in MELD.Completed,
+ * relative to this crate's folder.
  */
-pub const DEV_CSV: &str = "../data/MELD.Clean/dev_sent_emo.csv";
+pub const DEV_CSV: &str = "../data/MELD.Completed/dev_sent_emo.csv";
 
 /**
  * Description: Path of the text file the dialogues are written to, relative to this crate's folder.

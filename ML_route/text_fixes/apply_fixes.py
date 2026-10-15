@@ -1,15 +1,15 @@
-"""Builds cleaned copies of the MELD label files from the originals in MELD.Raw.
+"""Builds MELD.Completed, the fixed copies of the MELD label files, from the originals in MELD.Raw.
 
-MELD.Clean gets the character step and the reviewed word fixes. MELD.Completed gets MELD.Clean's
-text plus the fixes taken from the audio, for train and dev only.
+Every split gets the character step. Train and dev also get the reviewed word fixes, then the
+reviewed fixes taken from the audio.
 
 APIs:
 - CHAR_MAP: broken or typographic characters and their replacements
 - normalize: applies CHAR_MAP and collapses repeated spaces in one utterance
 - load_fixes: reads the fix log
-- clean_split: writes one cleaned label file
-- complete_split: writes one label file with the audio fixes on top of the cleaned text
-- main: cleans all three splits and prints a summary
+- clean_split: cleans one split's rows in memory
+- complete_split: applies the audio fixes to the cleaned rows and writes one label file
+- main: builds all three splits and prints a summary
 """
 
 import csv
@@ -19,7 +19,6 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 RAW = ROOT / "data" / "MELD.Raw"
-CLEAN = ROOT / "data" / "MELD.Clean"
 COMPLETED = ROOT / "data" / "MELD.Completed"
 FIXES = Path(__file__).resolve().parent / "fixes.csv"
 AUDIO_FIXES = Path(__file__).resolve().parent / "audio_fixes.csv"
@@ -70,8 +69,8 @@ def load_fixes(path):
 
 def clean_split(split, fixes):
     """
-    Description: Normalizes every utterance in one split, applies that split's logged fixes,
-    and writes the result to MELD.Clean. MELD.Raw is only read.
+    Description: Normalizes every utterance in one split and applies that split's logged word
+    fixes, without writing anything. MELD.Raw is only read.
     Inputs:
     - split: "train", "dev" or "test".
     - fixes: the lookup from load_fixes.
@@ -96,9 +95,6 @@ def clean_split(split, fixes):
             text = new
             applied += 1
         row[1] = text
-    CLEAN.mkdir(parents=True, exist_ok=True)
-    with (CLEAN / SPLITS[split]).open("w", encoding="utf-8", newline="") as f:
-        csv.writer(f).writerows([header] + body)
     return header, body, changed, applied
 
 
@@ -132,8 +128,8 @@ def complete_split(split, header, body, audio_fixes):
 
 def main():
     """
-    Description: Builds MELD.Clean, and MELD.Completed when audio_fixes.csv exists, for all three
-    splits, and prints how many rows each step changed.
+    Description: Builds MELD.Completed for all three splits and prints how many rows each step
+    changed.
     Inputs: none
     Outputs: none
     Constraints: exits with an error when the log names a clip that does not exist.
@@ -143,7 +139,7 @@ def main():
     found = audio_found = 0
     for split in SPLITS:
         header, body, changed, applied = clean_split(split, fixes)
-        audio_applied = complete_split(split, header, body, audio_fixes) if AUDIO_FIXES.exists() else 0
+        audio_applied = complete_split(split, header, body, audio_fixes)
         found += applied
         audio_found += audio_applied
         print(f"{split}: {len(body)} rows, {changed} with characters normalized, {applied} word fixes, "
