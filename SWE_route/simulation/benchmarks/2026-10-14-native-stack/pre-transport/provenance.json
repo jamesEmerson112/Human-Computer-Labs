@@ -1,0 +1,17 @@
+{
+  "archived_at_utc": "2026-10-14T18:15:52.643594+00:00",
+  "source": "controller/src/server.rs",
+  "sha256": "05f9b1ba1fd5ca7cc79e46ad1a171ce7939bdbb4a5eadf91c317620d7d594734",
+  "reason": "Preserve exact source used for initial native browser measurements before explicitly enabling TCP_NODELAY on accepted TCP connections.",
+  "matching_measurements": {
+    "rust-browser": {
+      "server_rs_sha256": "05f9b1ba1fd5ca7cc79e46ad1a171ce7939bdbb4a5eadf91c317620d7d594734",
+      "executable_sha256": "cecaaa54e09d06983ba678ed3dc1ebf05f76484efb4f5afa0586e0bbaaa3122c"
+    },
+    "rust-browser-default": {
+      "server_rs_sha256": "05f9b1ba1fd5ca7cc79e46ad1a171ce7939bdbb4a5eadf91c317620d7d594734",
+      "executable_sha256": "cecaaa54e09d06983ba678ed3dc1ebf05f76484efb4f5afa0586e0bbaaa3122c"
+    }
+  },
+  "scope": "Only the native server transport setting changes. Historical measurements remain unchanged and do not represent the later TCP_NODELAY build."
+}

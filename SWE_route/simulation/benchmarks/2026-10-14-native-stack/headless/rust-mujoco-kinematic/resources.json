@@ -1,0 +1,135 @@
+{
+  "command": [
+    "E:\\GitHub\\Human Computer Labs\\SWE_route\\simulation\\controller\\target\\release\\benchmark.exe",
+    "--root",
+    "E:\\GitHub\\Human Computer Labs\\SWE_route\\simulation",
+    "--output",
+    "E:\\GitHub\\Human Computer Labs\\SWE_route\\simulation\\benchmarks\\2026-10-14-native-stack\\headless\\rust-mujoco-kinematic",
+    "--backend",
+    "mujoco-kinematic",
+    "--repeats",
+    "3",
+    "--speed",
+    "0.5"
+  ],
+  "peak_rss_mib": 12.19140625,
+  "mean_host_cpu_percent": 24.817391304347826,
+  "sample_period_s": 0.1,
+  "samples": [
+    {
+      "rss_mib": 1.953125,
+      "peak_rss_mib": 1.953125,
+      "host_cpu_percent": 24.8
+    },
+    {
+      "rss_mib": 9.66015625,
+      "peak_rss_mib": 9.66015625,
+      "host_cpu_percent": 41.1
+    },
+    {
+      "rss_mib": 9.859375,
+      "peak_rss_mib": 9.859375,
+      "host_cpu_percent": 31.4
+    },
+    {
+      "rss_mib": 10.09765625,
+      "peak_rss_mib": 10.09765625,
+      "host_cpu_percent": 16.7
+    },
+    {
+      "rss_mib": 10.1796875,
+      "peak_rss_mib": 10.1796875,
+      "host_cpu_percent": 17.9
+    },
+    {
+      "rss_mib": 10.32421875,
+      "peak_rss_mib": 10.32421875,
+      "host_cpu_percent": 15.0
+    },
+    {
+      "rss_mib": 10.8046875,
+      "peak_rss_mib": 10.8046875,
+      "host_cpu_percent": 18.1
+    },
+    {
+      "rss_mib": 10.8515625,
+      "peak_rss_mib": 10.8515625,
+      "host_cpu_percent": 29.1
+    },
+    {
+      "rss_mib": 10.9609375,
+      "peak_rss_mib": 10.9609375,
+      "host_cpu_percent": 71.2
+    },
+    {
+      "rss_mib": 10.98828125,
+      "peak_rss_mib": 10.98828125,
+      "host_cpu_percent": 17.1
+    },
+    {
+      "rss_mib": 11.05078125,
+      "peak_rss_mib": 11.05078125,
+      "host_cpu_percent": 14.8
+    },
+    {
+      "rss_mib": 11.109375,
+      "peak_rss_mib": 11.109375,
+      "host_cpu_percent": 28.2
+    },
+    {
+      "rss_mib": 11.23046875,
+      "peak_rss_mib": 11.23046875,
+      "host_cpu_percent": 13.5
+    },
+    {
+      "rss_mib": 11.2421875,
+      "peak_rss_mib": 11.2421875,
+      "host_cpu_percent": 17.1
+    },
+    {
+      "rss_mib": 11.2578125,
+      "peak_rss_mib": 11.2578125,
+      "host_cpu_percent": 37.0
+    },
+    {
+      "rss_mib": 11.359375,
+      "peak_rss_mib": 11.359375,
+      "host_cpu_percent": 34.9
+    },
+    {
+      "rss_mib": 11.36328125,
+      "peak_rss_mib": 11.36328125,
+      "host_cpu_percent": 12.3
+    },
+    {
+      "rss_mib": 11.5,
+      "peak_rss_mib": 11.5,
+      "host_cpu_percent": 12.3
+    },
+    {
+      "rss_mib": 11.6015625,
+      "peak_rss_mib": 11.6015625,
+      "host_cpu_percent": 13.1
+    },
+    {
+      "rss_mib": 11.6015625,
+      "peak_rss_mib": 11.6015625,
+      "host_cpu_percent": 19.2
+    },
+    {
+      "rss_mib": 11.703125,
+      "peak_rss_mib": 11.703125,
+      "host_cpu_percent": 22.1
+    },
+    {
+      "rss_mib": 11.703125,
+      "peak_rss_mib": 11.703125,
+      "host_cpu_percent": 38.9
+    },
+    {
+      "rss_mib": 11.76953125,
+      "peak_rss_mib": 12.19140625,
+      "host_cpu_percent": 25.0
+    }
+  ]
+}

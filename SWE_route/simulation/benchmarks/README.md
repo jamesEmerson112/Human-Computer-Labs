@@ -1,5 +1,137 @@
 # Simulation benchmarks and upgrade decision
 
+## Rust / MuJoCo / Three.js comparison
+
+Build the native application using the [simulation instructions](../README.md#rust-controller-and-threejs-viewer),
+then run these sequentially from `simulation/` with new output directories:
+
+```powershell
+uv run --locked python benchmarks/compare_native.py --output benchmarks/my-native/headless
+uv run --locked python benchmarks/measure_viewer.py --output benchmarks/my-native/python-browser
+uv run --locked python benchmarks/measure_native_viewer.py --output benchmarks/my-native/rust-browser
+uv run --locked python benchmarks/measure_native_viewer.py --preset default --output benchmarks/my-native/rust-browser-default
+```
+
+`compare_native.py` first remeasures Python default physics, then measures all
+three native MuJoCo modes in fresh processes. Each uses all 123 gestures, three
+repeats, pace 0.5, one warmup per gesture, and the original settling-frame rule.
+It compares every native requested/actual/velocity trace against the preserved
+October 13 traces, records source/executable hashes, process memory and host load,
+and retains compressed frame logs. The original yourdfpy-only mode remains in
+Python; it has no native counterpart. Headless compute excludes networking and
+rendering. Whole-loop throughput includes each implementation's observation and
+in-memory logging overhead, so it is a pipeline measurement rather than an
+isolated language benchmark.
+
+### October 14 native migration results
+
+[Audited headless results](2026-10-14-native-stack/analysis.json) compare 369
+current Python default-physics trials with 1,107 native trials across the three
+MuJoCo modes. All **343,746 native frames** match the historical requested angles,
+actual angles, and velocities within `1e-9`; repetition completeness and duplicate
+rows were checked separately. A further 123 Ubuntu 24.04 WSL default-physics
+trials match the Windows reference within `5.11e-15`.
+
+| Default-physics headless measurement | Current Python | Rust |
+|---|---:|---:|
+| Worst trial p95 compute | 2.512 ms | 0.328 ms |
+| Median real-time factor | 54.7× | 437.4× |
+| Pooled CPU ms / simulated second | 18.69 | 2.36 |
+| Peak worker memory | 124.7 MiB | 11.4 MiB |
+| Tracking RMSE | 1.034° | 1.034° |
+| Maximum soft-limit overshoot | 1.027° | 1.027° |
+
+Both default-physics runs had zero over-budget frames, solver warnings, and
+penetration. This is the Ryzen 5 2600X Windows host; mean whole-host CPU load was
+22.6% during Python and 23.2% during Rust, including other desktop work. The
+clock and rendering are outside the headless measurement. Ubuntu WSL establishes
+native portability, not performance on a physical four-core, 8 GB Ubuntu laptop.
+
+The [validation manifest](2026-10-14-native-stack/validation.json),
+[live protocol checks](2026-10-14-native-stack/protocol-04.json), and
+[browser interaction checks](2026-10-14-native-stack/visual-04/result.json)
+record the accepted evidence. Inspect the
+[viewer screenshot](2026-10-14-native-stack/visual-04/viewer-ready.png) and
+[light view](2026-10-14-native-stack/visual-04/viewer-light-view.png).
+The original Python tests still pass (538); native tests pass on Windows and
+Ubuntu (12 each), and seven frontend tests plus the TypeScript build pass.
+The [development-proxy checks](2026-10-14-native-stack/dev-proxy/result.json)
+verify local HTTP/WebSocket forwarding and rejection of foreign origins.
+
+Use `analysis.json` for headless resource conclusions. The first generated
+`headless/summary.json` sampled the small Windows Python launcher rather than its
+child for RSS; the audit uses the Python worker's own recorded peak instead.
+The executed harness is preserved as `headless/compare_native.measured.py`, and
+the reusable harness now applies that correction. Pooled CPU avoids misleading
+zero medians caused by Windows CPU-time granularity on short native trials.
+The headless run predates a transport-only change enabling TCP_NODELAY on accepted
+connections; motion and physics code are unchanged. The
+[archived transport source](2026-10-14-native-stack/pre-transport/provenance.json)
+matches the initial measurements. Final live runs identify the updated executable
+and built frontend by hash.
+
+### Live browser comparison
+
+The fresh [Python run](2026-10-14-native-stack/python-browser-02/summary.json)
+and final [native matched run](2026-10-14-native-stack/rust-browser-02/summary.json)
+use Chrome 155 on the same Windows host and GTX 1070 Ti. Each has three 30-second
+active phases following warmup. Rates and CPU below are phase medians, memory is
+the maximum sampled active-phase peak, and latency pools all 18 commands.
+
+| Active workload | Python / viser | Rust / Three.js |
+|---|---:|---:|
+| Server control rate | 29.24 Hz | 30.00 Hz |
+| Simulated seconds / wall second | 0.925 | 1.000 |
+| Server CPU, one-core percent | 14.51% | 1.72% |
+| Server peak sampled memory | 154.7 MiB | 19.0 MiB |
+| Browser process-tree CPU, one-core percent | 35.21% | 32.08% |
+| Browser process-tree peak sampled memory | 850.6 MiB | 785.9 MiB |
+| Submitted WebGL draw frames / second | 74.96 | 74.96 |
+| Click-to-status p50 / p95 | 67.9 / 132.1 ms | 49.0 / 109.6 ms |
+| Median phase p95 server compute | 5.569 ms | 0.307 ms |
+
+Native simulation dropped no time in these six measured phases. Both renderers
+were near the browser's 75 Hz animation cadence; this establishes no FPS gain.
+Whole-host active-phase CPU averages ranged from 17.5-19.1% for Python and
+10.1-11.5% for native, so latency and renderer differences are observations under
+different background load, not an isolated language or transport experiment.
+The initial native matched run had 165.4 ms p95 click-to-status latency and a
+348.3 ms maximum. After enabling TCP_NODELAY, the final run measured 109.6 ms
+p95 and 120.4 ms maximum; the earlier evidence remains in `rust-browser/`.
+
+The native browser harness uses the original Chrome, WebGL draw, and process
+resource probes. `?benchmark=1` fixes the canvas to 940×805, DPR 1, camera position
+and target, 75-degree field of view, scene dimensions, and baseline light settings.
+Both browser workloads play the same six core emotions at five-second intervals
+after warmup; three idle and active phases last 15 and 30 seconds respectively.
+Frontend implementation and operating-system load still differ. The native
+renderer buffers one 33.3 ms control frame for interpolation; click-to-status
+latency does not include that display delay or measure completed GPU presentation.
+Use `--preset default` to record the delivered camera, lighting, and shadows
+separately; that run is not a matched rendering-cost comparison.
+
+The final [normal-view run](2026-10-14-native-stack/rust-browser-default-02/summary.json)
+used a 924-by-641 canvas with shadows. Its active-phase medians were 30.00 Hz
+control, 1.000 simulated seconds per wall second, 74.97 submitted draw frames/s,
+2.39% server CPU, and 34.27% browser CPU. Active-phase sampled peaks were 19.1 MiB
+for the server and 803.4 MiB for the browser tree. Click-to-status p50/p95 was
+64.1/119.8 ms; no time was dropped and no browser long tasks were observed in
+the six phases. Whole-host active-phase means ranged from 9.7-12.0%.
+The earlier `rust-browser-default/` run is retained as a separate loaded-host
+observation: whole-host CPU reached 100%, and two idle phases discarded a total
+of 1.0 simulation second through the documented catch-up limit. It is excluded
+from the final normal-view figures above. Rebuild the browser aggregates with
+`uv run --locked python benchmarks/2026-10-14-native-stack/summarize_browser.py`.
+
+Native `server-ticks.csv` includes controller, physics, body transforms, snapshot
+serialization, and publication; disk-log writes are outside compute time. State
+packets separately report controller/physics compute only. Catch-up batches are
+reported as both step counts and batch time; summaries divide batch time by its
+step count. Dropped simulation time remains visible. Browser CPU/RSS cover the
+whole process tree, with 100% CPU meaning one logical core and shared memory
+potentially counted more than once. Do not compare unmatched camera/load runs as
+evidence of a Rust or renderer speedup.
+
 ## Why add MuJoCo?
 
 Keep the browser and JSON authoring workflow, but use MuJoCo for physical
@@ -15,6 +147,12 @@ and the base is anchored. No company motion recordings or implementation code
 were copied. Servo gains and rotor inertia are simulation assumptions.
 
 ## Recorded baseline
+
+The [October 13 baseline](2026-10-13-current-setup/README.md) captures all 123
+gestures and a separate Chrome workload before changes to the controller
+language or frontend. It records source hashes and the starting Git revision.
+The older nine-gesture results below remain historical evidence; their workload
+differs from the expanded library.
 
 [Windows results and measured table](2026-10-01-windows/report.md) include
 108 measured trials: nine gestures, four backends, three repeats. The folder is

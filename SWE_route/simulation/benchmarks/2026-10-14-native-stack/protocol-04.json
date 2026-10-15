@@ -1,0 +1,532 @@
+{
+  "schema_version": 1,
+  "started_at_utc": "2026-10-14T18:18:46.441852+00:00",
+  "status": "passed",
+  "checks": [
+    "local HTML, bundled scripts/styles and mesh assets; HTTP Host/Origin and WebSocket Origin guards",
+    "hello catalog/limits/rates and ten finite live state snapshots with all link poses checked against URDF FK",
+    "Nod moves and Stop freezes requested pose while physics continues",
+    "manual target soft clamping, reset, pace, light on/off and brightness",
+    "all three MuJoCo modes and emitter neutral/down/up orientation including the URDF 180-degree head yaw",
+    "twelve rejected commands preserve active playback, pace, light and backend; duplicate keys are rejected recursively",
+    "reload publishes a complete catalog; reconnect sends full catalog and current authoritative state"
+  ],
+  "commands": [
+    {
+      "command": {
+        "v": 1,
+        "id": "verify-1",
+        "type": "pace",
+        "speed": 1.0
+      },
+      "ack": {
+        "id": "verify-1",
+        "ok": true,
+        "server_time_s": 0.8740091,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 2.3950000013428507
+    },
+    {
+      "command": {
+        "v": 1,
+        "id": "verify-2",
+        "type": "play",
+        "name": "nod"
+      },
+      "ack": {
+        "id": "verify-2",
+        "ok": true,
+        "server_time_s": 0.9023461,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 0.9076000005734386
+    },
+    {
+      "command": {
+        "v": 1,
+        "id": "verify-3",
+        "type": "stop"
+      },
+      "ack": {
+        "id": "verify-3",
+        "ok": true,
+        "server_time_s": 0.9729571,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 0.9638999999879161
+    },
+    {
+      "command": {
+        "v": 1,
+        "id": "verify-4",
+        "type": "targets",
+        "targets": {
+          "base_yaw_joint": 99,
+          "head_pitch_joint": -99
+        }
+      },
+      "ack": {
+        "id": "verify-4",
+        "ok": true,
+        "server_time_s": 1.3354895,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 0.6861000001663342
+    },
+    {
+      "command": {
+        "v": 1,
+        "id": "verify-5",
+        "type": "reset"
+      },
+      "ack": {
+        "id": "verify-5",
+        "ok": true,
+        "server_time_s": 3.8074702,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 0.9176000003208173
+    },
+    {
+      "command": {
+        "v": 1,
+        "id": "verify-6",
+        "type": "light",
+        "enabled": false,
+        "brightness": 3.5
+      },
+      "ack": {
+        "id": "verify-6",
+        "ok": true,
+        "server_time_s": 6.2701921,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 1.4799000000493834
+    },
+    {
+      "command": {
+        "v": 1,
+        "id": "verify-7",
+        "type": "light",
+        "enabled": true,
+        "brightness": 3.5
+      },
+      "ack": {
+        "id": "verify-7",
+        "ok": true,
+        "server_time_s": 6.3031602,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 1.4576000012311852
+    },
+    {
+      "command": {
+        "v": 1,
+        "id": "verify-8",
+        "type": "mode",
+        "mode": "mujoco-source"
+      },
+      "ack": {
+        "id": "verify-8",
+        "ok": true,
+        "server_time_s": 6.3448142,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 8.94220000009227
+    },
+    {
+      "command": {
+        "v": 1,
+        "id": "verify-9",
+        "type": "mode",
+        "mode": "mujoco"
+      },
+      "ack": {
+        "id": "verify-9",
+        "ok": true,
+        "server_time_s": 6.381352,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 6.109500000093249
+    },
+    {
+      "command": {
+        "v": 1,
+        "id": "verify-10",
+        "type": "mode",
+        "mode": "mujoco-kinematic"
+      },
+      "ack": {
+        "id": "verify-10",
+        "ok": true,
+        "server_time_s": 6.4124369,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 5.580099999860977
+    },
+    {
+      "command": {
+        "v": 1,
+        "id": "verify-11",
+        "type": "reset"
+      },
+      "ack": {
+        "id": "verify-11",
+        "ok": true,
+        "server_time_s": 6.4406542,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 1.3873999996576458
+    },
+    {
+      "command": {
+        "v": 1,
+        "id": "verify-12",
+        "type": "targets",
+        "targets": {
+          "head_pitch_joint": 0.3
+        }
+      },
+      "ack": {
+        "id": "verify-12",
+        "ok": true,
+        "server_time_s": 6.7070716,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 0.7256999997480307
+    },
+    {
+      "command": {
+        "v": 1,
+        "id": "verify-13",
+        "type": "targets",
+        "targets": {
+          "head_pitch_joint": -0.3
+        }
+      },
+      "ack": {
+        "id": "verify-13",
+        "ok": true,
+        "server_time_s": 7.0412452,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 2.1539000008488074
+    },
+    {
+      "command": {
+        "v": 1,
+        "id": "verify-14",
+        "type": "pace",
+        "speed": 0.25
+      },
+      "ack": {
+        "id": "verify-14",
+        "ok": true,
+        "server_time_s": 7.6739875,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 1.6763999992690515
+    },
+    {
+      "command": {
+        "v": 1,
+        "id": "verify-15",
+        "type": "play",
+        "name": "nod"
+      },
+      "ack": {
+        "id": "verify-15",
+        "ok": true,
+        "server_time_s": 7.6756124,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 0.756899999032612
+    },
+    {
+      "command": {
+        "v": 1,
+        "id": "verify-16",
+        "type": "targets",
+        "targets": {
+          "unknown_joint": 0.1
+        }
+      },
+      "ack": {
+        "error": "Unknown joint: unknown_joint",
+        "id": "verify-16",
+        "ok": false,
+        "server_time_s": 7.7029755,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 0.7678000001760665
+    },
+    {
+      "command": {
+        "v": 1,
+        "id": "verify-17",
+        "type": "pace",
+        "speed": 0
+      },
+      "ack": {
+        "error": "Playback speed must be greater than zero and at most one",
+        "id": "verify-17",
+        "ok": false,
+        "server_time_s": 7.7046554,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 1.2003000010736287
+    },
+    {
+      "command": {
+        "v": 1,
+        "id": "verify-18",
+        "type": "pace",
+        "speed": 1.1
+      },
+      "ack": {
+        "error": "Playback speed must be greater than zero and at most one",
+        "id": "verify-18",
+        "ok": false,
+        "server_time_s": 7.7062615,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 0.8952000007411698
+    },
+    {
+      "command": {
+        "v": 1,
+        "id": "verify-19",
+        "type": "light",
+        "enabled": false,
+        "brightness": 11
+      },
+      "ack": {
+        "error": "Brightness must be between zero and ten",
+        "id": "verify-19",
+        "ok": false,
+        "server_time_s": 7.7078335,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 1.1341000008542323
+    },
+    {
+      "command": {
+        "v": 1,
+        "id": "verify-20",
+        "type": "light",
+        "enabled": "yes",
+        "brightness": 3
+      },
+      "ack": {
+        "error": "Invalid command: invalid type: string \"yes\", expected a boolean",
+        "id": "verify-20",
+        "ok": false,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 0.39139999898907263
+    },
+    {
+      "command": {
+        "v": 1,
+        "id": "verify-21",
+        "type": "mode",
+        "mode": "unknown"
+      },
+      "ack": {
+        "error": "Invalid command: unknown variant `unknown`, expected one of `mujoco`, `mujoco-source`, `mujoco-kinematic`",
+        "id": "verify-21",
+        "ok": false,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 0.3527999997459119
+    },
+    {
+      "command": {
+        "v": 1,
+        "id": "verify-22",
+        "type": "stop",
+        "extra": 1
+      },
+      "ack": {
+        "error": "Unexpected command field: extra",
+        "id": "verify-22",
+        "ok": false,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 0.33230000008188654
+    },
+    {
+      "command": "{\"v\":1,\"id\":\"verify-23\",\"type\":\"play\",\"name\":\"missing_gesture\"}",
+      "ack": {
+        "error": "Unknown gesture: missing_gesture",
+        "id": "verify-23",
+        "ok": false,
+        "server_time_s": 7.7126751,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 1.833700000133831
+    },
+    {
+      "command": "{\"v\":1,\"id\":\"verify-24\",\"type\":\"targets\",\"targets\":{\"head_pitch_joint\":0.1,\"head_pitch_joint\":0.2}}",
+      "ack": {
+        "error": "duplicate JSON key: head_pitch_joint at line 1 column 93",
+        "id": "verify-24",
+        "ok": false,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 0.40350000017497223
+    },
+    {
+      "command": "{\"v\":1,\"id\":\"verify-25\",\"type\":\"stop\",\"type\":\"reset\"}",
+      "ack": {
+        "error": "duplicate JSON key: type at line 1 column 44",
+        "id": "verify-25",
+        "ok": false,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 0.225499999942258
+    },
+    {
+      "command": "{\"v\":2,\"id\":\"verify-26\",\"type\":\"stop\"}",
+      "ack": {
+        "error": "Unsupported protocol version",
+        "id": "verify-26",
+        "ok": false,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 0.24459999985992908
+    },
+    {
+      "command": "{\"v\":1,\"id\":\"verify-27\",\"type\":\"targets\",\"targets\":{\"head_pitch_joint\":1e999}}",
+      "ack": {
+        "error": "number out of range at line 1 column 76",
+        "id": "",
+        "ok": false,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 0.3260000012232922
+    },
+    {
+      "command": {
+        "v": 1,
+        "id": "verify-28",
+        "type": "stop"
+      },
+      "ack": {
+        "id": "verify-28",
+        "ok": true,
+        "server_time_s": 7.7350133,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 0.5972999988443917
+    },
+    {
+      "command": {
+        "v": 1,
+        "id": "verify-29",
+        "type": "reload"
+      },
+      "ack": {
+        "id": "verify-29",
+        "ok": true,
+        "server_time_s": 7.7633206999999995,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 27.63750000121945
+    }
+  ],
+  "state_messages": 218,
+  "platform": "win32",
+  "sha256": {
+    "tools\\verify_native_protocol.py": "6bc100ac5b4574b8523562cad5949b3c728cc5f6a18969c263c1f34ae0eb9c80",
+    "protocol\\commands.schema.json": "1992da2cc4b74036626bb0b6c3e412c6a2df906f89d7acf1b4c023d6b2df933d",
+    "models\\derived\\scene.json": "b5d3906adcf364f001b09cb53173647868a6260c7dbcaad793dd9ab7f9ccc3cf",
+    "E:\\GitHub\\Human Computer Labs\\SWE_route\\starter_pack\\robot\\dummy_lamp_5dof.urdf": "5f023d845b92e29a369a3b4fb9be8077e9c7ea4b132a4558afbefddb0765f4bb",
+    "controller\\target\\release\\lamp-controller.exe": "9f3b595c14359ad16b2305fb53af3c997843cf2bc092775c96ba05c6044f9765",
+    "controller\\src\\gestures.rs": "6e5cf9eb966b46221824270845c1a9d66f3aef13cf8d1c5f4a6ab9599a0d5f73",
+    "controller\\src\\lib.rs": "32bf277f4c8536dc02161d0295ca8a0110a2d1631658c27405211cb910f9478d",
+    "controller\\src\\main.rs": "e3397272413b1141682f423b333c8a3ca3d7742a67d4725a544acd65a7e47f2f",
+    "controller\\src\\motion.rs": "b0fe9045e6c78282498b7cc979e3ef7452931cc85138f3ab7f5c659faf08cfe6",
+    "controller\\src\\physics.rs": "d977c6b17597f40696f17557e48f77f2b1b0648d3db1247666c2553e10c2a9b9",
+    "controller\\src\\server.rs": "b14d17171c6355b07931f4955c391e47a22a0c1d07b55932b52519f5a6be51ad",
+    "controller\\native\\bridge.c": "d13947f2b82cdb7338dd1e131de5bc8cf1444dd2377991226de7a5f6a348502f",
+    "models\\derived\\lamp-source.xml": "dc7759f72636f7756dc02af97a14b03f0b43c29d4c66baa93d224870ea45fd1c",
+    "models\\derived\\lamp.xml": "6781e95a9725f0d9db64a01048838ddbf8986f2e1fb39bf12546b143f68b8f01",
+    "models\\derived\\lamp_shade.stl": "421cfd67341fedd1c16cef6e758478f8a56a07f40845d5bdc488efe3cd77c2c5",
+    "models\\derived\\manifest.json": "bc3b331653d2cd4e0508eba9f10c176b0010fd461279812db5bfcdcc48bc50b8"
+  },
+  "server_command": [
+    "E:\\GitHub\\Human Computer Labs\\SWE_route\\simulation\\controller\\target\\release\\lamp-controller.exe",
+    "--root",
+    "E:\\GitHub\\Human Computer Labs\\SWE_route\\simulation",
+    "serve",
+    "--port",
+    "53253"
+  ],
+  "url": "http://127.0.0.1:53253",
+  "server_pid": 24812,
+  "assets": [
+    {
+      "path": "/assets/lamp_shade.stl",
+      "bytes": 18084,
+      "content_type": "application/vnd.ms-pki.stl",
+      "sha256": "421cfd67341fedd1c16cef6e758478f8a56a07f40845d5bdc488efe3cd77c2c5"
+    },
+    {
+      "path": "/static/index-BVv4vnyW.css",
+      "bytes": 8749,
+      "content_type": "text/css",
+      "sha256": "c91ef6a4e16f17786fc4c97ad16cac3ae4d1d95f89a926544217238235dcca39"
+    },
+    {
+      "path": "/static/index-u1O6Khny.js",
+      "bytes": 587709,
+      "content_type": "text/javascript",
+      "sha256": "75b56f2ed7a2761777339468c903248a5c1bc938f332db3546fc09ca757be59e"
+    }
+  ],
+  "max_link_position_error_m": 3.6063051947910624e-10,
+  "max_link_rotation_error": 8.179102704009011e-07,
+  "max_mujoco_link_position_error_m": 0.0,
+  "max_mujoco_link_rotation_error": 3.3306690738754696e-16,
+  "fk_tolerances": {
+    "derived_mujoco": 1e-10,
+    "urdf_position_m": 1e-09,
+    "urdf_rotation_matrix": 1e-06,
+    "reason": "MuJoCo XML serialization rounds the fixed speaker quaternion to six decimals; compare the same derived model at higher precision as well."
+  },
+  "fk_states_checked": 18,
+  "catalog_count": 123,
+  "owned_server_exited": true,
+  "finished_at_utc": "2026-10-14T18:18:54.345848+00:00"
+}

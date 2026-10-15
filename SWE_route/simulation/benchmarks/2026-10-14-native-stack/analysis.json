@@ -1,0 +1,451 @@
+{
+  "notes": [
+    "Recorded benchmark harness is preserved as headless/compare_native.measured.py.",
+    "This audit adds repetition completeness and pooled CPU accounting.",
+    "Python RSS uses the workers own peak: the outer Windows venv executable is only a redirector. The original summary parent-RSS value is excluded."
+  ],
+  "headless": {
+    "rust-mujoco-kinematic": {
+      "trials": 369,
+      "frames": 114582,
+      "worst_trial_p95_ms": 0.0299,
+      "median_realtime_factor": 2719.3481144589728,
+      "median_cpu_ms_per_simulated_s": 0.0,
+      "pooled_cpu_ms_per_simulated_s": 0.3763680159187307,
+      "peak_process_rss_mib": 12.19140625,
+      "tracking_rmse_deg": 0.0,
+      "tracking_max_deg": 0.0,
+      "soft_limit_violation_max_deg": 0.0,
+      "max_penetration_mm": 0.0,
+      "physics_warning_count": 0,
+      "over_budget_frames": 0,
+      "mean_host_cpu_percent": 24.817391304347826,
+      "parity": {
+        "frames_compared": 114582,
+        "unique_gesture_frames": 38194,
+        "tolerance": 1e-09,
+        "complete_repetitions": [
+          1,
+          2,
+          3
+        ],
+        "duplicate_rows": 0,
+        "max_absolute_differences": {
+          "desired_rad.base_yaw_joint": 0.0,
+          "desired_rad.shoulder_pitch_joint": 0.0,
+          "desired_rad.elbow_pitch_joint": 0.0,
+          "desired_rad.neck_yaw_joint": 0.0,
+          "desired_rad.head_pitch_joint": 0.0,
+          "actual_rad.base_yaw_joint": 0.0,
+          "actual_rad.shoulder_pitch_joint": 0.0,
+          "actual_rad.elbow_pitch_joint": 0.0,
+          "actual_rad.neck_yaw_joint": 0.0,
+          "actual_rad.head_pitch_joint": 0.0,
+          "velocity_rad_s.base_yaw_joint": 0.0,
+          "velocity_rad_s.shoulder_pitch_joint": 0.0,
+          "velocity_rad_s.elbow_pitch_joint": 0.0,
+          "velocity_rad_s.neck_yaw_joint": 0.0,
+          "velocity_rad_s.head_pitch_joint": 0.0
+        }
+      }
+    },
+    "rust-mujoco-source": {
+      "trials": 369,
+      "frames": 114582,
+      "worst_trial_p95_ms": 0.23603999999999997,
+      "median_realtime_factor": 277.88841853701007,
+      "median_cpu_ms_per_simulated_s": 3.5511363636363633,
+      "pooled_cpu_ms_per_simulated_s": 3.5509504110593286,
+      "peak_process_rss_mib": 11.546875,
+      "tracking_rmse_deg": 4.82085901807752,
+      "tracking_max_deg": 32.37565807954917,
+      "soft_limit_violation_max_deg": 1.0390532616416783,
+      "max_penetration_mm": 0.9999999999998658,
+      "physics_warning_count": 0,
+      "over_budget_frames": 0,
+      "mean_host_cpu_percent": 21.2494623655914,
+      "parity": {
+        "frames_compared": 114582,
+        "unique_gesture_frames": 38194,
+        "tolerance": 1e-09,
+        "complete_repetitions": [
+          1,
+          2,
+          3
+        ],
+        "duplicate_rows": 0,
+        "max_absolute_differences": {
+          "desired_rad.base_yaw_joint": 0.0,
+          "desired_rad.shoulder_pitch_joint": 0.0,
+          "desired_rad.elbow_pitch_joint": 0.0,
+          "desired_rad.neck_yaw_joint": 0.0,
+          "desired_rad.head_pitch_joint": 0.0,
+          "actual_rad.base_yaw_joint": 0.0,
+          "actual_rad.shoulder_pitch_joint": 0.0,
+          "actual_rad.elbow_pitch_joint": 0.0,
+          "actual_rad.neck_yaw_joint": 0.0,
+          "actual_rad.head_pitch_joint": 0.0,
+          "velocity_rad_s.base_yaw_joint": 0.0,
+          "velocity_rad_s.shoulder_pitch_joint": 0.0,
+          "velocity_rad_s.elbow_pitch_joint": 0.0,
+          "velocity_rad_s.neck_yaw_joint": 0.0,
+          "velocity_rad_s.head_pitch_joint": 0.0
+        }
+      }
+    },
+    "rust-mujoco": {
+      "trials": 369,
+      "frames": 114582,
+      "worst_trial_p95_ms": 0.32776000000000016,
+      "median_realtime_factor": 437.3982207986219,
+      "median_cpu_ms_per_simulated_s": 2.3091133004926108,
+      "pooled_cpu_ms_per_simulated_s": 2.3645729695763733,
+      "peak_process_rss_mib": 11.37109375,
+      "tracking_rmse_deg": 1.0336070768246335,
+      "tracking_max_deg": 4.430199573918169,
+      "soft_limit_violation_max_deg": 1.027361488524806,
+      "max_penetration_mm": 0.0,
+      "physics_warning_count": 0,
+      "over_budget_frames": 0,
+      "mean_host_cpu_percent": 23.1696,
+      "parity": {
+        "frames_compared": 114582,
+        "unique_gesture_frames": 38194,
+        "tolerance": 1e-09,
+        "complete_repetitions": [
+          1,
+          2,
+          3
+        ],
+        "duplicate_rows": 0,
+        "max_absolute_differences": {
+          "desired_rad.base_yaw_joint": 0.0,
+          "desired_rad.shoulder_pitch_joint": 0.0,
+          "desired_rad.elbow_pitch_joint": 0.0,
+          "desired_rad.neck_yaw_joint": 0.0,
+          "desired_rad.head_pitch_joint": 0.0,
+          "actual_rad.base_yaw_joint": 0.0,
+          "actual_rad.shoulder_pitch_joint": 0.0,
+          "actual_rad.elbow_pitch_joint": 0.0,
+          "actual_rad.neck_yaw_joint": 0.0,
+          "actual_rad.head_pitch_joint": 0.0,
+          "velocity_rad_s.base_yaw_joint": 0.0,
+          "velocity_rad_s.shoulder_pitch_joint": 0.0,
+          "velocity_rad_s.elbow_pitch_joint": 0.0,
+          "velocity_rad_s.neck_yaw_joint": 0.0,
+          "velocity_rad_s.head_pitch_joint": 0.0
+        }
+      }
+    },
+    "python-mujoco": {
+      "trials": 369,
+      "frames": 114582,
+      "worst_trial_p95_ms": 2.5117000000000003,
+      "median_realtime_factor": 54.689738978472,
+      "median_cpu_ms_per_simulated_s": 18.26298701298701,
+      "pooled_cpu_ms_per_simulated_s": 18.687490181703932,
+      "peak_process_rss_mib": 124.671875,
+      "tracking_rmse_deg": 1.0336070768246335,
+      "tracking_max_deg": 4.430199573918169,
+      "soft_limit_violation_max_deg": 1.027361488524806,
+      "max_penetration_mm": 0.0,
+      "physics_warning_count": 0,
+      "over_budget_frames": 0,
+      "mean_host_cpu_percent": 22.62519011406844
+    }
+  },
+  "ubuntu_physics_parity": {
+    "frames_compared": 38194,
+    "unique_gesture_frames": 38194,
+    "tolerance": 1e-09,
+    "complete_repetitions": [
+      1
+    ],
+    "duplicate_rows": 0,
+    "max_absolute_differences": {
+      "desired_rad.base_yaw_joint": 0.0,
+      "desired_rad.shoulder_pitch_joint": 0.0,
+      "desired_rad.elbow_pitch_joint": 0.0,
+      "desired_rad.neck_yaw_joint": 0.0,
+      "desired_rad.head_pitch_joint": 0.0,
+      "actual_rad.base_yaw_joint": 2.220446049250313e-16,
+      "actual_rad.shoulder_pitch_joint": 1.1102230246251565e-16,
+      "actual_rad.elbow_pitch_joint": 2.220446049250313e-16,
+      "actual_rad.neck_yaw_joint": 1.1102230246251565e-16,
+      "actual_rad.head_pitch_joint": 1.1102230246251565e-16,
+      "velocity_rad_s.base_yaw_joint": 5.10702591327572e-15,
+      "velocity_rad_s.shoulder_pitch_joint": 1.609823385706477e-15,
+      "velocity_rad_s.elbow_pitch_joint": 4.773959005888173e-15,
+      "velocity_rad_s.neck_yaw_joint": 2.886579864025407e-15,
+      "velocity_rad_s.head_pitch_joint": 1.9567680809018384e-15
+    }
+  },
+  "browser": {
+    "method": "Rates, CPU and per-phase p95 tick times are medians across three repeats; memory is the maximum sampled phase peak. Latency pools 18 commands. Draw calls are not GPU completion. Background CPU load is recorded, not controlled.",
+    "runs": {
+      "python_reference": {
+        "source": "python-browser-02",
+        "timestamp_utc": "2026-10-14T18:03:46.981507+00:00",
+        "repeats": 3,
+        "webgl": {
+          "width": 940,
+          "height": 805,
+          "renderer": "ANGLE (NVIDIA, NVIDIA GeForce GTX 1070 Ti (0x00001B82) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+        },
+        "click_to_status_ms": {
+          "count": 18,
+          "mean": 77.11111111111111,
+          "p50": 67.8500000005588,
+          "p95": 132.08500000089407,
+          "max": 137.09999999962747
+        },
+        "phases": {
+          "idle": {
+            "median_server_tick_hz": 29.288492456124683,
+            "median_simulation_seconds_per_wall_second": 0.9280103572289473,
+            "median_server_cpu_percent_one_core": 13.816470729028248,
+            "median_browser_cpu_percent_one_core": 25.24362697108169,
+            "median_browser_draw_frames_per_s": 68.0756959107989,
+            "server_peak_sampled_rss_mib": 154.41015625,
+            "browser_peak_sampled_tree_rss_mib": 840.88671875,
+            "median_phase_p95_tick_compute_ms": 5.098199999338249,
+            "median_phase_mean_host_cpu_percent": 15.44333333333333,
+            "phase_mean_host_cpu_percent_range": [
+              13.60344827586207,
+              25.036666666666672
+            ],
+            "browser_long_task_count": 0
+          },
+          "active": {
+            "median_server_tick_hz": 29.242785868913526,
+            "median_simulation_seconds_per_wall_second": 0.924919956720783,
+            "median_server_cpu_percent_one_core": 14.512114664220395,
+            "median_browser_cpu_percent_one_core": 35.2061949017736,
+            "median_browser_draw_frames_per_s": 74.96127001049457,
+            "server_peak_sampled_rss_mib": 154.65234375,
+            "browser_peak_sampled_tree_rss_mib": 850.6328125,
+            "median_phase_p95_tick_compute_ms": 5.568955000399001,
+            "median_phase_mean_host_cpu_percent": 18.61551724137931,
+            "phase_mean_host_cpu_percent_range": [
+              17.48965517241379,
+              19.116666666666667
+            ],
+            "browser_long_task_count": 0
+          }
+        }
+      },
+      "native_before_tcp_nodelay": {
+        "source": "rust-browser",
+        "timestamp_utc": "2026-10-14T18:06:22.897961+00:00",
+        "repeats": 3,
+        "webgl": {
+          "width": 940,
+          "height": 805,
+          "renderer": "ANGLE (NVIDIA, NVIDIA GeForce GTX 1070 Ti (0x00001B82) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+        },
+        "click_to_status_ms": {
+          "count": 18,
+          "mean": 79.13333333325055,
+          "p50": 64.5,
+          "p95": 165.3799999995154,
+          "max": 348.2999999988824
+        },
+        "phases": {
+          "idle": {
+            "median_server_tick_hz": 29.99967920343038,
+            "median_simulation_seconds_per_wall_second": 0.999989306780956,
+            "median_server_cpu_percent_one_core": 1.4526688062745243,
+            "median_browser_cpu_percent_one_core": 36.76878307482754,
+            "median_browser_draw_frames_per_s": 74.95074285106075,
+            "server_peak_sampled_rss_mib": 19.0546875,
+            "browser_peak_sampled_tree_rss_mib": 818.79296875,
+            "median_phase_p95_tick_compute_ms": 0.3267149999999999,
+            "median_phase_mean_host_cpu_percent": 26.65666666666667,
+            "phase_mean_host_cpu_percent_range": [
+              21.551724137931032,
+              31.076666666666664
+            ],
+            "browser_long_task_count": 0,
+            "total_dropped_simulation_time_s": 0
+          },
+          "active": {
+            "median_server_tick_hz": 30.00001087875812,
+            "median_simulation_seconds_per_wall_second": 1.0000003626258596,
+            "median_server_cpu_percent_one_core": 1.8715412731961858,
+            "median_browser_cpu_percent_one_core": 32.88436193118142,
+            "median_browser_draw_frames_per_s": 74.95852295063492,
+            "server_peak_sampled_rss_mib": 19.05859375,
+            "browser_peak_sampled_tree_rss_mib": 788.52734375,
+            "median_phase_p95_tick_compute_ms": 0.34135,
+            "median_phase_mean_host_cpu_percent": 24.01186440677966,
+            "phase_mean_host_cpu_percent_range": [
+              21.89830508474576,
+              25.66101694915255
+            ],
+            "browser_long_task_count": 0,
+            "total_dropped_simulation_time_s": 0.06666666666666667
+          }
+        }
+      },
+      "native_default_before_tcp_nodelay": {
+        "source": "rust-browser-default",
+        "timestamp_utc": "2026-10-14T18:08:56.825646+00:00",
+        "repeats": 3,
+        "webgl": {
+          "width": 924,
+          "height": 641,
+          "renderer": "ANGLE (NVIDIA, NVIDIA GeForce GTX 1070 Ti (0x00001B82) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+        },
+        "click_to_status_ms": {
+          "count": 18,
+          "mean": 60.2166666664804,
+          "p50": 68.79999999981374,
+          "p95": 93.50499999988823,
+          "max": 99.19999999925494
+        },
+        "phases": {
+          "idle": {
+            "median_server_tick_hz": 29.833755489774052,
+            "median_simulation_seconds_per_wall_second": 0.9944585163248973,
+            "median_server_cpu_percent_one_core": 2.494236766642348,
+            "median_browser_cpu_percent_one_core": 52.41097548940215,
+            "median_browser_draw_frames_per_s": 74.90337198453952,
+            "server_peak_sampled_rss_mib": 19.0859375,
+            "browser_peak_sampled_tree_rss_mib": 831.6171875,
+            "median_phase_p95_tick_compute_ms": 0.53108,
+            "median_phase_mean_host_cpu_percent": 38.78333333333333,
+            "phase_mean_host_cpu_percent_range": [
+              29.999999999999996,
+              99.68275862068967
+            ],
+            "browser_long_task_count": 0,
+            "total_dropped_simulation_time_s": 1.0
+          },
+          "active": {
+            "median_server_tick_hz": 30.00076723875371,
+            "median_simulation_seconds_per_wall_second": 1.0000255746242142,
+            "median_server_cpu_percent_one_core": 2.7513034965819,
+            "median_browser_cpu_percent_one_core": 45.885220333572676,
+            "median_browser_draw_frames_per_s": 74.88053106192204,
+            "server_peak_sampled_rss_mib": 19.0859375,
+            "browser_peak_sampled_tree_rss_mib": 824.5078125,
+            "median_phase_p95_tick_compute_ms": 1.1067374999999997,
+            "median_phase_mean_host_cpu_percent": 63.377966101694916,
+            "phase_mean_host_cpu_percent_range": [
+              32.225,
+              99.37068965517241
+            ],
+            "browser_long_task_count": 1,
+            "total_dropped_simulation_time_s": 0.0
+          }
+        }
+      },
+      "native_matched": {
+        "source": "rust-browser-02",
+        "timestamp_utc": "2026-10-14T18:20:15.122742+00:00",
+        "repeats": 3,
+        "webgl": {
+          "width": 940,
+          "height": 805,
+          "renderer": "ANGLE (NVIDIA, NVIDIA GeForce GTX 1070 Ti (0x00001B82) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+        },
+        "click_to_status_ms": {
+          "count": 18,
+          "mean": 52.72777777786056,
+          "p50": 49.0,
+          "p95": 109.60499999942256,
+          "max": 120.40000000037253
+        },
+        "phases": {
+          "idle": {
+            "median_server_tick_hz": 30.00009760031753,
+            "median_simulation_seconds_per_wall_second": 1.000003253343861,
+            "median_server_cpu_percent_one_core": 2.2828891557134616,
+            "median_browser_cpu_percent_one_core": 30.93359581896772,
+            "median_browser_draw_frames_per_s": 74.89414960189042,
+            "server_peak_sampled_rss_mib": 19.0,
+            "browser_peak_sampled_tree_rss_mib": 822.71875,
+            "median_phase_p95_tick_compute_ms": 0.301665,
+            "median_phase_mean_host_cpu_percent": 11.856666666666667,
+            "phase_mean_host_cpu_percent_range": [
+              10.416666666666666,
+              14.946666666666665
+            ],
+            "browser_long_task_count": 0,
+            "total_dropped_simulation_time_s": 0
+          },
+          "active": {
+            "median_server_tick_hz": 29.999768110802435,
+            "median_simulation_seconds_per_wall_second": 0.9999922703591716,
+            "median_server_cpu_percent_one_core": 1.7158755880932122,
+            "median_browser_cpu_percent_one_core": 32.081673874348844,
+            "median_browser_draw_frames_per_s": 74.95592298437504,
+            "server_peak_sampled_rss_mib": 18.98828125,
+            "browser_peak_sampled_tree_rss_mib": 785.8515625,
+            "median_phase_p95_tick_compute_ms": 0.30701999999999996,
+            "median_phase_mean_host_cpu_percent": 10.988135593220338,
+            "phase_mean_host_cpu_percent_range": [
+              10.130508474576274,
+              11.538983050847461
+            ],
+            "browser_long_task_count": 0,
+            "total_dropped_simulation_time_s": 0
+          }
+        }
+      },
+      "native_default": {
+        "source": "rust-browser-default-02",
+        "timestamp_utc": "2026-10-14T18:22:48.387736+00:00",
+        "repeats": 3,
+        "webgl": {
+          "width": 924,
+          "height": 641,
+          "renderer": "ANGLE (NVIDIA, NVIDIA GeForce GTX 1070 Ti (0x00001B82) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+        },
+        "click_to_status_ms": {
+          "count": 18,
+          "mean": 63.70555555561764,
+          "p50": 64.1000000005588,
+          "p95": 119.76000000080093,
+          "max": 125.20000000111759
+        },
+        "phases": {
+          "idle": {
+            "median_server_tick_hz": 30.001087039387045,
+            "median_simulation_seconds_per_wall_second": 1.0000362346461964,
+            "median_server_cpu_percent_one_core": 2.1812033168062395,
+            "median_browser_cpu_percent_one_core": 34.87095097945354,
+            "median_browser_draw_frames_per_s": 74.9410463768558,
+            "server_peak_sampled_rss_mib": 19.07421875,
+            "browser_peak_sampled_tree_rss_mib": 829.85546875,
+            "median_phase_p95_tick_compute_ms": 0.3072699999999999,
+            "median_phase_mean_host_cpu_percent": 10.753333333333334,
+            "phase_mean_host_cpu_percent_range": [
+              10.540000000000001,
+              13.98666666666667
+            ],
+            "browser_long_task_count": 0,
+            "total_dropped_simulation_time_s": 0
+          },
+          "active": {
+            "median_server_tick_hz": 30.0001415245831,
+            "median_simulation_seconds_per_wall_second": 1.000004717486693,
+            "median_server_cpu_percent_one_core": 2.391897991406063,
+            "median_browser_cpu_percent_one_core": 34.26653861601295,
+            "median_browser_draw_frames_per_s": 74.9675140772332,
+            "server_peak_sampled_rss_mib": 19.0703125,
+            "browser_peak_sampled_tree_rss_mib": 803.35546875,
+            "median_phase_p95_tick_compute_ms": 0.3144,
+            "median_phase_mean_host_cpu_percent": 11.279661016949154,
+            "phase_mean_host_cpu_percent_range": [
+              9.672881355932205,
+              12.022033898305084
+            ],
+            "browser_long_task_count": 0,
+            "total_dropped_simulation_time_s": 0
+          }
+        }
+      }
+    }
+  }
+}

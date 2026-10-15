@@ -1,0 +1,12 @@
+{
+  "command": "uv run --locked pytest -q",
+  "exit_code": 0,
+  "passed": 538,
+  "duration_s": 12.37,
+  "timing": "After headless and browser measurements; no test suite running during either",
+  "measured_trials": 1476,
+  "recorded_control_frames": 458328,
+  "trace_counts_match_trial_counts": true,
+  "application_hashes_match_both_runs": true,
+  "viewer_harness_hash_verified": true
+}

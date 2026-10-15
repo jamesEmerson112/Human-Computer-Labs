@@ -1,0 +1,75 @@
+{
+  "local_date": "2026-10-14",
+  "timezone": "America/Los_Angeles",
+  "cpu": "AMD Ryzen 5 2600X Six-Core Processor",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "python_reference_unchanged_since_baseline": true,
+  "python_tests": {
+    "passed": 538,
+    "seconds": 14.32,
+    "warning": "pytest cache write denied; test assertions passed"
+  },
+  "rust_tests_windows": {
+    "passed": 12,
+    "motion_parity_frames": 103611,
+    "gesture_start_cases": 369,
+    "interruptions": 369,
+    "mixed_commands": 18,
+    "tolerance": 1e-12
+  },
+  "rust_tests_ubuntu_24_04_wsl": {
+    "passed": 12,
+    "evidence": "ubuntu-transport-validation.log",
+    "scope": "WSL portability; not physical four-core 8GB deployment or Linux browser validation",
+    "exit_code": 0,
+    "commands": [
+      "cargo test --locked --manifest-path controller/Cargo.toml",
+      "cargo build --release --locked --manifest-path controller/Cargo.toml --bins",
+      "lamp-controller --root SIMULATION check"
+    ],
+    "log_note": "WSL combined stdout/stderr includes interleaved lines; shell set -eu completed with exit zero."
+  },
+  "viewer_tests": {
+    "passed": 7,
+    "typescript_build": "passed"
+  },
+  "accepted_protocol": "protocol-04.json",
+  "accepted_visual": "visual-04/result.json",
+  "excluded_attempts": {
+    "protocol.json": "Harness assumed mesh URL instead of filename",
+    "protocol-02.json": "Harness initially required exact original URDF rotation; existing MuJoCo serialization rounds speaker quaternion",
+    "visual": "Initial valid run before camera/reconnect/emissive refinements",
+    "visual-02": "Slider test value fell exactly on tolerance boundary",
+    "visual-03": "Intermediate UI verification before final visual refinements",
+    "python-browser": "Restricted Chrome launch reset DevTools before measurements; INCOMPLETE.txt records exclusion"
+  },
+  "model_export_check": "passed; default/source 240-step serialization replay tolerance1e-12",
+  "runtime_executable_sha256": "9f3b595c14359ad16b2305fb53af3c997843cf2bc092775c96ba05c6044f9765",
+  "benchmark_executable_sha256": "3702758ec623e306e4d323d3f292bd19bb09d6b72bdf972d702c0696eb260eff",
+  "python_reference_sha256_files_verified": 134,
+  "pre_transport_provenance": "pre-transport/provenance.json",
+  "accepted_dev_proxy": "dev-proxy/result.json",
+  "viewer_dist_sha256": {
+    "viewer/dist/index.html": "1b4c317c5709f41d2eefd67aff3604dee77fc790dc7abe2540a6f6153631cc16",
+    "viewer/dist/static/index-BVv4vnyW.css": "c91ef6a4e16f17786fc4c97ad16cac3ae4d1d95f89a926544217238235dcca39",
+    "viewer/dist/static/index-u1O6Khny.js": "75b56f2ed7a2761777339468c903248a5c1bc938f332db3546fc09ca757be59e"
+  },
+  "production_viewer_matches_visual_04": true,
+  "line_endings": "Scoped text=auto eol=lf attributes keep derived hashes stable in Windows checkouts; binary STL/PNG Git-filtered hashes unchanged.",
+  "accepted_browser_runs": {
+    "python_reference": "python-browser-02",
+    "native_matched": "rust-browser-02",
+    "native_default": "rust-browser-default-02"
+  },
+  "historical_browser_runs": {
+    "rust-browser": "Initial matched transport measurement before TCP_NODELAY",
+    "rust-browser-default": "Earlier normal-view run under heavy background load; not final normal-view figures"
+  },
+  "browser_aggregate": "analysis.json; reproducible with summarize_browser.py",
+  "final_live_launch": {
+    "url": "http://127.0.0.1:8082",
+    "http_scene": "passed",
+    "websocket_catalog": 123,
+    "backend": "mujoco"
+  }
+}

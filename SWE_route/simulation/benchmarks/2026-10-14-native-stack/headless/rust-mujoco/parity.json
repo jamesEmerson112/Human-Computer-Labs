@@ -1,0 +1,22 @@
+{
+  "frames_compared": 114582,
+  "unique_gesture_frames": 38194,
+  "tolerance": 1e-09,
+  "max_absolute_differences": {
+    "desired_rad.base_yaw_joint": 0.0,
+    "desired_rad.shoulder_pitch_joint": 0.0,
+    "desired_rad.elbow_pitch_joint": 0.0,
+    "desired_rad.neck_yaw_joint": 0.0,
+    "desired_rad.head_pitch_joint": 0.0,
+    "actual_rad.base_yaw_joint": 0.0,
+    "actual_rad.shoulder_pitch_joint": 0.0,
+    "actual_rad.elbow_pitch_joint": 0.0,
+    "actual_rad.neck_yaw_joint": 0.0,
+    "actual_rad.head_pitch_joint": 0.0,
+    "velocity_rad_s.base_yaw_joint": 0.0,
+    "velocity_rad_s.shoulder_pitch_joint": 0.0,
+    "velocity_rad_s.elbow_pitch_joint": 0.0,
+    "velocity_rad_s.neck_yaw_joint": 0.0,
+    "velocity_rad_s.head_pitch_joint": 0.0
+  }
+}

@@ -1,0 +1,1279 @@
+{
+  "timestamp_utc": "2026-10-14T17:53:45.052332+00:00",
+  "purpose": "Functional verification only; not a performance measurement",
+  "executable_sha256": "98ea7b75ecc038f0b29ec5a34db41b889a9a1cd7ef5607256aa61b982b8c9471",
+  "harness_sha256": "aba876fb59afaaa50280158287cf9121f02f08ffd7dd3bd13c229090be92c342",
+  "checks": [
+    "Loads all 123 gestures, five joint controls, rendered scene, and fresh controller state",
+    "All six core emotion gestures play through the UI and Stop interrupts each",
+    "Search selects Nod; Escape interrupts it; clearing search restores the catalog"
+  ],
+  "browser_version": "Chrome/155.0.8059.41",
+  "viewport": {
+    "width": 1424,
+    "height": 905,
+    "dpr": 1
+  },
+  "canvas": {
+    "width": 1084,
+    "height": 741
+  },
+  "passed": false,
+  "failure": "AssertionError('Browser condition did not become true: Math.abs(lampVerification.latest.requested[\"head_pitch_joint\"] - 0.436) < 0.001')",
+  "browser_probe": {
+    "errors": [],
+    "commands": [
+      {
+        "v": 1,
+        "id": "1-1",
+        "type": "play",
+        "name": "emotion_anger"
+      },
+      {
+        "v": 1,
+        "id": "1-2",
+        "type": "stop"
+      },
+      {
+        "v": 1,
+        "id": "1-3",
+        "type": "play",
+        "name": "emotion_disgust"
+      },
+      {
+        "v": 1,
+        "id": "1-4",
+        "type": "stop"
+      },
+      {
+        "v": 1,
+        "id": "1-5",
+        "type": "play",
+        "name": "emotion_fear"
+      },
+      {
+        "v": 1,
+        "id": "1-6",
+        "type": "stop"
+      },
+      {
+        "v": 1,
+        "id": "1-7",
+        "type": "play",
+        "name": "emotion_happy"
+      },
+      {
+        "v": 1,
+        "id": "1-8",
+        "type": "stop"
+      },
+      {
+        "v": 1,
+        "id": "1-9",
+        "type": "play",
+        "name": "emotion_sad"
+      },
+      {
+        "v": 1,
+        "id": "1-10",
+        "type": "stop"
+      },
+      {
+        "v": 1,
+        "id": "1-11",
+        "type": "play",
+        "name": "emotion_surprise"
+      },
+      {
+        "v": 1,
+        "id": "1-12",
+        "type": "stop"
+      },
+      {
+        "v": 1,
+        "id": "1-13",
+        "type": "play",
+        "name": "nod"
+      },
+      {
+        "v": 1,
+        "id": "1-14",
+        "type": "stop"
+      },
+      {
+        "v": 1,
+        "id": "1-15",
+        "type": "pace",
+        "speed": 0.35
+      },
+      {
+        "v": 1,
+        "id": "1-16",
+        "type": "pace",
+        "speed": 0.5
+      },
+      {
+        "v": 1,
+        "id": "1-17",
+        "type": "targets",
+        "targets": {
+          "base_yaw_joint": 0.15
+        }
+      },
+      {
+        "v": 1,
+        "id": "1-18",
+        "type": "targets",
+        "targets": {
+          "shoulder_pitch_joint": 0.1
+        }
+      },
+      {
+        "v": 1,
+        "id": "1-19",
+        "type": "targets",
+        "targets": {
+          "elbow_pitch_joint": -0.1
+        }
+      },
+      {
+        "v": 1,
+        "id": "1-20",
+        "type": "targets",
+        "targets": {
+          "neck_yaw_joint": 0.1
+        }
+      },
+      {
+        "v": 1,
+        "id": "1-21",
+        "type": "targets",
+        "targets": {
+          "head_pitch_joint": 0.435
+        }
+      }
+    ],
+    "acks": [
+      {
+        "id": "1-1",
+        "ok": true,
+        "server_time_s": 3.1927175,
+        "type": "ack",
+        "v": 1
+      },
+      {
+        "id": "1-2",
+        "ok": true,
+        "server_time_s": 3.4491344,
+        "type": "ack",
+        "v": 1
+      },
+      {
+        "id": "1-3",
+        "ok": true,
+        "server_time_s": 3.555432,
+        "type": "ack",
+        "v": 1
+      },
+      {
+        "id": "1-4",
+        "ok": true,
+        "server_time_s": 3.8086311999999998,
+        "type": "ack",
+        "v": 1
+      },
+      {
+        "id": "1-5",
+        "ok": true,
+        "server_time_s": 3.9175563,
+        "type": "ack",
+        "v": 1
+      },
+      {
+        "id": "1-6",
+        "ok": true,
+        "server_time_s": 4.1718891,
+        "type": "ack",
+        "v": 1
+      },
+      {
+        "id": "1-7",
+        "ok": true,
+        "server_time_s": 4.2778208,
+        "type": "ack",
+        "v": 1
+      },
+      {
+        "id": "1-8",
+        "ok": true,
+        "server_time_s": 4.532271,
+        "type": "ack",
+        "v": 1
+      },
+      {
+        "id": "1-9",
+        "ok": true,
+        "server_time_s": 4.6385981,
+        "type": "ack",
+        "v": 1
+      },
+      {
+        "id": "1-10",
+        "ok": true,
+        "server_time_s": 4.8919989,
+        "type": "ack",
+        "v": 1
+      },
+      {
+        "id": "1-11",
+        "ok": true,
+        "server_time_s": 5.0349844,
+        "type": "ack",
+        "v": 1
+      },
+      {
+        "id": "1-12",
+        "ok": true,
+        "server_time_s": 5.2209096,
+        "type": "ack",
+        "v": 1
+      },
+      {
+        "id": "1-13",
+        "ok": true,
+        "server_time_s": 5.3426253,
+        "type": "ack",
+        "v": 1
+      },
+      {
+        "id": "1-14",
+        "ok": true,
+        "server_time_s": 5.4461939,
+        "type": "ack",
+        "v": 1
+      },
+      {
+        "id": "1-15",
+        "ok": true,
+        "server_time_s": 5.5584927,
+        "type": "ack",
+        "v": 1
+      },
+      {
+        "id": "1-16",
+        "ok": true,
+        "server_time_s": 5.6616729,
+        "type": "ack",
+        "v": 1
+      },
+      {
+        "id": "1-17",
+        "ok": true,
+        "server_time_s": 5.6631967,
+        "type": "ack",
+        "v": 1
+      },
+      {
+        "id": "1-18",
+        "ok": true,
+        "server_time_s": 6.1699006,
+        "type": "ack",
+        "v": 1
+      },
+      {
+        "id": "1-19",
+        "ok": true,
+        "server_time_s": 7.3875253,
+        "type": "ack",
+        "v": 1
+      },
+      {
+        "id": "1-20",
+        "ok": true,
+        "server_time_s": 8.1001748,
+        "type": "ack",
+        "v": 1
+      },
+      {
+        "id": "1-21",
+        "ok": true,
+        "server_time_s": 8.6081901,
+        "type": "ack",
+        "v": 1
+      }
+    ],
+    "hellos": [
+      {
+        "control_hz": 30,
+        "gestures": [
+          {
+            "description": "A slow coordinated bow for comparing motion under gravity.",
+            "group": "",
+            "label": "Bow",
+            "name": "bow"
+          },
+          {
+            "description": "Move the shoulder, elbow, and head together, pause, then return.",
+            "group": "",
+            "label": "Curious lean",
+            "name": "curious"
+          },
+          {
+            "description": "A squared stance with two firm downward accents.",
+            "group": "Anger",
+            "label": "Anger",
+            "name": "emotion_anger"
+          },
+          {
+            "description": "Advance the arm in two deliberate pushes.",
+            "group": "Anger",
+            "label": "Anger / Aggressive",
+            "name": "emotion_anger_aggressive"
+          },
+          {
+            "description": "Present a forward stance and sustain a rigid sideways stare.",
+            "group": "Anger",
+            "label": "Anger / Aggressive / Hostile",
+            "name": "emotion_anger_aggressive_hostile"
+          },
+          {
+            "description": "Flinch back and answer with a sharp forward head accent.",
+            "group": "Anger",
+            "label": "Anger / Aggressive / Provoked",
+            "name": "emotion_anger_aggressive_provoked"
+          },
+          {
+            "description": "Lean in and inspect with a measured head sweep.",
+            "group": "Anger",
+            "label": "Anger / Critical",
+            "name": "emotion_anger_critical"
+          },
+          {
+            "description": "Offer an exaggerated slow nod from a tilted, sideways stance.",
+            "group": "Anger",
+            "label": "Anger / Critical / Sarcastic",
+            "name": "emotion_anger_critical_sarcastic"
+          },
+          {
+            "description": "Lift the shade, glance sideways, and give only a partial nod.",
+            "group": "Anger",
+            "label": "Anger / Critical / Skeptical",
+            "name": "emotion_anger_critical_skeptical"
+          },
+          {
+            "description": "Turn the body away while slowly breaking the head's forward gaze.",
+            "group": "Anger",
+            "label": "Anger / Distant",
+            "name": "emotion_anger_distant"
+          },
+          {
+            "description": "Look sideways, pause, and make a small checking glance.",
+            "group": "Anger",
+            "label": "Anger / Distant / Suspicious",
+            "name": "emotion_anger_distant_suspicious"
+          },
+          {
+            "description": "Fold inward and let the head follow the body away.",
+            "group": "Anger",
+            "label": "Anger / Distant / Withdrawn",
+            "name": "emotion_anger_distant_withdrawn"
+          },
+          {
+            "description": "Shake the head, droop briefly, and recover.",
+            "group": "Anger",
+            "label": "Anger / Frustrated",
+            "name": "emotion_anger_frustrated"
+          },
+          {
+            "description": "Alternate a tense head lift with repeated forceful dips.",
+            "group": "Anger",
+            "label": "Anger / Frustrated / Infuriated",
+            "name": "emotion_anger_frustrated_infuriated"
+          },
+          {
+            "description": "Give two small dismissive neck flicks.",
+            "group": "Anger",
+            "label": "Anger / Frustrated / Irritated",
+            "name": "emotion_anger_frustrated_irritated"
+          },
+          {
+            "description": "Angle away and give a deliberate refusing head sweep.",
+            "group": "Anger",
+            "label": "Anger / Hateful",
+            "name": "emotion_anger_hateful"
+          },
+          {
+            "description": "Withdraw slowly and hold a low sideways look.",
+            "group": "Anger",
+            "label": "Anger / Hateful / Resentful",
+            "name": "emotion_anger_hateful_resentful"
+          },
+          {
+            "description": "Pull the arm inward quickly and turn the shade away.",
+            "group": "Anger",
+            "label": "Anger / Hateful / Violated",
+            "name": "emotion_anger_hateful_violated"
+          },
+          {
+            "description": "Pull back and lower the shade after a small flinch.",
+            "group": "Anger",
+            "label": "Anger / Hurt",
+            "name": "emotion_anger_hurt"
+          },
+          {
+            "description": "Fold down in two stages and linger low.",
+            "group": "Anger",
+            "label": "Anger / Hurt / Devastated",
+            "name": "emotion_anger_hurt_devastated"
+          },
+          {
+            "description": "Dip the shade and turn aside with a small hesitant glance.",
+            "group": "Anger",
+            "label": "Anger / Hurt / Embarrassed",
+            "name": "emotion_anger_hurt_embarrassed"
+          },
+          {
+            "description": "Lean forward with two emphatic head dips.",
+            "group": "Anger",
+            "label": "Anger / Mad",
+            "name": "emotion_anger_mad"
+          },
+          {
+            "description": "Deliver three tightly spaced downward accents.",
+            "group": "Anger",
+            "label": "Anger / Mad / Enraged",
+            "name": "emotion_anger_mad_enraged"
+          },
+          {
+            "description": "Make a broad, brisk refusing sweep from a forward stance.",
+            "group": "Anger",
+            "label": "Anger / Mad / Furious",
+            "name": "emotion_anger_mad_furious"
+          },
+          {
+            "description": "Draw back, brace, and check to one side.",
+            "group": "Anger",
+            "label": "Anger / Threatened",
+            "name": "emotion_anger_threatened"
+          },
+          {
+            "description": "Begin to face forward, retreat, and try a smaller approach.",
+            "group": "Anger",
+            "label": "Anger / Threatened / Insecure",
+            "name": "emotion_anger_threatened_insecure"
+          },
+          {
+            "description": "Turn toward a rival while keeping the head in a fixed sideways watch.",
+            "group": "Anger",
+            "label": "Anger / Threatened / Jealous",
+            "name": "emotion_anger_threatened_jealous"
+          },
+          {
+            "description": "Recoil slightly and turn the shade away.",
+            "group": "Disgust",
+            "label": "Disgust",
+            "name": "emotion_disgust"
+          },
+          {
+            "description": "Rotate away and keep the shade averted through the pause.",
+            "group": "Disgust",
+            "label": "Disgust / Avoidance",
+            "name": "emotion_disgust_avoidance"
+          },
+          {
+            "description": "Pull back first, then rotate away from the imagined stimulus.",
+            "group": "Disgust",
+            "label": "Disgust / Avoidance / Aversion",
+            "name": "emotion_disgust_avoidance_aversion"
+          },
+          {
+            "description": "Start an approach, pause halfway, and draw back.",
+            "group": "Disgust",
+            "label": "Disgust / Avoidance / Hesitant",
+            "name": "emotion_disgust_avoidance_hesitant"
+          },
+          {
+            "description": "Fold into a low, uncomfortable posture in two stages.",
+            "group": "Disgust",
+            "label": "Disgust / Awful",
+            "name": "emotion_disgust_awful"
+          },
+          {
+            "description": "Turn firmly aside and punctuate the refusal with a head dip.",
+            "group": "Disgust",
+            "label": "Disgust / Awful / Detestable",
+            "name": "emotion_disgust_awful_detestable"
+          },
+          {
+            "description": "Snap away and make two brief neck tremors.",
+            "group": "Disgust",
+            "label": "Disgust / Awful / Revulsion",
+            "name": "emotion_disgust_awful_revulsion"
+          },
+          {
+            "description": "Let an initially raised head settle into a slow droop.",
+            "group": "Disgust",
+            "label": "Disgust / Disappointed",
+            "name": "emotion_disgust_disappointed"
+          },
+          {
+            "description": "Recoil sharply while swinging the shade aside.",
+            "group": "Disgust",
+            "label": "Disgust / Disappointed / Repugnant",
+            "name": "emotion_disgust_disappointed_repugnant"
+          },
+          {
+            "description": "Contract the arm, shudder twice, and avert the head.",
+            "group": "Disgust",
+            "label": "Disgust / Disappointed / Revolted",
+            "name": "emotion_disgust_disappointed_revolted"
+          },
+          {
+            "description": "Make a measured refusal with the shade lowered.",
+            "group": "Disgust",
+            "label": "Disgust / Disapproval",
+            "name": "emotion_disgust_disapproval"
+          },
+          {
+            "description": "Inspect slowly, dip once, and maintain an angled stance.",
+            "group": "Disgust",
+            "label": "Disgust / Disapproval / Judgmental",
+            "name": "emotion_disgust_disapproval_judgmental"
+          },
+          {
+            "description": "Pull away with a broad, lingering refusal.",
+            "group": "Disgust",
+            "label": "Disgust / Disapproval / Loathing",
+            "name": "emotion_disgust_disapproval_loathing"
+          },
+          {
+            "description": "Draw the arm inward and check to each side.",
+            "group": "Fear",
+            "label": "Fear",
+            "name": "emotion_fear"
+          },
+          {
+            "description": "Make several small checking turns from a withdrawn stance.",
+            "group": "Fear",
+            "label": "Fear / Anxious",
+            "name": "emotion_fear_anxious"
+          },
+          {
+            "description": "Make two tense tremors and fold the head down.",
+            "group": "Fear",
+            "label": "Fear / Anxious / Overwhelmed",
+            "name": "emotion_fear_anxious_overwhelmed"
+          },
+          {
+            "description": "Search side to side with long uncertain pauses.",
+            "group": "Fear",
+            "label": "Fear / Anxious / Worried",
+            "name": "emotion_fear_anxious_worried"
+          },
+          {
+            "description": "Fold low and turn the shade away.",
+            "group": "Fear",
+            "label": "Fear / Humiliated",
+            "name": "emotion_fear_humiliated"
+          },
+          {
+            "description": "Pull back from an attempted approach and lower the head.",
+            "group": "Fear",
+            "label": "Fear / Humiliated / Disrespected",
+            "name": "emotion_fear_humiliated_disrespected"
+          },
+          {
+            "description": "Flinch twice and tuck the shade aside.",
+            "group": "Fear",
+            "label": "Fear / Humiliated / Ridiculed",
+            "name": "emotion_fear_humiliated_ridiculed"
+          },
+          {
+            "description": "Alternate a tentative approach with a small retreat.",
+            "group": "Fear",
+            "label": "Fear / Insecure",
+            "name": "emotion_fear_insecure"
+          },
+          {
+            "description": "Attempt two small lifts before returning to a guarded pose.",
+            "group": "Fear",
+            "label": "Fear / Insecure / Inadequate",
+            "name": "emotion_fear_insecure_inadequate"
+          },
+          {
+            "description": "Bow cautiously while keeping the head turned partly aside.",
+            "group": "Fear",
+            "label": "Fear / Insecure / Inferior",
+            "name": "emotion_fear_insecure_inferior"
+          },
+          {
+            "description": "Offer a cautious approach and withdraw into a lowered pose.",
+            "group": "Fear",
+            "label": "Fear / Rejected",
+            "name": "emotion_fear_rejected"
+          },
+          {
+            "description": "Rotate away and hold a withdrawn side-facing stance.",
+            "group": "Fear",
+            "label": "Fear / Rejected / Alienated",
+            "name": "emotion_fear_rejected_alienated"
+          },
+          {
+            "description": "Try to lift toward the subject, then fold back.",
+            "group": "Fear",
+            "label": "Fear / Rejected / Inadequate",
+            "name": "emotion_fear_rejected_inadequate"
+          },
+          {
+            "description": "Retreat promptly and hold a braced, watchful posture.",
+            "group": "Fear",
+            "label": "Fear / Scared",
+            "name": "emotion_fear_scared"
+          },
+          {
+            "description": "Flinch back twice while keeping the head lifted to watch.",
+            "group": "Fear",
+            "label": "Fear / Scared / Frightened",
+            "name": "emotion_fear_scared_frightened"
+          },
+          {
+            "description": "Pull tightly inward with several brief nervous head tremors.",
+            "group": "Fear",
+            "label": "Fear / Scared / Terrified",
+            "name": "emotion_fear_scared_terrified"
+          },
+          {
+            "description": "Lower the arm and head into a small sustained bow.",
+            "group": "Fear",
+            "label": "Fear / Submissive",
+            "name": "emotion_fear_submissive"
+          },
+          {
+            "description": "Contract the arm in two stages and keep the shade low.",
+            "group": "Fear",
+            "label": "Fear / Submissive / Insignificant",
+            "name": "emotion_fear_submissive_insignificant"
+          },
+          {
+            "description": "Sink slowly into the smallest posture in this branch.",
+            "group": "Fear",
+            "label": "Fear / Submissive / Worthless",
+            "name": "emotion_fear_submissive_worthless"
+          },
+          {
+            "description": "Lift the shade and make two welcoming bobs.",
+            "group": "Happy",
+            "label": "Happy",
+            "name": "emotion_happy"
+          },
+          {
+            "description": "Settle into a gentle, relaxed side-to-side movement.",
+            "group": "Happy",
+            "label": "Happy / Accepted",
+            "name": "emotion_happy_accepted"
+          },
+          {
+            "description": "Lift into a relaxed open pose and pause.",
+            "group": "Happy",
+            "label": "Happy / Accepted / Fulfilled",
+            "name": "emotion_happy_accepted_fulfilled"
+          },
+          {
+            "description": "Offer a measured acknowledgment and rise smoothly.",
+            "group": "Happy",
+            "label": "Happy / Accepted / Respected",
+            "name": "emotion_happy_accepted_respected"
+          },
+          {
+            "description": "Lean toward the subject and examine it with a small head sweep.",
+            "group": "Happy",
+            "label": "Happy / Interested",
+            "name": "emotion_happy_interested"
+          },
+          {
+            "description": "Make three small head bobs from a sideways glance.",
+            "group": "Happy",
+            "label": "Happy / Interested / Amused",
+            "name": "emotion_happy_interested_amused"
+          },
+          {
+            "description": "Lean closer and check two viewing angles.",
+            "group": "Happy",
+            "label": "Happy / Interested / Inquisitive",
+            "name": "emotion_happy_interested_inquisitive"
+          },
+          {
+            "description": "Approach closely and linger with a small sideways nod.",
+            "group": "Happy",
+            "label": "Happy / Intimate",
+            "name": "emotion_happy_intimate"
+          },
+          {
+            "description": "Hide to one side, peek back, and add a quick bob.",
+            "group": "Happy",
+            "label": "Happy / Intimate / Playful",
+            "name": "emotion_happy_intimate_playful"
+          },
+          {
+            "description": "Offer a small careful approach and a soft nod.",
+            "group": "Happy",
+            "label": "Happy / Intimate / Sensitive",
+            "name": "emotion_happy_intimate_sensitive"
+          },
+          {
+            "description": "Bounce twice with an open, lifted head.",
+            "group": "Happy",
+            "label": "Happy / Joyful",
+            "name": "emotion_happy_joyful"
+          },
+          {
+            "description": "Alternate three lively arm and head bobs.",
+            "group": "Happy",
+            "label": "Happy / Joyful / Ecstatic",
+            "name": "emotion_happy_joyful_ecstatic"
+          },
+          {
+            "description": "Unfold and sweep outward into a broad raised pose.",
+            "group": "Happy",
+            "label": "Happy / Joyful / Liberated",
+            "name": "emotion_happy_joyful_liberated"
+          },
+          {
+            "description": "Lift into an alert raised pose with a small confirming nod.",
+            "group": "Happy",
+            "label": "Happy / Optimistic",
+            "name": "emotion_happy_optimistic"
+          },
+          {
+            "description": "Pause briefly, lift the shade, and follow with an upward accent.",
+            "group": "Happy",
+            "label": "Happy / Optimistic / Inspired",
+            "name": "emotion_happy_optimistic_inspired"
+          },
+          {
+            "description": "Sweep the body and head outward into an inviting pose.",
+            "group": "Happy",
+            "label": "Happy / Optimistic / Open",
+            "name": "emotion_happy_optimistic_open"
+          },
+          {
+            "description": "Rise and settle through a slow, shallow breathing-like motion.",
+            "group": "Happy",
+            "label": "Happy / Peaceful",
+            "name": "emotion_happy_peaceful"
+          },
+          {
+            "description": "Raise the shade gradually, as if looking toward a possibility.",
+            "group": "Happy",
+            "label": "Happy / Peaceful / Hopeful",
+            "name": "emotion_happy_peaceful_hopeful"
+          },
+          {
+            "description": "Lean close and make a gentle small head dip.",
+            "group": "Happy",
+            "label": "Happy / Peaceful / Loving",
+            "name": "emotion_happy_peaceful_loving"
+          },
+          {
+            "description": "Expand forward in two controlled, deliberate movements.",
+            "group": "Happy",
+            "label": "Happy / Powerful",
+            "name": "emotion_happy_powerful"
+          },
+          {
+            "description": "Begin with a brief retreat, then move decisively forward.",
+            "group": "Happy",
+            "label": "Happy / Powerful / Courageous",
+            "name": "emotion_happy_powerful_courageous"
+          },
+          {
+            "description": "Lean in and draw the head back in an inviting challenge.",
+            "group": "Happy",
+            "label": "Happy / Powerful / Provocative",
+            "name": "emotion_happy_powerful_provocative"
+          },
+          {
+            "description": "Raise the shade deliberately and hold a tall presentation.",
+            "group": "Happy",
+            "label": "Happy / Proud",
+            "name": "emotion_happy_proud"
+          },
+          {
+            "description": "Lean forward with one steady, decisive nod.",
+            "group": "Happy",
+            "label": "Happy / Proud / Confident",
+            "name": "emotion_happy_proud_confident"
+          },
+          {
+            "description": "Turn out to one side and hold the head high.",
+            "group": "Happy",
+            "label": "Happy / Proud / Important",
+            "name": "emotion_happy_proud_important"
+          },
+          {
+            "description": "Lower the arm and shade gradually, then recover slowly.",
+            "group": "Sad",
+            "label": "Sad",
+            "name": "emotion_sad"
+          },
+          {
+            "description": "Look slowly to either side before settling into a droop.",
+            "group": "Sad",
+            "label": "Sad / Abandoned",
+            "name": "emotion_sad_abandoned"
+          },
+          {
+            "description": "Offer a small forward movement, wait, and let it fall back.",
+            "group": "Sad",
+            "label": "Sad / Abandoned / Ignored",
+            "name": "emotion_sad_abandoned_ignored"
+          },
+          {
+            "description": "Draw inward and hold a protective, lowered posture.",
+            "group": "Sad",
+            "label": "Sad / Abandoned / Victimized",
+            "name": "emotion_sad_abandoned_victimized"
+          },
+          {
+            "description": "Let the head drift lazily from side to side.",
+            "group": "Sad",
+            "label": "Sad / Bored",
+            "name": "emotion_sad_bored"
+          },
+          {
+            "description": "Start a weak head lift and abandon it halfway.",
+            "group": "Sad",
+            "label": "Sad / Bored / Apathetic",
+            "name": "emotion_sad_bored_apathetic"
+          },
+          {
+            "description": "Make a shallow, unhurried turn with little head response.",
+            "group": "Sad",
+            "label": "Sad / Bored / Indifferent",
+            "name": "emotion_sad_bored_indifferent"
+          },
+          {
+            "description": "Settle into a deep droop with a very slow recovery.",
+            "group": "Sad",
+            "label": "Sad / Depressed",
+            "name": "emotion_sad_depressed"
+          },
+          {
+            "description": "Move into a subdued low pose and remain nearly still.",
+            "group": "Sad",
+            "label": "Sad / Depressed / Empty",
+            "name": "emotion_sad_depressed_empty"
+          },
+          {
+            "description": "Make a small, lowered bow while turning partly aside.",
+            "group": "Sad",
+            "label": "Sad / Depressed / Inferior",
+            "name": "emotion_sad_depressed_inferior"
+          },
+          {
+            "description": "Fold down in two heavy stages with a long still pause.",
+            "group": "Sad",
+            "label": "Sad / Despair",
+            "name": "emotion_sad_despair"
+          },
+          {
+            "description": "Attempt a small lift, then let the head and arm sink again.",
+            "group": "Sad",
+            "label": "Sad / Despair / Powerless",
+            "name": "emotion_sad_despair_powerless"
+          },
+          {
+            "description": "Make a small retreat and a tentative side check.",
+            "group": "Sad",
+            "label": "Sad / Despair / Vulnerable",
+            "name": "emotion_sad_despair_vulnerable"
+          },
+          {
+            "description": "Dip into a small apologetic bow and hold the lowered gaze.",
+            "group": "Sad",
+            "label": "Sad / Guilty",
+            "name": "emotion_sad_guilty"
+          },
+          {
+            "description": "Lower the shade and tuck it to one side.",
+            "group": "Sad",
+            "label": "Sad / Guilty / Ashamed",
+            "name": "emotion_sad_guilty_ashamed"
+          },
+          {
+            "description": "Make a deeper, slower bow with a long pause.",
+            "group": "Sad",
+            "label": "Sad / Guilty / Remorseful",
+            "name": "emotion_sad_guilty_remorseful"
+          },
+          {
+            "description": "Search widely and slowly, then lower the shade.",
+            "group": "Sad",
+            "label": "Sad / Lonely",
+            "name": "emotion_sad_lonely"
+          },
+          {
+            "description": "Reach toward one side, wait for a response, and withdraw.",
+            "group": "Sad",
+            "label": "Sad / Lonely / Abandoned",
+            "name": "emotion_sad_lonely_abandoned"
+          },
+          {
+            "description": "Turn outward slowly and linger with the head lowered.",
+            "group": "Sad",
+            "label": "Sad / Lonely / Isolated",
+            "name": "emotion_sad_lonely_isolated"
+          },
+          {
+            "description": "Pull back and raise the shade, then freeze briefly.",
+            "group": "Surprise",
+            "label": "Surprise",
+            "name": "emotion_surprise"
+          },
+          {
+            "description": "Lift the shade gradually and hold the upward gaze.",
+            "group": "Surprise",
+            "label": "Surprise / Amazed",
+            "name": "emotion_surprise_amazed"
+          },
+          {
+            "description": "Recoil quickly into a high-headed frozen pose.",
+            "group": "Surprise",
+            "label": "Surprise / Amazed / Astonished",
+            "name": "emotion_surprise_amazed_astonished"
+          },
+          {
+            "description": "Unfold slowly with the shade raised and linger.",
+            "group": "Surprise",
+            "label": "Surprise / Amazed / Awe",
+            "name": "emotion_surprise_amazed_awe"
+          },
+          {
+            "description": "Alternate two uneven head turns with a questioning dip.",
+            "group": "Surprise",
+            "label": "Surprise / Confused",
+            "name": "emotion_surprise_confused"
+          },
+          {
+            "description": "Begin with a hopeful lift and settle into a droop.",
+            "group": "Surprise",
+            "label": "Surprise / Confused / Disillusioned",
+            "name": "emotion_surprise_confused_disillusioned"
+          },
+          {
+            "description": "Check one side twice, then pause with the shade tilted upward.",
+            "group": "Surprise",
+            "label": "Surprise / Confused / Perplexed",
+            "name": "emotion_surprise_confused_perplexed"
+          },
+          {
+            "description": "Alternate brisk head and arm bobs with a raised gaze.",
+            "group": "Surprise",
+            "label": "Surprise / Excited",
+            "name": "emotion_surprise_excited"
+          },
+          {
+            "description": "Lean toward the subject with two expectant head accents.",
+            "group": "Surprise",
+            "label": "Surprise / Excited / Eager",
+            "name": "emotion_surprise_excited_eager"
+          },
+          {
+            "description": "Make three broad alternating bobs and a quick recovery.",
+            "group": "Surprise",
+            "label": "Surprise / Excited / Energetic",
+            "name": "emotion_surprise_excited_energetic"
+          },
+          {
+            "description": "Make a compact quick retreat and freeze.",
+            "group": "Surprise",
+            "label": "Surprise / Startled",
+            "name": "emotion_surprise_startled"
+          },
+          {
+            "description": "Flinch backward and let the raised head fall.",
+            "group": "Surprise",
+            "label": "Surprise / Startled / Dismayed",
+            "name": "emotion_surprise_startled_dismayed"
+          },
+          {
+            "description": "Retreat farther with a raised head and a long still pause.",
+            "group": "Surprise",
+            "label": "Surprise / Startled / Shocked",
+            "name": "emotion_surprise_startled_shocked"
+          },
+          {
+            "description": "Quick alternating head and neck motion to reveal lag and overshoot.",
+            "group": "",
+            "label": "Excited",
+            "name": "excited"
+          },
+          {
+            "description": "Hold the starting pose for two playback seconds; exposes gravity sag.",
+            "group": "",
+            "label": "Hold still",
+            "name": "idle_hold"
+          },
+          {
+            "description": "Exercise each joint near its soft limits. Contacts are expected; simulation diagnostic only.",
+            "group": "",
+            "label": "Limit sweep (diagnostic)",
+            "name": "limit_sweep"
+          },
+          {
+            "description": "Tilt the head, pause, then return. Reverse the tilt near a joint limit.",
+            "group": "",
+            "label": "Nod",
+            "name": "nod"
+          },
+          {
+            "description": "Hold an offset arm pose to measure steady tracking error and effort.",
+            "group": "",
+            "label": "Reach and hold",
+            "name": "reach_hold"
+          },
+          {
+            "description": "Look left and right with the base and neck, then return.",
+            "group": "",
+            "label": "Look around",
+            "name": "scan"
+          },
+          {
+            "description": "Swivel the neck side to side while keeping the lower arm still.",
+            "group": "",
+            "label": "Shake head",
+            "name": "shake"
+          }
+        ],
+        "limits": {
+          "base_yaw_joint": {
+            "lower": -2.45,
+            "upper": 2.45,
+            "velocity": 1.5
+          },
+          "elbow_pitch_joint": {
+            "lower": -1.7,
+            "upper": 0.3,
+            "velocity": 1.15
+          },
+          "head_pitch_joint": {
+            "lower": -0.8,
+            "upper": 0.6,
+            "velocity": 1.45
+          },
+          "neck_yaw_joint": {
+            "lower": -1.25,
+            "upper": 1.25,
+            "velocity": 1.6
+          },
+          "shoulder_pitch_joint": {
+            "lower": -0.65,
+            "upper": 0.95,
+            "velocity": 0.95
+          }
+        },
+        "mujoco_version": "3.14.0",
+        "physics_hz": 240,
+        "type": "hello",
+        "v": 1
+      }
+    ],
+    "states": 503,
+    "latest": {
+      "activity": "Ready",
+      "actual": {
+        "base_yaw_joint": 0.15010750134645434,
+        "elbow_pitch_joint": -0.12851133918026791,
+        "head_pitch_joint": 0.4640449035735513,
+        "neck_yaw_joint": 0.09766109023519909,
+        "shoulder_pitch_joint": 0.08679998987392946
+      },
+      "backend": "mujoco",
+      "diagnostics": {
+        "contact_force_n": 0,
+        "contacts": 0,
+        "max_effort_nm": 0.8891061736705534,
+        "pairs": [],
+        "penetration_m": 0,
+        "tracking_error_rad": 0.02904490357355133,
+        "warnings": 0
+      },
+      "light": {
+        "brightness": 5,
+        "enabled": true
+      },
+      "links": {
+        "base_link": {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "quaternion": [
+            0,
+            0,
+            0,
+            1
+          ]
+        },
+        "camera_link": {
+          "position": [
+            -0.04772772623501623,
+            -0.013828616271963936,
+            0.586774156717256
+          ],
+          "quaternion": [
+            -0.24842271508554906,
+            -0.02893988791101773,
+            0.9607411359049735,
+            -0.12010456817808184
+          ]
+        },
+        "head_gimbal_link": {
+          "position": [
+            0.0116639855523928,
+            0.0017641215561518566,
+            0.723629887682331
+          ],
+          "quaternion": [
+            -0.24842271508554906,
+            -0.02893988791101773,
+            0.9607411359049735,
+            -0.12010456817808184
+          ]
+        },
+        "lamp_head_link": {
+          "position": [
+            -0.04767656107412651,
+            -0.013383888766000572,
+            0.6897294848920122
+          ],
+          "quaternion": [
+            -0.24842271508554906,
+            -0.02893988791101773,
+            0.9607411359049735,
+            -0.12010456817808184
+          ]
+        },
+        "light_emitter_link": {
+          "position": [
+            -0.14346915777122196,
+            -0.037837105428903776,
+            0.635004548959069
+          ],
+          "quaternion": [
+            -0.24842271508554906,
+            -0.02893988791101773,
+            0.9607411359049735,
+            -0.12010456817808184
+          ]
+        },
+        "lower_arm_link": {
+          "position": [
+            0,
+            0,
+            0.11499999999999999
+          ],
+          "quaternion": [
+            -0.0032532536253482743,
+            0.04326423002278522,
+            0.07491270005634432,
+            0.9962458080773303
+          ]
+        },
+        "neck_link": {
+          "position": [
+            0.014550109869513498,
+            0.002200633938535783,
+            0.6536907731371343
+          ],
+          "quaternion": [
+            0.0005468003240789393,
+            -0.020846992952058184,
+            0.12354078443555133,
+            0.9921203447542598
+          ]
+        },
+        "speaker_link": {
+          "position": [
+            0.105,
+            -0.105,
+            0.045
+          ],
+          "quaternion": [
+            0,
+            0,
+            -0.38268289803626016,
+            0.9238797538373538
+          ]
+        },
+        "turntable_link": {
+          "position": [
+            0,
+            0,
+            0.06
+          ],
+          "quaternion": [
+            0,
+            0,
+            0.07498330673478365,
+            0.9971847891494923
+          ]
+        },
+        "upper_arm_link": {
+          "position": [
+            0.02485769671637313,
+            0.003759606732764091,
+            0.4039082211900031
+          ],
+          "quaternion": [
+            0.0015637140852978976,
+            -0.020795453926207463,
+            0.0749669999876085,
+            0.9969679296783425
+          ]
+        },
+        "world": {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "quaternion": [
+            0,
+            0,
+            0,
+            1
+          ]
+        }
+      },
+      "requested": {
+        "base_yaw_joint": 0.1501075013547622,
+        "elbow_pitch_joint": -0.119620278670991,
+        "head_pitch_joint": 0.435,
+        "neck_yaw_joint": 0.09773652804443217,
+        "shoulder_pitch_joint": 0.08965649960641946
+      },
+      "sequence": 558,
+      "server_time_s": 18.6027796,
+      "simulation_time_s": 18.599999999999266,
+      "speed": 0.5,
+      "timing": {
+        "catchup_steps": 1,
+        "dropped_time_s": 0,
+        "loop_lag_s": 0.0025610000000002783,
+        "tick_compute_ms": 0.2096
+      },
+      "type": "state",
+      "v": 1,
+      "velocity": {
+        "base_yaw_joint": 4.506339012639784e-12,
+        "elbow_pitch_joint": -2.1792209485873826e-08,
+        "head_pitch_joint": -7.107127464979968e-07,
+        "neck_yaw_joint": -2.0151340230124176e-09,
+        "shoulder_pitch_joint": -3.190945557365255e-07
+      }
+    }
+  },
+  "page_text": "\u2197\nLamp playground\nA little motion. A lot of character.\nConnected\nLIVE STAGE\nMeet your lamp.\n\nPick a feeling. See it move.\n\nReset view\nLight view\nAxes\n\u2922 Drag to orbit \u00b7 scroll to zoom\n75 fps\nNOW PLAYING\nReady\nReset pose\n\u25a0 Stop\nGesture library\n123 clips\n\nEvery feeling has a movement.\n\nEmotion family\nAll families\nOriginal \u00b7 9\nAnger \u00b7 25\nDisgust \u00b7 13\nFear \u00b7 19\nHappy \u00b7 25\nSad \u00b7 19\nSurprise \u00b7 13\nSearch gestures\nGesture\nBow\nCurious lean\nAnger\nAnger / Aggressive\nAnger / Aggressive / Hostile\nAnger / Aggressive / Provoked\nAnger / Critical\nAnger / Critical / Sarcastic\nAnger / Critical / Skeptical\nAnger / Distant\nAnger / Distant / Suspicious\nAnger / Distant / Withdrawn\nAnger / Frustrated\nAnger / Frustrated / Infuriated\nAnger / Frustrated / Irritated\nAnger / Hateful\nAnger / Hateful / Resentful\nAnger / Hateful / Violated\nAnger / Hurt\nAnger / Hurt / Devastated\nAnger / Hurt / Embarrassed\nAnger / Mad\nAnger / Mad / Enraged\nAnger / Mad / Furious\nAnger / Threatened\nAnger / Threatened / Insecure\nAnger / Threatened / Jealous\nDisgust\nDisgust / Avoidance\nDisgust / Avoidance / Aversion\nDisgust / Avoidance / Hesitant\nDisgust / Awful\nDisgust / Awful / Detestable\nDisgust / Awful / Revulsion\nDisgust / Disappointed\nDisgust / Disappointed / Repugnant\nDisgust / Disappointed / Revolted\nDisgust / Disapproval\nDisgust / Disapproval / Judgmental\nDisgust / Disapproval / Loathing\nFear\nFear / Anxious\nFear / Anxious / Overwhelmed\nFear / Anxious / Worried\nFear / Humiliated\nFear / Humiliated / Disrespected\nFear / Humiliated / Ridiculed\nFear / Insecure\nFear / Insecure / Inadequate\nFear / Insecure / Inferior\nFear / Rejected\nFear / Rejected / Alienated\nFear / Rejected / Inadequate\nFear / Scared\nFear / Scared / Frightened\nFear / Scared / Terrified\nFear / Submissive\nFear / Submissive / Insignificant\nFear / Submissive / Worthless\nHappy\nHappy / Accepted\nHappy / Accepted / Fulfilled\nHappy / Accepted / Respected\nHappy / Interested\nHappy / Interested / Amused\nHappy / Interested / Inquisitive\nHappy / Intimate\nHappy / Intimate / Playful\nHappy / Intimate / Sensitive\nHappy / Joyful\nHappy / Joyful / Ecstatic\nHappy / Joyful / Liberated\nHappy / Optimistic\nHappy / Optimistic / Inspired\nHappy / Optimistic / Open\nHappy / Peaceful\nHappy / Peaceful / Hopeful\nHappy / Peaceful / Loving\nHappy / Powerful\nHappy / Powerful / Courageous\nHappy / Powerful / Provocative\nHappy / Proud\nHappy / Proud / Confident\nHappy / Proud / Important\nSad\nSad / Abandoned\nSad / Abandoned / Ignored\nSad / Abandoned / Victimized\nSad / Bored\nSad / Bored / Apathetic\nSad / Bored / Indifferent\nSad / Depressed\nSad / Depressed / Empty\nSad / Depressed / Inferior\nSad / Despair\nSad / Despair / Powerless\nSad / Despair / Vulnerable\nSad / Guilty\nSad / Guilty / Ashamed\nSad / Guilty / Remorseful\nSad / Lonely\nSad / Lonely / Abandoned\nSad / Lonely / Isolated\nSurprise\nSurprise / Amazed\nSurprise / Amazed / Astonished\nSurprise / Amazed / Awe\nSurprise / Confused\nSurprise / Confused / Disillusioned\nSurprise / Confused / Perplexed\nSurprise / Excited\nSurprise / Excited / Eager\nSurprise / Excited / Energetic\nSurprise / Startled\nSurprise / Startled / Dismayed\nSurprise / Startled / Shocked\nExcited\nHold still\nLimit sweep (diagnostic)\nNod\nReach and hold\nLook around\nShake head\nOriginal gestures\nNod\n\nTilt the head, pause, then return. Reverse the tilt near a joint limit.\n\n\u25b6 Play Nod\nPace\n0.50\u00d7\nGentle\nFull speed\nLight\nLamp light enabled\nBrightness\n100%\nManual pose\n5 joints\nSession details\n240 Hz physics\n\nFive joints. Endless personality."
+}

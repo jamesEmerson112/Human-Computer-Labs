@@ -1,0 +1,29 @@
+{
+  "recorded_utc": "2026-10-15T00:23:20.357720+00:00",
+  "purpose": "Functional review UI verification. Exported review files in this folder contain synthetic test decisions, not human animation approvals. Do not use them to select animations for revision.",
+  "review_rule": "checked_pass_unchecked_fail",
+  "frontend_tests_passed": 14,
+  "typescript_build": "passed",
+  "accepted_review": "review-03/result.json",
+  "accepted_regression": "regression/result.json",
+  "review_check_groups": 9,
+  "regression_check_groups": 9,
+  "earlier_attempts": {
+    "review": "Headless CDP download session ended too early; no application defect",
+    "review-02": "All checks passed before improving screenshot checkpoints"
+  },
+  "source_sha256": {
+    "viewer/src/main.ts": "8834ca83adbca6dfbc514ed821d9172ff2a8d14f148ccc236ceadcbdc9841a93",
+    "viewer/src/style.css": "3e4e565e88f16769640cf1d22e87f854993d38ad6021d605826805f7edc786ee",
+    "viewer/src/reviews.ts": "3232a645683e2d2d8845892bbba77ea9d5057655c8fd7dd624008f6cdec9b871",
+    "viewer/tests/reviews.test.ts": "057b643c6e5b5f3aed960022597d795e3ef47a66d9e28fbfc42259a3be0f4084",
+    "tools/verify_animation_review.py": "6beb03eac64f0b6fb1db13381e56e1c54a974dae0dbcddcbaafe679ccd673082"
+  },
+  "viewer_dist_sha256": {
+    "index.html": "05094d1a9a35455604fdaae02eac8b3a75cf6157813cff7dc581393abd0ba97d",
+    "static\\index-B-SEciCV.js": "6ac897dfad7e4ae0dbcc22e3ab00789182f3cfb13dc0ac0be217d96917988374",
+    "static\\index-C4q4EwlS.css": "85a8127f3a529e72e86b5d41060828394bf463fcc27669e9443f539dd0a78578"
+  },
+  "live_url": "http://127.0.0.1:8082",
+  "runtime_changes": "None; existing native server serves updated static frontend."
+}

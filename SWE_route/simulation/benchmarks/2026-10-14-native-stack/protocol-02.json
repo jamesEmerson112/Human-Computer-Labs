@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "started_at_utc": "2026-10-14T17:52:22.443936+00:00",
+  "status": "failed",
+  "checks": [
+    "local HTML, bundled scripts/styles and mesh assets; HTTP Host/Origin and WebSocket Origin guards"
+  ],
+  "commands": [],
+  "state_messages": 2,
+  "platform": "win32",
+  "sha256": {
+    "tools\\verify_native_protocol.py": "cca3af86a7144580c8ba6a56094dcac32b87324a79c7afca4ff301210ae95bff",
+    "protocol\\commands.schema.json": "1992da2cc4b74036626bb0b6c3e412c6a2df906f89d7acf1b4c023d6b2df933d",
+    "models\\derived\\scene.json": "b5d3906adcf364f001b09cb53173647868a6260c7dbcaad793dd9ab7f9ccc3cf",
+    "E:\\GitHub\\Human Computer Labs\\SWE_route\\starter_pack\\robot\\dummy_lamp_5dof.urdf": "5f023d845b92e29a369a3b4fb9be8077e9c7ea4b132a4558afbefddb0765f4bb",
+    "controller\\target\\release\\lamp-controller.exe": "98ea7b75ecc038f0b29ec5a34db41b889a9a1cd7ef5607256aa61b982b8c9471",
+    "controller\\src\\gestures.rs": "6e5cf9eb966b46221824270845c1a9d66f3aef13cf8d1c5f4a6ab9599a0d5f73",
+    "controller\\src\\lib.rs": "32bf277f4c8536dc02161d0295ca8a0110a2d1631658c27405211cb910f9478d",
+    "controller\\src\\main.rs": "e3397272413b1141682f423b333c8a3ca3d7742a67d4725a544acd65a7e47f2f",
+    "controller\\src\\motion.rs": "b0fe9045e6c78282498b7cc979e3ef7452931cc85138f3ab7f5c659faf08cfe6",
+    "controller\\src\\physics.rs": "d977c6b17597f40696f17557e48f77f2b1b0648d3db1247666c2553e10c2a9b9",
+    "controller\\src\\server.rs": "6c89a9b14e573aaebd0fc7abb757f495efcc863335f460eeee39dee06caac15f",
+    "controller\\native\\bridge.c": "d13947f2b82cdb7338dd1e131de5bc8cf1444dd2377991226de7a5f6a348502f"
+  },
+  "server_command": [
+    "E:\\GitHub\\Human Computer Labs\\SWE_route\\simulation\\controller\\target\\release\\lamp-controller.exe",
+    "--root",
+    "E:\\GitHub\\Human Computer Labs\\SWE_route\\simulation",
+    "serve",
+    "--port",
+    "56454"
+  ],
+  "url": "http://127.0.0.1:56454",
+  "server_pid": 844,
+  "assets": [
+    {
+      "path": "/assets/lamp_shade.stl",
+      "bytes": 18084,
+      "content_type": "application/vnd.ms-pki.stl"
+    },
+    {
+      "path": "/static/index-CFrCw5VO.js",
+      "bytes": 587791,
+      "content_type": "text/javascript"
+    },
+    {
+      "path": "/static/index-DWRh04XR.css",
+      "bytes": 8707,
+      "content_type": "text/css"
+    }
+  ],
+  "max_link_position_error_m": 3.782887902278548e-14,
+  "max_link_rotation_error": 8.179102704009011e-07,
+  "fk_states_checked": 0,
+  "owned_server_exited": true,
+  "error": "Observed link pose disagrees with URDF FK: speaker_link",
+  "traceback": "Traceback (most recent call last):\n  File \"E:\\GitHub\\Human Computer Labs\\SWE_route\\simulation\\tools\\verify_native_protocol.py\", line 320, in main\n    verify(args, report)\n  File \"E:\\GitHub\\Human Computer Labs\\SWE_route\\simulation\\tools\\verify_native_protocol.py\", line 210, in verify\n    check_fk(client.state())\n  File \"E:\\GitHub\\Human Computer Labs\\SWE_route\\simulation\\tools\\verify_native_protocol.py\", line 205, in check_fk\n    require(position_error < 1e-9 and rotation_error < 1e-9, f\"Observed link pose disagrees with URDF FK: {name}\")\n  File \"E:\\GitHub\\Human Computer Labs\\SWE_route\\simulation\\tools\\verify_native_protocol.py\", line 40, in require\n    raise AssertionError(message)\nAssertionError: Observed link pose disagrees with URDF FK: speaker_link\n",
+  "finished_at_utc": "2026-10-14T17:52:22.993941+00:00"
+}

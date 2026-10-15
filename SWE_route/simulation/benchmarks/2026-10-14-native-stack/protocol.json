@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "started_at_utc": "2026-10-14T17:51:52.315968+00:00",
+  "status": "failed",
+  "checks": [],
+  "commands": [],
+  "state_messages": 0,
+  "platform": "win32",
+  "sha256": {
+    "tools\\verify_native_protocol.py": "2033ec05b58bae326515e6d8c74af26dfee7ae3261155294caa8f5f47d993c2f",
+    "protocol\\commands.schema.json": "1992da2cc4b74036626bb0b6c3e412c6a2df906f89d7acf1b4c023d6b2df933d",
+    "models\\derived\\scene.json": "b5d3906adcf364f001b09cb53173647868a6260c7dbcaad793dd9ab7f9ccc3cf",
+    "E:\\GitHub\\Human Computer Labs\\SWE_route\\starter_pack\\robot\\dummy_lamp_5dof.urdf": "5f023d845b92e29a369a3b4fb9be8077e9c7ea4b132a4558afbefddb0765f4bb",
+    "controller\\target\\release\\lamp-controller.exe": "98ea7b75ecc038f0b29ec5a34db41b889a9a1cd7ef5607256aa61b982b8c9471",
+    "controller\\src\\gestures.rs": "6e5cf9eb966b46221824270845c1a9d66f3aef13cf8d1c5f4a6ab9599a0d5f73",
+    "controller\\src\\lib.rs": "32bf277f4c8536dc02161d0295ca8a0110a2d1631658c27405211cb910f9478d",
+    "controller\\src\\main.rs": "e3397272413b1141682f423b333c8a3ca3d7742a67d4725a544acd65a7e47f2f",
+    "controller\\src\\motion.rs": "b0fe9045e6c78282498b7cc979e3ef7452931cc85138f3ab7f5c659faf08cfe6",
+    "controller\\src\\physics.rs": "d977c6b17597f40696f17557e48f77f2b1b0648d3db1247666c2553e10c2a9b9",
+    "controller\\src\\server.rs": "e7d05acf9e25e7cf732b23d8da42dc9cc623edca59fa2346cda149c3d13711c9",
+    "controller\\native\\bridge.c": "d13947f2b82cdb7338dd1e131de5bc8cf1444dd2377991226de7a5f6a348502f"
+  },
+  "server_command": [
+    "E:\\GitHub\\Human Computer Labs\\SWE_route\\simulation\\controller\\target\\release\\lamp-controller.exe",
+    "--root",
+    "E:\\GitHub\\Human Computer Labs\\SWE_route\\simulation",
+    "serve",
+    "--port",
+    "61380"
+  ],
+  "url": "http://127.0.0.1:61380",
+  "server_pid": 13076,
+  "owned_server_exited": true,
+  "error": "'url'",
+  "traceback": "Traceback (most recent call last):\n  File \"E:\\GitHub\\Human Computer Labs\\SWE_route\\simulation\\tools\\verify_native_protocol.py\", line 320, in main\n    verify(args, report)\n  File \"E:\\GitHub\\Human Computer Labs\\SWE_route\\simulation\\tools\\verify_native_protocol.py\", line 161, in verify\n    assets |= {visual[\"url\"] for visual in scene[\"visuals\"] if visual[\"type\"] == \"mesh\"}\n               ~~~~~~^^^^^^^\nKeyError: 'url'\n",
+  "finished_at_utc": "2026-10-14T17:51:53.074512+00:00"
+}

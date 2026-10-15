@@ -1,0 +1,188 @@
+{
+  "timestamp_utc": "2026-10-14T18:22:48.387736+00:00",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "logical_cpu_count": 12,
+  "physical_cpu_count": 6,
+  "total_ram_mib": 32705.875,
+  "backend": "mujoco",
+  "speed": 0.5,
+  "repeats": 3,
+  "idle_seconds": 15,
+  "active_seconds": 30,
+  "families": [
+    "Anger",
+    "Disgust",
+    "Fear",
+    "Happy",
+    "Sad",
+    "Surprise"
+  ],
+  "warmup_s": 5,
+  "browser_mode": "headless=new",
+  "source_sha256": {
+    "controller\\src\\bin\\benchmark.rs": "f5dd0352aa7303138ebf8325be517be427613f1b1783c8e10b63a05892201f6f",
+    "controller\\src\\gestures.rs": "6e5cf9eb966b46221824270845c1a9d66f3aef13cf8d1c5f4a6ab9599a0d5f73",
+    "controller\\src\\lib.rs": "32bf277f4c8536dc02161d0295ca8a0110a2d1631658c27405211cb910f9478d",
+    "controller\\src\\main.rs": "e3397272413b1141682f423b333c8a3ca3d7742a67d4725a544acd65a7e47f2f",
+    "controller\\src\\motion.rs": "b0fe9045e6c78282498b7cc979e3ef7452931cc85138f3ab7f5c659faf08cfe6",
+    "controller\\src\\physics.rs": "d977c6b17597f40696f17557e48f77f2b1b0648d3db1247666c2553e10c2a9b9",
+    "controller\\src\\server.rs": "b14d17171c6355b07931f4955c391e47a22a0c1d07b55932b52519f5a6be51ad",
+    "controller\\native\\bridge.c": "d13947f2b82cdb7338dd1e131de5bc8cf1444dd2377991226de7a5f6a348502f",
+    "viewer\\src\\connection.ts": "5d0bb17eaf0a9493f4707f16492eb125f4f0758c1f7f4a34665a67c593a1faeb",
+    "viewer\\src\\interpolation.ts": "506fc3cbe39bfe26f1442ac5cfc9059ac2c0b6768205885521b56d41ec685f91",
+    "viewer\\src\\main.ts": "f72f713a668d302ba8859805196b7719f9b8fc67c8605e13c3c512eba2dd1165",
+    "viewer\\src\\protocol.ts": "c782e5f23b5ca91f7af98514b2bc7c3492f494124915b5ab2ea64080a2cb5558",
+    "viewer\\src\\stage.ts": "cdb83432bde21284ea2a85b7611ccb484eb474266317fc6ecb491ae926494f92",
+    "viewer\\src\\style.css": "b8c482d5ff84cb4ddb8fbe59fae273ef63c1bd946ab2d73bfcb133448ba3f1c1",
+    "controller\\Cargo.lock": "89d7b533eaf71c6fe3cce35045703f3130ff826fde6677f6128418644520bc90",
+    "viewer\\package-lock.json": "769764aa5272614cfe8b8e287ee62339cea2ca53e5e079d70feaa421d1731604",
+    "models\\derived\\manifest.json": "bc3b331653d2cd4e0508eba9f10c176b0010fd461279812db5bfcdcc48bc50b8",
+    "benchmarks\\measure_native_viewer.py": "925ee8e091e0acb2c005c95d1c703db20bdc528140549d746d317f12f9bdebef"
+  },
+  "executable_sha256": "9f3b595c14359ad16b2305fb53af3c997843cf2bc092775c96ba05c6044f9765",
+  "built_viewer_sha256": {
+    "viewer\\dist\\index.html": "1b4c317c5709f41d2eefd67aff3604dee77fc790dc7abe2540a6f6153631cc16",
+    "viewer\\dist\\static\\index-BVv4vnyW.css": "c91ef6a4e16f17786fc4c97ad16cac3ae4d1d95f89a926544217238235dcca39",
+    "viewer\\dist\\static\\index-u1O6Khny.js": "75b56f2ed7a2761777339468c903248a5c1bc938f332db3546fc09ca757be59e"
+  },
+  "cpu_percent_definition": "100% = one logical core; process-tree CPU seconds / wall seconds",
+  "rss_definition": "sum of process-tree working sets; shared pages can be counted more than once",
+  "latency_definition": "browser click to DOM activity state; not first motion or GPU presentation",
+  "preset": "default",
+  "camera": {
+    "position": [
+      -1.1,
+      -1.55,
+      1.07
+    ],
+    "target": [
+      -0.03,
+      0,
+      0.36
+    ],
+    "fov": 42
+  },
+  "comparison_limits": "Delivered visual settings including shadows; camera/canvas/shading differ from legacy. This is an observation of the delivered viewer, not a controlled renderer comparison.",
+  "server_http_ready_s": 0.36523829999896407,
+  "browser_version": "Chrome/155.0.8059.41",
+  "browser_flags": [
+    "--headless=new",
+    "--no-first-run",
+    "--no-default-browser-check",
+    "--remote-debugging-port=57591",
+    "--window-size=1280,900",
+    "--force-device-scale-factor=1",
+    "about:blank"
+  ],
+  "graphics": {
+    "gpu": {
+      "devices": [
+        {
+          "vendorId": 4318,
+          "deviceId": 7042,
+          "subSysId": 3271562338,
+          "revision": 161,
+          "vendorString": "",
+          "deviceString": "NVIDIA GeForce GTX 1070 Ti",
+          "driverVendor": "NVIDIA",
+          "driverVersion": "32.0.15.8266"
+        },
+        {
+          "vendorId": 5140,
+          "deviceId": 140,
+          "subSysId": 0,
+          "revision": 0,
+          "vendorString": "",
+          "deviceString": "Microsoft Basic Render Driver",
+          "driverVendor": "",
+          "driverVersion": "10.0.26100.9711"
+        }
+      ],
+      "auxAttributes": {
+        "amdSwitchable": false,
+        "bgra8OverlaySupport": "SOFTWARE",
+        "canSupportThreadedTextureMailbox": false,
+        "directComposition": true,
+        "directMLFeatureLevel": "Not supported",
+        "directRenderingVersion": "",
+        "displayType": "ANGLE_D3D11",
+        "dx12FeatureLevel": "Not supported",
+        "glExtensions": "GL_AMD_performance_monitor GL_ANGLE_base_vertex_base_instance_shader_builtin GL_ANGLE_blob_cache GL_ANGLE_client_arrays GL_ANGLE_clip_cull_distance GL_ANGLE_copy_texture_3d GL_ANGLE_depth_texture GL_ANGLE_framebuffer_blit GL_ANGLE_framebuffer_multisample GL_ANGLE_get_serialized_context_string GL_ANGLE_get_tex_level_parameter GL_ANGLE_instanced_arrays GL_ANGLE_memory_size GL_ANGLE_multiview_multisample GL_ANGLE_pack_reverse_row_order GL_ANGLE_polygon_mode GL_ANGLE_program_binary_readiness_query GL_ANGLE_program_cache_control GL_ANGLE_provoking_vertex GL_ANGLE_renderability_validation GL_ANGLE_request_extension GL_ANGLE_robust_client_memory GL_ANGLE_shader_pixel_local_storage GL_ANGLE_shader_pixel_local_storage_coherent GL_ANGLE_stencil_texturing GL_ANGLE_texture_compression_dxt3 GL_ANGLE_texture_compression_dxt5 GL_ANGLE_texture_multisample GL_ANGLE_texture_usage GL_ANGLE_translated_shader_source GL_APPLE_clip_distance GL_ARM_rgba8 GL_CHROMIUM_bind_generates_resource GL_CHROMIUM_bind_uniform_location GL_CHROMIUM_copy_compressed_texture GL_CHROMIUM_copy_texture GL_CHROMIUM_lose_context GL_EXT_EGL_image_external_wrap_modes GL_EXT_base_instance GL_EXT_blend_func_extended GL_EXT_blend_minmax GL_EXT_clip_control GL_EXT_clip_cull_distance GL_EXT_color_buffer_float GL_EXT_color_buffer_half_float GL_EXT_conservative_depth GL_EXT_debug_label GL_EXT_debug_marker GL_EXT_depth_clamp GL_EXT_discard_framebuffer GL_EXT_disjoint_timer_query GL_EXT_draw_buffers GL_EXT_draw_buffers_indexed GL_EXT_draw_elements_base_vertex GL_EXT_float_blend GL_EXT_frag_depth GL_EXT_instanced_arrays GL_EXT_map_buffer_range GL_EXT_occlusion_query_boolean GL_EXT_polygon_offset_clamp GL_EXT_read_format_bgra GL_EXT_render_snorm GL_EXT_robustness GL_EXT_sRGB GL_EXT_shader_texture_lod GL_EXT_texture_border_clamp GL_EXT_texture_compression_bptc GL_EXT_texture_compression_dxt1 GL_EXT_texture_compression_rgtc GL_EXT_texture_compression_s3tc_srgb GL_EXT_texture_filter_anisotropic GL_EXT_texture_format_BGRA8888 GL_EXT_texture_mirror_clamp_to_edge GL_EXT_texture_norm16 GL_EXT_texture_rg GL_EXT_texture_storage GL_EXT_texture_type_2_10_10_10_REV GL_EXT_unpack_subimage GL_KHR_debug GL_KHR_parallel_shader_compile GL_KHR_robustness GL_NV_EGL_stream_consumer_external GL_NV_fence GL_NV_framebuffer_blit GL_NV_pack_subimage GL_NV_pixel_buffer_object GL_NV_shader_noperspective_interpolation GL_OES_EGL_image GL_OES_EGL_image_external GL_OES_EGL_image_external_essl3 GL_OES_depth24 GL_OES_depth32 GL_OES_draw_buffers_indexed GL_OES_draw_elements_base_vertex GL_OES_element_index_uint GL_OES_fbo_render_mipmap GL_OES_get_program_binary GL_OES_mapbuffer GL_OES_packed_depth_stencil GL_OES_required_internalformat GL_OES_rgb8_rgba8 GL_OES_sample_variables GL_OES_shader_multisample_interpolation GL_OES_standard_derivatives GL_OES_surfaceless_context GL_OES_texture_border_clamp GL_OES_texture_float GL_OES_texture_float_linear GL_OES_texture_half_float GL_OES_texture_half_float_linear GL_OES_texture_npot GL_OES_texture_stencil8 GL_OES_texture_storage_multisample_2d_array GL_OES_vertex_array_object GL_OVR_multiview GL_OVR_multiview2 ",
+        "glImplementationParts": "(gl=egl-angle,angle=d3d11)",
+        "glRenderer": "ANGLE (NVIDIA, NVIDIA GeForce GTX 1070 Ti (0x00001B82) Direct3D11 vs_5_0 ps_5_0, D3D11-32.0.15.8266)",
+        "glResetNotificationStrategy": 33362,
+        "glVendor": "Google Inc. (NVIDIA)",
+        "glVersion": "OpenGL ES 3.0 (ANGLE 2.1.28853 git hash: 170484eea03a)",
+        "glWsExtensions": "EGL_EXT_create_context_robustness EGL_ANGLE_d3d_share_handle_client_buffer EGL_ANGLE_d3d_texture_client_buffer EGL_ANGLE_surface_d3d_texture_2d_share_handle EGL_ANGLE_query_surface_pointer EGL_ANGLE_window_fixed_size EGL_ANGLE_keyed_mutex EGL_ANGLE_surface_orientation EGL_ANGLE_direct_composition EGL_NV_post_sub_buffer EGL_KHR_create_context EGL_KHR_image EGL_KHR_image_base EGL_KHR_gl_texture_2D_image EGL_KHR_gl_texture_cubemap_image EGL_KHR_gl_renderbuffer_image EGL_KHR_get_all_proc_addresses EGL_KHR_stream EGL_KHR_stream_consumer_gltexture EGL_NV_stream_consumer_gltexture_yuv EGL_ANGLE_stream_producer_d3d_texture EGL_ANGLE_create_context_webgl_compatibility EGL_CHROMIUM_create_context_bind_generates_resource EGL_CHROMIUM_sync_control EGL_EXT_pixel_format_float EGL_KHR_surfaceless_context EGL_ANGLE_display_texture_share_group EGL_ANGLE_display_semaphore_share_group EGL_ANGLE_create_context_client_arrays EGL_ANGLE_program_cache_control EGL_ANGLE_robust_resource_initialization EGL_ANGLE_create_context_extensions_enabled EGL_ANDROID_blob_cache EGL_ANDROID_recordable EGL_ANGLE_image_d3d11_texture EGL_ANGLE_create_context_backwards_compatible EGL_KHR_no_config_context EGL_KHR_create_context_no_error EGL_KHR_reusable_sync EGL_ANGLE_memory_usage_report ",
+        "glWsVendor": "Google Inc. (NVIDIA)",
+        "glWsVersion": "1.5 (ANGLE 2.1.28853 git hash: 170484eea03a)",
+        "inProcessGpu": false,
+        "initializationTime": 0.379334,
+        "isAsan": false,
+        "isClangCoverage": false,
+        "jpegDecodeAcceleratorSupported": false,
+        "maxMsaaSamples": "8",
+        "nv12OverlaySupport": "SOFTWARE",
+        "optimus": false,
+        "p010OverlaySupport": "SOFTWARE",
+        "passthroughCmdDecoder": true,
+        "pixelShaderVersion": "5.0",
+        "processCrashCount": 0,
+        "rgb10a2OverlaySupport": "SOFTWARE",
+        "sandboxed": true,
+        "skiaBackendType": "GaneshGL",
+        "subpixelFontRendering": true,
+        "supportsD3dSharedImages": false,
+        "supportsDirectML": false,
+        "supportsDx12": false,
+        "supportsOverlays": true,
+        "supportsVulkan": false,
+        "targetCpuBits": 64,
+        "vertexShaderVersion": "5.0",
+        "visibilityCallbackCallCount": 0,
+        "vulkanVersion": "Not supported",
+        "yuy2OverlaySupport": "SOFTWARE"
+      },
+      "featureStatus": {
+        "2d_canvas": "enabled",
+        "direct_rendering_display_compositor": "disabled_off_ok",
+        "gpu_compositing": "enabled",
+        "multiple_raster_threads": "enabled_on",
+        "opengl": "enabled_on",
+        "rasterization": "enabled",
+        "raw_draw": "disabled_off_ok",
+        "skia_graphite": "disabled_off",
+        "trees_in_viz": "disabled_off",
+        "video_decode": "enabled",
+        "video_encode": "enabled",
+        "webgl": "enabled",
+        "webgpu": "enabled",
+        "webnn": "disabled_off"
+      },
+      "driverBugWorkarounds": [
+        "disable_d3d11_vp9_ksvc_decoding",
+        "enable_webgl_timer_query_extensions",
+        "exit_on_context_lost",
+        "unpack_overlapping_rows_separately_unpack_buffer",
+        "disabled_extension_GL_KHR_blend_equation_advanced",
+        "disabled_extension_GL_KHR_blend_equation_advanced_coherent"
+      ],
+      "videoDecoding": [],
+      "videoEncoding": []
+    },
+    "modelName": "",
+    "modelVersion": "",
+    "commandLine": "\"C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe\" --headless=new --no-first-run --no-default-browser-check --remote-debugging-port=57591 --window-size=1280,900 --force-device-scale-factor=1 --user-data-dir=\"C:\\Users\\voan2\\AppData\\Local\\Temp\\lamp-native-chrome-wdcvpc5j\" --noerrdialogs --flag-switches-begin --flag-switches-end about:blank"
+  },
+  "navigation_to_controls_ready_s": 0.5953661000003194,
+  "viewport": {
+    "width": 1264,
+    "height": 805,
+    "dpr": 1
+  },
+  "webgl": {
+    "width": 924,
+    "height": 641,
+    "renderer": "ANGLE (NVIDIA, NVIDIA GeForce GTX 1070 Ti (0x00001B82) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+  }
+}

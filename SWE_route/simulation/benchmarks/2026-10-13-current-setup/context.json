@@ -1,0 +1,16 @@
+{
+  "purpose": "Baseline before changes to controller language or browser frontend",
+  "local_date": "2026-10-13",
+  "timezone": "America/Los_Angeles",
+  "git_commit": "46ea0d26321f976d9340dc5406e149f4da2db64c",
+  "git_branch": "main",
+  "working_tree_clean_before_measurement": true,
+  "lamp_processes_running_at_start": 0,
+  "hardware_gpu": "NVIDIA GeForce GTX 1070 Ti",
+  "windows_gpu_driver": "32.0.15.8266",
+  "headless_command": "uv run --locked python -m lamp_sim.benchmark --repeats 3 --speed 0.5 --output benchmarks/2026-10-13-current-setup/headless",
+  "browser_command": "uv run --locked python benchmarks/measure_viewer.py --output benchmarks/2026-10-13-current-setup/browser-02",
+  "application_changes_for_measurement": "none; browser harness wraps the existing tick method for timing in a separate process",
+  "accepted_browser_run": "browser-02",
+  "excluded_browser_attempt": "browser: instrumentation setup failed before any measured phase"
+}
