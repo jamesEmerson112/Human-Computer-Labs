@@ -1,22 +1,38 @@
 # Simulation benchmarks and upgrade decision
 
+## Selected-wheel audit
+
+The [October 14 wheel audit](2026-10-14-wheel-audit/README.md) covers the current
+126-clip library, conservative review migration, and a fresh matched physics
+reference. It reports controller validity and similarity candidates separately
+from human approval. Earlier measurements below retain their original workloads.
+
 ## Rust / MuJoCo / Three.js comparison
 
 Build the native application using the [simulation instructions](../README.md#rust-controller-and-threejs-viewer),
-then run these sequentially from `simulation/` with new output directories:
+then run browser measurements sequentially from `simulation/` with new output directories:
 
 ```powershell
-uv run --locked python benchmarks/compare_native.py --output benchmarks/my-native/headless
 uv run --locked python benchmarks/measure_viewer.py --output benchmarks/my-native/python-browser
 uv run --locked python benchmarks/measure_native_viewer.py --output benchmarks/my-native/rust-browser
 uv run --locked python benchmarks/measure_native_viewer.py --preset default --output benchmarks/my-native/rust-browser-default
 ```
 
-`compare_native.py` first remeasures Python default physics, then measures all
-three native MuJoCo modes in fresh processes. Each uses all 123 gestures, three
-repeats, pace 0.5, one warmup per gesture, and the original settling-frame rule.
-It compares every native requested/actual/velocity trace against the preserved
-October 13 traces, records source/executable hashes, process memory and host load,
+`compare_native.py` first verifies that the reference hashes and workload match
+the active library. The default October 13 reference is historical and will be
+rejected for the current wheel. Generate a new matching reference before comparing:
+
+```powershell
+uv run --locked python -m lamp_sim.benchmark --repeats 1 --speed 0.5 --output benchmarks/my-wheel/reference
+uv run --locked python benchmarks/compare_native.py --reference benchmarks/my-wheel/reference --repeats 1 --output benchmarks/my-wheel/native
+```
+
+The comparison first remeasures Python default physics, then measures all
+three native MuJoCo modes in fresh processes. Each uses all current gestures,
+the requested repeat count (default three), pace 0.5, one warmup per gesture,
+and the original settling-frame rule.
+It compares every native requested/actual/velocity trace against the selected
+matching reference, records source/executable hashes, process memory and host load,
 and retains compressed frame logs. The original yourdfpy-only mode remains in
 Python; it has no native counterpart. Headless compute excludes networking and
 rendering. Whole-loop throughput includes each implementation's observation and
@@ -183,11 +199,12 @@ inspector's interactive controls and Ubuntu deployment were not exercised.
 
 ## Reproduce or extend
 
-The library now has 123 gestures, including 114 entries from the supplied
-emotion wheel. The [emotion-library smoke check](2026-10-04-emotions-smoke/report.md)
-records functional validation and one default-MuJoCo trial per new clip.
+The library now has 126 gestures, including 117 entries from the selected
+emotion wheel with the entire Bad branch excluded. The
+[emotion-library smoke check](2026-10-04-emotions-smoke/report.md)
+records historical validation of the earlier 114-entry emotion catalog.
 The original nine-gesture baseline above remains unchanged; a full run now
-includes 1,476 measured trials at three repeats across four backends.
+includes 1,512 measured trials at three repeats across four backends.
 
 From `SWE_route/simulation/`:
 

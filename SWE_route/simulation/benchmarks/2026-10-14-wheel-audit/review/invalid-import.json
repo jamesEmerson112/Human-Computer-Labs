@@ -1,0 +1,1148 @@
+{
+  "schema_version": 2,
+  "type": "lamp-animation-review",
+  "exported_at": "2026-10-15T02:04:27.700Z",
+  "rule": "checked_pass_unchecked_fail",
+  "summary": {
+    "total": 126,
+    "passed": 1,
+    "failed": 125
+  },
+  "animations": [
+    {
+      "name": "bow",
+      "label": "Bow",
+      "group": "",
+      "revision": "d546ae4ec599caef0f736163da567de245b9d412061809f60baa2ebb661bbc4c",
+      "status": "unrecognized",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "curious",
+      "label": "Curious lean",
+      "group": "",
+      "revision": "97dfdad2d972395a3bef9b49574d9e29e942a2146ffe34babeafd03cf87f5bb2",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_angry",
+      "label": "Angry",
+      "group": "Angry",
+      "revision": "7f4357cfc793d7a7cda4463683a03d27ae12a9eb506a2cd674ad9e0b441c0f26",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_angry_aggressive",
+      "label": "Angry / Aggressive",
+      "group": "Angry",
+      "revision": "38260f03fb0e8050db0530ea26f3c4184bbb6a725b502c5b0d6767b49ca84fc0",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_angry_aggressive_hostile",
+      "label": "Angry / Aggressive / Hostile",
+      "group": "Angry",
+      "revision": "e62ead18f1092dfffdf9decf93bf82c4b2ffe8fa402122648aafa8d2d650e0a5",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_angry_aggressive_provoked",
+      "label": "Angry / Aggressive / Provoked",
+      "group": "Angry",
+      "revision": "b36b128a9ce20098d5a7073f1ca1ca57abe34e9cfe769ca5c2a2e68908779ee4",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_angry_bitter",
+      "label": "Angry / Bitter",
+      "group": "Angry",
+      "revision": "b68fe84b1d7d7676527aa5f64d348322fd92d55c48a9897c4e21531edb9f88ff",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_angry_bitter_indignant",
+      "label": "Angry / Bitter / Indignant",
+      "group": "Angry",
+      "revision": "d5caa702a806f0161266d8716ba8734ae4729877599f2ca82bf5eaf018cb82ed",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_angry_bitter_violated",
+      "label": "Angry / Bitter / Violated",
+      "group": "Angry",
+      "revision": "38ef6e3359f88843cf9c07030c53c4dc4c56d13d8d174258633a7683a195a51d",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_angry_critical",
+      "label": "Angry / Critical",
+      "group": "Angry",
+      "revision": "be3db047b69054cf7594a116f27795773bb7de50fb0159f3d93d81882ab8ecc4",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_angry_critical_dismissive",
+      "label": "Angry / Critical / Dismissive",
+      "group": "Angry",
+      "revision": "de36856aec197bf05fcae6d5b16f8a7ab03ccd7d308285409c17244b34e86002",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_angry_critical_skeptical",
+      "label": "Angry / Critical / Skeptical",
+      "group": "Angry",
+      "revision": "829c00e315ddb84a29bd47042311198632a34a114860314c7364a5ab815ed620",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_angry_distant",
+      "label": "Angry / Distant",
+      "group": "Angry",
+      "revision": "d3055737fd470b76e7c4b4fb93c260cbe1fb0b2aee09957ca5c50e4a9a3b90a3",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_angry_distant_numb",
+      "label": "Angry / Distant / Numb",
+      "group": "Angry",
+      "revision": "1e8d45f8032dcd4390310b7f6323d5ff9aa8346a92f56082c2281c773b4a2525",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_angry_distant_withdrawn",
+      "label": "Angry / Distant / Withdrawn",
+      "group": "Angry",
+      "revision": "1c6c8b9090da1bf24b2ed33abbef46500c572e7e604189b504cdff21d7478b8a",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_angry_frustrated",
+      "label": "Angry / Frustrated",
+      "group": "Angry",
+      "revision": "14e9565e8e52727dfbe730d7cfe17841d5c7fddd63cc1cfc870916e1767e3049",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_angry_frustrated_annoyed",
+      "label": "Angry / Frustrated / Annoyed",
+      "group": "Angry",
+      "revision": "60cca2a3bacc6b0b64f271d30d6f6c96a05f50be5cbd4258215f21207e68a177",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_angry_frustrated_infuriated",
+      "label": "Angry / Frustrated / Infuriated",
+      "group": "Angry",
+      "revision": "9f5a9cccf2f8f63105a6227202aa1248bbdcca4aec892751d398ab326784a973",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_angry_humiliated",
+      "label": "Angry / Humiliated",
+      "group": "Angry",
+      "revision": "d784d66d691f23634c13233cad0d17130162449386ded82ed6740de97197fc55",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_angry_humiliated_disrespected",
+      "label": "Angry / Humiliated / Disrespected",
+      "group": "Angry",
+      "revision": "5fc796f58c2edc8f06bf046bd6ba8afbfb4a25bbb30c62c52b132bb3f6ec33ea",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_angry_humiliated_ridiculed",
+      "label": "Angry / Humiliated / Ridiculed",
+      "group": "Angry",
+      "revision": "46aa4aaa7c117bfeb1493edd7f89db1e1214e3b4901f003c6cb88a0d4ad6f30b",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_angry_let_down",
+      "label": "Angry / Let down",
+      "group": "Angry",
+      "revision": "513e47f76471824ff7263002da6bfa6ce49209f6b235d673a9e8815640f07265",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_angry_let_down_betrayed",
+      "label": "Angry / Let down / Betrayed",
+      "group": "Angry",
+      "revision": "93d1c6da2ff5e773fb9d70842850bd74d7a031eadba906b5eca998fe3aeb185f",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_angry_let_down_resentful",
+      "label": "Angry / Let down / Resentful",
+      "group": "Angry",
+      "revision": "6316ea3c88f8fad675875615bffd14947b41da23e9fe1933a05b297bd998fe6c",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_angry_mad",
+      "label": "Angry / Mad",
+      "group": "Angry",
+      "revision": "3a50171c9e8837cb54b6db9751d96060a5b0009d911bf9f636104333c4b4df33",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_angry_mad_furious",
+      "label": "Angry / Mad / Furious",
+      "group": "Angry",
+      "revision": "43d395f852134ada2541cbfa8bad90fe2714af2f3366734e438cec1bc708d07c",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_angry_mad_jealous",
+      "label": "Angry / Mad / Jealous",
+      "group": "Angry",
+      "revision": "5f48671f9a51ce4c3f24c8031fc9746988e59cb6eaa3fc6c870ff7b3913a0f65",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_disgusted",
+      "label": "Disgusted",
+      "group": "Disgusted",
+      "revision": "2d246b8fc1f188b67b894b76b2e5eb504b50ee01274ccdfef5fede9a1fac55b3",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_disgusted_awful",
+      "label": "Disgusted / Awful",
+      "group": "Disgusted",
+      "revision": "07c2dd805773f581cfbcb67c80a2c71c68d66e5584365c9a7c4c3817a751ba8f",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_disgusted_awful_detestable",
+      "label": "Disgusted / Awful / Detestable",
+      "group": "Disgusted",
+      "revision": "20adeabbf17d22837232911bd0fb2337d34a90eb67831e7f7a7e6402e8847fcd",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_disgusted_awful_nauseated",
+      "label": "Disgusted / Awful / Nauseated",
+      "group": "Disgusted",
+      "revision": "88ff45fcb4ecb338361be907c7b090b3e7c5a5f9eef6aeb99eba6ca073ac9c67",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_disgusted_disappointed",
+      "label": "Disgusted / Disappointed",
+      "group": "Disgusted",
+      "revision": "fac44673112ac3ed612072a8b999f892750f5fef5fdcb999543cc42167d5b880",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_disgusted_disappointed_appalled",
+      "label": "Disgusted / Disappointed / Appalled",
+      "group": "Disgusted",
+      "revision": "d8c3681274d488ce319d85a51f1feeff04f9cbcaa18a5e49fdf090de78e74d9c",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_disgusted_disappointed_revolted",
+      "label": "Disgusted / Disappointed / Revolted",
+      "group": "Disgusted",
+      "revision": "cf519bc5542da05d3c46d96062307e903b7136916942107d1f6a6c176983e974",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_disgusted_disapproving",
+      "label": "Disgusted / Disapproving",
+      "group": "Disgusted",
+      "revision": "7635c700aafc9459d999d56ebe4d08a059b9634e98447b70b4dee39318bb1324",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_disgusted_disapproving_embarrassed",
+      "label": "Disgusted / Disapproving / Embarrassed",
+      "group": "Disgusted",
+      "revision": "7b22b92363362b635cae9d3aec1e043285bf53362af8797c0cdb59079f7d5ca5",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_disgusted_disapproving_judgmental",
+      "label": "Disgusted / Disapproving / Judgmental",
+      "group": "Disgusted",
+      "revision": "e79e64944dddde8067b2572851782bb141d8cbfc58b9c258033cb4403050b83b",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_disgusted_repelled",
+      "label": "Disgusted / Repelled",
+      "group": "Disgusted",
+      "revision": "b3b1b989ea0edc2502b9a3fb3dbf4fa20309de844d198319aba63c69cd5cf2d6",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_disgusted_repelled_hesitant",
+      "label": "Disgusted / Repelled / Hesitant",
+      "group": "Disgusted",
+      "revision": "1074f9c51d4298bde8e1a401eac6a3b3bbe7389e08b1b91218ec67686adc1206",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_disgusted_repelled_horrified",
+      "label": "Disgusted / Repelled / Horrified",
+      "group": "Disgusted",
+      "revision": "56f35fb5598f2fb94da8854c2ef69d6dfd1cee2e6299536be451f7e68b2ebd55",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_fearful",
+      "label": "Fearful",
+      "group": "Fearful",
+      "revision": "03729e7bc400029e66ae22c78b05b3ff2624adc88675b07fd4e69570e4b50b2b",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_fearful_anxious",
+      "label": "Fearful / Anxious",
+      "group": "Fearful",
+      "revision": "84026c2e336b3e8f8f727505b3e54301e8e394fc9dbad3b69946d99f534696ad",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_fearful_anxious_overwhelmed",
+      "label": "Fearful / Anxious / Overwhelmed",
+      "group": "Fearful",
+      "revision": "363a192d6757cf864184e247bf0f01984ebc57fe3c722ea8295dbf984f2ef8ec",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_fearful_anxious_worried",
+      "label": "Fearful / Anxious / Worried",
+      "group": "Fearful",
+      "revision": "12ef41f1dbb3d3e270ad597d648364d4238ba50474caed6a9fabf6e92d732450",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_fearful_insecure",
+      "label": "Fearful / Insecure",
+      "group": "Fearful",
+      "revision": "feccf9aa3382fbe4724a7a706c59c4c6673a6dd7f0cd1d2744b209e3299db802",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_fearful_insecure_inadequate",
+      "label": "Fearful / Insecure / Inadequate",
+      "group": "Fearful",
+      "revision": "d153fafedfb7432ad0b87640a9ce4abae3bcbb5ce0790240ce3ab739259694b0",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_fearful_insecure_inferior",
+      "label": "Fearful / Insecure / Inferior",
+      "group": "Fearful",
+      "revision": "91df119611fbc665d3ef3e69c1c75459cd8754310ba816ae28b1013e6216f79f",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_fearful_rejected",
+      "label": "Fearful / Rejected",
+      "group": "Fearful",
+      "revision": "a5501ade2982a84ca73a089f9d5b2727d11645c6927fd89833998d8177e2a4a3",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_fearful_rejected_excluded",
+      "label": "Fearful / Rejected / Excluded",
+      "group": "Fearful",
+      "revision": "f20322086230b28e654abb237b9817ce54da699a7a7adca608ca4683ab3b9c9e",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_fearful_rejected_persecuted",
+      "label": "Fearful / Rejected / Persecuted",
+      "group": "Fearful",
+      "revision": "25ef8d260c821e7c95d2a71d8e8a34f1f395b3b1080c06313f197555e92a6500",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_fearful_scared",
+      "label": "Fearful / Scared",
+      "group": "Fearful",
+      "revision": "5a2f4d692da4abfb3b7b00007b4e0834b9ad6be7e1d0ba61b3d34e4f2f4a0d4a",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_fearful_scared_frightened",
+      "label": "Fearful / Scared / Frightened",
+      "group": "Fearful",
+      "revision": "04ace14a15988ecb6f357bd3ad11b09ef1f4fca0a54ac08b950ec10858bd67e2",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_fearful_scared_helpless",
+      "label": "Fearful / Scared / Helpless",
+      "group": "Fearful",
+      "revision": "398dc67e575b6fe621f496c76ccd8f8ccb2eaeb5e1ab60f73ef069aad470b825",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_fearful_threatened",
+      "label": "Fearful / Threatened",
+      "group": "Fearful",
+      "revision": "cf6b3c148e083b6672766aa7e4a3abe26f9f6c38e3145ad4269d2c6b36e5cc85",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_fearful_threatened_exposed",
+      "label": "Fearful / Threatened / Exposed",
+      "group": "Fearful",
+      "revision": "2c0a0b9b8bed183e00d3ce668bcaed2abba52f63116cf70acdcc76eff9c321f1",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_fearful_threatened_nervous",
+      "label": "Fearful / Threatened / Nervous",
+      "group": "Fearful",
+      "revision": "8efd5596ce99eb5f3a52764a705e96541c813e9268dbb5e59b3335df3b982fa9",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_fearful_weak",
+      "label": "Fearful / Weak",
+      "group": "Fearful",
+      "revision": "569c18c0ea6be6d84a6de474bbcef88e882ddc054e15a0a9bf7137fb064283d9",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_fearful_weak_insignificant",
+      "label": "Fearful / Weak / Insignificant",
+      "group": "Fearful",
+      "revision": "f6a3c4846fc0f688c642db96f7b9f640f5b2901c51aa7f3f8d802189f656301f",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_fearful_weak_worthless",
+      "label": "Fearful / Weak / Worthless",
+      "group": "Fearful",
+      "revision": "5e73450771549554ef80cca70e2b0f2410920696a6f14fbb9a0c685f72081df3",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_happy",
+      "label": "Happy",
+      "group": "Happy",
+      "revision": "54cbd9ef239fab24aa9c360bdac296b2c7c3c57bf9bc0abeb9cd3761c73a1719",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_happy_accepted",
+      "label": "Happy / Accepted",
+      "group": "Happy",
+      "revision": "cd0f7e54ff3d5b7b4214d69c4510b68e1dec87581631e23992d83bacaf332b68",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_happy_accepted_respected",
+      "label": "Happy / Accepted / Respected",
+      "group": "Happy",
+      "revision": "557aafcef7d658fa405a0e58072e00e84cfe44c4dbc993b0c6f6ece8dd9fd529",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_happy_accepted_valued",
+      "label": "Happy / Accepted / Valued",
+      "group": "Happy",
+      "revision": "5009cf18dba0221e8fb47ff09e0919ba47ef6eceab4c5e09bdb158fce1794d42",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_happy_content",
+      "label": "Happy / Content",
+      "group": "Happy",
+      "revision": "fc2714b6f4644e653e177870605757620a0faf6c8da7cc0184f3960bb1b96ef4",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_happy_content_free",
+      "label": "Happy / Content / Free",
+      "group": "Happy",
+      "revision": "981e0fedf9db96e98e4bc79e4950137150d3b0bfc1372c637aa84d932ba90170",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_happy_content_joyful",
+      "label": "Happy / Content / Joyful",
+      "group": "Happy",
+      "revision": "abc699df8298823fa8e6cff5a4eadbc4297a28944c211cf56e7d6aa0a4b10cb5",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_happy_interested",
+      "label": "Happy / Interested",
+      "group": "Happy",
+      "revision": "25eb39124fab976dafc47760b7b914576cbfe453f8f1fefa1129215b913cf1aa",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_happy_interested_curious",
+      "label": "Happy / Interested / Curious",
+      "group": "Happy",
+      "revision": "3a0491cebb77ffb8dd5bed6847c9306daae8f943849ed493f6826e515c3d0d93",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_happy_interested_inquisitive",
+      "label": "Happy / Interested / Inquisitive",
+      "group": "Happy",
+      "revision": "fc7f4d7cfbcbaff77be70f9522a678eb4987d1312da331030e4a4d2da9c00640",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_happy_optimistic",
+      "label": "Happy / Optimistic",
+      "group": "Happy",
+      "revision": "51615311a32a3130770f4404f5aacad019b6b1937a796f5d445d712c6c3fab06",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_happy_optimistic_hopeful",
+      "label": "Happy / Optimistic / Hopeful",
+      "group": "Happy",
+      "revision": "68ede1fd6752597f58a3148e9061fcc82c4bcc83089e961f2827b82c3e0c1b4b",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_happy_optimistic_inspired",
+      "label": "Happy / Optimistic / Inspired",
+      "group": "Happy",
+      "revision": "64c0a50956f233e4bd065cb7bb21f7bb956e84a1a16ff3a9e2fdfac8f5fab5ce",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_happy_peaceful",
+      "label": "Happy / Peaceful",
+      "group": "Happy",
+      "revision": "88309fc48319ec510d7f9dcc2c0857530a460798eb5c742b164af2ff7a41a4b6",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_happy_peaceful_loving",
+      "label": "Happy / Peaceful / Loving",
+      "group": "Happy",
+      "revision": "3a3fad1d0d384e11901d7320aacb18d7219283bc01a9ce8d9658b120dab70ca7",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_happy_peaceful_thankful",
+      "label": "Happy / Peaceful / Thankful",
+      "group": "Happy",
+      "revision": "5bf3e81ef5cd9084486f3b86d27e1e2632c28ea47c85267898dc0ec3335885b4",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_happy_playful",
+      "label": "Happy / Playful",
+      "group": "Happy",
+      "revision": "ddedc52a0fac94eb93a63460337eacce52db780c6b704825c5e74a76c37b1852",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_happy_playful_aroused",
+      "label": "Happy / Playful / Aroused",
+      "group": "Happy",
+      "revision": "48d9f383c40527c32176a38be954e10fce8b725a74aa2c96cdefc1b189370d08",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_happy_playful_cheeky",
+      "label": "Happy / Playful / Cheeky",
+      "group": "Happy",
+      "revision": "8075f684cb624dc0392b0dc1f4ee54944ad5e9daa922989990a66cc2b00fafc6",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_happy_powerful",
+      "label": "Happy / Powerful",
+      "group": "Happy",
+      "revision": "cd4a9a3030cf554d85617a8854c712db29e1d94cc54f499734685ef000502f78",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_happy_powerful_courageous",
+      "label": "Happy / Powerful / Courageous",
+      "group": "Happy",
+      "revision": "3e3ca0fe97cac8fc38e1c559844ca0cf9c8b920d42e14bfe5482497d26fd6fcc",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_happy_powerful_creative",
+      "label": "Happy / Powerful / Creative",
+      "group": "Happy",
+      "revision": "8f6d8589cf145b2a6f6408bed14ff1b13285102eb2bdbb3f12fdfbe235129ab4",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_happy_proud",
+      "label": "Happy / Proud",
+      "group": "Happy",
+      "revision": "9d7a0ab83713d80ddaed2f6a2a9cb76fcf4aaf55e601d65606135d599f9c058c",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_happy_proud_confident",
+      "label": "Happy / Proud / Confident",
+      "group": "Happy",
+      "revision": "1536c651eb95fec8853fd3251f27de9ca3e386992a2682759a97f384cd3d6d8e",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_happy_proud_successful",
+      "label": "Happy / Proud / Successful",
+      "group": "Happy",
+      "revision": "e61a9c4fc9179afa287e8c3eaa2cecd88a1cd613316c0ed87dc5ea1466cd0b12",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_happy_trusting",
+      "label": "Happy / Trusting",
+      "group": "Happy",
+      "revision": "199c4947ff11138698f41030c71236feb4dd193c4a43be07867a048390f7465e",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_happy_trusting_intimate",
+      "label": "Happy / Trusting / Intimate",
+      "group": "Happy",
+      "revision": "7975f5914585151624ef8290cf4e883231899db7bf7205047410239ff8abc0fc",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_happy_trusting_sensitive",
+      "label": "Happy / Trusting / Sensitive",
+      "group": "Happy",
+      "revision": "3f97db66d8824f7d160650b9bb29a859c915f39e00179fb94c3951de8ff3d139",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_sad",
+      "label": "Sad",
+      "group": "Sad",
+      "revision": "dd9d523a6f1b998fb2dcf012969fcf76f871f46ce3e287346c7d7f293e9e5f14",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_sad_depressed",
+      "label": "Sad / Depressed",
+      "group": "Sad",
+      "revision": "d3ffc980e7f649cf002ff1ac05994ac3ab9276fc25640bc26cfd7cd026900478",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_sad_depressed_empty",
+      "label": "Sad / Depressed / Empty",
+      "group": "Sad",
+      "revision": "3796ed1640a70f2a6441193653835094afc69cf91cf15f0c782df0b0d3366d82",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_sad_depressed_inferior",
+      "label": "Sad / Depressed / Inferior",
+      "group": "Sad",
+      "revision": "4025751faa3505952df5eb44057c56850f8653f0ae79561dcfc7a76a296b8abb",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_sad_despair",
+      "label": "Sad / Despair",
+      "group": "Sad",
+      "revision": "fd0e3931f9c7c165b233cb9f3f2aeac40c0ccdc7741ea3b77860921f1f2858d6",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_sad_despair_grief",
+      "label": "Sad / Despair / Grief",
+      "group": "Sad",
+      "revision": "33ccab11fef49e1bbb172b2d92db459b8df7c3495f672f0ed581be8fbf3e51c9",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_sad_despair_powerless",
+      "label": "Sad / Despair / Powerless",
+      "group": "Sad",
+      "revision": "93e6926337eb3f9ba7bb57bd2e639edf3cfcb940b701e37f7b2f6b93b5e7345c",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_sad_guilty",
+      "label": "Sad / Guilty",
+      "group": "Sad",
+      "revision": "f2287db82198ef8792a47186dfcb2eab1f5efa72864bef479bd5b535cee809a6",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_sad_guilty_ashamed",
+      "label": "Sad / Guilty / Ashamed",
+      "group": "Sad",
+      "revision": "06f866545045daa78caf39bad44475d327c61d171ab6b7f7f73f0fd4e5a0f931",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_sad_guilty_remorseful",
+      "label": "Sad / Guilty / Remorseful",
+      "group": "Sad",
+      "revision": "7f3663d9b6d1902b7f1f67055ed465b35b426c321d4fb979a146fe9e37c9d2a9",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_sad_hurt",
+      "label": "Sad / Hurt",
+      "group": "Sad",
+      "revision": "96920d41bc21bafb9c7c0b4b823e1e52e3f5c38e55a588849aa90beda0ea52cc",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_sad_hurt_disappointed",
+      "label": "Sad / Hurt / Disappointed",
+      "group": "Sad",
+      "revision": "e4de4fbce4dedd09dcdb29614f59c904340b81beee9fe1b152eb7452eb580eea",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_sad_hurt_embarrassed",
+      "label": "Sad / Hurt / Embarrassed",
+      "group": "Sad",
+      "revision": "5e8ce29fa5f62d414726ea54eedad0c2c3247201fa19535cae821d7851f4f5e5",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_sad_lonely",
+      "label": "Sad / Lonely",
+      "group": "Sad",
+      "revision": "b8996e29ea34f904296604e8fcf6d4facd9b09070c053274708f18907124ff27",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_sad_lonely_abandoned",
+      "label": "Sad / Lonely / Abandoned",
+      "group": "Sad",
+      "revision": "925a981b163143fb1dc6d19dde27646cdb2edbf05229df653882db852f7923fb",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_sad_lonely_isolated",
+      "label": "Sad / Lonely / Isolated",
+      "group": "Sad",
+      "revision": "1054db68bee762a19b29e6512b8cc9e9c988447fcd61b07b3d863dfa0174fe6a",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_sad_vulnerable",
+      "label": "Sad / Vulnerable",
+      "group": "Sad",
+      "revision": "81c648c792164ce1270b3edfb291eeec25fd7a3cbdbe8fa1912f6a25e5e88855",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_sad_vulnerable_fragile",
+      "label": "Sad / Vulnerable / Fragile",
+      "group": "Sad",
+      "revision": "07785752c9cbd6076c56c1594deb5e54a1f39849067aa12e65d812ab8f046c79",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_sad_vulnerable_victimized",
+      "label": "Sad / Vulnerable / Victimized",
+      "group": "Sad",
+      "revision": "52552bd7e5ca551b44b117935aca319e1d860ad177fa2dc28ec26e3cefc781e9",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_surprised",
+      "label": "Surprised",
+      "group": "Surprised",
+      "revision": "8c95f6dc5cf039850c375a725a77112281241b62f707d09f6be8e1ad8750032d",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_surprised_amazed",
+      "label": "Surprised / Amazed",
+      "group": "Surprised",
+      "revision": "d2073b974aa28f4349b8ed276a69e7132966abc49cee60a98b0161f139bd6629",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_surprised_amazed_astonished",
+      "label": "Surprised / Amazed / Astonished",
+      "group": "Surprised",
+      "revision": "d6735bd62fda9c7f07250489c0bb7fbae4b236c744805b1f341cee9f172726b8",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_surprised_amazed_awe",
+      "label": "Surprised / Amazed / Awe",
+      "group": "Surprised",
+      "revision": "e583b0cd37ce5e98d0106a68e4460b861da8d139136923826db59e9e362b4ae7",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_surprised_confused",
+      "label": "Surprised / Confused",
+      "group": "Surprised",
+      "revision": "1e079db9448ef9c489ad273eb365d1d4f433c64c418a9e3f4de8d23983660c2a",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_surprised_confused_disillusioned",
+      "label": "Surprised / Confused / Disillusioned",
+      "group": "Surprised",
+      "revision": "e1dd4f7d15d251aafebbdd66364bafe19ac7e5bdbd14b1cb53978116c7ad84df",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_surprised_confused_perplexed",
+      "label": "Surprised / Confused / Perplexed",
+      "group": "Surprised",
+      "revision": "c748868e29c5d7a66cc96fea978590524b5beb99de1dbad1ef030c092f1b842b",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_surprised_excited",
+      "label": "Surprised / Excited",
+      "group": "Surprised",
+      "revision": "3cdb4701a2cbc765c2cf5ff12a9ac0ef98d1f8823dae9f7e83a3d213f7027553",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_surprised_excited_eager",
+      "label": "Surprised / Excited / Eager",
+      "group": "Surprised",
+      "revision": "d7c4822fcb60673f98d2d28ef864b02ebd414b7be3eadb54246e88766b6a78dc",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_surprised_excited_energetic",
+      "label": "Surprised / Excited / Energetic",
+      "group": "Surprised",
+      "revision": "7b54be48ddc3002c9332ab6d5d9ee09f646845cef7078e6ab79766700c12e846",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_surprised_startled",
+      "label": "Surprised / Startled",
+      "group": "Surprised",
+      "revision": "89f5b91aa2564d09242b7ce90fcb4398214ddb0b2737f4847a9dc233c777498a",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_surprised_startled_dismayed",
+      "label": "Surprised / Startled / Dismayed",
+      "group": "Surprised",
+      "revision": "e69b22de6b206abc7a0598632d8c06f5d0f0863fd50ed459273ef5320c41a846",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "emotion_surprised_startled_shocked",
+      "label": "Surprised / Startled / Shocked",
+      "group": "Surprised",
+      "revision": "a025bf87e45dc9645fdf6fac5ad902400e987ff340378c143b02a5da6157dacc",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "excited",
+      "label": "Excited",
+      "group": "",
+      "revision": "aca91187257b5c21187871ebb044804a4a4267c8f1057afe9839f19517e7864e",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "idle_hold",
+      "label": "Hold still",
+      "group": "",
+      "revision": "8d2dfae1e6474bbb1cdba70022c6e2fb14931c21df365a7550594bde5ad390d3",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "limit_sweep",
+      "label": "Limit sweep (diagnostic)",
+      "group": "",
+      "revision": "ae40cbc60e62c3f374519771a1d2103bd2df1d018896fbb5651841e5f356f34a",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "nod",
+      "label": "Nod",
+      "group": "",
+      "revision": "cca99497029e43e2032301601da4257f0cf29b34fa16b1c69a84bbc9d2a999c3",
+      "status": "pass",
+      "notes": "Smoke-test note only: <img src=x onerror=\"window.reviewInjected=true\"> & \"timing\"\nSecond line.",
+      "updated_at": "2026-10-15T02:04:27.482Z"
+    },
+    {
+      "name": "reach_hold",
+      "label": "Reach and hold",
+      "group": "",
+      "revision": "d9c15e6e825270c485ce083af01631b10872face2a0594773a6f9f118fe7c62c",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "scan",
+      "label": "Look around",
+      "group": "",
+      "revision": "d6e46112184c86082681edeb7733910ecc0ca8183fb1f243811414c3d1599aee",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    },
+    {
+      "name": "shake",
+      "label": "Shake head",
+      "group": "",
+      "revision": "4d6932e6e779b5e7cfaac34111237835bec260986f646c7f007259f7122574c3",
+      "status": "fail",
+      "notes": "",
+      "updated_at": null
+    }
+  ],
+  "history": []
+}

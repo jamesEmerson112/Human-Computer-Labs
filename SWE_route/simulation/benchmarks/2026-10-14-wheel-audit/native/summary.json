@@ -1,0 +1,144 @@
+{
+  "python-mujoco": {
+    "trials": 126,
+    "frames": 38388,
+    "worst_trial_p95_ms": 0.94122,
+    "median_realtime_factor": 59.3828678502622,
+    "median_cpu_ms_per_simulated_s": 16.842026865995017,
+    "pooled_cpu_ms_per_simulated_s": 16.814336511409817,
+    "peak_process_rss_mib": 124.6953125,
+    "tracking_rmse_deg": 1.0356106350179397,
+    "tracking_max_deg": 4.430199573918169,
+    "soft_limit_violation_max_deg": 1.027361488524806,
+    "max_penetration_mm": 0.0,
+    "physics_warning_count": 0,
+    "over_budget_frames": 0,
+    "mean_host_cpu_percent": 15.722881355932204
+  },
+  "rust-mujoco-kinematic": {
+    "trials": 126,
+    "frames": 38388,
+    "worst_trial_p95_ms": 0.04145999999999999,
+    "median_realtime_factor": 2753.4593871571246,
+    "median_cpu_ms_per_simulated_s": 0.0,
+    "pooled_cpu_ms_per_simulated_s": 0.3785362613316662,
+    "peak_process_rss_mib": 10.99609375,
+    "tracking_rmse_deg": 0.0,
+    "tracking_max_deg": 0.0,
+    "soft_limit_violation_max_deg": 0.0,
+    "max_penetration_mm": 0.0,
+    "physics_warning_count": 0,
+    "over_budget_frames": 0,
+    "mean_host_cpu_percent": 17.154545454545453,
+    "parity": {
+      "frames_compared": 38388,
+      "unique_gesture_frames": 38388,
+      "tolerance": 1e-09,
+      "complete_repetitions": [
+        1
+      ],
+      "duplicate_rows": 0,
+      "max_absolute_differences": {
+        "desired_rad.base_yaw_joint": 0.0,
+        "desired_rad.shoulder_pitch_joint": 0.0,
+        "desired_rad.elbow_pitch_joint": 0.0,
+        "desired_rad.neck_yaw_joint": 0.0,
+        "desired_rad.head_pitch_joint": 0.0,
+        "actual_rad.base_yaw_joint": 0.0,
+        "actual_rad.shoulder_pitch_joint": 0.0,
+        "actual_rad.elbow_pitch_joint": 0.0,
+        "actual_rad.neck_yaw_joint": 0.0,
+        "actual_rad.head_pitch_joint": 0.0,
+        "velocity_rad_s.base_yaw_joint": 0.0,
+        "velocity_rad_s.shoulder_pitch_joint": 0.0,
+        "velocity_rad_s.elbow_pitch_joint": 0.0,
+        "velocity_rad_s.neck_yaw_joint": 0.0,
+        "velocity_rad_s.head_pitch_joint": 0.0
+      }
+    }
+  },
+  "rust-mujoco-source": {
+    "trials": 126,
+    "frames": 38388,
+    "worst_trial_p95_ms": 0.2086,
+    "median_realtime_factor": 293.10697926628586,
+    "median_cpu_ms_per_simulated_s": 3.244100003592083,
+    "pooled_cpu_ms_per_simulated_s": 3.223663644889028,
+    "peak_process_rss_mib": 11.02734375,
+    "tracking_rmse_deg": 4.753523314635244,
+    "tracking_max_deg": 32.37565807954917,
+    "soft_limit_violation_max_deg": 1.0390532616416783,
+    "max_penetration_mm": 0.9999999999998658,
+    "physics_warning_count": 0,
+    "over_budget_frames": 0,
+    "mean_host_cpu_percent": 18.79642857142857,
+    "parity": {
+      "frames_compared": 38388,
+      "unique_gesture_frames": 38388,
+      "tolerance": 1e-09,
+      "complete_repetitions": [
+        1
+      ],
+      "duplicate_rows": 0,
+      "max_absolute_differences": {
+        "desired_rad.base_yaw_joint": 0.0,
+        "desired_rad.shoulder_pitch_joint": 0.0,
+        "desired_rad.elbow_pitch_joint": 0.0,
+        "desired_rad.neck_yaw_joint": 0.0,
+        "desired_rad.head_pitch_joint": 0.0,
+        "actual_rad.base_yaw_joint": 0.0,
+        "actual_rad.shoulder_pitch_joint": 0.0,
+        "actual_rad.elbow_pitch_joint": 0.0,
+        "actual_rad.neck_yaw_joint": 0.0,
+        "actual_rad.head_pitch_joint": 0.0,
+        "velocity_rad_s.base_yaw_joint": 0.0,
+        "velocity_rad_s.shoulder_pitch_joint": 0.0,
+        "velocity_rad_s.elbow_pitch_joint": 0.0,
+        "velocity_rad_s.neck_yaw_joint": 0.0,
+        "velocity_rad_s.head_pitch_joint": 0.0
+      }
+    }
+  },
+  "rust-mujoco": {
+    "trials": 126,
+    "frames": 38388,
+    "worst_trial_p95_ms": 0.29159999999999997,
+    "median_realtime_factor": 456.14661082719545,
+    "median_cpu_ms_per_simulated_s": 2.294985078383432,
+    "pooled_cpu_ms_per_simulated_s": 2.3444826508283843,
+    "peak_process_rss_mib": 10.83203125,
+    "tracking_rmse_deg": 1.0356106350179397,
+    "tracking_max_deg": 4.430199573918169,
+    "soft_limit_violation_max_deg": 1.027361488524806,
+    "max_penetration_mm": 0.0,
+    "physics_warning_count": 0,
+    "over_budget_frames": 0,
+    "mean_host_cpu_percent": 31.550819672131148,
+    "parity": {
+      "frames_compared": 38388,
+      "unique_gesture_frames": 38388,
+      "tolerance": 1e-09,
+      "complete_repetitions": [
+        1
+      ],
+      "duplicate_rows": 0,
+      "max_absolute_differences": {
+        "desired_rad.base_yaw_joint": 0.0,
+        "desired_rad.shoulder_pitch_joint": 0.0,
+        "desired_rad.elbow_pitch_joint": 0.0,
+        "desired_rad.neck_yaw_joint": 0.0,
+        "desired_rad.head_pitch_joint": 0.0,
+        "actual_rad.base_yaw_joint": 0.0,
+        "actual_rad.shoulder_pitch_joint": 0.0,
+        "actual_rad.elbow_pitch_joint": 0.0,
+        "actual_rad.neck_yaw_joint": 0.0,
+        "actual_rad.head_pitch_joint": 0.0,
+        "velocity_rad_s.base_yaw_joint": 0.0,
+        "velocity_rad_s.shoulder_pitch_joint": 0.0,
+        "velocity_rad_s.elbow_pitch_joint": 0.0,
+        "velocity_rad_s.neck_yaw_joint": 0.0,
+        "velocity_rad_s.head_pitch_joint": 0.0
+      }
+    }
+  }
+}

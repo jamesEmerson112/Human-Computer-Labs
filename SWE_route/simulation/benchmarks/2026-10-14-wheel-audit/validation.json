@@ -1,0 +1,88 @@
+{
+  "timestamp_utc": "2026-10-15T02:15:17.560671+00:00",
+  "purpose": "Selected-wheel technical audit; no human animation approvals inferred",
+  "coverage": {
+    "source": 123,
+    "target": 126,
+    "mapped": 103,
+    "added": 23,
+    "retired": 20,
+    "preserve_review": 74
+  },
+  "emotion_entries": 117,
+  "excluded_family": "Bad",
+  "neutral": "separate reset command",
+  "python_tests_passed": 569,
+  "rust_tests_passed": 15,
+  "viewer_tests_passed": 24,
+  "typescript_build": "passed",
+  "model_export_check": "passed",
+  "controller_audit": {
+    "cases": 756,
+    "failures": 0,
+    "same_step_groups": 0,
+    "similarity_candidates": 10
+  },
+  "native_controller_parity": {
+    "gesture_start_cases": 378,
+    "frames": 103843,
+    "interruptions": 378
+  },
+  "native_physics_parity": {
+    "frames": 115164,
+    "tolerance": 1e-09,
+    "maximum_difference": 0.0,
+    "repeats": 1
+  },
+  "default_physics": {
+    "trials": 126,
+    "tracking_rmse_deg": 1.0356106350179397,
+    "tracking_max_deg": 4.430199573918169,
+    "soft_limit_violation_max_deg": 1.027361488524806,
+    "max_penetration_mm": 0.0,
+    "physics_warning_count": 0
+  },
+  "accepted_review": "review-final/result.json",
+  "accepted_viewer": "viewer-final/result.json",
+  "browser_review_groups": 11,
+  "browser_regression_groups": 9,
+  "protocol_groups": 9,
+  "dev_proxy_groups": 5,
+  "viewer_dist_sha256": {
+    "index.html": "fa45a03473817d450e5bd30430babf39e68da34365bdb0d0327d917726e0c8b9",
+    "static/index-C4q4EwlS.css": "85a8127f3a529e72e86b5d41060828394bf463fcc27669e9443f539dd0a78578",
+    "static/index-DlEOtiAI.js": "0745dcaf6582073c8547ff118220cf4aa3d2f941921ac1a786346143b771e509"
+  },
+  "runtime_executable_sha256": "32d2ac07092787d7a38ce530fb3716d8ef1abdd62d4bc4157af490b0956d0969",
+  "benchmark_executable_sha256": "30a0bfaa68e7303d9087ef70aba95f2e490f3e3f1d34f86789170968b4c566f0",
+  "artifact_sha256": {
+    "protocol.json": "b38aa9a34a3044c87cfe31f6182468111fe447992be5464e8e233f11a4887b95",
+    "review-final/result.json": "69ef41af9c920b7c82702ba515b06e779833eaaf4b9fc33fbc908269940ee3c7",
+    "viewer-final/result.json": "c785b988c0ae38753439f29f5673dcfbd4dcd6edfebc17d11263c15015282e21",
+    "dev-proxy/result.json": "22ec6a6206b482c6cedaa6d1c6e577f88d2aafdb0a022e22113134ae65a91fbf",
+    "motion-audit/audit.json": "e05fe6e567a4a3ccdead427f9ea814b96c742001deecea2a55ac1ee928dc9ae1",
+    "reference/manifest.json": "1d23684009910c6f0efa8493ecf43f1f4af70f8cde86d810d20b4bccdf7eea50",
+    "reference/mujoco.json": "394084559bdf39d277707c8f98f38b63b3a09503eebd2a3e8a8572bfdee33595",
+    "native/summary.json": "3bc04bf0a6aa7f7dad56bca7cb9851fdb7e25380e3e0e4777ab72a511cd3a435"
+  },
+  "notes": [
+    "Synthetic browser review exports are not human feedback.",
+    "Near-limit starts are requested-motion checks; physics traces start at neutral.",
+    "Historical 123-clip benchmarks remain unchanged.",
+    "The short Python browser smoke test is not a matched performance measurement."
+  ],
+  "live_launch": {
+    "url": "http://127.0.0.1:8082",
+    "catalog_count": 126,
+    "families": [
+      "Angry",
+      "Disgusted",
+      "Fearful",
+      "Happy",
+      "Sad",
+      "Surprised"
+    ],
+    "revision_hashes_verified": true,
+    "bundle_verified": true
+  }
+}

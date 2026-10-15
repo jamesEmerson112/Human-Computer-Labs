@@ -1,0 +1,117 @@
+{
+  "phases": [
+    {
+      "repeat": 1,
+      "phase": "idle",
+      "started_monotonic_s": 43701.9707808,
+      "ended_monotonic_s": 43704.02501,
+      "wall_s": 2.0542291999954614,
+      "server_cpu_percent_one_core": 14.451892709959333,
+      "browser_cpu_percent_one_core": 36.510044740949894,
+      "server_peak_sampled_rss_mib": 155.21875,
+      "browser_peak_sampled_tree_rss_mib": 803.60546875,
+      "host_cpu_percent": {
+        "count": 4,
+        "mean": 21.7,
+        "p50": 21.1,
+        "p95": 25.97,
+        "max": 26.6
+      },
+      "server_tick_hz": 29.566686898527657,
+      "server_tick_compute_ms": {
+        "count": 61,
+        "mean": 4.544719671863933,
+        "p50": 4.262300004484132,
+        "p95": 6.143599995994009,
+        "max": 9.20590000168886
+      },
+      "server_tick_interval_ms": {
+        "count": 60,
+        "mean": 33.821848333294234,
+        "p50": 37.8001499993843,
+        "p95": 38.75226000054681,
+        "max": 41.400900001463015
+      },
+      "simulation_seconds_per_wall_second": 0.9387138170067673,
+      "browser_raf_interval_ms": {
+        "count": 150,
+        "mean": 13.333999999999996,
+        "p50": 13.300000000001091,
+        "p95": 13.400000000001455,
+        "max": 13.5
+      },
+      "browser_raf_hz": 74.99625018749065,
+      "browser_draw_frames_per_s": 74.43429932501894,
+      "browser_draw_interval_ms": {
+        "count": 149,
+        "mean": 13.334228187919459,
+        "p50": 13.300000000001091,
+        "p95": 13.400000000001455,
+        "max": 13.5
+      },
+      "browser_long_tasks": {
+        "count": 0
+      }
+    },
+    {
+      "repeat": 1,
+      "phase": "active",
+      "started_monotonic_s": 43705.5738726,
+      "ended_monotonic_s": 43717.6139565,
+      "wall_s": 12.040083899999445,
+      "server_cpu_percent_one_core": 19.20667679068338,
+      "browser_cpu_percent_one_core": 86.04072102853434,
+      "server_peak_sampled_rss_mib": 155.32421875,
+      "browser_peak_sampled_tree_rss_mib": 865.51953125,
+      "host_cpu_percent": {
+        "count": 23,
+        "mean": 49.15652173913043,
+        "p50": 45.3,
+        "p95": 72.88,
+        "max": 82.9
+      },
+      "server_tick_hz": 29.050590896505266,
+      "server_tick_compute_ms": {
+        "count": 350,
+        "mean": 5.847395714206089,
+        "p50": 5.349250001017936,
+        "p95": 8.546725002088353,
+        "max": 41.908800005330704
+      },
+      "server_tick_interval_ms": {
+        "count": 349,
+        "mean": 34.42270773639576,
+        "p50": 38.22099999524653,
+        "p95": 41.14625999936833,
+        "max": 46.95960000390187
+      },
+      "simulation_seconds_per_wall_second": 0.9208961298559021,
+      "browser_raf_interval_ms": {
+        "count": 899,
+        "mean": 13.334816462736372,
+        "p50": 13.300000000001091,
+        "p95": 13.400000000001455,
+        "max": 13.600000000002183
+      },
+      "browser_raf_hz": 74.99165832499168,
+      "browser_draw_frames_per_s": 74.90979993499666,
+      "browser_draw_interval_ms": {
+        "count": 898,
+        "mean": 13.334855233853006,
+        "p50": 13.300000000001091,
+        "p95": 13.400000000001455,
+        "max": 13.600000000002183
+      },
+      "browser_long_tasks": {
+        "count": 0
+      }
+    }
+  ],
+  "click_to_status_ms": {
+    "count": 6,
+    "mean": 81.16666666666667,
+    "p50": 86.25,
+    "p95": 134.9249999988824,
+    "max": 141.39999999850988
+  }
+}

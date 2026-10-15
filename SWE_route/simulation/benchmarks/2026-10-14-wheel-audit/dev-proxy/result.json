@@ -1,0 +1,22 @@
+{
+  "timestamp_utc": "2026-10-15T02:05:15.863777+00:00",
+  "checks": [
+    "Both local hostnames proxy scene, exact review migration JSON and mesh requests, with or without matching HTTP Origin",
+    "HTTP proxy rejects foreign/mismatched Origin and foreign Host",
+    "Both local WebSocket origins receive all 126 local gestures/current state and acknowledge Nod/Stop",
+    "WebSocket proxy rejects absent, foreign, mismatched, and opaque origins before forwarding",
+    "Native server still rejects direct dev-origin connections"
+  ],
+  "catalog_count": 126,
+  "families": [
+    "Angry",
+    "Disgusted",
+    "Fearful",
+    "Happy",
+    "Sad",
+    "Surprised"
+  ],
+  "harness_sha256": "901a5bfe0b248f6685beedaa800ea0670751930197adb6ac62fc9217b2b181c5",
+  "executable_sha256": "32d2ac07092787d7a38ce530fb3716d8ef1abdd62d4bc4157af490b0956d0969",
+  "passed": true
+}

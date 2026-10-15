@@ -1,0 +1,997 @@
+{
+  "schema_version": 1,
+  "type": "lamp-animation-review",
+  "exported_at": "2026-10-14T20:00:00.000Z",
+  "rule": "checked_pass_unchecked_fail",
+  "summary": {
+    "total": 123,
+    "passed": 123,
+    "failed": 0
+  },
+  "animations": [
+    {
+      "name": "bow",
+      "label": "Bow",
+      "group": "",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "curious",
+      "label": "Curious lean",
+      "group": "",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "excited",
+      "label": "Excited",
+      "group": "",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "idle_hold",
+      "label": "Hold still",
+      "group": "",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "limit_sweep",
+      "label": "Limit sweep (diagnostic)",
+      "group": "",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "nod",
+      "label": "Nod",
+      "group": "",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "reach_hold",
+      "label": "Reach and hold",
+      "group": "",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "scan",
+      "label": "Look around",
+      "group": "",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "shake",
+      "label": "Shake head",
+      "group": "",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_fear",
+      "label": "Fear",
+      "group": "Fear",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_fear_scared",
+      "label": "Fear / Scared",
+      "group": "Fear",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_fear_scared_frightened",
+      "label": "Fear / Scared / Frightened",
+      "group": "Fear",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_fear_anxious",
+      "label": "Fear / Anxious",
+      "group": "Fear",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_fear_anxious_overwhelmed",
+      "label": "Fear / Anxious / Overwhelmed",
+      "group": "Fear",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_fear_anxious_worried",
+      "label": "Fear / Anxious / Worried",
+      "group": "Fear",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_fear_insecure",
+      "label": "Fear / Insecure",
+      "group": "Fear",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_fear_insecure_inadequate",
+      "label": "Fear / Insecure / Inadequate",
+      "group": "Fear",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_fear_insecure_inferior",
+      "label": "Fear / Insecure / Inferior",
+      "group": "Fear",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_fear_submissive",
+      "label": "Fear / Submissive",
+      "group": "Fear",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_fear_submissive_worthless",
+      "label": "Fear / Submissive / Worthless",
+      "group": "Fear",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_fear_submissive_insignificant",
+      "label": "Fear / Submissive / Insignificant",
+      "group": "Fear",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_fear_rejected",
+      "label": "Fear / Rejected",
+      "group": "Fear",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_fear_rejected_alienated",
+      "label": "Fear / Rejected / Alienated",
+      "group": "Fear",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_anger_threatened",
+      "label": "Anger / Threatened",
+      "group": "Anger",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_anger",
+      "label": "Anger",
+      "group": "Anger",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_anger_hateful_resentful",
+      "label": "Anger / Hateful / Resentful",
+      "group": "Anger",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_fear_humiliated",
+      "label": "Fear / Humiliated",
+      "group": "Fear",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_fear_humiliated_disrespected",
+      "label": "Fear / Humiliated / Disrespected",
+      "group": "Fear",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_fear_humiliated_ridiculed",
+      "label": "Fear / Humiliated / Ridiculed",
+      "group": "Fear",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_anger_hateful",
+      "label": "Anger / Hateful",
+      "group": "Anger",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_anger_hateful_violated",
+      "label": "Anger / Hateful / Violated",
+      "group": "Anger",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_anger_mad",
+      "label": "Anger / Mad",
+      "group": "Anger",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_anger_mad_furious",
+      "label": "Anger / Mad / Furious",
+      "group": "Anger",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_anger_threatened_jealous",
+      "label": "Anger / Threatened / Jealous",
+      "group": "Anger",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_anger_aggressive",
+      "label": "Anger / Aggressive",
+      "group": "Anger",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_anger_aggressive_provoked",
+      "label": "Anger / Aggressive / Provoked",
+      "group": "Anger",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_anger_aggressive_hostile",
+      "label": "Anger / Aggressive / Hostile",
+      "group": "Anger",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_anger_frustrated",
+      "label": "Anger / Frustrated",
+      "group": "Anger",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_anger_frustrated_infuriated",
+      "label": "Anger / Frustrated / Infuriated",
+      "group": "Anger",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_anger_frustrated_irritated",
+      "label": "Anger / Frustrated / Irritated",
+      "group": "Anger",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_anger_distant",
+      "label": "Anger / Distant",
+      "group": "Anger",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_anger_distant_withdrawn",
+      "label": "Anger / Distant / Withdrawn",
+      "group": "Anger",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_anger_critical",
+      "label": "Anger / Critical",
+      "group": "Anger",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_anger_critical_skeptical",
+      "label": "Anger / Critical / Skeptical",
+      "group": "Anger",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_disgust",
+      "label": "Disgust",
+      "group": "Disgust",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_disgust_disapproval",
+      "label": "Disgust / Disapproval",
+      "group": "Disgust",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_disgust_disapproval_judgmental",
+      "label": "Disgust / Disapproval / Judgmental",
+      "group": "Disgust",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_disgust_disappointed",
+      "label": "Disgust / Disappointed",
+      "group": "Disgust",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_disgust_disappointed_revolted",
+      "label": "Disgust / Disappointed / Revolted",
+      "group": "Disgust",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_disgust_awful",
+      "label": "Disgust / Awful",
+      "group": "Disgust",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_disgust_awful_detestable",
+      "label": "Disgust / Awful / Detestable",
+      "group": "Disgust",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_disgust_avoidance",
+      "label": "Disgust / Avoidance",
+      "group": "Disgust",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_disgust_avoidance_hesitant",
+      "label": "Disgust / Avoidance / Hesitant",
+      "group": "Disgust",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_sad",
+      "label": "Sad",
+      "group": "Sad",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_anger_hurt",
+      "label": "Anger / Hurt",
+      "group": "Anger",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_anger_hurt_embarrassed",
+      "label": "Anger / Hurt / Embarrassed",
+      "group": "Anger",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_sad_depressed",
+      "label": "Sad / Depressed",
+      "group": "Sad",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_sad_depressed_inferior",
+      "label": "Sad / Depressed / Inferior",
+      "group": "Sad",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_sad_depressed_empty",
+      "label": "Sad / Depressed / Empty",
+      "group": "Sad",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_sad_guilty",
+      "label": "Sad / Guilty",
+      "group": "Sad",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_sad_guilty_remorseful",
+      "label": "Sad / Guilty / Remorseful",
+      "group": "Sad",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_sad_guilty_ashamed",
+      "label": "Sad / Guilty / Ashamed",
+      "group": "Sad",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_sad_despair",
+      "label": "Sad / Despair",
+      "group": "Sad",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_sad_despair_powerless",
+      "label": "Sad / Despair / Powerless",
+      "group": "Sad",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_anger_hurt_devastated",
+      "label": "Anger / Hurt / Devastated",
+      "group": "Anger",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_sad_despair_vulnerable",
+      "label": "Sad / Despair / Vulnerable",
+      "group": "Sad",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_sad_abandoned_victimized",
+      "label": "Sad / Abandoned / Victimized",
+      "group": "Sad",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_sad_lonely",
+      "label": "Sad / Lonely",
+      "group": "Sad",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_sad_lonely_abandoned",
+      "label": "Sad / Lonely / Abandoned",
+      "group": "Sad",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_sad_lonely_isolated",
+      "label": "Sad / Lonely / Isolated",
+      "group": "Sad",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_happy",
+      "label": "Happy",
+      "group": "Happy",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_happy_optimistic",
+      "label": "Happy / Optimistic",
+      "group": "Happy",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_happy_optimistic_inspired",
+      "label": "Happy / Optimistic / Inspired",
+      "group": "Happy",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_happy_peaceful_hopeful",
+      "label": "Happy / Peaceful / Hopeful",
+      "group": "Happy",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_happy_intimate",
+      "label": "Happy / Intimate",
+      "group": "Happy",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_happy_intimate_sensitive",
+      "label": "Happy / Intimate / Sensitive",
+      "group": "Happy",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_happy_peaceful",
+      "label": "Happy / Peaceful",
+      "group": "Happy",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_happy_peaceful_loving",
+      "label": "Happy / Peaceful / Loving",
+      "group": "Happy",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_happy_powerful",
+      "label": "Happy / Powerful",
+      "group": "Happy",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_happy_powerful_courageous",
+      "label": "Happy / Powerful / Courageous",
+      "group": "Happy",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_happy_accepted",
+      "label": "Happy / Accepted",
+      "group": "Happy",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_happy_accepted_fulfilled",
+      "label": "Happy / Accepted / Fulfilled",
+      "group": "Happy",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_happy_accepted_respected",
+      "label": "Happy / Accepted / Respected",
+      "group": "Happy",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_happy_proud",
+      "label": "Happy / Proud",
+      "group": "Happy",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_happy_proud_confident",
+      "label": "Happy / Proud / Confident",
+      "group": "Happy",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_happy_interested",
+      "label": "Happy / Interested",
+      "group": "Happy",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_happy_interested_inquisitive",
+      "label": "Happy / Interested / Inquisitive",
+      "group": "Happy",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_happy_joyful",
+      "label": "Happy / Joyful",
+      "group": "Happy",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_happy_joyful_liberated",
+      "label": "Happy / Joyful / Liberated",
+      "group": "Happy",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_happy_intimate_playful",
+      "label": "Happy / Intimate / Playful",
+      "group": "Happy",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_surprise",
+      "label": "Surprise",
+      "group": "Surprise",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_surprise_excited",
+      "label": "Surprise / Excited",
+      "group": "Surprise",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_surprise_excited_energetic",
+      "label": "Surprise / Excited / Energetic",
+      "group": "Surprise",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_surprise_excited_eager",
+      "label": "Surprise / Excited / Eager",
+      "group": "Surprise",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_surprise_amazed",
+      "label": "Surprise / Amazed",
+      "group": "Surprise",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_surprise_amazed_awe",
+      "label": "Surprise / Amazed / Awe",
+      "group": "Surprise",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_surprise_amazed_astonished",
+      "label": "Surprise / Amazed / Astonished",
+      "group": "Surprise",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_surprise_confused",
+      "label": "Surprise / Confused",
+      "group": "Surprise",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_surprise_confused_perplexed",
+      "label": "Surprise / Confused / Perplexed",
+      "group": "Surprise",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_surprise_confused_disillusioned",
+      "label": "Surprise / Confused / Disillusioned",
+      "group": "Surprise",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_surprise_startled",
+      "label": "Surprise / Startled",
+      "group": "Surprise",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_surprise_startled_dismayed",
+      "label": "Surprise / Startled / Dismayed",
+      "group": "Surprise",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_surprise_startled_shocked",
+      "label": "Surprise / Startled / Shocked",
+      "group": "Surprise",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_anger_critical_sarcastic",
+      "label": "Anger / Critical / Sarcastic",
+      "group": "Anger",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_anger_distant_suspicious",
+      "label": "Anger / Distant / Suspicious",
+      "group": "Anger",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_anger_mad_enraged",
+      "label": "Anger / Mad / Enraged",
+      "group": "Anger",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_anger_threatened_insecure",
+      "label": "Anger / Threatened / Insecure",
+      "group": "Anger",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_disgust_avoidance_aversion",
+      "label": "Disgust / Avoidance / Aversion",
+      "group": "Disgust",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_disgust_awful_revulsion",
+      "label": "Disgust / Awful / Revulsion",
+      "group": "Disgust",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_disgust_disappointed_repugnant",
+      "label": "Disgust / Disappointed / Repugnant",
+      "group": "Disgust",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_disgust_disapproval_loathing",
+      "label": "Disgust / Disapproval / Loathing",
+      "group": "Disgust",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_fear_rejected_inadequate",
+      "label": "Fear / Rejected / Inadequate",
+      "group": "Fear",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_fear_scared_terrified",
+      "label": "Fear / Scared / Terrified",
+      "group": "Fear",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_happy_interested_amused",
+      "label": "Happy / Interested / Amused",
+      "group": "Happy",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_happy_joyful_ecstatic",
+      "label": "Happy / Joyful / Ecstatic",
+      "group": "Happy",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_happy_optimistic_open",
+      "label": "Happy / Optimistic / Open",
+      "group": "Happy",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_happy_powerful_provocative",
+      "label": "Happy / Powerful / Provocative",
+      "group": "Happy",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_happy_proud_important",
+      "label": "Happy / Proud / Important",
+      "group": "Happy",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_sad_abandoned",
+      "label": "Sad / Abandoned",
+      "group": "Sad",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_sad_abandoned_ignored",
+      "label": "Sad / Abandoned / Ignored",
+      "group": "Sad",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_sad_bored",
+      "label": "Sad / Bored",
+      "group": "Sad",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_sad_bored_apathetic",
+      "label": "Sad / Bored / Apathetic",
+      "group": "Sad",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "name": "emotion_sad_bored_indifferent",
+      "label": "Sad / Bored / Indifferent",
+      "group": "Sad",
+      "status": "pass",
+      "notes": "Synthetic baseline migration check; not human approval.",
+      "updated_at": "2026-10-14T20:00:00.000Z"
+    }
+  ]
+}
