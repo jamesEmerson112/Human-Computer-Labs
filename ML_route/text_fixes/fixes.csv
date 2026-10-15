@@ -1,0 +1,196 @@
+split,clip,old,new,reason
+train,dia9_utt10,"Even though you do do a good Bob impression, I'm thinkin' when she sees you tomorow, she's probably gonna realize, ""Hey, you're not Bob.""","Even though you do do a good Bob impression, I'm thinkin' when she sees you tomorrow, she's probably gonna realize, ""Hey, you're not Bob.""",misspelling
+train,dia25_utt0,": I know, we did it!! Hey, that was incredible, huh?!","I know, we did it!! Hey, that was incredible, huh?!",stray colon
+train,dia25_utt2,": Thank you, listen, thanks a lot Tribbiani, . Oh my God, look at the time, I gotta catch the bus to the ball.","Thank you, listen, thanks a lot Tribbiani. Oh my God, look at the time, I gotta catch the bus to the ball.",stray colon and comma
+train,dia25_utt4,: Yeah.,Yeah.,stray colon
+train,dia25_utt6,": Ahh, thanks but no. You see I-I think I'm ready to dance with girls.","Ahh, thanks but no. You see I-I think I'm ready to dance with girls.",stray colon
+train,dia25_utt8,: Yeah.,Yeah.,stray colon
+train,dia25_utt10,": Right. Hey, ahh, you wanna come? Marge has a girlfriend.","Right. Hey, ahh, you wanna come? Marge has a girlfriend.",stray colon
+train,dia25_utt12,": Yeah, you could dance real good with her, she's the same size as me.","Yeah, you could dance real good with her, she's the same size as me.",stray colon
+train,dia30_utt4,"So Ross, what your problem?","So Ross, what's your problem?",what to what's
+train,dia33_utt5,"Okay, now will you guys get out of here? I want this is to be a surprise and she's gonna know.","Okay, now will you guys get out of here? I want this to be a surprise and she's gonna know.",stray extra word
+train,dia39_utt15,"Ah, it's says so in the script!","Ah, it says so in the script!",it's to it
+train,dia47_utt7,"No, no wait, for get them, we got one, hard left.","No, no wait, forget them, we got one, hard left.",split word
+train,dia53_utt2,"Actually, I'm not here to complement the chef.","Actually, I'm not here to compliment the chef.",complement to compliment
+train,dia53_utt3,"Ohh… Oh, that's okay I hate when people come back to complement the chef.","Ohh… Oh, that's okay I hate when people come back to compliment the chef.",complement to compliment
+train,dia55_utt3,You're sister? You're sister's asleep on the couch? Ohhh! I saw,Your sister? Your sister's asleep on the couch? Ohhh! I saw,you're to your
+train,dia58_utt4,"Umm, excuse me, we switched apartments. You can't eat are food anymore, that-that gravy train had ended.","Umm, excuse me, we switched apartments. You can't eat our food anymore, that-that gravy train had ended.",are to our
+train,dia62_utt9,"Bob? Ooh, working here with us? Everyday? Yeah, I don't know if he has what it takes.","Bob? Ooh, working here with us? Every day? Yeah, I don't know if he has what it takes.",everyday to every day
+train,dia66_utt11,What? I'm just said.,What? I'm just sad.,said to sad
+train,dia73_utt8,"I don't know. I can't tell, what ever it was went back in too quickly.","I don't know. I can't tell, whatever it was went back in too quickly.",split word
+train,dia79_utt7,"All right, don't waste it, I mean its still food.","All right, don't waste it, I mean it's still food.",its to it's
+train,dia80_utt2,"Oh, please!Honey, just the fact that you want me here to support you, I'm...OH MY GOD!Is that Christian Sanders?He's so","Oh, please! Honey, just the fact that you want me here to support you, I'm...OH MY GOD! Is that Christian Sanders? He's so",missing spaces
+train,dia89_utt16,"I'm telling ya, you're gonna be dancing at my wedding before you're dancing at there's.","I'm telling ya, you're gonna be dancing at my wedding before you're dancing at theirs.",there's to theirs
+train,dia98_utt1,"Well, if the magician can open my beer with his but cheeks, then all right.","Well, if the magician can open my beer with his butt cheeks, then all right.",but to butt
+train,dia117_utt3,"No it's not too soon, I had lunch at a eleven.","No it's not too soon, I had lunch at eleven.",stray word
+train,dia122_utt4,"Yeah, a slice of cheesecake and-and a date if you're given' 'em out.","Yeah, a slice of cheesecake and-and a date if you're givin' 'em out.",misspelling
+train,dia129_utt10,We'll stop by every news stand and burn every copy of their Times and the Post.,We'll stop by every news stand and burn every copy of the Times and the Post.,their to the
+train,dia140_utt0,"Okay I've got one for you, if you had too which one would you rather eat, a seeing eye dog or a talking gorilla?","Okay I've got one for you, if you had to which one would you rather eat, a seeing eye dog or a talking gorilla?",too to to
+train,dia141_utt5,"Y'know what you should do, just toss 'em in the shedder and claim you never got 'em.","Y'know what you should do, just toss 'em in the shredder and claim you never got 'em.",misspelling
+train,dia151_utt9,I mean you fill some form out once and a while and instead of checking the box that says Ms you check the box that says Mrs.!,I mean you fill some form out once in a while and instead of checking the box that says Ms you check the box that says Mrs.!,and to in
+train,dia156_utt6,Uh-huh. Now you can turn around or you can go in there and rip the Band-Aid off. What to you want to do?,Uh-huh. Now you can turn around or you can go in there and rip the Band-Aid off. What do you want to do?,to to do
+train,dia160_utt5,I?ve got some bad news.,I've got some bad news.,broken apostrophe
+train,dia160_utt8,"Come on sweetie! You?ve had to work late every night for the past two weeks, what is it this time?","Come on sweetie! You've had to work late every night for the past two weeks, what is it this time?",broken apostrophe
+train,dia160_utt10,"But work comes first! Oh hey, but that?s sad about you though, what happened? Burn out? Burn all out, did ya?","But work comes first! Oh hey, but that's sad about you though, what happened? Burn out? Burn all out, did ya?",broken apostrophe
+train,dia160_utt11,"Nooo, he?s leaving for a better job.","Nooo, he's leaving for a better job.",broken apostrophe
+train,dia160_utt12,"Oh well that?s great, so I guess this is ah, this is good bye then. Huh? Good bye.","Oh well that's great, so I guess this is ah, this is good bye then. Huh? Good bye.",broken apostrophe
+train,dia160_utt15,Well we?re gonna miss you around here.,Well we're gonna miss you around here.,broken apostrophe
+train,dia166_utt0,"Hey, anybody got a length of rope about six feet long with a little nouse at the end?","Hey, anybody got a length of rope about six feet long with a little noose at the end?",misspelling
+train,dia170_utt3,"Whoa, ah!! We're you just gonna give me some lemonade?","Whoa, ah!! Were you just gonna give me some lemonade?",we're to were
+train,dia174_utt5,Oh..please!I-I welcome criticism.,Oh..please! I-I welcome criticism.,missing space
+train,dia180_utt11,Janice I didn't even know you were pregnant! Who's the unwitting human who's essence you've stolen?,Janice I didn't even know you were pregnant! Who's the unwitting human whose essence you've stolen?,who's to whose
+train,dia183_utt9,"So, wow, this is pretty wonerful, huh.","So, wow, this is pretty wonderful, huh.",misspelling
+train,dia184_utt12,Kinda have a... a thing for the Days Of Our Life's people.,Kinda have a... a thing for the Days Of Our Lives people.,misplaced apostrophe
+train,dia189_utt15,Ross you left you scarf in… Hey you guys.,Ross you left your scarf in… Hey you guys.,you to your
+train,dia195_utt0,"Okay sir, um-mm, let see if I got this right.","Okay sir, um-mm, let's see if I got this right.",missing apostrophe
+train,dia195_utt1,"Ah, so this is a half-caf, double tall, easy hazel nut, non-fat, no foam, with whip, extra hot latte, right?","Ah, so this is a half-caf, double tall, easy hazelnut, non-fat, no foam, with whip, extra hot latte, right?",split word
+train,dia195_utt16,"Okay, hold my crawler.","Okay, hold my cruller.",misspelling
+train,dia201_utt3,"Look, I… Look, I'm having a great time with you and I just don't want us to move to fast or put to much pressure on us.","Look, I… Look, I'm having a great time with you and I just don't want us to move too fast or put too much pressure on us.",to to too
+train,dia208_utt4,"Oh yeah. First off all, chasing the Churo guy isn't jogging.","Oh yeah. First of all, chasing the Churro guy isn't jogging.","off to of, misspelling"
+train,dia212_utt8,"But hey, y'know if you don't believe me, please, by my guest.","But hey, y'know if you don't believe me, please, be my guest.",by to be
+train,dia219_utt6,That's it. That's my worse Thanksgiving.,That's it. That's my worst Thanksgiving.,worse to worst
+train,dia223_utt0,"Now maybe you just like wanna but the whole duck in there! Who cares, y'know? Now I got the legs","Now maybe you just like wanna put the whole duck in there! Who cares, y'know? Now I got the legs",but to put
+train,dia226_utt11,"Yeah, okay, at ease solider!","Yeah, okay, at ease soldier!",misspelling
+train,dia244_utt6,"So I though about what you said and I though about what he said and, well, his way I get to have sex tonight so.","So I thought about what you said and I thought about what he said and, well, his way I get to have sex tonight so.",though to thought
+train,dia245_utt1,"We couldn't keep our eyes off each other all night and then every once and a while y'know, he'd kinda lean over and stroke my hair and touch my neck.","We couldn't keep our eyes off each other all night and then every once in a while y'know, he'd kinda lean over and stroke my hair and touch my neck.",and to in
+train,dia255_utt10,"Well,fall out of it.","Well, fall out of it.",missing space
+train,dia260_utt3,"Yeah, she clamed she had to go out of town suddenly.","Yeah, she claimed she had to go out of town suddenly.",misspelling
+train,dia264_utt8,I'm going crazy! Okay? Do you have any thing around here that looks homemade?,I'm going crazy! Okay? Do you have anything around here that looks homemade?,split word
+train,dia275_utt6,"Oh well, you're timing couldn't be better. I am putting out fires all over the place.","Oh well, your timing couldn't be better. I am putting out fires all over the place.",you're to your
+train,dia302_utt2,"Please, right now, no, every time I see him it's like 'Is it on the lose?' 'Is it watching me?'","Please, right now, no, every time I see him it's like 'Is it on the loose?' 'Is it watching me?'",lose to loose
+train,dia302_utt4,"He's right, even if it's to say something complementary.","He's right, even if it's to say something complimentary.",complementary to complimentary
+train,dia314_utt11,"Hey uh, have you guys scene Chandler?","Hey uh, have you guys seen Chandler?",scene to seen
+train,dia328_utt1,Because I'm not going to spend one more day with someone whose out to sabotage my every move.,Because I'm not going to spend one more day with someone who's out to sabotage my every move.,whose to who's
+train,dia335_utt3,I wonder if its time for you to rejoin our team at the museum?,I wonder if it's time for you to rejoin our team at the museum?,its to it's
+train,dia336_utt2,"Ross, but me down for another box of the mint treasures, okay. Where, where are the mint treasures?","Ross, put me down for another box of the mint treasures, okay. Where, where are the mint treasures?",but to put
+train,dia338_utt6,"It's-it's, they're-they're wearing it in Milan, so part of my job is too wear the clothes, and then I see how people respond, and then I report back to my superiors at","It's-it's, they're-they're wearing it in Milan, so part of my job is to wear the clothes, and then I see how people respond, and then I report back to my superiors at",too to to
+train,dia345_utt4,Gone! I mean its amazing Pheebs. I feel so free and so graceful. Hey! Look out for the horse! Sorry!,Gone! I mean it's amazing Pheebs. I feel so free and so graceful. Hey! Look out for the horse! Sorry!,its to it's
+train,dia349_utt11,Oh no!You guys aren't supposed to get divorced for 7 years!,Oh no! You guys aren't supposed to get divorced for 7 years!,missing space
+train,dia356_utt21,It's way to hot.,It's way too hot.,to to too
+train,dia358_utt18,"Well tell that to them. Oh! You can't, their dead.","Well tell that to them. Oh! You can't, they're dead.",their to they're
+train,dia361_utt9,"Eh, y'know what, she's to political, she probably wouldn't let you do it, unless you donated four cans of food first.","Eh, y'know what, she's too political, she probably wouldn't let you do it, unless you donated four cans of food first.",to to too
+train,dia367_utt15,Don't get to excited because that's not gonna happen unless you get—No way!,Don't get too excited because that's not gonna happen unless you get—No way!,to to too
+train,dia392_utt5,I just say someone on the—that looks just like you on the subway.,I just saw someone on the—that looks just like you on the subway.,say to saw
+train,dia401_utt7,"Hi Phoebe Abott, I'm your best friends daughter!","Hi Phoebe Abott, I'm your best friend's daughter!",possessive
+train,dia409_utt5,"Hey, what have you guys been up too?","Hey, what have you guys been up to?",too to to
+train,dia418_utt3,"And just to be on the safe side, Dr. Wells wanted a more comprehensive overview of you status so he sent me.","And just to be on the safe side, Dr. Wells wanted a more comprehensive overview of your status so he sent me.",you to your
+train,dia428_utt6,"No-no-no, that' not Joshua.","No-no-no, that's not Joshua.",missing s in contraction
+train,dia464_utt12,It's better to be over the hill then buried under it.,It's better to be over the hill than buried under it.,then to than
+train,dia466_utt12,"Yes', how about. C'mere. Gimme!","Yes, how about. C'mere. Gimme!",stray apostrophe
+train,dia477_utt10,"Okay, I hear you! Are you capable of talking about any thing else?","Okay, I hear you! Are you capable of talking about anything else?",split word
+train,dia478_utt4,What are you up too?,What are you up to?,too to to
+train,dia478_utt6,"Yeah, we saw this really interesting website about marriage and how totally unnecessary it is and how its just a way for the government to keep tabs on you.","Yeah, we saw this really interesting website about marriage and how totally unnecessary it is and how it's just a way for the government to keep tabs on you.",its to it's
+train,dia486_utt5,Hmm that's weird. I don't remember being in a move called benefits lapsed.,Hmm that's weird. I don't remember being in a movie called benefits lapsed.,move to movie
+train,dia492_utt1,Are you're hands still wet?,Are your hands still wet?,you're to your
+train,dia507_utt0,"Windows are clean, candels are lit.","Windows are clean, candles are lit.",misspelling
+train,dia507_utt1,"Uh, belt's to tight, gotta change the belt.","Uh, belt's too tight, gotta change the belt.",to to too
+train,dia524_utt2,"Well, I-I thought a lot about what you said, and um, I realilized duh, all right maybe I was a little judgmental.","Well, I-I thought a lot about what you said, and um, I realized duh, all right maybe I was a little judgmental.",misspelling
+train,dia524_utt4,"Look now, Phoebe remember, hey, their just fulfilling their Christmas....","Look now, Phoebe remember, hey, they're just fulfilling their Christmas....",their to they're
+train,dia532_utt5,"Allright, fine, I only have one thought! It's about the hot nanny, I gotta see her!","All right, fine, I only have one thought! It's about the hot nanny, I gotta see her!",misspelling
+train,dia539_utt3,"Eh, I mean, I mena she's not unattractive but hot? I ....","Eh, I mean, I mean she's not unattractive but hot? I ....",misspelling
+train,dia541_utt14,"Well I don't know umm, what if we were too tie each other up?","Well I don't know umm, what if we were to tie each other up?",too to to
+train,dia542_utt0,So who's idea was it to put everybody in the diner on skates?,So whose idea was it to put everybody in the diner on skates?,who's to whose
+train,dia549_utt0,"Hi uh, I'm Joey Tribbiani and with all do respect I'd like to donate some fluids.","Hi uh, I'm Joey Tribbiani and with all due respect I'd like to donate some fluids.",do to due
+train,dia549_utt9,"We already got the results back on that on, and they're not good.","We already got the results back on that one, and they're not good.",on to one
+train,dia560_utt4,Yep! And lot's of it!,Yep! And lots of it!,stray apostrophe
+train,dia571_utt0,"All right now remember, something this big and long is going to be difficult to manuver, fortunately I have a lot of experience in that area.","All right now remember, something this big and long is going to be difficult to maneuver, fortunately I have a lot of experience in that area.",misspelling
+train,dia573_utt5,"Definitely! Phoebe, you will not find a single game show host, who's ass I cannot kick.","Definitely! Phoebe, you will not find a single game show host, whose ass I cannot kick.",who's to whose
+train,dia588_utt4,There aren't any message you've forgotten to give me are there?,There aren't any messages you've forgotten to give me are there?,plural typo
+train,dia626_utt8,"Whew! Stood up to fast, got a little head rush.","Whew! Stood up too fast, got a little head rush.",to to too
+train,dia633_utt3,I wanna wear this everyday.,I wanna wear this every day.,everyday to every day
+train,dia644_utt4,"So after awhile he-he goes over to her and uh, after a minute or two, I see them kissing.","So after a while he-he goes over to her and uh, after a minute or two, I see them kissing.",awhile to a while
+train,dia647_utt0,"If you wanna give Joey a Christmas present that disrupts the entire building, why not get him something a little bit more subtle, like a wrecking ball, or a phial of small pox to release in the hallway?","If you wanna give Joey a Christmas present that disrupts the entire building, why not get him something a little bit more subtle, like a wrecking ball, or a phial of smallpox to release in the hallway?",split word
+train,dia649_utt21,"Oh yeah, it must be tough to keep your hands of him, huh?","Oh yeah, it must be tough to keep your hands off him, huh?",of to off
+train,dia651_utt0,"Well, not playing raquetball!","Well, not playing racquetball!",misspelling
+train,dia651_utt3,"Well,sounds like you two have issues.","Well, sounds like you two have issues.",missing space
+train,dia664_utt8,"Nothing, he's just really believes in that.","Nothing, he just really believes in that.",stray 's
+train,dia665_utt8,That's it! 25 percent? That means that's it's like 75 percent chance of no baby at all!,That's it! 25 percent? That means that it's like 75 percent chance of no baby at all!,that's to that
+train,dia673_utt7,"I'm sorry, is this the same Rachel who's name you said at the altar in the second marriage?","I'm sorry, is this the same Rachel whose name you said at the altar in the second marriage?",who's to whose
+train,dia673_utt20,"'Cause I kinda all ready told her uh, it was, it was already taken care of.","'Cause I kinda already told her uh, it was, it was already taken care of.",all ready to already
+train,dia677_utt1,"Your liking it, huh?","You're liking it, huh?",your to you're
+train,dia691_utt0,I like her. She sees smart.,I like her. She seems smart.,sees to seems
+train,dia693_utt3,I'm gonna call the landlord and tell him that Monica is illegally subletting here grandmother's apartment.,I'm gonna call the landlord and tell him that Monica is illegally subletting her grandmother's apartment.,here to her
+train,dia705_utt2,"Ohh, you and your ways. Since it's Christmastime. I'm going to be one of those people collection donations.","Ohh, you and your ways. Since it's Christmastime. I'm going to be one of those people collecting donations.",collection to collecting
+train,dia720_utt12,"All right look, y'know, this maybe tough but come on, this is Ross! I survived college with him!","All right look, y'know, this may be tough but come on, this is Ross! I survived college with him!",maybe to may be
+train,dia728_utt3,"I mean it's bad enough that I'm in love with my roommates girlfriend—which by the way, I think she knows.","I mean it's bad enough that I'm in love with my roommate's girlfriend—which by the way, I think she knows.",possessive
+train,dia728_utt7,"I mean at least when I've seen her with clothes on, I could imagine her body was like covered in boles or something.","I mean at least when I've seen her with clothes on, I could imagine her body was like covered in boils or something.",misspelling
+train,dia728_utt8,"But there are no boles, she's smooth!","But there are no boils, she's smooth!",misspelling
+train,dia736_utt6,"Well, that' me. Here, have this. I'm only allowed one piece of carryon anyway.","Well, that's me. Here, have this. I'm only allowed one piece of carry-on anyway.","missing s, carry-on"
+train,dia740_utt4,"Oh my God, does she really thinks that?","Oh my God, does she really think that?",thinks to think
+train,dia747_utt18,"I mean come on, you remember what's it's like to be 19 and in love.","I mean come on, you remember what it's like to be 19 and in love.",stray 's
+train,dia755_utt6,I don't have too. I can just look at you.,I don't have to. I can just look at you.,too to to
+train,dia757_utt3,"But if you have this new fangled dictionary that gets you made at me, then we have to, y'know, get you my original dictionary.","But if you have this newfangled dictionary that gets you mad at me, then we have to, y'know, get you my original dictionary.","split word, made to mad"
+train,dia759_utt8,Who's party is it?,Whose party is it?,who's to whose
+train,dia761_utt9,"There we go.You know what, if we were in prison, you guys would be, like, my bitches.","There we go. You know what, if we were in prison, you guys would be, like, my bitches.",missing space
+train,dia770_utt11,"Oh, who should I blame? The nice bell man who had to drag out luggage to 10 different rooms?","Oh, who should I blame? The nice bell man who had to drag our luggage to 10 different rooms?",out to our
+train,dia775_utt4,OK... my weirdest place would have to be... the women's room on the second floor of the New York CIty public library.,OK... my weirdest place would have to be... the women's room on the second floor of the New York City public library.,stray capital
+train,dia787_utt3,"Pizza, heh, its not like I never had that before...ba dum bum cheshhh.","Pizza, heh, it's not like I never had that before...ba dum bum cheshhh.",its to it's
+train,dia792_utt10,"Okay. . Hello Drake, I'm surprised to see you here.","Okay. Hello Drake, I'm surprised to see you here.",stray period
+train,dia793_utt10,"Here, here!","Hear, hear!",here to hear
+train,dia805_utt2,Oh right its that girl's phone number.,Oh right it's that girl's phone number.,its to it's
+train,dia806_utt3,Oh hey! You got my parent's gift!,Oh hey! You got my parents' gift!,plural possessive
+train,dia808_utt6,"Then we will sprinkle rose pedals on the bed and make love. Not just because it's romantic, but because I can!","Then we will sprinkle rose petals on the bed and make love. Not just because it's romantic, but because I can!",pedals to petals
+train,dia816_utt1,"Oh?my Gawd, I-I understand.","Oh my Gawd, I-I understand.",stray character
+train,dia827_utt0,"Wow, I have the spirit of an old Indian women living in mine.","Wow, I have the spirit of an old Indian woman living in mine.",women to woman
+train,dia827_utt5,"Okay, all right don't judge me to much.","Okay, all right don't judge me too much.",to to too
+train,dia833_utt6,"If you listen very carefully, I think its","If you listen very carefully, I think it's",its to it's
+train,dia834_utt0,"Oh, I want to look too! . Yikes!","Oh, I want to look too! Yikes!",stray period
+train,dia841_utt3,"A woman named Heldi called and said we were getting married, but that happens everyday.","A woman named Heldi called and said we were getting married, but that happens every day.",everyday to every day
+train,dia841_utt16,I'm gonna go tell Joey that that you're back. I was really worried about you.,I'm gonna go tell Joey that you're back. I was really worried about you.,repeated word
+train,dia865_utt2,I'm Monica Gellar. Who do you know the bride and groom?,I'm Monica Gellar. How do you know the bride and groom?,who to how
+train,dia869_utt4,Now he's gonna be the guy she goes too to complain about you.,Now he's gonna be the guy she goes to to complain about you.,too to to
+train,dia871_utt6,"And he'll bring you some cold soda, if want you need him for is that you're really hot.","And he'll bring you some cold soda, if what you need him for is that you're really hot.",want to what
+train,dia873_utt5,"Oh, I'm still mad at them but I also now that they bring happiness to lots of kids who's moms didn't kill themselves, so by supporting them, I'm doing a good thing, but I'm not","Oh, I'm still mad at them but I also know that they bring happiness to lots of kids whose moms didn't kill themselves, so by supporting them, I'm doing a good thing, but I'm not","now to know, who's to whose"
+train,dia878_utt3,"Yeah, we talked and Monica made me see that I over reacted a little bit and some things in life are more important.","Yeah, we talked and Monica made me see that I overreacted a little bit and some things in life are more important.",split word
+train,dia906_utt4,Why does my cinamon stick have an eraser?,Why does my cinnamon stick have an eraser?,misspelling
+train,dia907_utt8,Who are you talking too?,Who are you talking to?,too to to
+train,dia917_utt2,I found this place that makes the greatest mozzarella sticks and jalepino poppers .,I found this place that makes the greatest mozzarella sticks and jalapeno poppers .,misspelling
+train,dia920_utt0,"Look, I just saw my best friends brains smeared across the canvas, that's not gonna be me, not me.","Look, I just saw my best friend's brains smeared across the canvas, that's not gonna be me, not me.",possessive
+train,dia923_utt6,Oh no! Where to? Too Paris?,Oh no! Where to? To Paris?,too to to
+train,dia923_utt8,"Too London? No-no, Rome? Vienna? Ooh-ooh, Barcelona?","To London? No-no, Rome? Vienna? Ooh-ooh, Barcelona?",too to to
+train,dia923_utt12,"Ugh, well I will just have to soak up every once of Chandler Bing until that moment comes.","Ugh, well I will just have to soak up every ounce of Chandler Bing until that moment comes.",once to ounce
+train,dia926_utt5,"I can get out, ""Joey, I have too…"" but then I lose my nerve and I always finish with, ""…go to the bathroom.""","I can get out, ""Joey, I have to…"" but then I lose my nerve and I always finish with, ""…go to the bathroom.""",too to to
+train,dia929_utt3,"Okay, Rachel, you wanna put the marshmellows in concentric circles.","Okay, Rachel, you wanna put the marshmallows in concentric circles.",misspelling
+train,dia930_utt6,"Oh, well we watch it a second time and its","Oh, well we watch it a second time and it's",its to it's
+train,dia936_utt18,You missed you're chance!,You missed your chance!,you're to your
+train,dia939_utt17,"There he goes, your fiancée.","There he goes, your fiancé.",male form fiancé
+train,dia941_utt8,Your a poet and don't know it.,You're a poet and don't know it.,your to you're
+train,dia945_utt5,"I don't mind paying my dues, y'know, its just how much am I gonna learn about fashion by walking Mira, the arthritic seamstress, to the bathroom.","I don't mind paying my dues, y'know, it's just how much am I gonna learn about fashion by walking Mira, the arthritic seamstress, to the bathroom.",its to it's
+train,dia947_utt6,"I'm torn, between my integrity and my desire to avoid a beating. But I must be honest, your soap is abysmal.","I'm torn, between my integrity and my desire to avoid a beating. But I must be honest, your soup is abysmal.",soap to soup
+train,dia947_utt11,"Well umm, they both have a egg yolk and butter base, but a bearnaise has shallots, shirvel, and most importantly tarragon.","Well umm, they both have a egg yolk and butter base, but a bearnaise has shallots, chervil, and most importantly tarragon.",misspelling
+train,dia953_utt7,"I thought we were just gonna capture him and, and you know, set him free in the country side where he can maybe meet a friendly possom and a wisecracking owl.","I thought we were just gonna capture him and, and you know, set him free in the countryside where he can maybe meet a friendly possum and a wisecracking owl.","split word, misspelling"
+train,dia960_utt4,You're marinara sauce tasted like tomato juice!,Your marinara sauce tasted like tomato juice!,you're to your
+train,dia964_utt6,You're nose is bleeding!,Your nose is bleeding!,you're to your
+train,dia973_utt2,"Okay, now close you eyes, and think of a happy place.","Okay, now close your eyes, and think of a happy place.",you to your
+train,dia973_utt10,"Okay, all right, so, your in a meadow, millions of stars in the sky....","Okay, all right, so, you're in a meadow, millions of stars in the sky....",your to you're
+train,dia980_utt2,How?s it going.,How's it going.,stray ? for apostrophe
+train,dia980_utt3,This is the hardest letter I?ve ever had to write.,This is the hardest letter I've ever had to write.,stray ? for apostrophe
+train,dia980_utt4,What the hell?s a matter with you?,What the hell's a matter with you?,stray ? for apostrophe
+train,dia980_utt5,How do you think Joey?s going to react when he finds out that you blew off his sister with a letter?,How do you think Joey's going to react when he finds out that you blew off his sister with a letter?,stray ? for apostrophe
+train,dia980_utt6,"Well, that?s the part where you tell him that I moved to France. When actually I?ll be in Cuba.","Well, that's the part where you tell him that I moved to France. When actually I'll be in Cuba.",stray ? for apostrophe
+train,dia980_utt7,"All right, look, look, you?ve got to do this yourself, okay in person.","All right, look, look, you've got to do this yourself, okay in person.",stray ? for apostrophe
+train,dia980_utt9,"You just go to the house and you ask for Mary-Angela, okay, when which ever one she is comes to the door, you take her for a walk, you let her down easy.","You just go to the house and you ask for Mary-Angela, okay, when whichever one she is comes to the door, you take her for a walk, you let her down easy.",split word
+train,dia986_utt0,You mean whenever Monica and Chandler where like y'know doing laundry or going grocery shopping or—Oh!,You mean whenever Monica and Chandler were like y'know doing laundry or going grocery shopping or—Oh!,where to were
+train,dia988_utt0,"Y'know, you're friend's getting married, it's gotta change things.","Y'know, your friend's getting married, it's gotta change things.",you're to your
+train,dia989_utt0,Its still there!,It's still there!,its to it's
+train,dia1007_utt5,"Oh, I blew it. I wouldn't of even hired me.","Oh, I blew it. I wouldn't have even hired me.",of to have
+train,dia1018_utt5,"Oh okay, I'll fix that to. What's her e-mail address?","Oh okay, I'll fix that too. What's her e-mail address?",to to too
+train,dia1036_utt0,Hey-hey! Stanley! Hey-hey! You're leading man is here! Let's get to work.,Hey-hey! Stanley! Hey-hey! Your leading man is here! Let's get to work.,"you're to your, possessive"
+dev,dia1_utt12,"Well, next time your massaging him, you should try and distract yourself.","Well, next time you're massaging him, you should try and distract yourself.",your to you're
+dev,dia4_utt14,"Well I uh, I skipped forth grade.","Well I uh, I skipped fourth grade.",forth to fourth
+dev,dia10_utt3,"Come on man! Listen so uh, are you gonna squeeze the perps shoes a little bit before he lawyers up?","Come on man! Listen so uh, are you gonna squeeze the perp's shoes a little bit before he lawyers up?",possessive apostrophe
+dev,dia10_utt6,Oh what? Like your Mr. Cop!,Oh what? Like you're Mr. Cop!,your to you're
+dev,dia16_utt15,"Oh. Y'know, he hums while he does other stuff to.","Oh. Y'know, he hums while he does other stuff too.",to to too
+dev,dia30_utt11,"Oh yeah, you're solid. Yeah, you're just no me.","Oh yeah, you're solid. Yeah, you're just not me.","no to not, typo"
+dev,dia44_utt1,Nevermind!,Never mind!,words run together
+dev,dia48_utt3,"Oh God, oh God, it's sowed on though.","Oh God, oh God, it's sewed on though.","sowed to sewed, wrong verb"
+dev,dia52_utt0,"Hey Monica, there's a customer who wants to complement the chef, should I let him in?","Hey Monica, there's a customer who wants to compliment the chef, should I let him in?",complement to compliment
+dev,dia57_utt11,"I got a call at two in the morning, but all I could hear was, like, this high squeaky sound, so I thought okay its like a mouse or a opossum.","I got a call at two in the morning, but all I could hear was, like, this high squeaky sound, so I thought okay it's like a mouse or a opossum.",its to it's
+dev,dia63_utt15,"Well, that would've been very hard to say no too.","Well, that would've been very hard to say no to.",too to to
+dev,dia75_utt0,We should defiantly play football more often. Maybe there's a like league we could join or something.,We should definitely play football more often. Maybe there's a like league we could join or something.,defiantly to definitely
+dev,dia76_utt4,"Okay, you know, you know when your in bed, with a woman.","Okay, you know, you know when you're in bed, with a woman.",your to you're
+dev,dia76_utt6,"And, ah, you know, your fooling around with her.","And, ah, you know, you're fooling around with her.",your to you're
+dev,dia76_utt10,"And your like 'Mom, get outta here!'","And you're like 'Mom, get outta here!'",your to you're
+dev,dia76_utt11,"You know, but of course, like, after that you can't possibly think of anything else, and you can't, you know, stop what your doing.","You know, but of course, like, after that you can't possibly think of anything else, and you can't, you know, stop what you're doing.",your to you're
+dev,dia76_utt14,"Your Mom, your telling me, your telling me, about your Mom, what is the matter with you?","Your Mom, you're telling me, you're telling me, about your Mom, what is the matter with you?",your to you're
+dev,dia88_utt0,I can't believe this! How long as this been going on?,I can't believe this! How long has this been going on?,"as to has, typo"
