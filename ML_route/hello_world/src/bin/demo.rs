@@ -1,5 +1,5 @@
 //! Plays one MELD training dialogue clip by clip and prints a random emotion
-//! for each line as soon as its clip ends.
+//! and a random reply for each line as soon as its clip ends.
 //!
 //! Contents:
 //! - `main`: plays the chosen dialogue and prints one result per line
@@ -7,13 +7,14 @@
 //! - `parse_dialogue_id`: reads the Dialogue_ID from the command line
 //! - `load_dialogue`: reads one dialogue's lines from a label file
 //! - `play_clip`: plays one clip with ffplay and waits for it to end
-//! - `random_emotion`: picks one of MELD's seven emotions at random
+//! - `random_emotion_index`: picks one of MELD's seven emotions at random
+//! - `random_reply`: picks one of an emotion's hardcoded replies at random
 
 #[allow(dead_code)]
 #[path = "../constants.rs"]
 mod constants;
 
-use constants::{CLIPS_DIR, EMOTIONS, TEST_DIALOGUES, TRAIN_CSV};
+use constants::{CLIPS_DIR, EMOTIONS, REPLIES, TEST_DIALOGUES, TRAIN_CSV};
 use std::io;
 use std::path::Path;
 use std::process::{Command, ExitCode, Stdio};
@@ -53,7 +54,8 @@ struct Line {
 
 /**
  * Description: Plays every clip of the chosen dialogue in order. When a clip
- * ends, prints its speaker, its transcript and a random emotion.
+ * ends, prints its speaker, its transcript, a random emotion and a random
+ * reply for that emotion.
  * Inputs: none
  * Outputs: success once the dialogue has played, or failure when the
  * argument is not a number, the dialogue has no lines, or ffplay fails.
@@ -83,12 +85,10 @@ fn main() -> ExitCode {
             eprintln!("could not play {clip}: {error}");
             return ExitCode::FAILURE;
         }
-        println!(
-            "{clip}  {}: \"{}\"  ->  {}",
-            line.speaker,
-            line.text,
-            random_emotion()
-        );
+        let emotion_index = random_emotion_index();
+        let reply         = random_reply(emotion_index);
+        println!("{clip}  {}: \"{}\"", line.speaker, line.text);
+        println!("    -> {}: \"{reply}\"", EMOTIONS[emotion_index]);
     }
     ExitCode::SUCCESS
 }
@@ -162,8 +162,21 @@ fn play_clip(clip_path: &Path) -> io::Result<()> {
  * Description: Picks one of MELD's seven emotions at random. It stands in
  * for the trained classifier.
  * Inputs: none
- * Outputs: the emotion's name from `EMOTIONS`.
+ * Outputs: the emotion's index into `EMOTIONS`.
  */
-fn random_emotion() -> &'static str {
-    EMOTIONS[rand::random_range(0..EMOTIONS.len())]
+fn random_emotion_index() -> usize {
+    rand::random_range(0..EMOTIONS.len())
+}
+
+/**
+ * Description: Picks one of an emotion's hardcoded replies at random. It
+ * stands in for the reply model.
+ * Inputs:
+ * - `emotion_index`: the emotion's index into `EMOTIONS`.
+ * Outputs: one reply from that emotion's row of `REPLIES`.
+ * Constraints: panics when `emotion_index` is 7 or more.
+ */
+fn random_reply(emotion_index: usize) -> &'static str {
+    let replies = &REPLIES[emotion_index];
+    replies[rand::random_range(0..replies.len())]
 }

@@ -9,6 +9,7 @@
 //! - `MS_PER_SECOND`: milliseconds in one second
 //! - `CLIPS_DIR`: folder holding the MELD training clips
 //! - `EMOTIONS`: MELD's seven emotion names in a fixed order
+//! - `REPLIES`: three placeholder replies for each emotion
 
 /**
  * Description: Path to the cleaned MELD training label file, relative to this crate's folder.
@@ -53,4 +54,47 @@ pub const CLIPS_DIR: &str = "../data/MELD.Raw/train_splits";
  */
 pub const EMOTIONS: [&str; 7] = [
     "neutral", "joy", "surprise", "anger", "sadness", "disgust", "fear",
+];
+
+/**
+ * Description: Hardcoded replies that stand in for the reply model. Row `i`
+ * holds the three replies for `EMOTIONS[i]`.
+ */
+// ML_route/player/player.html holds a copy of this list, so change both.
+pub const REPLIES: [[&str; 3]; 7] = [
+    [
+        "Got it. Tell me more.",
+        "Okay, I'm following you.",
+        "I see. What happens next?",
+    ],
+    [
+        "That's great to hear!",
+        "Ha, I love that.",
+        "You sound really happy about it.",
+    ],
+    [
+        "Wait, really?",
+        "Whoa, I did not see that coming.",
+        "No way. Are you serious?",
+    ],
+    [
+        "That sounds frustrating.",
+        "I can tell you're upset. What happened?",
+        "Okay, let's take a breath.",
+    ],
+    [
+        "I'm sorry. That sounds hard.",
+        "That must hurt. I'm here.",
+        "Do you want to talk about it?",
+    ],
+    [
+        "Ew, that sounds gross.",
+        "Yikes. I wouldn't like that either.",
+        "That's pretty unpleasant.",
+    ],
+    [
+        "That sounds scary. Are you okay?",
+        "Don't worry, we'll figure it out.",
+        "Take it easy. You're safe here.",
+    ],
 ];

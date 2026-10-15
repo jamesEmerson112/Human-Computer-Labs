@@ -101,6 +101,9 @@ main {
 }
 .tag:empty { display: none; }
 .tag b { font-weight: 600; }
+.tag { max-width: calc(100% - 20px); }
+.reply { font-style: italic; color: var(--muted); margin-top: 2px; }
+.reply span { font-style: normal; font-weight: 600; }
 .now { margin: 10px 0 4px; min-height: 1.5em; color: var(--muted); }
 .controls { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 10px 0; }
 .controls label { display: flex; align-items: center; gap: 6px; font-size: 14px; }
@@ -116,7 +119,8 @@ main {
   font: 12.5px/1.5 ui-monospace, Consolas, monospace; color: var(--muted);
   white-space: pre-wrap; word-break: break-word;
 }
-.logbar { display: flex; gap: 8px; align-items: center; margin-bottom: 6px; font-size: 14px; }
+.logbar { display: flex; flex-wrap: wrap; gap: 6px 8px; align-items: center; margin-bottom: 6px; font-size: 14px; }
+.logbar label, .logbar .small { white-space: nowrap; }
 .logbar .spacer { flex: 1; }
 table { border-collapse: collapse; width: 100%; font-size: 14px; }
 th, td { text-align: left; padding: 5px 6px; border-bottom: 1px solid var(--line); }
@@ -267,7 +271,8 @@ kbd {
         <button id="none">Select none</button>
       </div>
     </div>
-    <p class="hint">Each line gets a random emotion when its clip ends. The grey
+    <p class="hint">Each line gets a random emotion and a random reply for that
+    emotion when its clip ends. The grey
     tag is MELD's own label, and the guess turns green when the two agree. The
     time beside the guess is how long the emotion took after the clip ended.</p>
     <div class="lines" id="lines"></div>
@@ -281,6 +286,17 @@ const FOLDERS = {
   test: "MELD.Raw/output_repeated_splits_test",
 };
 const EMOTIONS = ["neutral", "joy", "surprise", "anger", "sadness", "disgust", "fear"];
+// Placeholder replies for the reply model. REPLIES in
+// ML_route/hello_world/src/constants.rs holds the same list, so change both.
+const REPLIES = {
+  neutral: ["Got it. Tell me more.", "Okay, I'm following you.", "I see. What happens next?"],
+  joy: ["That's great to hear!", "Ha, I love that.", "You sound really happy about it."],
+  surprise: ["Wait, really?", "Whoa, I did not see that coming.", "No way. Are you serious?"],
+  anger: ["That sounds frustrating.", "I can tell you're upset. What happened?", "Okay, let's take a breath."],
+  sadness: ["I'm sorry. That sounds hard.", "That must hurt. I'm here.", "Do you want to talk about it?"],
+  disgust: ["Ew, that sounds gross.", "Yikes. I wouldn't like that either.", "That's pretty unpleasant."],
+  fear: ["That sounds scary. Are you okay?", "Don't worry, we'll figure it out.", "Take it easy. You're safe here."],
+};
 const IDS = {};
 for (const split of Object.keys(DATA)) {
   IDS[split] = Object.keys(DATA[split]).map(Number).sort((a, b) => a - b);
@@ -361,7 +377,8 @@ function renderLines() {
         ${selected.has(utt) ? "checked" : ""}>
       <button class="play" title="Play this line only" aria-label="Play line ${utt}">&#9654;</button>
       <div class="text" title="Click to play this line"><span class="utt">${utt}</span><span class="who">${esc(speaker)}</span>:
-        ${esc(textOf(line))}</div>
+        ${esc(textOf(line))}${guess
+          ? `<div class="reply"><span>Reply:</span> ${esc(guess.reply)}</div>` : ""}</div>
       <div class="tags"><div class="label">${emotion}</div>${guessHtml}${note}${fixed}</div>
     </div>`;
   }).join("");
@@ -385,7 +402,7 @@ function renderLog() {
     ? JSON.stringify(o)
     : o.missing
       ? `${o.clip}  missing clip, skipped`
-      : `${o.clip}  ${o.speaker}: "${o.text}"  ->  ${o.emotion}`
+      : `${o.clip}  ${o.speaker}: "${o.text}"  ->  ${o.emotion}  "${o.reply}"`
   ).join("\n");
   $("log").textContent = text;
   $("log").scrollTop = $("log").scrollHeight;
@@ -621,14 +638,17 @@ for (const video of players) {
     endedAt = queue.length ? started : null;
     const line = lineOf(playing);
     const guess = EMOTIONS[Math.floor(Math.random() * EMOTIONS.length)];
+    const replies = REPLIES[guess];
+    const reply = replies[Math.floor(Math.random() * replies.length)];
     const latency = performance.now() - started;
-    guesses[key(playing)] = { guess, label: line[2], latency };
+    guesses[key(playing)] = { guess, reply, label: line[2], latency };
     output.push({
       clip: clipName(playing), split: state.split, speaker: line[1],
-      text: textOf(line), emotion: guess, meld_label: line[2],
+      text: textOf(line), emotion: guess, reply, meld_label: line[2],
       latency_ms: Number(latency.toFixed(3)),
     });
-    $("tag").innerHTML = `${esc(clipName(playing))} &rarr; <b>${guess}</b>`;
+    $("tag").innerHTML = `${esc(clipName(playing))} &rarr; <b>${guess}</b>: ` +
+      `&ldquo;${esc(reply)}&rdquo;`;
     renderLog();
     playNext();
   });
