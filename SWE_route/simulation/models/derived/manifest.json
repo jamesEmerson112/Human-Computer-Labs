@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "mujoco_version": "3.14.0",
+  "generator": "uv run --locked python tools/export_native_model.py",
+  "source_sha256": {
+    "starter_pack/robot/dummy_lamp_5dof.urdf": "5f023d845b92e29a369a3b4fb9be8077e9c7ea4b132a4558afbefddb0765f4bb",
+    "starter_pack/robot/assets/lamp_shade.stl": "793784757fbabeb6757315c6d211d9b71a7b490afdd242573453df436d13b980",
+    "simulation/lamp_sim/backends.py": "6d36a10cea42d8289a77cc81e9c1dc0023ddd0013b74ae3dcba0412fa864fb15",
+    "simulation/lamp_sim/motion.py": "de7a0b512d3c812df4b6e6fd9cb4ea0193f3ff8e5e9d155a50189d42d58c7c6d",
+    "simulation/uv.lock": "66909e5a58358a1afa68c6106adb5d376cdf6324d218ef8a5c789c0acc11694d",
+    "simulation/tools/export_native_model.py": "b93b13d3acee69614633d30780ca319bb55b7e26cdec3c07a98f3a1973bff91d"
+  },
+  "generated_sha256": {
+    "lamp_shade.stl": "421cfd67341fedd1c16cef6e758478f8a56a07f40845d5bdc488efe3cd77c2c5",
+    "lamp.xml": "6781e95a9725f0d9db64a01048838ddbf8986f2e1fb39bf12546b143f68b8f01",
+    "lamp-source.xml": "dc7759f72636f7756dc02af97a14b03f0b43c29d4c66baa93d224870ea45fd1c",
+    "scene.json": "b5d3906adcf364f001b09cb53173647868a6260c7dbcaad793dd9ab7f9ccc3cf"
+  },
+  "physics_hz": 240,
+  "control_hz": 30,
+  "servo_gains_kp_kv": {
+    "base_yaw_joint": [
+      80.0,
+      4.0
+    ],
+    "shoulder_pitch_joint": [
+      120.0,
+      8.0
+    ],
+    "elbow_pitch_joint": [
+      100.0,
+      6.0
+    ],
+    "neck_yaw_joint": [
+      40.0,
+      2.0
+    ],
+    "head_pitch_joint": [
+      25.0,
+      1.5
+    ]
+  },
+  "armature_kg_m2": 0.02,
+  "filtered_contact_exclusions": [
+    [
+      "upper_arm_link",
+      "lamp_head_link"
+    ]
+  ],
+  "notes": "Derived build assets. The supplied URDF/STL are unchanged. Python is not required at runtime."
+}

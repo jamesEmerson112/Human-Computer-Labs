@@ -1,2 +1,7 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# Keep model provenance hashes stable across Windows and Linux checkouts.
+# Automatic text detection preserves binary STL and preview assets unchanged.
+SWE_route/simulation/** text=auto eol=lf
+SWE_route/starter_pack/robot/** text=auto eol=lf

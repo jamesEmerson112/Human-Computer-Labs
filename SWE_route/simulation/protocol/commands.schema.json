@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:lamp:commands:v1",
+  "title": "Lamp controller WebSocket commands v1",
+  "description": "Send one JSON object per WebSocket text message to /ws. The transport rejects messages over 16 KiB, duplicate object keys at every depth, nonfinite numbers and IDs longer than 128 UTF-8 bytes. A matching ack reports acceptance or an error; state snapshots carry authoritative observed poses.",
+  "type": "object",
+  "required": ["v", "id", "type"],
+  "properties": {
+    "v": {"type": "integer", "const": 1},
+    "id": {"type": "string", "minLength": 1, "maxLength": 128, "description": "Unique client correlation ID, additionally limited to 128 UTF-8 bytes by the server.", "x-maxUtf8Bytes": 128},
+    "type": {"type": "string"}
+  },
+  "oneOf": [
+    {
+      "properties": {"type": {"const": "play"}, "name": {"type": "string", "description": "A name from the most recent hello gesture catalog."}},
+      "required": ["name"]
+    },
+    {
+      "properties": {"type": {"const": "targets"}, "targets": {"$ref": "#/$defs/targets"}},
+      "required": ["targets"]
+    },
+    {
+      "properties": {"type": {"const": "pace"}, "speed": {"type": "number", "exclusiveMinimum": 0, "maximum": 1}},
+      "required": ["speed"]
+    },
+    {"properties": {"type": {"const": "stop"}}},
+    {"properties": {"type": {"const": "reset"}}},
+    {"properties": {"type": {"const": "reload"}}},
+    {
+      "properties": {"type": {"const": "light"}, "enabled": {"type": "boolean"}, "brightness": {"type": "number", "minimum": 0, "maximum": 10}},
+      "required": ["enabled", "brightness"]
+    },
+    {
+      "properties": {"type": {"const": "mode"}, "mode": {"enum": ["mujoco", "mujoco-source", "mujoco-kinematic"]}},
+      "required": ["mode"]
+    }
+  ],
+  "unevaluatedProperties": false,
+  "$defs": {
+    "targets": {
+      "type": "object",
+      "description": "Requested radians for the supplied five-DOF lamp, clamped to the soft limits advertised in hello. Unspecified joints retain the observed pose at command acceptance.",
+      "properties": {
+        "base_yaw_joint": {"type": "number"},
+        "shoulder_pitch_joint": {"type": "number"},
+        "elbow_pitch_joint": {"type": "number"},
+        "neck_yaw_joint": {"type": "number"},
+        "head_pitch_joint": {"type": "number"}
+      },
+      "additionalProperties": false
+    }
+  }
+}

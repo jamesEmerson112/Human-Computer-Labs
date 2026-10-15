@@ -1,12 +1,134 @@
 # Lamp playground
 
-A local browser playground for the supplied five-joint lamp. Move joints, play a
-gestures, and aim its light while learning how the robot fits together. MuJoCo
-simulates gravity, motors, and contacts; viser draws the result in your browser.
-The original direct playback remains available for comparison. Blender is optional and is not needed
-to run this playground.
+A local browser playground for the supplied five-joint lamp. A Rust controller
+drives motion, MuJoCo simulates gravity, motors, and contacts, and Three.js draws
+the result in your browser. Move joints, play gestures, and aim its light while
+learning how the robot fits together. The Python/viser reference and its original
+direct playback remain available for comparison. Blender is optional and is not
+needed to run this playground.
 
-## Start on Windows
+## Rust controller and Three.js viewer
+
+The native stack lives alongside the Python reference:
+**Three.js controls → WebSocket → Rust motion controller → MuJoCo 3.14.0 → observed body poses → Three.js**.
+Rust owns motion and physics in one process; the browser interpolates observed
+poses for display. The same 123 JSON gestures and supplied robot assets are used.
+The Python launch command below remains available for comparison.
+
+Prerequisites: Rust 1.92 or newer, Node.js 22.12 or newer, and a C compiler
+(Visual Studio Build Tools with Desktop development with C++ on Windows;
+`build-essential` on Ubuntu). Python/uv prepare and validate the model and supply
+the pinned MuJoCo SDK. They are not invoked by the running native application.
+
+From `SWE_route/simulation/` in PowerShell:
+
+```powershell
+uv sync --locked
+uv run --locked python tools/export_native_model.py --check
+cargo build --release --locked --manifest-path controller/Cargo.toml --bins
+npm --prefix viewer ci
+npm --prefix viewer run build
+controller/target/release/lamp-controller.exe serve --port 8082
+```
+
+Open **http://127.0.0.1:8082**. Keep the server running; Ctrl+C stops it.
+The frontend bundles Three.js locally, with no CDN requests. The server binds
+to loopback, checks browser origins, and does not request camera/microphone access.
+Use the gesture search/family filter or the five joint sliders; **Stop**
+cancels queued motion and requests a hold at the observed pose. Physical motors
+can still settle. Light on/off and brightness affect rendering. **Manual pose**
+shows actual/requested angles; **Session details** includes contact diagnostics,
+timing, and a mode selector.
+
+The native modes are `mujoco`, `mujoco-source`, and `mujoco-kinematic`. The original
+yourdfpy `kinematic` mode and teaching controls remain in the Python viewer.
+Both viewers read the same gesture directory; **Reload gesture files** replaces the
+catalog only when every file is valid. Commands sent while disconnected are
+not replayed when a browser reconnects.
+
+### Review the animations
+
+Each animation has a checkbox: **checked means pass; unchecked means fail**.
+Select an animation and press **Play**, then check it if it passes. **Next**
+selects the next visible animation without starting playback. Family, search,
+and Passed/Failed filters help you work through the list; the counts always cover
+the whole library. Add optional notes under **Notes for this animation** to explain
+what needs changing.
+
+Checks and notes save automatically in this browser and survive refreshes.
+Use the same address and browser profile to resume (for example,
+`http://127.0.0.1:8082`); another hostname, port, browser, or cleared browser data
+has separate storage. If browser storage is unavailable, the status message asks
+you to export so that your work is retained.
+
+When finished, click **Export review** to download `lamp-animation-review-*.json`.
+It contains every current animation, its stable name, pass/fail result, optional
+notes, and timestamps, including animations hidden by filters. Share that file
+for the next revision pass; entries with `status: "fail"` identify the animations
+to revise. Exporting and checking boxes do not change gesture JSON or start motion.
+
+**Import review** restores a saved file, replacing the current checks and notes.
+Unknown names are skipped and reported; animations missing from the imported
+file are unchecked. Invalid or unrelated files leave the existing review intact.
+Reviews follow animation names; if you manually replace a passed animation's
+motion, uncheck it until you have reviewed the replacement.
+
+### Ubuntu and standalone deployment
+
+On Ubuntu 24.04, use the same preparation/build commands and launch
+`controller/target/release/lamp-controller serve --port 8082`. For a standalone
+SDK, set `MUJOCO_DIR` to the MuJoCo 3.14.0 directory before building; it must contain
+the matching headers and shared library. `MUJOCO_LIBRARY` can override the runtime
+library path. Deploy the executable with `viewer/dist/`, `models/derived/`,
+`gestures/`, and that shared library, and pass `--root /path/to/simulation`.
+The bridge rejects mismatched MuJoCo headers/libraries before accessing native
+structures. A small C bridge avoids duplicating MuJoCo's versioned struct layouts
+in Rust; motion, scheduling, validation, networking, and ownership are Rust.
+
+### Timing and model provenance
+
+Native control runs at 30 Hz with eight 240 Hz physics steps per control step.
+The scheduler accumulates elapsed time, catches up at most eight control steps
+per iteration, and reports discarded time if severely delayed. This differs
+from the Python viewer's elapsed-time cap, which can slow simulation under load.
+The browser uses a 33.3 ms display buffer and quaternion interpolation; this
+smooths rendering while adding display delay. It does not alter physics or hide
+physical soft-limit overshoot.
+
+`models/derived/manifest.json` records source and generated-asset hashes.
+Regenerate intentionally with `uv run --locked python tools/export_native_model.py`
+after changing the model or conversion code, then rerun parity checks. The exporter
+preserves the exact timestep and checks serialized physics against the original.
+It never edits the supplied URDF/STL. The default collision exclusion and servo
+assumptions described below are identical in both implementations.
+
+### Native validation
+
+```powershell
+cargo test --locked --manifest-path controller/Cargo.toml
+npm --prefix viewer test
+uv run --locked python tools/verify_native_protocol.py --output .verification/native-protocol.json
+uv run --locked python tools/verify_animation_review.py --output .verification/animation-review
+uv run --locked python benchmarks/compare_native.py --output benchmarks/my-native/headless
+uv run --locked python benchmarks/measure_native_viewer.py --output benchmarks/my-native/browser
+```
+
+The Rust parity test invokes the locked Python reference to compare all gestures
+from three starting poses, interruptions, and mixed commands. Set `LAMP_PYTHON`
+to an alternate prepared Python interpreter when testing outside the default
+`.venv`. Benchmark commands require release binaries and the built frontend;
+choose new output paths to preserve earlier evidence. See
+[benchmark methodology](benchmarks/README.md) for comparison limits.
+
+The [versioned command schema](protocol/commands.schema.json) describes commands.
+Every command includes `v: 1` and a client-generated `id`; acknowledgments report
+acceptance or rejection. Connections receive a complete catalog and current
+state. State packets carry monotonic server timestamps, simulation time, requested
+and actual radians, world-space body transforms (z-up, quaternion order xyzw),
+light settings, and diagnostics. A bounded command queue and a latest-state
+channel prevent obsolete visual snapshots from accumulating.
+
+## Python reference: Start on Windows
 
 Prerequisites: Python 3.12, [uv](https://docs.astral.sh/uv/getting-started/installation/),
 and a browser with WebGL enabled (Chrome, Edge, or Firefox).
@@ -33,7 +155,7 @@ uv run --locked python -m lamp_sim --port 8081
 The server binds only to this computer. It does not request camera/microphone
 access or call model services. The browser and Python server communicate locally.
 
-## Your first five minutes
+## Python reference: Your first five minutes
 
 A **link** is a rigid part of the robot; a **joint** connects parts and lets them
 move relative to each other. This lamp has five degrees of freedom (five-DOF):
@@ -165,6 +287,26 @@ they do not measure browser FPS or establish Ubuntu performance.
 The preserved October 1 baseline covers the original nine gestures only.
 With the full emotion library, three repeats across four modes produce 1,476
 measured trials plus warmups, so allow more time for a complete run.
+
+The [October 13 baseline](benchmarks/2026-10-13-current-setup/README.md) records
+the current Python/MuJoCo/viser setup before any controller-language or frontend
+changes. It includes all 123 gestures plus a separate browser workload.
+To repeat both measurements, choose new output directories and run sequentially:
+
+```powershell
+uv run --locked python -m lamp_sim.benchmark --repeats 3 --speed 0.5 --output benchmarks/my-baseline/headless
+uv run --locked python benchmarks/measure_viewer.py --output benchmarks/my-baseline/browser
+```
+
+The browser harness starts its own temporary server and headless Chrome profile,
+then stops both. Use `--chrome` to supply another Chrome executable path. It
+records three 15-second idle trials and three 30-second active trials, along
+with server tick timing, browser draw cadence, command acknowledgment latency,
+and sampled CPU/memory use. Draw cadence counts frames submitting WebGL work;
+it does not measure completed GPU presentation. CPU percentages use one logical
+core as 100%, and summed browser working sets may double-count shared memory.
+The harness uses the existing locked dependencies and leaves application code
+unchanged. See the saved baseline for hardware and measurement limitations.
 
 ## Development and validation
 

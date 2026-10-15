@@ -4,3 +4,6 @@ __pycache__/
 *.pyc
 .verification/
 .cache/
+controller/target/
+viewer/node_modules/
+viewer/dist/
