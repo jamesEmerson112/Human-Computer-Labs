@@ -1,0 +1,907 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MELD Player</title>
+<style>
+:root {
+  --bg: #f7f7f5; --panel: #ffffff; --fg: #1d1d1f; --muted: #6b6b70;
+  --line: #e2e2de; --accent: #2f6fde; --accent-fg: #ffffff;
+  --now: #eaf1fd; --hit: #1f7a3a; --miss: #9a9aa0; --warn: #b4541a;
+  --shade: rgba(0, 0, 0, 0.62);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #141416; --panel: #1d1d20; --fg: #ececee; --muted: #9a9aa2;
+    --line: #2e2e33; --accent: #6b9cf0; --accent-fg: #0d1626;
+    --now: #1d2a40; --hit: #5cc77d; --miss: #77777f; --warn: #e39a62;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #141416; --panel: #1d1d20; --fg: #ececee; --muted: #9a9aa2;
+  --line: #2e2e33; --accent: #6b9cf0; --accent-fg: #0d1626;
+  --now: #1d2a40; --hit: #5cc77d; --miss: #77777f; --warn: #e39a62;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--fg);
+  font: 15px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+header {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px;
+  padding: 12px 16px; border-bottom: 1px solid var(--line);
+  background: var(--panel); position: sticky; top: 0; z-index: 5;
+}
+h1 { font-size: 17px; margin: 0 8px 0 0; }
+.group { display: flex; align-items: center; gap: 6px; }
+button, select, input {
+  font: inherit; color: var(--fg); background: var(--panel);
+  border: 1px solid var(--line); border-radius: 7px; padding: 5px 10px;
+}
+button { cursor: pointer; }
+button:hover { border-color: var(--accent); }
+button:focus-visible, input:focus-visible, select:focus-visible {
+  outline: 2px solid var(--accent); outline-offset: 1px;
+}
+button.primary, button[aria-pressed="true"] {
+  background: var(--accent); color: var(--accent-fg); border-color: var(--accent);
+}
+input[type="number"] { width: 90px; }
+.search { position: relative; margin-left: auto; flex: 1 1 240px; max-width: 420px; }
+.search input { width: 100%; }
+.results {
+  position: absolute; top: calc(100% + 4px); left: 0; right: 0;
+  max-height: 60vh; overflow: auto; background: var(--panel);
+  border: 1px solid var(--line); border-radius: 8px; padding: 4px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18); display: none;
+}
+.results.open { display: block; }
+.results button {
+  display: block; width: 100%; text-align: left; border: 0;
+  border-radius: 6px; padding: 6px 8px; font-size: 14px;
+}
+.results button:hover, .results button.active { background: var(--now); }
+.results .where { color: var(--muted); font-size: 12px; }
+.results .empty { color: var(--muted); padding: 6px 8px; font-size: 14px; }
+mark { background: #ffe58a; color: #1d1d1f; border-radius: 2px; }
+main {
+  display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px;
+  padding: 16px; max-width: 1400px; margin: 0 auto;
+}
+@media (min-width: 960px) {
+  main { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); }
+  .stage { position: sticky; top: 72px; align-self: start; }
+}
+.panel {
+  background: var(--panel); border: 1px solid var(--line);
+  border-radius: 10px; padding: 12px;
+}
+.screen {
+  position: relative; aspect-ratio: 16 / 9; background: #000;
+  border-radius: 8px; overflow: hidden;
+}
+.screen video {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  background: #000; visibility: hidden;
+}
+.screen video.active { visibility: visible; }
+.caption {
+  position: absolute; left: 50%; bottom: 8%; transform: translateX(-50%);
+  max-width: 90%; padding: 4px 10px; border-radius: 6px;
+  background: var(--shade); color: #fff; text-align: center;
+  font-size: clamp(13px, 2.2vw, 18px); line-height: 1.35;
+  pointer-events: none;
+}
+.caption:empty { display: none; }
+.tag {
+  position: absolute; top: 10px; left: 10px; padding: 3px 9px;
+  border-radius: 999px; background: var(--shade); color: #fff;
+  font-size: 13px; pointer-events: none;
+}
+.tag:empty { display: none; }
+.tag b { font-weight: 600; }
+.now { margin: 10px 0 4px; min-height: 1.5em; color: var(--muted); }
+.controls { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 10px 0; }
+.controls label { display: flex; align-items: center; gap: 6px; font-size: 14px; }
+.tabs { display: flex; gap: 6px; border-bottom: 1px solid var(--line); margin-top: 6px; }
+.tabs button {
+  border: 0; border-bottom: 2px solid transparent; border-radius: 0;
+  background: none; padding: 6px 4px; margin-right: 8px; color: var(--muted);
+}
+.tabs button[aria-selected="true"] { color: var(--fg); border-bottom-color: var(--accent); }
+.tabpanel { padding-top: 8px; }
+.log {
+  max-height: 240px; overflow: auto; margin: 0;
+  font: 12.5px/1.5 ui-monospace, Consolas, monospace; color: var(--muted);
+  white-space: pre-wrap; word-break: break-word;
+}
+.logbar { display: flex; gap: 8px; align-items: center; margin-bottom: 6px; font-size: 14px; }
+.logbar .spacer { flex: 1; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; }
+th, td { text-align: left; padding: 5px 6px; border-bottom: 1px solid var(--line); }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+.small { color: var(--muted); font-size: 13px; }
+.lines { display: flex; flex-direction: column; gap: 2px; }
+.row {
+  display: grid; align-items: start; gap: 4px 10px; padding: 7px 8px;
+  grid-template-columns: 20px 30px minmax(0, 1fr) auto;
+  border-radius: 8px; border: 1px solid transparent;
+}
+.row:hover { border-color: var(--line); }
+.row.playing { background: var(--now); }
+.row.found { border-color: var(--accent); }
+.row.missing .text { color: var(--miss); }
+.row input { margin-top: 4px; }
+.row .play { padding: 1px 0; width: 30px; }
+.text .who { font-weight: 600; }
+.text .utt { color: var(--muted); font-size: 13px; margin-right: 6px; }
+.tags { text-align: right; font-size: 13px; white-space: nowrap; }
+.tags div { line-height: 1.6; }
+.label { color: var(--muted); }
+.guess { font-weight: 600; }
+.guess.hit { color: var(--hit); }
+.latency {
+  font-weight: 400; color: var(--muted); margin-left: 6px;
+  font-variant-numeric: tabular-nums;
+}
+.note { color: var(--warn); font-size: 13px; }
+.fix { color: var(--accent); font-size: 12px; }
+.gap {
+  color: var(--muted); font-size: 12.5px; font-style: italic;
+  padding: 2px 8px 2px 68px;
+}
+.row .text { cursor: pointer; }
+.breakdown { margin-top: 10px; }
+.breakdown td:first-child { text-transform: capitalize; }
+.hint { color: var(--muted); font-size: 13px; margin: 0 0 8px; }
+.listhead { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px; }
+@media (max-width: 700px) { header { position: static; } }
+.listhead h2 { font-size: 15px; margin: 0 0 6px; }
+kbd {
+  font: 12px ui-monospace, Consolas, monospace; padding: 0 4px;
+  border: 1px solid var(--line); border-radius: 4px;
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>MELD Player</h1>
+  <div class="group" role="group" aria-label="Split" id="splits"></div>
+  <div class="group">
+    <button id="prev" title="Previous dialogue (left arrow)" aria-label="Previous dialogue">&larr;</button>
+    <label>Dialogue <input type="number" id="dia" min="0"></label>
+    <button id="next" title="Next dialogue (right arrow)" aria-label="Next dialogue">&rarr;</button>
+    <button id="random" title="Random dialogue in this split (R)">Random</button>
+  </div>
+  <div class="group">
+    <label>Text
+      <select id="version">
+        <option value="clean">MELD.Clean</option>
+        <option value="completed">MELD.Completed</option>
+        <option value="whisper">Whisper</option>
+      </select>
+    </label>
+  </div>
+  <button id="theme" title="Switch between automatic, light and dark">Theme: auto</button>
+  <div class="search">
+    <input type="search" id="search" placeholder="Search every line (press /)"
+      aria-label="Search every line" autocomplete="off">
+    <div class="results" id="results" role="listbox"></div>
+  </div>
+</header>
+<main>
+  <section class="stage panel">
+    <div class="screen">
+      <video id="videoA" class="active" playsinline preload="auto"></video>
+      <video id="videoB" playsinline preload="auto"></video>
+      <div class="tag" id="tag"></div>
+      <div class="caption" id="caption"></div>
+    </div>
+    <div class="now" id="now">Pick lines on the right, then press Play selected.</div>
+    <div class="controls">
+      <button class="primary" id="play">Play selected</button>
+      <button id="pause">Pause</button>
+      <button id="stop">Stop</button>
+      <label><input type="checkbox" id="continue"> Continue to next dialogue</label>
+      <label>Speed
+        <select id="speed">
+          <option value="1">1x</option>
+          <option value="1.25">1.25x</option>
+          <option value="1.5">1.5x</option>
+          <option value="2">2x</option>
+        </select>
+      </label>
+      <label>Captions
+        <select id="captions">
+          <option value="line">Whole line</option>
+          <option value="words">Words as spoken (Whisper)</option>
+          <option value="off">Off</option>
+        </select>
+      </label>
+    </div>
+    <div class="tabs" role="tablist">
+      <button role="tab" id="tab-output" aria-selected="true" aria-controls="panel-output">Output</button>
+      <button role="tab" id="tab-score" aria-selected="false" aria-controls="panel-score">Score</button>
+      <button role="tab" id="tab-keys" aria-selected="false" aria-controls="panel-keys">Keys</button>
+    </div>
+    <div class="tabpanel" id="panel-output" role="tabpanel">
+      <div class="logbar">
+        <label><input type="radio" name="fmt" value="json" checked> JSON tags</label>
+        <label><input type="radio" name="fmt" value="text"> Text</label>
+        <span class="spacer"></span>
+        <span class="small" id="switch" title="Time from the end of one clip to the first frame of the next"></span>
+        <button id="copy">Copy</button>
+        <button id="download">Download</button>
+        <button id="clear">Clear</button>
+      </div>
+      <pre class="log" id="log" aria-live="polite"></pre>
+    </div>
+    <div class="tabpanel" id="panel-score" role="tabpanel" hidden>
+      <table>
+        <thead><tr><th>Guesser</th><th>Lines</th><th class="num">Accuracy</th><th class="num">Weighted F1</th></tr></thead>
+        <tbody id="scorebody"></tbody>
+      </table>
+      <div class="breakdown" id="breakdown"></div>
+      <div class="controls">
+        <button id="scoresplit">Score whole split</button>
+        <span class="small" id="scorenote"></span>
+      </div>
+      <p class="small">Weighted F1 averages each emotion's F1 score, weighting
+      each emotion by how many lines carry that label. MELD papers report it on
+      the test split, times 100. The best published text and audio result in
+      <code>docs/research/ml-track-comparison.md</code> is TelME's 67.19.</p>
+    </div>
+    <div class="tabpanel" id="panel-keys" role="tabpanel" hidden>
+      <p class="small"><kbd>Space</kbd> plays the selected lines, or pauses and
+      resumes. <kbd>Esc</kbd> stops. <kbd>&larr;</kbd> and <kbd>&rarr;</kbd>
+      change the dialogue, and <kbd>R</kbd> picks a random one. <kbd>/</kbd> jumps to search, and <kbd>Enter</kbd>
+      opens the highlighted result.</p>
+    </div>
+  </section>
+  <section class="panel">
+    <div class="listhead">
+      <h2 id="listtitle">Lines</h2>
+      <div class="group">
+        <button id="all">Select all</button>
+        <button id="none">Select none</button>
+      </div>
+    </div>
+    <p class="hint">Each line gets a random emotion when its clip ends. The grey
+    tag is MELD's own label, and the guess turns green when the two agree. The
+    time beside the guess is how long the emotion took after the clip ended.</p>
+    <div class="lines" id="lines"></div>
+  </section>
+</main>
+<script>
+const DATA = __DATA__;
+const FOLDERS = {
+  train: "MELD.Raw/train_splits",
+  dev: "MELD.Raw/dev_splits_complete",
+  test: "MELD.Raw/output_repeated_splits_test",
+};
+const EMOTIONS = ["neutral", "joy", "surprise", "anger", "sadness", "disgust", "fear"];
+const IDS = {};
+for (const split of Object.keys(DATA)) {
+  IDS[split] = Object.keys(DATA[split]).map(Number).sort((a, b) => a - b);
+}
+
+const $ = (id) => document.getElementById(id);
+const players = [$("videoA"), $("videoB")];
+let active = 0;
+const state = { split: "train", pos: 0, version: "clean", format: "json" };
+let selected = new Set();
+let queue = [];
+let playing = null;
+let wholeDialogue = false;
+let found = null;
+const guesses = {};
+const missing = new Set();
+const output = [];
+
+function current() { return players[active]; }
+function spare() { return players[1 - active]; }
+
+function store(key, value) {
+  try { localStorage.setItem("meld-player-" + key, value); } catch (e) {}
+}
+function recall(key) {
+  try { return localStorage.getItem("meld-player-" + key); } catch (e) { return null; }
+}
+
+function dialogueId() { return IDS[state.split][state.pos]; }
+function lines() { return DATA[state.split][dialogueId()]; }
+function lineOf(utt) { return lines().find((l) => l[0] === utt); }
+function clipName(utt) { return `dia${dialogueId()}_utt${utt}`; }
+function clipSrc(utt) { return `${FOLDERS[state.split]}/${clipName(utt)}.mp4`; }
+function key(utt) { return `${state.split}-${dialogueId()}-${utt}`; }
+
+function textOf(line) {
+  if (state.version === "completed") return line[4] || line[3];
+  if (state.version === "whisper") return line[5] ?? "(no Whisper transcript)";
+  return line[3];
+}
+
+function esc(s) {
+  return String(s).replace(/[&<>"]/g, (c) =>
+    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+}
+
+/* ---------- rendering ---------- */
+
+function renderSplits() {
+  $("splits").innerHTML = Object.keys(DATA).map((s) =>
+    `<button data-split="${s}" aria-pressed="${s === state.split}">${s}</button>`
+  ).join("");
+}
+
+function renderLines() {
+  $("listtitle").textContent =
+    `Dialogue ${dialogueId()} in ${state.split}, ${lines().length} lines`;
+  let previous = -1;
+  $("lines").innerHTML = lines().map((line) => {
+    const [utt, speaker, emotion] = line;
+    const gap = gapNote(previous, utt);
+    previous = utt;
+    const guess = guesses[key(utt)];
+    const cls = ["row"];
+    if (playing === utt) cls.push("playing");
+    if (found === utt) cls.push("found");
+    if (missing.has(key(utt))) cls.push("missing");
+    const guessHtml = guess
+      ? `<div class="guess ${guess.guess === emotion ? "hit" : ""}">${guess.guess}` +
+        `<span class="latency" title="Time from the end of the clip to the emotion">` +
+        `${formatLatency(guess.latency)}</span></div>`
+      : "";
+    const note = missing.has(key(utt)) ? `<div class="note">no clip</div>` : "";
+    const fixed = line[4] && state.version !== "whisper"
+      ? `<div class="fix" title="MELD.Completed: ${esc(line[4])}">audio fix</div>` : "";
+    return `${gap}<div class="${cls.join(" ")}" data-utt="${utt}">
+      <input type="checkbox" aria-label="Select line ${utt}"
+        ${selected.has(utt) ? "checked" : ""}>
+      <button class="play" title="Play this line only" aria-label="Play line ${utt}">&#9654;</button>
+      <div class="text" title="Click to play this line"><span class="utt">${utt}</span><span class="who">${esc(speaker)}</span>:
+        ${esc(textOf(line))}</div>
+      <div class="tags"><div class="label">${emotion}</div>${guessHtml}${note}${fixed}</div>
+    </div>`;
+  }).join("");
+  renderScore();
+}
+
+function formatLatency(ms) {
+  if (ms === undefined) return "";
+  return ms < 0.1 ? "&lt;0.1 ms" : `${ms.toFixed(1)} ms`;
+}
+
+function gapNote(previous, utt) {
+  if (utt - previous <= 1) return "";
+  const first = previous + 1, last = utt - 1;
+  const which = first === last ? `line ${first}` : `lines ${first} to ${last}`;
+  return `<div class="gap">MELD's label file has no ${which}.</div>`;
+}
+
+function renderLog() {
+  const text = output.map((o) => state.format === "json"
+    ? JSON.stringify(o)
+    : o.missing
+      ? `${o.clip}  missing clip, skipped`
+      : `${o.clip}  ${o.speaker}: "${o.text}"  ->  ${o.emotion}`
+  ).join("\n");
+  $("log").textContent = text;
+  $("log").scrollTop = $("log").scrollHeight;
+}
+
+let captionFrame = null;
+
+function showCaption(line) {
+  cancelAnimationFrame(captionFrame);
+  const mode = $("captions").value;
+  if (!line || mode === "off") { $("caption").innerHTML = ""; return; }
+  if (mode !== "words" || !line[6]) {
+    $("caption").innerHTML = `<b>${esc(line[1])}:</b> ${esc(textOf(line))}`;
+    return;
+  }
+  const words = line[6];
+  let shown = -1;
+  const tick = () => {
+    const now = current().currentTime * 100;
+    let count = 0;
+    while (count < words.length && words[count][0] <= now) count += 1;
+    if (count !== shown) {
+      shown = count;
+      $("caption").innerHTML = count
+        ? `<b>${esc(line[1])}:</b> ${esc(words.slice(0, count).map((w) => w[1]).join(" "))}`
+        : "";
+    }
+    captionFrame = requestAnimationFrame(tick);
+  };
+  tick();
+}
+
+/* ---------- scoring ---------- */
+
+function scoreOf(pairs) {
+  const n = pairs.length;
+  if (!n) return null;
+  let correct = 0;
+  const tp = {}, fp = {}, fn = {}, support = {};
+  for (const e of EMOTIONS) { tp[e] = fp[e] = fn[e] = support[e] = 0; }
+  for (const [truth, guess] of pairs) {
+    support[truth] += 1;
+    if (truth === guess) { correct += 1; tp[truth] += 1; }
+    else { fp[guess] += 1; fn[truth] += 1; }
+  }
+  let weighted = 0;
+  const perClass = {};
+  for (const e of EMOTIONS) {
+    if (!support[e]) continue;
+    const p = tp[e] + fp[e] ? tp[e] / (tp[e] + fp[e]) : 0;
+    const r = tp[e] / (tp[e] + fn[e]);
+    const f1 = p + r ? (2 * p * r) / (p + r) : 0;
+    weighted += f1 * support[e];
+    perClass[e] = f1;
+  }
+  return { n, accuracy: correct / n, f1: weighted / n, perClass, support };
+}
+
+let splitScores = null;
+
+function renderScore() {
+  const played = Object.values(guesses).map((g) => [g.label, g.guess]);
+  const rows = [];
+  const session = scoreOf(played);
+  rows.push(["Random, lines played so far", session]);
+  if (splitScores) {
+    rows.push([`Random, all of ${splitScores.split}`, splitScores.random]);
+    rows.push([`Always neutral, all of ${splitScores.split}`, splitScores.neutral]);
+  }
+  $("scorebody").innerHTML = rows.map(([name, s]) => s
+    ? `<tr><td>${name}</td><td>${s.n.toLocaleString()}</td>` +
+      `<td class="num">${(s.accuracy * 100).toFixed(2)}</td>` +
+      `<td class="num">${(s.f1 * 100).toFixed(2)}</td></tr>`
+    : `<tr><td>${name}</td><td colspan="3" class="small">nothing played yet</td></tr>`
+  ).join("");
+  $("breakdown").innerHTML = splitScores ? breakdownTable(splitScores) : "";
+}
+
+function breakdownTable(scores) {
+  const { random, neutral } = scores;
+  const rows = EMOTIONS.map((e) =>
+    `<tr><td>${e}</td><td class="num">${random.support[e].toLocaleString()}</td>` +
+    `<td class="num">${(100 * random.support[e] / random.n).toFixed(1)}%</td>` +
+    `<td class="num">${(100 * (random.perClass[e] ?? 0)).toFixed(2)}</td>` +
+    `<td class="num">${(100 * (neutral.perClass[e] ?? 0)).toFixed(2)}</td></tr>`
+  ).join("");
+  return `<table><thead><tr><th>Emotion in ${scores.split}</th><th class="num">Lines</th>` +
+    `<th class="num">Share</th><th class="num">F1 random</th>` +
+    `<th class="num">F1 always neutral</th></tr></thead><tbody>${rows}</tbody></table>` +
+    `<p class="small">Neutral is the most common label, so always guessing it
+    scores well on neutral lines and zero on every other emotion. A useful
+    model has to beat both rows on the rarer emotions.</p>`;
+}
+
+function scoreWholeSplit() {
+  const pairs = [], neutral = [];
+  for (const dia of IDS[state.split]) {
+    for (const line of DATA[state.split][dia]) {
+      const label = line[2];
+      pairs.push([label, EMOTIONS[Math.floor(Math.random() * EMOTIONS.length)]]);
+      neutral.push([label, "neutral"]);
+    }
+  }
+  splitScores = { split: state.split, random: scoreOf(pairs), neutral: scoreOf(neutral) };
+  $("scorenote").textContent = "The random row changes a little on every press.";
+  renderScore();
+}
+
+/* ---------- playback ---------- */
+
+function setSpeed(video) { video.playbackRate = Number($("speed").value); }
+
+function preload() {
+  const video = spare();
+  if (!queue.length) return;
+  const src = clipSrc(queue[0]);
+  if (video.dataset.src === src) return;
+  video.dataset.src = src;
+  video.dataset.failed = "";
+  video.src = src;
+  video.load();
+}
+
+function playList(utts, whole) {
+  wholeDialogue = Boolean(whole);
+  queue = utts.slice();
+  playing = null;
+  playNext();
+}
+
+function playNext() {
+  if (!queue.length) {
+    const finished = playing !== null;
+    playing = null;
+    showCaption(null);
+    renderLines();
+    if (!finished) { $("now").textContent = "No lines selected."; return; }
+    if (wholeDialogue && $("continue").checked &&
+        state.pos < IDS[state.split].length - 1) {
+      state.pos += 1;
+      loadDialogue();
+      playList(lines().map((l) => l[0]), true);
+      return;
+    }
+    $("now").textContent = "Finished.";
+    return;
+  }
+  playing = queue.shift();
+  const src = clipSrc(playing);
+  const next = spare();
+  if (next.dataset.src === src) {
+    current().pause();
+    current().classList.remove("active");
+    active = 1 - active;
+    current().classList.add("active");
+    if (current().dataset.failed) { clipFailed(); return; }
+  } else if (current().dataset.src === src) {
+    if (current().dataset.failed) { clipFailed(); return; }
+  } else {
+    current().dataset.src = src;
+    current().dataset.failed = "";
+    current().src = src;
+  }
+  const line = lineOf(playing);
+  showCaption(line);
+  $("now").textContent = `Playing ${clipName(playing)}`;
+  setSpeed(current());
+  current().currentTime = 0;
+  current().play().catch(() => {});
+  $("pause").textContent = "Pause";
+  renderLines();
+  const row = document.querySelector(`.row[data-utt="${playing}"]`);
+  if (row) row.scrollIntoView({ block: "nearest", behavior: "smooth" });
+  preload();
+}
+
+function clipFailed() {
+  missing.add(key(playing));
+  output.push({ clip: clipName(playing), missing: true });
+  renderLog();
+  playNext();
+}
+
+let endedAt = null;
+const switches = [];
+
+function renderSwitch() {
+  if (!switches.length) return;
+  const mean = switches.reduce((a, b) => a + b, 0) / switches.length;
+  $("switch").textContent = `Clip switch ${Math.round(mean)} ms on average`;
+}
+
+function showFirstFrame(utt) {
+  const video = current();
+  const src = clipSrc(utt);
+  video.dataset.src = src;
+  video.dataset.failed = "";
+  video.src = src;
+  video.load();
+}
+
+function stop() {
+  queue = [];
+  playing = null;
+  endedAt = null;
+  for (const video of players) {
+    video.pause();
+    video.removeAttribute("src");
+    video.dataset.src = "";
+    video.load();
+  }
+  showCaption(null);
+  $("tag").innerHTML = "";
+}
+
+function togglePause() {
+  const video = current();
+  if (playing === null) { $("play").click(); return; }
+  if (video.paused) { video.play().catch(() => {}); $("pause").textContent = "Pause"; }
+  else { video.pause(); $("pause").textContent = "Resume"; }
+}
+
+for (const video of players) {
+  video.addEventListener("playing", (e) => {
+    if (e.target !== current() || endedAt === null) return;
+    switches.push(performance.now() - endedAt);
+    endedAt = null;
+    renderSwitch();
+  });
+  video.addEventListener("ended", (e) => {
+    if (e.target !== current() || playing === null) return;
+    const started = performance.now();
+    endedAt = queue.length ? started : null;
+    const line = lineOf(playing);
+    const guess = EMOTIONS[Math.floor(Math.random() * EMOTIONS.length)];
+    const latency = performance.now() - started;
+    guesses[key(playing)] = { guess, label: line[2], latency };
+    output.push({
+      clip: clipName(playing), split: state.split, speaker: line[1],
+      text: textOf(line), emotion: guess, meld_label: line[2],
+      latency_ms: Number(latency.toFixed(3)),
+    });
+    $("tag").innerHTML = `${esc(clipName(playing))} &rarr; <b>${guess}</b>`;
+    renderLog();
+    playNext();
+  });
+  video.addEventListener("error", (e) => {
+    if (!video.dataset.src) return;
+    if (e.target === current() && playing !== null &&
+        video.dataset.src === clipSrc(playing)) {
+      clipFailed();
+    } else {
+      video.dataset.failed = "1";
+    }
+  });
+}
+
+/* ---------- navigation ---------- */
+
+function loadDialogue() {
+  stop();
+  found = null;
+  selected = new Set(lines().map((line) => line[0]));
+  showFirstFrame(lines()[0][0]);
+  $("dia").value = dialogueId();
+  renderSplits();
+  renderLines();
+  $("now").textContent = "Press Play selected, or Space.";
+  history.replaceState(null, "", `#${state.split}-${dialogueId()}`);
+  store("split", state.split);
+  store("dia", dialogueId());
+}
+
+function goTo(split, id) {
+  state.split = split;
+  const list = IDS[split];
+  let pos = list.findIndex((d) => d >= id);
+  if (pos < 0) pos = list.length - 1;
+  state.pos = pos;
+  loadDialogue();
+}
+
+function goToHash() {
+  const hash = location.hash.match(/^#(train|dev|test)-(\d+)$/);
+  if (!hash) return false;
+  if (hash[1] !== state.split || Number(hash[2]) !== dialogueId()) {
+    goTo(hash[1], Number(hash[2]));
+  }
+  return true;
+}
+
+/* ---------- search ---------- */
+
+let results = [];
+let resultPos = 0;
+
+function search(query) {
+  results = [];
+  const q = query.trim().toLowerCase();
+  if (q.length < 2) return;
+  for (const split of Object.keys(DATA)) {
+    for (const dia of IDS[split]) {
+      for (const line of DATA[split][dia]) {
+        if (line[3].toLowerCase().includes(q) || line[1].toLowerCase().includes(q)) {
+          results.push({ split, dia, line });
+          if (results.length >= 100) return;
+        }
+      }
+    }
+  }
+}
+
+function highlight(text, query) {
+  const q = query.trim();
+  const i = text.toLowerCase().indexOf(q.toLowerCase());
+  if (!q || i < 0) return esc(text);
+  return esc(text.slice(0, i)) + "<mark>" + esc(text.slice(i, i + q.length)) +
+    "</mark>" + esc(text.slice(i + q.length));
+}
+
+function renderResults() {
+  const query = $("search").value;
+  const box = $("results");
+  if (query.trim().length < 2) { box.classList.remove("open"); return; }
+  box.classList.add("open");
+  if (!results.length) {
+    box.innerHTML = `<div class="empty">No line contains that.</div>`;
+    return;
+  }
+  box.innerHTML = results.map((r, i) =>
+    `<button role="option" data-i="${i}" class="${i === resultPos ? "active" : ""}">
+      <span class="where">${r.split} &middot; dialogue ${r.dia} &middot; line ${r.line[0]}</span><br>
+      <b>${highlight(r.line[1], query)}:</b> ${highlight(r.line[3], query)}</button>`
+  ).join("") + (results.length >= 100
+    ? `<div class="empty">Showing the first 100 matches.</div>` : "");
+}
+
+function openResult(i) {
+  const r = results[i];
+  if (!r) return;
+  $("results").classList.remove("open");
+  $("search").blur();
+  goTo(r.split, r.dia);
+  found = r.line[0];
+  renderLines();
+  const row = document.querySelector(`.row[data-utt="${found}"]`);
+  if (row) row.scrollIntoView({ block: "center" });
+}
+
+/* ---------- wiring ---------- */
+
+$("splits").addEventListener("click", (e) => {
+  const split = e.target.dataset.split;
+  if (split && split !== state.split) goTo(split, 0);
+});
+$("prev").onclick = () => {
+  if (state.pos > 0) { state.pos -= 1; loadDialogue(); }
+};
+$("next").onclick = () => {
+  if (state.pos < IDS[state.split].length - 1) { state.pos += 1; loadDialogue(); }
+};
+$("dia").addEventListener("change", (e) => {
+  const id = parseInt(e.target.value, 10);
+  if (!Number.isNaN(id)) goTo(state.split, id);
+});
+$("version").addEventListener("change", (e) => {
+  state.version = e.target.value;
+  store("version", state.version);
+  renderLines();
+  showCaption(playing === null ? null : lineOf(playing));
+});
+$("play").onclick = () => {
+  const utts = lines().map((l) => l[0]).filter((u) => selected.has(u));
+  playList(utts, utts.length === lines().length);
+};
+$("pause").onclick = togglePause;
+$("stop").onclick = () => {
+  stop();
+  showFirstFrame(lines()[0][0]);
+  renderLines();
+  $("now").textContent = "Stopped.";
+};
+$("speed").addEventListener("change", () => {
+  for (const video of players) setSpeed(video);
+  store("speed", $("speed").value);
+});
+$("continue").addEventListener("change", () => store("continue", $("continue").checked ? "1" : ""));
+$("captions").addEventListener("change", () => {
+  showCaption(playing === null ? null : lineOf(playing));
+  store("caption-mode", $("captions").value);
+});
+$("all").onclick = () => { selected = new Set(lines().map((l) => l[0])); renderLines(); };
+$("none").onclick = () => { selected = new Set(); renderLines(); };
+
+$("lines").addEventListener("click", (e) => {
+  const row = e.target.closest(".row");
+  if (!row) return;
+  const utt = Number(row.dataset.utt);
+  if (e.target.matches("input[type=checkbox]")) {
+    if (e.target.checked) selected.add(utt); else selected.delete(utt);
+  } else if (e.target.closest(".play, .text")) {
+    playList([utt], false);
+  }
+});
+
+for (const tab of document.querySelectorAll('[role="tab"]')) {
+  tab.addEventListener("click", () => {
+    for (const t of document.querySelectorAll('[role="tab"]')) {
+      const on = t === tab;
+      t.setAttribute("aria-selected", String(on));
+      $(t.getAttribute("aria-controls")).hidden = !on;
+    }
+    store("tab", tab.id);
+  });
+}
+
+for (const radio of document.querySelectorAll('input[name="fmt"]')) {
+  radio.addEventListener("change", () => {
+    state.format = radio.value;
+    store("format", state.format);
+    renderLog();
+  });
+}
+$("copy").onclick = async () => {
+  try {
+    await navigator.clipboard.writeText($("log").textContent);
+    $("copy").textContent = "Copied";
+  } catch (e) {
+    $("copy").textContent = "Copy failed";
+  }
+  setTimeout(() => { $("copy").textContent = "Copy"; }, 1200);
+};
+$("clear").onclick = () => { output.length = 0; renderLog(); };
+$("download").onclick = () => {
+  const jsonl = output.map((o) => JSON.stringify(o)).join("\n") + "\n";
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(new Blob([jsonl], { type: "application/x-ndjson" }));
+  link.download = "meld-player-output.jsonl";
+  link.click();
+  setTimeout(() => URL.revokeObjectURL(link.href), 1000);
+};
+$("random").onclick = () => {
+  state.pos = Math.floor(Math.random() * IDS[state.split].length);
+  loadDialogue();
+};
+$("scoresplit").onclick = scoreWholeSplit;
+
+let searchTimer = null;
+$("search").addEventListener("input", () => {
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(() => {
+    search($("search").value);
+    resultPos = 0;
+    renderResults();
+  }, 120);
+});
+$("search").addEventListener("keydown", (e) => {
+  if (e.key === "ArrowDown") { resultPos = Math.min(resultPos + 1, results.length - 1); renderResults(); e.preventDefault(); }
+  if (e.key === "ArrowUp") { resultPos = Math.max(resultPos - 1, 0); renderResults(); e.preventDefault(); }
+  if (e.key === "Enter") openResult(resultPos);
+  if (e.key === "Escape") { $("results").classList.remove("open"); $("search").blur(); }
+});
+$("results").addEventListener("click", (e) => {
+  const button = e.target.closest("button[data-i]");
+  if (button) openResult(Number(button.dataset.i));
+});
+document.addEventListener("click", (e) => {
+  if (!e.target.closest(".search")) $("results").classList.remove("open");
+});
+
+document.addEventListener("keydown", (e) => {
+  if (e.target.matches("input, select, textarea")) return;
+  if (e.key === "/") { e.preventDefault(); $("search").focus(); }
+  else if (e.key === " " && !e.target.matches("button")) { e.preventDefault(); togglePause(); }
+  else if (e.key === "Escape") $("stop").click();
+  else if (e.key === "ArrowLeft") $("prev").click();
+  else if (e.key === "ArrowRight") $("next").click();
+  else if (e.key === "r" || e.key === "R") $("random").click();
+});
+window.addEventListener("hashchange", goToHash);
+
+const THEMES = ["auto", "light", "dark"];
+function applyTheme(theme) {
+  if (theme === "auto") document.documentElement.removeAttribute("data-theme");
+  else document.documentElement.setAttribute("data-theme", theme);
+  $("theme").textContent = `Theme: ${theme}`;
+  store("theme", theme);
+}
+$("theme").onclick = () => {
+  const now = recall("theme") || "auto";
+  applyTheme(THEMES[(THEMES.indexOf(now) + 1) % THEMES.length]);
+};
+applyTheme(recall("theme") || "auto");
+
+(function start() {
+  const version = recall("version");
+  if (version) { state.version = version; $("version").value = version; }
+  const format = recall("format");
+  if (format) {
+    state.format = format;
+    const radio = document.querySelector(`input[name="fmt"][value="${format}"]`);
+    if (radio) radio.checked = true;
+  }
+  const speed = recall("speed");
+  if (speed) $("speed").value = speed;
+  $("continue").checked = recall("continue") === "1";
+  const captionMode = recall("caption-mode");
+  if (["line", "words", "off"].includes(captionMode)) $("captions").value = captionMode;
+  const tab = recall("tab");
+  if (tab && $(tab)) $(tab).click();
+  if (goToHash()) return;
+  const split = recall("split");
+  const dia = Number(recall("dia"));
+  if (split && DATA[split]) return goTo(split, Number.isNaN(dia) ? 0 : dia);
+  goTo("train", 0);
+})();
+</script>
+</body>
+</html>
