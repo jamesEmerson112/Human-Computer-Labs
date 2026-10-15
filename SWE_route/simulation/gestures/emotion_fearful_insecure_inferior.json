@@ -1,0 +1,57 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_fearful_insecure_inferior",
+  "label": "Fearful / Insecure / Inferior",
+  "group": "Fearful",
+  "description": "Bow cautiously while keeping the head turned partly aside.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": -0.18,
+        "shoulder_pitch_joint": 0.14,
+        "elbow_pitch_joint": -0.34,
+        "neck_yaw_joint": 0.24,
+        "head_pitch_joint": 0.34
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.1
+    },
+    {
+      "hold_seconds": 0.475
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.18,
+        "shoulder_pitch_joint": 0.08,
+        "elbow_pitch_joint": -0.34,
+        "neck_yaw_joint": 0.24,
+        "head_pitch_joint": 0.5
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.1
+    },
+    {
+      "hold_seconds": 0.95
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.18,
+        "shoulder_pitch_joint": 0.14,
+        "elbow_pitch_joint": -0.34,
+        "neck_yaw_joint": 0.24,
+        "head_pitch_joint": 0.34
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.1
+    },
+    {
+      "hold_seconds": 0.38
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 1.1
+    }
+  ]
+}

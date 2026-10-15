@@ -1,0 +1,57 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_disgusted_disapproving_embarrassed",
+  "label": "Disgusted / Disapproving / Embarrassed",
+  "group": "Disgusted",
+  "description": "Avert a lowered shade, make a brief reluctant check, and turn away again.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": 0.14,
+        "shoulder_pitch_joint": 0.12,
+        "elbow_pitch_joint": -0.16,
+        "neck_yaw_joint": 0.28,
+        "head_pitch_joint": 0.16
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.55
+    },
+    {
+      "hold_seconds": 0.45
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.14,
+        "shoulder_pitch_joint": 0.12,
+        "elbow_pitch_joint": -0.16,
+        "neck_yaw_joint": -0.06,
+        "head_pitch_joint": 0.12
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.4
+    },
+    {
+      "hold_seconds": 0.2
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.2,
+        "shoulder_pitch_joint": 0.16,
+        "elbow_pitch_joint": -0.2,
+        "neck_yaw_joint": 0.34,
+        "head_pitch_joint": 0.24
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.5
+    },
+    {
+      "hold_seconds": 0.7
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 0.8
+    }
+  ]
+}

@@ -29,14 +29,17 @@ from lamp_sim.motion import load_limits
 
 def local_catalog() -> list[dict]:
     """Use validated source files as the expectation, independently of the server."""
-    return [{"name": gesture.name, "label": gesture.label, "description": gesture.description, "group": gesture.group}
+    revisions = {json.loads(path.read_bytes().decode("utf-8-sig"))["name"]: hashlib.sha256(path.read_bytes()).hexdigest()
+                 for path in (PROJECT / "gestures").glob("*.json")}
+    return [{"name": gesture.name, "label": gesture.label, "description": gesture.description,
+             "group": gesture.group, "revision": revisions[gesture.name]}
             for gesture in load_gestures(load_limits()).values()]
 
 
 def verify_catalog(actual: list[dict], expected: list[dict]) -> None:
     if len({gesture["name"] for gesture in actual}) != len(actual):
         raise AssertionError("Server catalog contains duplicate gesture names")
-    fields = ("name", "label", "description", "group")
+    fields = ("name", "label", "description", "group", "revision")
     normalized = lambda catalog: {gesture["name"]: {key: gesture.get(key, "") for key in fields} for gesture in catalog}
     if normalized(actual) != normalized(expected):
         raise AssertionError("Server catalog differs from the validated local gesture files")

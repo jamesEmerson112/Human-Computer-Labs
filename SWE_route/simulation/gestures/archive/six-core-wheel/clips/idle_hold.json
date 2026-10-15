@@ -1,0 +1,6 @@
+{
+  "$schema": "../gesture.schema.json", "schema_version": 1,
+  "name": "idle_hold", "label": "Hold still", "units": "radians",
+  "description": "Hold the starting pose for two playback seconds; exposes gravity sag.",
+  "steps": [{"hold_seconds": 2.0}]
+}

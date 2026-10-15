@@ -1,0 +1,57 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_sad_despair_powerless",
+  "label": "Sad / Despair / Powerless",
+  "group": "Sad",
+  "description": "Attempt a small lift, then let the head and arm sink again.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": -0.03,
+        "shoulder_pitch_joint": 0.0,
+        "elbow_pitch_joint": -0.21,
+        "neck_yaw_joint": -0.05,
+        "head_pitch_joint": 0.06
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.1
+    },
+    {
+      "hold_seconds": 0.57
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.018,
+        "shoulder_pitch_joint": 0.148,
+        "elbow_pitch_joint": -0.126,
+        "neck_yaw_joint": -0.03,
+        "head_pitch_joint": 0.176
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.1
+    },
+    {
+      "hold_seconds": 0.475
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.06,
+        "shoulder_pitch_joint": 0.16,
+        "elbow_pitch_joint": -0.42,
+        "neck_yaw_joint": -0.1,
+        "head_pitch_joint": 0.32
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.1
+    },
+    {
+      "hold_seconds": 0.95
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 1.1
+    }
+  ]
+}

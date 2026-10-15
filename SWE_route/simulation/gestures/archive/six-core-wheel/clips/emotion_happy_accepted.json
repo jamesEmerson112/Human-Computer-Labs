@@ -1,0 +1,54 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_happy_accepted",
+  "label": "Happy / Accepted",
+  "group": "Happy",
+  "description": "Settle into a gentle, relaxed side-to-side movement.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": -0.08,
+        "shoulder_pitch_joint": -0.14,
+        "elbow_pitch_joint": -0.2,
+        "neck_yaw_joint": 0.12,
+        "head_pitch_joint": -0.12
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.95
+    },
+    {
+      "hold_seconds": 0.28
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.08,
+        "shoulder_pitch_joint": -0.175,
+        "elbow_pitch_joint": -0.2,
+        "neck_yaw_joint": 0.24,
+        "head_pitch_joint": -0.165
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.95
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.08,
+        "shoulder_pitch_joint": -0.115,
+        "elbow_pitch_joint": -0.2,
+        "neck_yaw_joint": 0.0,
+        "head_pitch_joint": -0.085
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.95
+    },
+    {
+      "hold_seconds": 0.7
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 0.95
+    }
+  ]
+}

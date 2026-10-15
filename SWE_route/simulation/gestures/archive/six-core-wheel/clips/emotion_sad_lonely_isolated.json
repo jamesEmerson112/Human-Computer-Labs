@@ -1,0 +1,43 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_sad_lonely_isolated",
+  "label": "Sad / Lonely / Isolated",
+  "group": "Sad",
+  "description": "Turn outward slowly and linger with the head lowered.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": 0.21,
+        "shoulder_pitch_joint": 0.09,
+        "elbow_pitch_joint": -0.18,
+        "neck_yaw_joint": 0.1,
+        "head_pitch_joint": 0.26
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.5
+    },
+    {
+      "hold_seconds": 0.55
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.42,
+        "shoulder_pitch_joint": 0.18,
+        "elbow_pitch_joint": -0.36,
+        "neck_yaw_joint": 0.2,
+        "head_pitch_joint": 0.32
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.5
+    },
+    {
+      "hold_seconds": 1.1
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 1.5
+    }
+  ]
+}

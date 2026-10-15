@@ -1,0 +1,54 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_angry_let_down",
+  "label": "Angry / Let down",
+  "group": "Angry",
+  "description": "Offer an expectant approach, stop, and withdraw into a disappointed sideways hold.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": 0.0,
+        "shoulder_pitch_joint": -0.12,
+        "elbow_pitch_joint": -0.1,
+        "neck_yaw_joint": 0.0,
+        "head_pitch_joint": -0.16
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.7
+    },
+    {
+      "hold_seconds": 0.65
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.0,
+        "shoulder_pitch_joint": 0.12,
+        "elbow_pitch_joint": -0.24,
+        "neck_yaw_joint": 0.0,
+        "head_pitch_joint": 0.22
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.8
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.12,
+        "shoulder_pitch_joint": 0.14,
+        "elbow_pitch_joint": -0.28,
+        "neck_yaw_joint": -0.18,
+        "head_pitch_joint": 0.28
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.7
+    },
+    {
+      "hold_seconds": 0.75
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 1.0
+    }
+  ]
+}

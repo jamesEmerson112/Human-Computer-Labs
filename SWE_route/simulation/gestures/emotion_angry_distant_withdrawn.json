@@ -1,0 +1,57 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_angry_distant_withdrawn",
+  "label": "Angry / Distant / Withdrawn",
+  "group": "Angry",
+  "description": "Fold inward and let the head follow the body away.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": 0.225,
+        "shoulder_pitch_joint": 0.11,
+        "elbow_pitch_joint": -0.2,
+        "neck_yaw_joint": 0.09,
+        "head_pitch_joint": 0.23
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.25
+    },
+    {
+      "hold_seconds": 0.5
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.45,
+        "shoulder_pitch_joint": 0.22,
+        "elbow_pitch_joint": -0.4,
+        "neck_yaw_joint": 0.18,
+        "head_pitch_joint": 0.26
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.25
+    },
+    {
+      "hold_seconds": 1.0
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.45,
+        "shoulder_pitch_joint": 0.22,
+        "elbow_pitch_joint": -0.4,
+        "neck_yaw_joint": 0.08,
+        "head_pitch_joint": 0.31
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.25
+    },
+    {
+      "hold_seconds": 0.5
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 1.25
+    }
+  ]
+}

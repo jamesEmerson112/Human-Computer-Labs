@@ -1,0 +1,57 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_sad_hurt_embarrassed",
+  "label": "Sad / Hurt / Embarrassed",
+  "group": "Sad",
+  "description": "Dip the shade and turn aside with a small hesitant glance.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": -0.1,
+        "shoulder_pitch_joint": 0.04,
+        "elbow_pitch_joint": -0.11,
+        "neck_yaw_joint": -0.16,
+        "head_pitch_joint": 0.26
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.8
+    },
+    {
+      "hold_seconds": 0.325
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.2,
+        "shoulder_pitch_joint": 0.08,
+        "elbow_pitch_joint": -0.22,
+        "neck_yaw_joint": -0.32,
+        "head_pitch_joint": 0.32
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.8
+    },
+    {
+      "hold_seconds": 0.65
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.2,
+        "shoulder_pitch_joint": 0.08,
+        "elbow_pitch_joint": -0.22,
+        "neck_yaw_joint": -0.42,
+        "head_pitch_joint": 0.37
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.8
+    },
+    {
+      "hold_seconds": 0.325
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 0.8
+    }
+  ]
+}

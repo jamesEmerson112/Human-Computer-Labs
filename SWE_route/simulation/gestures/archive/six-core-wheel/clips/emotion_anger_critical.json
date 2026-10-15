@@ -1,0 +1,57 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_anger_critical",
+  "label": "Anger / Critical",
+  "group": "Anger",
+  "description": "Lean in and inspect with a measured head sweep.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": -0.08,
+        "shoulder_pitch_joint": -0.1,
+        "elbow_pitch_joint": -0.12,
+        "neck_yaw_joint": 0.24,
+        "head_pitch_joint": 0.14
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.75
+    },
+    {
+      "hold_seconds": 0.6
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.08,
+        "shoulder_pitch_joint": -0.1,
+        "elbow_pitch_joint": -0.12,
+        "neck_yaw_joint": 0.42,
+        "head_pitch_joint": 0.1
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.75
+    },
+    {
+      "hold_seconds": 0.36
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.08,
+        "shoulder_pitch_joint": -0.1,
+        "elbow_pitch_joint": -0.12,
+        "neck_yaw_joint": 0.06,
+        "head_pitch_joint": 0.16
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.75
+    },
+    {
+      "hold_seconds": 0.48
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 0.75
+    }
+  ]
+}

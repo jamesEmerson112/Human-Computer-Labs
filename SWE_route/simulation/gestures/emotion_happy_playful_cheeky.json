@@ -1,0 +1,68 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_happy_playful_cheeky",
+  "label": "Happy / Playful / Cheeky",
+  "group": "Happy",
+  "description": "Peek sideways, look back while the body stays turned, and add a quick teasing dip.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": -0.22,
+        "shoulder_pitch_joint": -0.12,
+        "elbow_pitch_joint": -0.12,
+        "neck_yaw_joint": -0.18,
+        "head_pitch_joint": -0.12
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.5
+    },
+    {
+      "hold_seconds": 0.3
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.22,
+        "shoulder_pitch_joint": -0.12,
+        "elbow_pitch_joint": -0.12,
+        "neck_yaw_joint": 0.32,
+        "head_pitch_joint": -0.14
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.35
+    },
+    {
+      "hold_seconds": 0.45
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.22,
+        "shoulder_pitch_joint": -0.12,
+        "elbow_pitch_joint": -0.12,
+        "neck_yaw_joint": 0.32,
+        "head_pitch_joint": 0.1
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.3
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.22,
+        "shoulder_pitch_joint": -0.12,
+        "elbow_pitch_joint": -0.12,
+        "neck_yaw_joint": 0.32,
+        "head_pitch_joint": -0.14
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.35
+    },
+    {
+      "hold_seconds": 0.35
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 0.8
+    }
+  ]
+}

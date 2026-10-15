@@ -5,6 +5,7 @@ use serde::{
     de::{self, MapAccess, SeqAccess, Visitor},
 };
 use serde_json::{Map, Value};
+use sha2::{Digest, Sha256};
 use std::{
     collections::{BTreeMap, BTreeSet},
     fmt, fs,
@@ -26,6 +27,9 @@ pub struct Gesture {
     pub description: String,
     pub steps: Vec<GestureStep>,
     pub group: String,
+    /// SHA-256 of the original UTF-8 JSON bytes, including whitespace and BOM.
+    /// Runtime metadata only: the authored gesture schema is unchanged.
+    pub revision: String,
 }
 
 struct UniqueValue(Value);
@@ -251,6 +255,7 @@ pub fn parse_gesture(data: &Value, joint_names: &BTreeSet<String>) -> Result<Ges
         description,
         steps,
         group,
+        revision: String::new(),
     })
 }
 
@@ -262,7 +267,9 @@ pub(crate) fn parse_unique_json(text: &str) -> Result<Value, String> {
 
 pub fn parse_gesture_json(text: &str, joint_names: &BTreeSet<String>) -> Result<Gesture, String> {
     let data = parse_unique_json(text.strip_prefix('\u{feff}').unwrap_or(text))?;
-    parse_gesture(&data, joint_names)
+    let mut gesture = parse_gesture(&data, joint_names)?;
+    gesture.revision = format!("{:x}", Sha256::digest(text.as_bytes()));
+    Ok(gesture)
 }
 
 pub fn load_gesture(path: &Path, joint_names: &BTreeSet<String>) -> Result<Gesture, String> {

@@ -1,0 +1,43 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_angry_distant",
+  "label": "Angry / Distant",
+  "group": "Angry",
+  "description": "Turn the body away while slowly breaking the head's forward gaze.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": 0.175,
+        "shoulder_pitch_joint": 0.06,
+        "elbow_pitch_joint": -0.09,
+        "neck_yaw_joint": -0.05,
+        "head_pitch_joint": 0.14
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.1
+    },
+    {
+      "hold_seconds": 0.4
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.35,
+        "shoulder_pitch_joint": 0.12,
+        "elbow_pitch_joint": -0.18,
+        "neck_yaw_joint": -0.1,
+        "head_pitch_joint": 0.08
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.1
+    },
+    {
+      "hold_seconds": 0.8
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 1.1
+    }
+  ]
+}

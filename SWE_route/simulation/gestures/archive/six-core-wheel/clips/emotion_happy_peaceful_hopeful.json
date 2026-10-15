@@ -1,0 +1,57 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_happy_peaceful_hopeful",
+  "label": "Happy / Peaceful / Hopeful",
+  "group": "Happy",
+  "description": "Raise the shade gradually, as if looking toward a possibility.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": 0.016,
+        "shoulder_pitch_joint": -0.048,
+        "elbow_pitch_joint": -0.064,
+        "neck_yaw_joint": -0.024,
+        "head_pitch_joint": -0.12
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.3
+    },
+    {
+      "hold_seconds": 0.35
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.04,
+        "shoulder_pitch_joint": -0.12,
+        "elbow_pitch_joint": -0.16,
+        "neck_yaw_joint": -0.06,
+        "head_pitch_joint": -0.34
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.3
+    },
+    {
+      "hold_seconds": 1.0
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.04,
+        "shoulder_pitch_joint": -0.12,
+        "elbow_pitch_joint": -0.16,
+        "neck_yaw_joint": -0.06,
+        "head_pitch_joint": -0.26
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.04
+    },
+    {
+      "hold_seconds": 0.4
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 1.3
+    }
+  ]
+}

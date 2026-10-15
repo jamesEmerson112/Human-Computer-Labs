@@ -1,0 +1,43 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_disgusted_awful",
+  "label": "Disgusted / Awful",
+  "group": "Disgusted",
+  "description": "Fold into a low, uncomfortable posture in two stages.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": -0.036,
+        "shoulder_pitch_joint": 0.081,
+        "elbow_pitch_joint": -0.171,
+        "neck_yaw_joint": 0.09,
+        "head_pitch_joint": 0.162
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.9
+    },
+    {
+      "hold_seconds": 0.34
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.08,
+        "shoulder_pitch_joint": 0.18,
+        "elbow_pitch_joint": -0.38,
+        "neck_yaw_joint": 0.2,
+        "head_pitch_joint": 0.36
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.9
+    },
+    {
+      "hold_seconds": 0.85
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 0.9
+    }
+  ]
+}

@@ -1,6 +1,8 @@
 use lamp_controller::{
     gestures::{Gesture, load_gestures, parse_gesture, parse_gesture_json},
     motion::{JointLimit, MotionController, Pose},
+    physics::{Backend, discover_library},
+    server::{Action, Config, Runtime},
 };
 use serde::Deserialize;
 use serde_json::{Value, json};
@@ -85,7 +87,7 @@ struct ReferenceCase {
     stopped: Snapshot,
 }
 
-/// Python remains the reference for all 123 authored clips, every frame, three
+/// Python remains the reference for every authored clip, every frame, three
 /// starting poses, and interruptions. LAMP_PYTHON supports CI virtualenv paths.
 #[test]
 fn all_gestures_match_live_python_traces_and_interruption() {
@@ -119,12 +121,13 @@ fn all_gestures_match_live_python_traces_and_interruption() {
     )
     .unwrap();
     assert_eq!(
-        gestures.len(),
-        123,
-        "Update the expected catalog count intentionally when adding gestures"
+        gestures.keys().cloned().collect::<Vec<_>>(),
+        serde_json::from_value::<Vec<String>>(header["gesture_names"].clone()).unwrap(),
+        "Rust and the independently loaded Python catalog must match"
     );
     let mut cases = 0;
     let mut total_frames = 0;
+    let mut seen_cases = BTreeSet::new();
     let mut scripted = MotionController::new(limits.clone()).unwrap();
     for line in lines {
         let data: Value = serde_json::from_str(line).unwrap();
@@ -156,6 +159,10 @@ fn all_gestures_match_live_python_traces_and_interruption() {
             continue;
         }
         let case: ReferenceCase = serde_json::from_value(data).unwrap();
+        assert!(
+            seen_cases.insert((case.name.clone(), case.start.clone())),
+            "Duplicate reference case"
+        );
         let mut motion = MotionController::new(limits.clone()).unwrap();
         motion.synchronize(&case.origin).unwrap();
         motion.set_speed(0.5).unwrap();
@@ -189,7 +196,15 @@ fn all_gestures_match_live_python_traces_and_interruption() {
         total_frames += case.frames.len();
         cases += 1;
     }
-    assert_eq!(cases, 123 * 3);
+    assert_eq!(cases, gestures.len() * 3);
+    for name in gestures.keys() {
+        for start in ["neutral", "lower", "upper"] {
+            assert!(
+                seen_cases.contains(&(name.clone(), start.into())),
+                "Missing {name} / {start}"
+            );
+        }
+    }
     println!(
         "Matched {cases} gesture/start cases, {total_frames} frames, {cases} interruptions, and mixed command/pace/dt sequence against Python"
     );
@@ -289,6 +304,20 @@ fn library_reload_rejects_duplicates_and_preserves_prior_library() {
     let second = directory.0.join("second.json");
     std::fs::write(&first, data.to_string()).unwrap();
     let original = load_gestures(&names(), &directory.0).unwrap();
+    assert_eq!(original["test"].revision.len(), 64);
+    // Re-reading unchanged bytes preserves the revision; even formatting changes
+    // must invalidate an approval tied to exact authored bytes.
+    assert_eq!(
+        load_gestures(&names(), &directory.0).unwrap()["test"].revision,
+        original["test"].revision
+    );
+    std::fs::write(&first, format!("{}\n", data)).unwrap();
+    let reformatted = load_gestures(&names(), &directory.0).unwrap();
+    assert_ne!(reformatted["test"].revision, original["test"].revision);
+    assert_eq!(
+        reformatted["test"].steps[0].angles,
+        original["test"].steps[0].angles
+    );
     std::fs::write(&second, data.to_string()).unwrap();
     assert!(
         load_gestures(&names(), &directory.0)
@@ -316,6 +345,55 @@ fn library_reload_rejects_duplicates_and_preserves_prior_library() {
             .contains("second.json")
     );
     assert_eq!(updated.len(), 2);
+}
+
+#[test]
+fn runtime_reload_publishes_changed_file_revision_and_rejects_invalid_replacement() {
+    struct TempDirectory(PathBuf);
+    impl Drop for TempDirectory {
+        fn drop(&mut self) {
+            let _ = std::fs::remove_dir_all(&self.0);
+        }
+    }
+    let unique = std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .unwrap()
+        .as_nanos();
+    let directory = TempDirectory(
+        std::env::temp_dir().join(format!("lamp-runtime-test-{}-{unique}", std::process::id())),
+    );
+    let models = directory.0.join("models/derived");
+    std::fs::create_dir_all(&models).unwrap();
+    std::fs::create_dir(directory.0.join("gestures")).unwrap();
+    for name in ["scene.json", "lamp.xml", "lamp_shade.stl"] {
+        std::fs::copy(
+            simulation().join("models/derived").join(name),
+            models.join(name),
+        )
+        .unwrap();
+    }
+    let path = directory.0.join("gestures/test.json");
+    let data = definition(json!([{"hold_seconds":0.1}])).to_string();
+    std::fs::write(&path, &data).unwrap();
+    let config = Config::new(
+        directory.0.clone(),
+        Some(discover_library(&simulation()).unwrap()),
+        Backend::MujocoKinematic,
+        0.5,
+        8082,
+    )
+    .unwrap();
+    let mut runtime = Runtime::new(config).unwrap();
+    let original = runtime.hello()["gestures"][0]["revision"].clone();
+    std::fs::write(&path, format!("{data}\n")).unwrap();
+    runtime.command(Action::Reload).unwrap();
+    let refreshed = runtime.hello()["gestures"][0]["revision"].clone();
+    assert_ne!(original, refreshed);
+    assert_eq!(runtime.revision, 1);
+    std::fs::write(&path, "{invalid}").unwrap();
+    assert!(runtime.command(Action::Reload).is_err());
+    assert_eq!(runtime.hello()["gestures"][0]["revision"], refreshed);
+    assert_eq!(runtime.revision, 1);
 }
 
 #[test]

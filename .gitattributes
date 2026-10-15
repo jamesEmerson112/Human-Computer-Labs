@@ -5,3 +5,8 @@
 # Automatic text detection preserves binary STL and preview assets unchanged.
 SWE_route/simulation/** text=auto eol=lf
 SWE_route/starter_pack/robot/** text=auto eol=lf
+
+# Preserve the exact pre-migration bytes recorded by the archived hash manifest.
+SWE_route/simulation/gestures/archive/six-core-wheel/** -text
+# Audit reports pin the raw bytes of their measured JSON and trace evidence.
+SWE_route/simulation/benchmarks/2026-10-14-wheel-audit/** -text

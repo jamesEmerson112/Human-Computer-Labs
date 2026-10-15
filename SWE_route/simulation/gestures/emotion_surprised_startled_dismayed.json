@@ -1,0 +1,54 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_surprised_startled_dismayed",
+  "label": "Surprised / Startled / Dismayed",
+  "group": "Surprised",
+  "description": "Flinch backward and let the raised head fall.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": 0.028,
+        "shoulder_pitch_joint": 0.063,
+        "elbow_pitch_joint": -0.14,
+        "neck_yaw_joint": -0.056,
+        "head_pitch_joint": 0.005
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.42
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.08,
+        "shoulder_pitch_joint": 0.24,
+        "elbow_pitch_joint": -0.45,
+        "neck_yaw_joint": -0.16,
+        "head_pitch_joint": 0.3
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.42
+    },
+    {
+      "hold_seconds": 0.9
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.08,
+        "shoulder_pitch_joint": 0.18,
+        "elbow_pitch_joint": -0.4,
+        "neck_yaw_joint": -0.16,
+        "head_pitch_joint": 0.4
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.72
+    },
+    {
+      "hold_seconds": 0.45
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 0.6
+    }
+  ]
+}

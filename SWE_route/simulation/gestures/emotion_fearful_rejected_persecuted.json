@@ -1,0 +1,57 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_fearful_rejected_persecuted",
+  "label": "Fearful / Rejected / Persecuted",
+  "group": "Fearful",
+  "description": "Check behind each side and withdraw while keeping the shade watchful.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": -0.18,
+        "shoulder_pitch_joint": 0.16,
+        "elbow_pitch_joint": -0.18,
+        "neck_yaw_joint": -0.28,
+        "head_pitch_joint": -0.12
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.4
+    },
+    {
+      "hold_seconds": 0.3
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.2,
+        "shoulder_pitch_joint": 0.24,
+        "elbow_pitch_joint": -0.28,
+        "neck_yaw_joint": 0.32,
+        "head_pitch_joint": -0.1
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.55
+    },
+    {
+      "hold_seconds": 0.45
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.08,
+        "shoulder_pitch_joint": 0.3,
+        "elbow_pitch_joint": -0.4,
+        "neck_yaw_joint": -0.22,
+        "head_pitch_joint": 0.05
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.35
+    },
+    {
+      "hold_seconds": 0.8
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 0.8
+    }
+  ]
+}

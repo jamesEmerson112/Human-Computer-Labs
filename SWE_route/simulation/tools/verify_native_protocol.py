@@ -178,7 +178,7 @@ def verify(args, report):
                 require(content_type != "text/html", f"Asset returned fallback HTML: {asset}")
                 report["assets"].append({"path": asset, "bytes": len(data), "content_type": content_type, "sha256": hashlib.sha256(data).hexdigest()})
             require(any(asset["path"].endswith(".js") for asset in report["assets"]), "No bundled viewer JavaScript found")
-            for path in ("/api/scene", "/ws"):
+            for path in ("/api/scene", "/api/review-migration", "/ws"):
                 denied(url + path, {"Host": "attacker.invalid"})
                 denied(url + path, {"Origin": "https://attacker.invalid"})
             try:
@@ -194,6 +194,15 @@ def verify(args, report):
             require(client.hello["mujoco_version"] == "3.14.0", "Unexpected MuJoCo version")
             require(client.hello["physics_hz"] == 240 and client.hello["control_hz"] == 30, "Unexpected step rates")
             catalog = client.hello["gestures"]
+            status, content_type, body = http(url + "/api/review-migration")
+            migration = json.loads(body)
+            require(status == 200 and content_type == "application/json", "Review migration is unavailable")
+            require(migration == json.loads((PROJECT / "catalogs/emotion-wheel-migration.json").read_text(encoding="utf-8")), "Served review migration differs from disk")
+            by_name = {gesture["name"]: gesture for gesture in catalog}
+            for entry in migration["entries"]:
+                target = entry["target"]
+                require(all(by_name[target["name"]][key] == target[key] for key in ("label", "group", "revision")), "Migration target differs from the live catalog")
+            report["checks"].append("Read-only review migration matches the live SHA-256 gesture revisions and has Host/Origin guards")
             model = yourdfpy.URDF.load(str(ROBOT_PATH), mesh_dir=str(ROBOT_PATH.parent))
             reference_models = {
                 mode: mujoco.MjModel.from_xml_path(str(PROJECT / "models/derived" / filename))
@@ -352,7 +361,8 @@ def main():
     require(not args.output.exists() and not args.log.exists(), "Output evidence already exists; select a new --output path")
     args.output.parent.mkdir(parents=True, exist_ok=True)
     report = {"schema_version": 1, "started_at_utc": datetime.now(timezone.utc).isoformat(), "status": "failed", "checks": [], "commands": [], "state_messages": 0, "platform": sys.platform}
-    sources = [Path(__file__), PROJECT / "protocol/commands.schema.json", PROJECT / "models/derived/scene.json", ROBOT_PATH, args.binary]
+    sources = [Path(__file__), PROJECT / "tools/verify_native_viewer.py", PROJECT / "catalogs/emotion-wheel-migration.json",
+               PROJECT / "protocol/commands.schema.json", PROJECT / "models/derived/scene.json", ROBOT_PATH, args.binary]
     sources += list((PROJECT / "controller/src").glob("*.rs")) + [PROJECT / "controller/native/bridge.c"]
     sources += [path for path in (PROJECT / "models/derived").iterdir() if path.is_file()]
     sources += sorted((PROJECT / "gestures").glob("*.json"))

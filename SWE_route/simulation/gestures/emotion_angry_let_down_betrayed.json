@@ -1,0 +1,57 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_angry_let_down_betrayed",
+  "label": "Angry / Let down / Betrayed",
+  "group": "Angry",
+  "description": "Begin an open approach, recoil, then look back with a rigid sideways stare.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": -0.06,
+        "shoulder_pitch_joint": -0.18,
+        "elbow_pitch_joint": -0.12,
+        "neck_yaw_joint": 0.12,
+        "head_pitch_joint": -0.18
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.7
+    },
+    {
+      "hold_seconds": 0.25
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.18,
+        "shoulder_pitch_joint": 0.16,
+        "elbow_pitch_joint": -0.28,
+        "neck_yaw_joint": 0.28,
+        "head_pitch_joint": 0.12
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.3
+    },
+    {
+      "hold_seconds": 0.4
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.18,
+        "shoulder_pitch_joint": 0.16,
+        "elbow_pitch_joint": -0.28,
+        "neck_yaw_joint": -0.24,
+        "head_pitch_joint": 0.05
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.65
+    },
+    {
+      "hold_seconds": 1.0
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 0.8
+    }
+  ]
+}

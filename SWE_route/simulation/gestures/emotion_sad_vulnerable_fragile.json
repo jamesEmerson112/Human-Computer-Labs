@@ -1,0 +1,54 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_sad_vulnerable_fragile",
+  "label": "Sad / Vulnerable / Fragile",
+  "group": "Sad",
+  "description": "Attempt a delicate lift, falter, and settle into a protected compact pose.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": 0.0,
+        "shoulder_pitch_joint": 0.08,
+        "elbow_pitch_joint": -0.2,
+        "neck_yaw_joint": -0.08,
+        "head_pitch_joint": 0.18
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.8
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.0,
+        "shoulder_pitch_joint": 0.02,
+        "elbow_pitch_joint": -0.15,
+        "neck_yaw_joint": -0.04,
+        "head_pitch_joint": 0.06
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.65
+    },
+    {
+      "hold_seconds": 0.3
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.02,
+        "shoulder_pitch_joint": 0.1,
+        "elbow_pitch_joint": -0.28,
+        "neck_yaw_joint": -0.1,
+        "head_pitch_joint": 0.3
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.85
+    },
+    {
+      "hold_seconds": 1.0
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 1.2
+    }
+  ]
+}

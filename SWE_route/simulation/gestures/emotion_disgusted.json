@@ -1,0 +1,65 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_disgusted",
+  "label": "Disgusted",
+  "group": "Disgusted",
+  "description": "Recoil slightly and turn the shade away.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": 0.24,
+        "shoulder_pitch_joint": 0.18,
+        "elbow_pitch_joint": -0.24,
+        "neck_yaw_joint": -0.35,
+        "head_pitch_joint": 0.18
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.65
+    },
+    {
+      "hold_seconds": 0.2
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.24,
+        "shoulder_pitch_joint": 0.18,
+        "elbow_pitch_joint": -0.24,
+        "neck_yaw_joint": -0.03,
+        "head_pitch_joint": 0.18
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.65
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.24,
+        "shoulder_pitch_joint": 0.18,
+        "elbow_pitch_joint": -0.24,
+        "neck_yaw_joint": -0.67,
+        "head_pitch_joint": 0.18
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.65
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.24,
+        "shoulder_pitch_joint": 0.18,
+        "elbow_pitch_joint": -0.24,
+        "neck_yaw_joint": -0.35,
+        "head_pitch_joint": 0.25
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.65
+    },
+    {
+      "hold_seconds": 0.5
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 0.65
+    }
+  ]
+}

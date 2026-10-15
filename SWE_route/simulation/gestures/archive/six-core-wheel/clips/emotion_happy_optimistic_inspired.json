@@ -1,0 +1,57 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_happy_optimistic_inspired",
+  "label": "Happy / Optimistic / Inspired",
+  "group": "Happy",
+  "description": "Pause briefly, lift the shade, and follow with an upward accent.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": 0.04,
+        "shoulder_pitch_joint": -0.096,
+        "elbow_pitch_joint": -0.088,
+        "neck_yaw_joint": 0.032,
+        "head_pitch_joint": -0.144
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.55
+    },
+    {
+      "hold_seconds": 0.65
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.1,
+        "shoulder_pitch_joint": -0.24,
+        "elbow_pitch_joint": -0.22,
+        "neck_yaw_joint": 0.08,
+        "head_pitch_joint": -0.42
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.385
+    },
+    {
+      "hold_seconds": 0.325
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.1,
+        "shoulder_pitch_joint": -0.3,
+        "elbow_pitch_joint": -0.22,
+        "neck_yaw_joint": 0.08,
+        "head_pitch_joint": -0.31
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.55
+    },
+    {
+      "hold_seconds": 0.325
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 0.6
+    }
+  ]
+}

@@ -24,7 +24,8 @@ from benchmarks.measure_viewer import DevTools, available_port, save_json, termi
 from tools.verify_native_viewer import PROBE, capture, change, click, core_gestures, gesture_names, local_catalog, verify_catalog, wait_for
 
 
-STORAGE_KEY = "lamp-animation-review-v1"
+STORAGE_KEY = "lamp-animation-review-v2"
+LEGACY_STORAGE_KEY = "lamp-animation-review-v1"
 
 
 def checkbox(page: DevTools, name: str) -> None:
@@ -135,16 +136,22 @@ def verify(args) -> None:
             assert set(gesture_names(page)) == {item["name"] for item in expected if item["group"] == family}
             assert "nod" not in gesture_names(page)
         change(page, "group-filter", "All")
+        for ring, depth in (("core", 1), ("middle", 2), ("outer", 3), ("utility", 0)):
+            change(page, "ring-filter", ring)
+            assert set(gesture_names(page)) == {item["name"] for item in expected
+                if (len(item["label"].split(" / ")) if item["group"] else 0) == depth}
+            assert page.evaluate("document.querySelector('#review-summary').textContent") == passed_summary
+        change(page, "ring-filter", "all")
         change(page, "gesture-select", "nod")
         assert page.evaluate("document.querySelector('[data-review-name=nod]').checked")
         assert page.evaluate("document.querySelector('#review-notes').value") == notes
-        checks.append("Family/search/pass-fail filtering preserves each animation's review and notes")
+        checks.append("Family/search/pass-fail/review-round filtering preserves reviews and whole-catalog counts")
 
-        for expected in (False, True):
+        for expected_checked in (False, True):
             page.evaluate("document.querySelector('[data-review-name=nod]').focus()")
             page.call("Input.dispatchKeyEvent", {"type": "keyDown", "key": " ", "code": "Space", "windowsVirtualKeyCode": 32})
             page.call("Input.dispatchKeyEvent", {"type": "keyUp", "key": " ", "code": "Space", "windowsVirtualKeyCode": 32})
-            wait_for(page, f"document.querySelector('[data-review-name=nod]').checked === {json.dumps(expected)}")
+            wait_for(page, f"document.querySelector('[data-review-name=nod]').checked === {json.dumps(expected_checked)}")
         assert page.evaluate("lampVerification.commands.length") == initial_commands
         checks.append("Space toggles the focused native review checkbox without playing a gesture")
 
@@ -175,7 +182,9 @@ def verify(args) -> None:
             raise AssertionError("Review export did not download a JSON file")
         exported = json.loads(reports[0].read_text(encoding="utf-8"))
         assert exported["type"] == "lamp-animation-review"
-        assert exported["schema_version"] == 1
+        assert exported["schema_version"] == 2
+        assert exported["history"] == []
+        assert all(len(animation["revision"]) == 64 for animation in exported["animations"])
         assert exported["rule"] == "checked_pass_unchecked_fail"
         assert len(exported["animations"]) == count
         assert {animation["name"] for animation in exported["animations"]} == expected_names
@@ -218,6 +227,56 @@ def verify(args) -> None:
         assert page.evaluate("document.documentElement.scrollWidth <= innerWidth")
         capture(page, output / "review-mobile.png")
         checks.append("Mobile review controls remain within a390px viewport")
+
+        before_other_tab = review_state(page)
+        other_tab = json.loads(json.dumps(before_other_tab))
+        other_nod = next(item for item in other_tab["animations"] if item["name"] == "nod")
+        other_nod["revision"] = "0" * 64
+        other_tab["history"].append({"animation": dict(other_nod), "reason": "Other-tab history sentinel", "recorded_at": "2026-10-14T20:00:00.000Z"})
+        page.evaluate(f"window.dispatchEvent(new StorageEvent('storage', {{key:{json.dumps(STORAGE_KEY)}, newValue:{json.dumps(json.dumps(other_tab))}}}))")
+        wait_for(page, f"document.querySelector('#review-summary').textContent === {json.dumps(empty_summary)}")
+        saved_after_event = review_state(page)
+        assert next(item for item in saved_after_event["animations"] if item["name"] == "nod")["status"] == "fail"
+        assert any(item["reason"] == "Other-tab history sentinel" for item in saved_after_event["history"])
+        assert all(item in saved_after_event["history"] for item in before_other_tab["history"])
+        page.evaluate("document.body.dataset.verifyReload = 'history'")
+        page.call("Page.reload")
+        wait_for(page, "document.body && !document.body.dataset.verifyReload && document.querySelector('#play') && !document.querySelector('#play').disabled")
+        assert review_state(page)["history"] == saved_after_event["history"]
+        assert page.evaluate("document.querySelector('#review-summary').textContent") == empty_summary
+        saved_after_event = review_state(page)
+        invalid_event = json.loads(json.dumps(other_tab))
+        invalid_event["history"][0]["reason"] = None
+        page.evaluate(f"window.dispatchEvent(new StorageEvent('storage', {{key:{json.dumps(STORAGE_KEY)}, newValue:{json.dumps(json.dumps(invalid_event))}}}))")
+        assert "unchanged" in page.evaluate("document.querySelector('#review-message').textContent")
+        assert review_state(page) == saved_after_event
+        checks.append("Other-tab history persists before any edit and survives immediate reload; stale revisions clear and malformed history rejects atomically")
+
+        migration = wait_json(url + "/api/review-migration")
+        sources = [entry["source"] for entry in migration["entries"]] + migration["retired"]
+        legacy = {
+            "schema_version": 1, "type": "lamp-animation-review", "exported_at": "2026-10-14T20:00:00.000Z",
+            "rule": "checked_pass_unchecked_fail", "summary": {"total": len(sources), "passed": len(sources), "failed": 0},
+            "animations": [{"name": item["name"], "label": item["label"], "group": item["group"],
+                "status": "pass", "notes": "Synthetic baseline migration check; not human approval.", "updated_at": "2026-10-14T20:00:00.000Z"}
+                for item in sources],
+        }
+        legacy_text = json.dumps(legacy)
+        save_json(output / "synthetic-v1-review.json", legacy)
+        page.evaluate(f"localStorage.setItem({json.dumps(LEGACY_STORAGE_KEY)}, {json.dumps(legacy_text)}); localStorage.removeItem({json.dumps(STORAGE_KEY)})")
+        page.evaluate("document.body.dataset.verifyReload = 'legacy'")
+        page.call("Page.reload")
+        wait_for(page, "document.body && !document.body.dataset.verifyReload && document.querySelector('#play') && !document.querySelector('#play').disabled")
+        migrated = review_state(page)
+        assert migrated["schema_version"] == 2
+        assert migrated["summary"]["passed"] == sum(entry["preserve_review"] for entry in migration["entries"])
+        assert len(migrated["history"]) == len(sources)
+        assert page.evaluate(f"localStorage.getItem({json.dumps(LEGACY_STORAGE_KEY)})") == legacy_text
+        assert "baseline" in page.evaluate("document.querySelector('#review-message').textContent").lower()
+        assert all(next(item for item in migrated["animations"] if item["name"] == entry["target"]["name"])["status"]
+            == ("pass" if entry["preserve_review"] else "fail") for entry in migration["entries"])
+        checks.append("Real baseline metadata migrates v1 approvals only for equivalent motions; original storage and retired history survive")
+        save_json(output / "synthetic-v2-migrated-review.json", migrated)
         result["browser_probe"] = page.evaluate("lampVerification")
         assert not result["browser_probe"]["errors"], result["browser_probe"]["errors"]
         result["passed"] = True

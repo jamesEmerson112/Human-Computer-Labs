@@ -1,0 +1,57 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_anger_threatened_insecure",
+  "label": "Anger / Threatened / Insecure",
+  "group": "Anger",
+  "description": "Begin to face forward, retreat, and try a smaller approach.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": -0.06,
+        "shoulder_pitch_joint": 0.0,
+        "elbow_pitch_joint": -0.11,
+        "neck_yaw_joint": 0.09,
+        "head_pitch_joint": -0.03
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.85
+    },
+    {
+      "hold_seconds": 0.42
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.036,
+        "shoulder_pitch_joint": 0.148,
+        "elbow_pitch_joint": -0.066,
+        "neck_yaw_joint": 0.054,
+        "head_pitch_joint": 0.122
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.85
+    },
+    {
+      "hold_seconds": 0.35
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.12,
+        "shoulder_pitch_joint": 0.16,
+        "elbow_pitch_joint": -0.22,
+        "neck_yaw_joint": 0.18,
+        "head_pitch_joint": 0.14
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.85
+    },
+    {
+      "hold_seconds": 0.7
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 0.85
+    }
+  ]
+}

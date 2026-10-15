@@ -1,0 +1,71 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_fearful_rejected",
+  "label": "Fearful / Rejected",
+  "group": "Fearful",
+  "description": "Offer a cautious approach and withdraw into a lowered pose.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": -0.06,
+        "shoulder_pitch_joint": 0.02,
+        "elbow_pitch_joint": -0.15,
+        "neck_yaw_joint": -0.08,
+        "head_pitch_joint": 0.03
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.95
+    },
+    {
+      "hold_seconds": 0.51
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.036,
+        "shoulder_pitch_joint": 0.16,
+        "elbow_pitch_joint": -0.09,
+        "neck_yaw_joint": -0.048,
+        "head_pitch_joint": 0.158
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.95
+    },
+    {
+      "hold_seconds": 0.425
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.12,
+        "shoulder_pitch_joint": 0.02,
+        "elbow_pitch_joint": -0.3,
+        "neck_yaw_joint": -0.16,
+        "head_pitch_joint": 0.18
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.95
+    },
+    {
+      "hold_seconds": 0.85
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.12,
+        "shoulder_pitch_joint": 0.2,
+        "elbow_pitch_joint": -0.3,
+        "neck_yaw_joint": -0.16,
+        "head_pitch_joint": 0.26
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.95
+    },
+    {
+      "hold_seconds": 0.85
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 0.95
+    }
+  ]
+}

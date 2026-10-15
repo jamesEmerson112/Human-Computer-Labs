@@ -1,0 +1,57 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_sad_guilty_ashamed",
+  "label": "Sad / Guilty / Ashamed",
+  "group": "Sad",
+  "description": "Lower the shade and tuck it to one side.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": -0.13,
+        "shoulder_pitch_joint": 0.06,
+        "elbow_pitch_joint": -0.17,
+        "neck_yaw_joint": -0.14,
+        "head_pitch_joint": 0.31
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.1
+    },
+    {
+      "hold_seconds": 0.5
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.26,
+        "shoulder_pitch_joint": 0.12,
+        "elbow_pitch_joint": -0.34,
+        "neck_yaw_joint": -0.28,
+        "head_pitch_joint": 0.42
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.1
+    },
+    {
+      "hold_seconds": 1.0
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.26,
+        "shoulder_pitch_joint": 0.12,
+        "elbow_pitch_joint": -0.34,
+        "neck_yaw_joint": -0.38,
+        "head_pitch_joint": 0.47
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.1
+    },
+    {
+      "hold_seconds": 0.5
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 1.1
+    }
+  ]
+}

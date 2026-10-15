@@ -1,0 +1,73 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_angry_frustrated_infuriated",
+  "label": "Angry / Frustrated / Infuriated",
+  "group": "Angry",
+  "description": "Alternate a tense head lift with repeated forceful dips.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": -0.084,
+        "shoulder_pitch_joint": -0.12,
+        "elbow_pitch_joint": -0.18,
+        "neck_yaw_joint": 0.096,
+        "head_pitch_joint": 0.204
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.35
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.14,
+        "shoulder_pitch_joint": -0.2,
+        "elbow_pitch_joint": -0.3,
+        "neck_yaw_joint": 0.16,
+        "head_pitch_joint": 0.47
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.35
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.14,
+        "shoulder_pitch_joint": -0.2,
+        "elbow_pitch_joint": -0.3,
+        "neck_yaw_joint": 0.16,
+        "head_pitch_joint": 0.21
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.35
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.14,
+        "shoulder_pitch_joint": -0.2,
+        "elbow_pitch_joint": -0.3,
+        "neck_yaw_joint": 0.16,
+        "head_pitch_joint": 0.47
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.35
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.14,
+        "shoulder_pitch_joint": -0.2,
+        "elbow_pitch_joint": -0.3,
+        "neck_yaw_joint": 0.16,
+        "head_pitch_joint": 0.21
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.35
+    },
+    {
+      "hold_seconds": 0.2
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 0.6
+    }
+  ]
+}

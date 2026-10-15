@@ -1,0 +1,57 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_angry_humiliated",
+  "label": "Angry / Humiliated",
+  "group": "Angry",
+  "description": "Fold low and turn the shade away.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": -0.11,
+        "shoulder_pitch_joint": 0.09,
+        "elbow_pitch_joint": -0.175,
+        "neck_yaw_joint": -0.13,
+        "head_pitch_joint": 0.3
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.0
+    },
+    {
+      "hold_seconds": 0.45
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.22,
+        "shoulder_pitch_joint": 0.18,
+        "elbow_pitch_joint": -0.35,
+        "neck_yaw_joint": -0.26,
+        "head_pitch_joint": 0.4
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.0
+    },
+    {
+      "hold_seconds": 0.9
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.22,
+        "shoulder_pitch_joint": 0.18,
+        "elbow_pitch_joint": -0.35,
+        "neck_yaw_joint": -0.36,
+        "head_pitch_joint": 0.45
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.0
+    },
+    {
+      "hold_seconds": 0.45
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 1.0
+    }
+  ]
+}

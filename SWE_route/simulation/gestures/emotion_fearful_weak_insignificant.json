@@ -1,0 +1,43 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_fearful_weak_insignificant",
+  "label": "Fearful / Weak / Insignificant",
+  "group": "Fearful",
+  "description": "Contract the arm in two stages and keep the shade low.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": -0.045,
+        "shoulder_pitch_joint": 0.081,
+        "elbow_pitch_joint": -0.207,
+        "neck_yaw_joint": -0.054,
+        "head_pitch_joint": 0.162
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.15
+    },
+    {
+      "hold_seconds": 0.4
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.1,
+        "shoulder_pitch_joint": 0.18,
+        "elbow_pitch_joint": -0.46,
+        "neck_yaw_joint": -0.12,
+        "head_pitch_joint": 0.36
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.15
+    },
+    {
+      "hold_seconds": 1.0
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 1.15
+    }
+  ]
+}

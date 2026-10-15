@@ -1,0 +1,43 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_sad",
+  "label": "Sad",
+  "group": "Sad",
+  "description": "Lower the arm and shade gradually, then recover slowly.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": 0.0,
+        "shoulder_pitch_joint": 0.054,
+        "elbow_pitch_joint": -0.162,
+        "neck_yaw_joint": 0.0,
+        "head_pitch_joint": 0.162
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.25
+    },
+    {
+      "hold_seconds": 0.36
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.0,
+        "shoulder_pitch_joint": 0.12,
+        "elbow_pitch_joint": -0.36,
+        "neck_yaw_joint": 0.0,
+        "head_pitch_joint": 0.36
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.25
+    },
+    {
+      "hold_seconds": 0.9
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 1.25
+    }
+  ]
+}

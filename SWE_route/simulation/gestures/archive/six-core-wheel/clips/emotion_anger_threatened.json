@@ -1,0 +1,57 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_anger_threatened",
+  "label": "Anger / Threatened",
+  "group": "Anger",
+  "description": "Draw back, brace, and check to one side.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": 0.12,
+        "shoulder_pitch_joint": 0.22,
+        "elbow_pitch_joint": -0.28,
+        "neck_yaw_joint": -0.18,
+        "head_pitch_joint": -0.12
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.5
+    },
+    {
+      "hold_seconds": 0.6
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.12,
+        "shoulder_pitch_joint": 0.22,
+        "elbow_pitch_joint": -0.28,
+        "neck_yaw_joint": -0.04,
+        "head_pitch_joint": -0.16
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.5
+    },
+    {
+      "hold_seconds": 0.36
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.12,
+        "shoulder_pitch_joint": 0.22,
+        "elbow_pitch_joint": -0.28,
+        "neck_yaw_joint": -0.32,
+        "head_pitch_joint": -0.1
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.5
+    },
+    {
+      "hold_seconds": 0.48
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 0.6
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_fear_anxious_overwhelmed",
+  "label": "Fear / Anxious / Overwhelmed",
+  "group": "Fear",
+  "description": "Make two tense tremors and fold the head down.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": 0.12,
+        "shoulder_pitch_joint": 0.26,
+        "elbow_pitch_joint": -0.42,
+        "neck_yaw_joint": -0.24,
+        "head_pitch_joint": 0.32
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.55
+    },
+    {
+      "hold_seconds": 0.45
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.12,
+        "shoulder_pitch_joint": 0.26,
+        "elbow_pitch_joint": -0.42,
+        "neck_yaw_joint": -0.18,
+        "head_pitch_joint": 0.355
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.33
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.12,
+        "shoulder_pitch_joint": 0.26,
+        "elbow_pitch_joint": -0.42,
+        "neck_yaw_joint": -0.3,
+        "head_pitch_joint": 0.285
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.33
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.12,
+        "shoulder_pitch_joint": 0.26,
+        "elbow_pitch_joint": -0.42,
+        "neck_yaw_joint": -0.18,
+        "head_pitch_joint": 0.355
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.33
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.12,
+        "shoulder_pitch_joint": 0.26,
+        "elbow_pitch_joint": -0.42,
+        "neck_yaw_joint": -0.3,
+        "head_pitch_joint": 0.285
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.33
+    },
+    {
+      "hold_seconds": 0.9
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 0.6
+    }
+  ]
+}

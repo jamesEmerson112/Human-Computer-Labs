@@ -1,0 +1,57 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_fear_scared",
+  "label": "Fear / Scared",
+  "group": "Fear",
+  "description": "Retreat promptly and hold a braced, watchful posture.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": -0.06,
+        "shoulder_pitch_joint": 0.28,
+        "elbow_pitch_joint": -0.32,
+        "neck_yaw_joint": 0.16,
+        "head_pitch_joint": 0.1
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.45
+    },
+    {
+      "hold_seconds": 0.65
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.06,
+        "shoulder_pitch_joint": 0.28,
+        "elbow_pitch_joint": -0.32,
+        "neck_yaw_joint": 0.3,
+        "head_pitch_joint": 0.06
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.45
+    },
+    {
+      "hold_seconds": 0.39
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.06,
+        "shoulder_pitch_joint": 0.28,
+        "elbow_pitch_joint": -0.32,
+        "neck_yaw_joint": 0.02,
+        "head_pitch_joint": 0.12
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.45
+    },
+    {
+      "hold_seconds": 0.52
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 0.6
+    }
+  ]
+}

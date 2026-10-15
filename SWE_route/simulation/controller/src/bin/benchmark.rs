@@ -1,4 +1,4 @@
-//! Matched headless workload: warmup, 123 gestures, three repeats, 31 settling frames.
+//! Matched headless workload: warmup, full catalog, three repeats, 31 settling frames.
 use clap::Parser;
 use cpu_time::ProcessTime;
 use lamp_controller::{

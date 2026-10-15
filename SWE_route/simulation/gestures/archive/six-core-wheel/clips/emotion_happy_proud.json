@@ -1,0 +1,57 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_happy_proud",
+  "label": "Happy / Proud",
+  "group": "Happy",
+  "description": "Raise the shade deliberately and hold a tall presentation.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": 0.0,
+        "shoulder_pitch_joint": -0.048,
+        "elbow_pitch_joint": -0.032,
+        "neck_yaw_joint": 0.024,
+        "head_pitch_joint": -0.128
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.9
+    },
+    {
+      "hold_seconds": 0.28
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.0,
+        "shoulder_pitch_joint": -0.12,
+        "elbow_pitch_joint": -0.08,
+        "neck_yaw_joint": 0.06,
+        "head_pitch_joint": -0.36
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.9
+    },
+    {
+      "hold_seconds": 0.8
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.0,
+        "shoulder_pitch_joint": -0.12,
+        "elbow_pitch_joint": -0.08,
+        "neck_yaw_joint": 0.06,
+        "head_pitch_joint": -0.28
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.72
+    },
+    {
+      "hold_seconds": 0.32
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 0.9
+    }
+  ]
+}

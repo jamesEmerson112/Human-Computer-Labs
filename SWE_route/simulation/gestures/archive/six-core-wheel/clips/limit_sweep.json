@@ -1,0 +1,22 @@
+{
+  "$schema": "../gesture.schema.json", "schema_version": 1,
+  "name": "limit_sweep", "label": "Limit sweep (diagnostic)", "units": "radians",
+  "description": "Exercise each joint near its soft limits. Contacts are expected; simulation diagnostic only.",
+  "steps": [
+    {"targets": {"base_yaw_joint": 2.4}},
+    {"targets": {"base_yaw_joint": -2.4}},
+    {"return_to_start": true},
+    {"targets": {"shoulder_pitch_joint": 0.9}},
+    {"targets": {"shoulder_pitch_joint": -0.6}},
+    {"return_to_start": true},
+    {"targets": {"elbow_pitch_joint": -1.65}},
+    {"targets": {"elbow_pitch_joint": 0.25}},
+    {"return_to_start": true},
+    {"targets": {"neck_yaw_joint": 1.2}},
+    {"targets": {"neck_yaw_joint": -1.2}},
+    {"return_to_start": true},
+    {"targets": {"head_pitch_joint": 0.55}},
+    {"targets": {"head_pitch_joint": -0.75}},
+    {"return_to_start": true}
+  ]
+}

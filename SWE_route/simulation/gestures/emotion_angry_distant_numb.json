@@ -1,0 +1,40 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_angry_distant_numb",
+  "label": "Angry / Distant / Numb",
+  "group": "Angry",
+  "description": "Turn away slowly, let the shade settle, and remain still before recovering.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": 0.24,
+        "shoulder_pitch_joint": 0.06,
+        "elbow_pitch_joint": -0.12,
+        "neck_yaw_joint": 0.18,
+        "head_pitch_joint": 0.06
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.2
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.24,
+        "shoulder_pitch_joint": 0.06,
+        "elbow_pitch_joint": -0.12,
+        "neck_yaw_joint": 0.18,
+        "head_pitch_joint": 0.22
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.3
+    },
+    {
+      "hold_seconds": 1.4
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 1.3
+    }
+  ]
+}

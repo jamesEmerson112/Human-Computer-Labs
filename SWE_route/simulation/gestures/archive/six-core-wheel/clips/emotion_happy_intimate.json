@@ -1,0 +1,57 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_happy_intimate",
+  "label": "Happy / Intimate",
+  "group": "Happy",
+  "description": "Approach closely and linger with a small sideways nod.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": -0.1,
+        "shoulder_pitch_joint": -0.26,
+        "elbow_pitch_joint": -0.25,
+        "neck_yaw_joint": 0.16,
+        "head_pitch_joint": 0.02
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.15
+    },
+    {
+      "hold_seconds": 0.475
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.1,
+        "shoulder_pitch_joint": -0.32,
+        "elbow_pitch_joint": -0.25,
+        "neck_yaw_joint": 0.16,
+        "head_pitch_joint": 0.11
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.15
+    },
+    {
+      "hold_seconds": 0.95
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.1,
+        "shoulder_pitch_joint": -0.26,
+        "elbow_pitch_joint": -0.25,
+        "neck_yaw_joint": 0.16,
+        "head_pitch_joint": 0.02
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.15
+    },
+    {
+      "hold_seconds": 0.38
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 1.15
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_happy_content_free",
+  "label": "Happy / Content / Free",
+  "group": "Happy",
+  "description": "Unfold and sweep outward into a broad raised pose.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": 0.12,
+        "shoulder_pitch_joint": -0.088,
+        "elbow_pitch_joint": -0.096,
+        "neck_yaw_joint": -0.072,
+        "head_pitch_joint": -0.128
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.8
+    },
+    {
+      "hold_seconds": 0.175
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.3,
+        "shoulder_pitch_joint": -0.22,
+        "elbow_pitch_joint": -0.24,
+        "neck_yaw_joint": -0.04,
+        "head_pitch_joint": -0.36
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.8
+    },
+    {
+      "hold_seconds": 0.5
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.3,
+        "shoulder_pitch_joint": -0.22,
+        "elbow_pitch_joint": -0.24,
+        "neck_yaw_joint": -0.18,
+        "head_pitch_joint": -0.28
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.64
+    },
+    {
+      "hold_seconds": 0.2
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 0.8
+    }
+  ]
+}

@@ -48,6 +48,7 @@ def receive_until(websocket, predicate):
 
 def verify(output: Path) -> None:
     expected = local_catalog()
+    migration = json.loads((PROJECT / "catalogs/emotion-wheel-migration.json").read_text(encoding="utf-8"))
     cores = core_gestures(expected)
     output = output.resolve()
     output.mkdir(parents=True, exist_ok=False)
@@ -75,15 +76,19 @@ def verify(output: Path) -> None:
         wait_json("http://127.0.0.1:5173/api/scene")
         for host in ("127.0.0.1:5173", "localhost:5173"):
             for origin in (None, f"http://{host}"):
-                status, body = http_request("/api/scene", host, origin)
-                assert status == 200, (host, origin, status)
-                assert json.loads(body)["schema_version"] == 1
+                for path in ("/api/scene", "/api/review-migration"):
+                    status, body = http_request(path, host, origin)
+                    assert status == 200, (host, origin, path, status)
+                    assert json.loads(body)["schema_version"] == 1
+                    if path == "/api/review-migration":
+                        assert json.loads(body) == migration, "Proxied review migration differs from the source file"
         status, body = http_request("/assets/lamp_shade.stl")
         assert status == 200 and len(body) > 100
-        checks.append("Both local hostnames proxy scene and mesh requests, with or without matching HTTP Origin")
+        checks.append("Both local hostnames proxy scene, exact review migration JSON and mesh requests, with or without matching HTTP Origin")
         for host, origin in (("127.0.0.1:5173", "https://example.com"), ("127.0.0.1:5173", "http://localhost:5173"), ("attacker.example:5173", None)):
-            status, _ = http_request("/api/scene", host, origin)
-            assert status in (403, 404), (host, origin, status)
+            for path in ("/api/scene", "/api/review-migration"):
+                status, _ = http_request(path, host, origin)
+                assert status in (403, 404), (host, origin, path, status)
         checks.append("HTTP proxy rejects foreign/mismatched Origin and foreign Host")
         for host in ("127.0.0.1", "localhost"):
             with connect(f"ws://{host}:5173/ws", origin=f"http://{host}:5173", proxy=None, max_size=4_000_000) as websocket:

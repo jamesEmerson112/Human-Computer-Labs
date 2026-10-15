@@ -1,0 +1,57 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_surprise_confused_disillusioned",
+  "label": "Surprise / Confused / Disillusioned",
+  "group": "Surprise",
+  "description": "Begin with a hopeful lift and settle into a droop.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": 0.06,
+        "shoulder_pitch_joint": -0.02,
+        "elbow_pitch_joint": -0.18,
+        "neck_yaw_joint": -0.09,
+        "head_pitch_joint": 0.04
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.1
+    },
+    {
+      "hold_seconds": 0.54
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.036,
+        "shoulder_pitch_joint": 0.136,
+        "elbow_pitch_joint": -0.108,
+        "neck_yaw_joint": -0.054,
+        "head_pitch_joint": 0.164
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.1
+    },
+    {
+      "hold_seconds": 0.45
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.12,
+        "shoulder_pitch_joint": 0.12,
+        "elbow_pitch_joint": -0.36,
+        "neck_yaw_joint": -0.18,
+        "head_pitch_joint": 0.28
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.1
+    },
+    {
+      "hold_seconds": 0.9
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 1.1
+    }
+  ]
+}

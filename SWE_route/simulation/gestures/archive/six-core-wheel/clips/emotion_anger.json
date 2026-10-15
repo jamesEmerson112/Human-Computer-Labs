@@ -1,0 +1,73 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_anger",
+  "label": "Anger",
+  "group": "Anger",
+  "description": "A squared stance with two firm downward accents.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": 0.0,
+        "shoulder_pitch_joint": -0.108,
+        "elbow_pitch_joint": -0.072,
+        "neck_yaw_joint": 0.0,
+        "head_pitch_joint": 0.132
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.45
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.0,
+        "shoulder_pitch_joint": -0.18,
+        "elbow_pitch_joint": -0.12,
+        "neck_yaw_joint": 0.0,
+        "head_pitch_joint": 0.35
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.45
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.0,
+        "shoulder_pitch_joint": -0.18,
+        "elbow_pitch_joint": -0.12,
+        "neck_yaw_joint": 0.0,
+        "head_pitch_joint": 0.09
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.45
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.0,
+        "shoulder_pitch_joint": -0.18,
+        "elbow_pitch_joint": -0.12,
+        "neck_yaw_joint": 0.0,
+        "head_pitch_joint": 0.35
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.45
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.0,
+        "shoulder_pitch_joint": -0.18,
+        "elbow_pitch_joint": -0.12,
+        "neck_yaw_joint": 0.0,
+        "head_pitch_joint": 0.09
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.45
+    },
+    {
+      "hold_seconds": 0.25
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 0.6
+    }
+  ]
+}

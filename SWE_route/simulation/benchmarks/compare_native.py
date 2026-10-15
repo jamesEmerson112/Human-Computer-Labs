@@ -22,8 +22,52 @@ import time
 import numpy as np
 import psutil
 
-from measure_viewer import PROJECT, save_json
+PROJECT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(PROJECT))
+from benchmarks.measure_viewer import save_json
 from lamp_sim.benchmark import cpu_name, fingerprints
+from lamp_sim.gestures import load_gestures
+from lamp_sim.motion import load_limits
+
+
+def verify_reference(reference: Path) -> dict:
+    """Reject stale workloads before creating output or launching any measurement."""
+    fresh = "benchmarks/python-reference-" + datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    instruction = ("Generate a fresh reference with: uv run --locked python -m lamp_sim.benchmark "
+                   f"--output {fresh} --repeats 1 --speed 0.5; then pass "
+                   f"--reference {fresh} to this command. Keep historical baselines unchanged.")
+    try:
+        manifest = json.loads((reference / "manifest.json").read_text(encoding="utf-8"))
+        recorded = manifest["source_sha256"]
+        expected = fingerprints()
+        prefix = "simulation/gestures/"
+        old_catalog = {key: value for key, value in recorded.items() if key.startswith(prefix)}
+        current_catalog = {key: value for key, value in expected.items() if key.startswith(prefix)}
+        if old_catalog != current_catalog:
+            added = sorted(current_catalog.keys() - old_catalog.keys())
+            removed = sorted(old_catalog.keys() - current_catalog.keys())
+            changed = sorted(key for key in current_catalog.keys() & old_catalog.keys() if current_catalog[key] != old_catalog[key])
+            raise ValueError(f"Gesture workload differs: {len(added)} added, {len(removed)} removed, {len(changed)} changed files")
+        for key, value in {"speed": 0.5, "control_hz": 30, "physics_hz": 240, "settling_tail_s": 1.0}.items():
+            if manifest.get(key) != value:
+                raise ValueError(f"Reference {key} is {manifest.get(key)!r}; expected {value}")
+        # Exact model and controller inputs matter even when gesture names match.
+        physical_inputs = [key for key in expected if key.startswith("starter_pack/robot/")]
+        physical_inputs += ["simulation/lamp_sim/motion.py", "simulation/lamp_sim/backends.py"]
+        for key in physical_inputs:
+            if recorded.get(key) != expected[key]:
+                raise ValueError(f"Reference model/controller input changed: {key}")
+        names = set(load_gestures(load_limits()))
+        for backend in ("mujoco-kinematic", "mujoco-source", "mujoco"):
+            if not (reference / f"{backend}.csv.gz").is_file():
+                raise ValueError(f"Reference trace is missing: {backend}.csv.gz")
+            result = json.loads((reference / f"{backend}.json").read_text(encoding="utf-8"))
+            if result.get("backend") != backend or {trial["gesture"] for trial in result["trials"]} != names:
+                raise ValueError(f"Reference {backend} trial names do not match the current catalog")
+    except (OSError, KeyError, TypeError, ValueError) as error:
+        raise ValueError(f"Cannot compare unmatched benchmark workloads: {error}. {instruction}") from error
+    return {"path": str(reference.resolve()), "manifest_sha256": hashlib.sha256((reference / "manifest.json").read_bytes()).hexdigest(),
+            "gesture_count": len(names), "catalog_match": True}
 
 
 def run_sampled(command: list[str], log: Path) -> dict:
@@ -120,6 +164,10 @@ def main() -> None:
     args = parser.parse_args()
     if args.repeats < 1:
         parser.error("repeats must be positive")
+    try:
+        reference_validation = verify_reference(args.reference)
+    except ValueError as error:
+        parser.error(str(error))
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=False)
     metadata = {"timestamp_utc": datetime.now(timezone.utc).isoformat(), "platform": platform.platform(),
@@ -130,6 +178,7 @@ def main() -> None:
                 "control_hz": 30, "physics_hz": 240, "settling_tail_frames": 31,
                 "executable_sha256": hashlib.sha256(args.executable.read_bytes()).hexdigest(),
                 "model_manifest": json.loads((PROJECT / "models/derived/manifest.json").read_text()),
+                "reference_validation": reference_validation,
                 "measurement_scope": "Sequential fresh processes, warmup per gesture. Compute covers controller+physics; loop includes observation/log buffers. CSV serialization excluded. No rendering."}
     native_sources = sorted((PROJECT / "controller/src").rglob("*.rs"))
     native_sources += sorted((PROJECT / "controller/native").glob("*"))

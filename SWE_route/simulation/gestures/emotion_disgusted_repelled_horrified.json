@@ -1,0 +1,43 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_disgusted_repelled_horrified",
+  "label": "Disgusted / Repelled / Horrified",
+  "group": "Disgusted",
+  "description": "Retreat abruptly, hold a high watchful head, then avert the whole upper body.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": 0.0,
+        "shoulder_pitch_joint": 0.3,
+        "elbow_pitch_joint": -0.38,
+        "neck_yaw_joint": 0.0,
+        "head_pitch_joint": -0.28
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.3
+    },
+    {
+      "hold_seconds": 0.7
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.32,
+        "shoulder_pitch_joint": 0.3,
+        "elbow_pitch_joint": -0.42,
+        "neck_yaw_joint": 0.36,
+        "head_pitch_joint": -0.08
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.6
+    },
+    {
+      "hold_seconds": 0.9
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 1.0
+    }
+  ]
+}

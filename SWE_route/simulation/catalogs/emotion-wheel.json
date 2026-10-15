@@ -1,0 +1,327 @@
+{
+  "schema_version": 1,
+  "catalog_id": "emotion-wheel-without-bad-2026-10-14",
+  "source": "User-selected image supplied in chat on 2026-10-14; clockwise from 12 oclock; the complete Bad branch excluded at the user's request; no author attribution supplied",
+  "excluded": {
+    "family": "Bad",
+    "count": 13,
+    "paths": [
+      "Bad",
+      "Bad / Tired",
+      "Bad / Tired / Unfocussed",
+      "Bad / Tired / Sleepy",
+      "Bad / Stressed",
+      "Bad / Stressed / Out of control",
+      "Bad / Stressed / Overwhelmed",
+      "Bad / Busy",
+      "Bad / Busy / Rushed",
+      "Bad / Busy / Pressured",
+      "Bad / Bored",
+      "Bad / Bored / Apathetic",
+      "Bad / Bored / Indifferent"
+    ]
+  },
+  "neutral": {
+    "label": "Neutral / Reset pose",
+    "kind": "control_action",
+    "included_in_emotion_count": false
+  },
+  "counts": {
+    "core": 6,
+    "middle": 37,
+    "outer": 74,
+    "total": 117,
+    "distinct_words": 114
+  },
+  "families": [
+    {
+      "label": "Fearful",
+      "branches": [
+        {
+          "label": "Scared",
+          "emotions": [
+            "Helpless",
+            "Frightened"
+          ]
+        },
+        {
+          "label": "Anxious",
+          "emotions": [
+            "Overwhelmed",
+            "Worried"
+          ]
+        },
+        {
+          "label": "Insecure",
+          "emotions": [
+            "Inadequate",
+            "Inferior"
+          ]
+        },
+        {
+          "label": "Weak",
+          "emotions": [
+            "Worthless",
+            "Insignificant"
+          ]
+        },
+        {
+          "label": "Rejected",
+          "emotions": [
+            "Excluded",
+            "Persecuted"
+          ]
+        },
+        {
+          "label": "Threatened",
+          "emotions": [
+            "Nervous",
+            "Exposed"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Angry",
+      "branches": [
+        {
+          "label": "Let down",
+          "emotions": [
+            "Betrayed",
+            "Resentful"
+          ]
+        },
+        {
+          "label": "Humiliated",
+          "emotions": [
+            "Disrespected",
+            "Ridiculed"
+          ]
+        },
+        {
+          "label": "Bitter",
+          "emotions": [
+            "Indignant",
+            "Violated"
+          ]
+        },
+        {
+          "label": "Mad",
+          "emotions": [
+            "Furious",
+            "Jealous"
+          ]
+        },
+        {
+          "label": "Aggressive",
+          "emotions": [
+            "Provoked",
+            "Hostile"
+          ]
+        },
+        {
+          "label": "Frustrated",
+          "emotions": [
+            "Infuriated",
+            "Annoyed"
+          ]
+        },
+        {
+          "label": "Distant",
+          "emotions": [
+            "Withdrawn",
+            "Numb"
+          ]
+        },
+        {
+          "label": "Critical",
+          "emotions": [
+            "Skeptical",
+            "Dismissive"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Disgusted",
+      "branches": [
+        {
+          "label": "Disapproving",
+          "emotions": [
+            "Judgmental",
+            "Embarrassed"
+          ]
+        },
+        {
+          "label": "Disappointed",
+          "emotions": [
+            "Appalled",
+            "Revolted"
+          ]
+        },
+        {
+          "label": "Awful",
+          "emotions": [
+            "Nauseated",
+            "Detestable"
+          ]
+        },
+        {
+          "label": "Repelled",
+          "emotions": [
+            "Horrified",
+            "Hesitant"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Sad",
+      "branches": [
+        {
+          "label": "Hurt",
+          "emotions": [
+            "Embarrassed",
+            "Disappointed"
+          ]
+        },
+        {
+          "label": "Depressed",
+          "emotions": [
+            "Inferior",
+            "Empty"
+          ]
+        },
+        {
+          "label": "Guilty",
+          "emotions": [
+            "Remorseful",
+            "Ashamed"
+          ]
+        },
+        {
+          "label": "Despair",
+          "emotions": [
+            "Powerless",
+            "Grief"
+          ]
+        },
+        {
+          "label": "Vulnerable",
+          "emotions": [
+            "Fragile",
+            "Victimized"
+          ]
+        },
+        {
+          "label": "Lonely",
+          "emotions": [
+            "Abandoned",
+            "Isolated"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Happy",
+      "branches": [
+        {
+          "label": "Optimistic",
+          "emotions": [
+            "Inspired",
+            "Hopeful"
+          ]
+        },
+        {
+          "label": "Trusting",
+          "emotions": [
+            "Intimate",
+            "Sensitive"
+          ]
+        },
+        {
+          "label": "Peaceful",
+          "emotions": [
+            "Thankful",
+            "Loving"
+          ]
+        },
+        {
+          "label": "Powerful",
+          "emotions": [
+            "Creative",
+            "Courageous"
+          ]
+        },
+        {
+          "label": "Accepted",
+          "emotions": [
+            "Valued",
+            "Respected"
+          ]
+        },
+        {
+          "label": "Proud",
+          "emotions": [
+            "Confident",
+            "Successful"
+          ]
+        },
+        {
+          "label": "Interested",
+          "emotions": [
+            "Inquisitive",
+            "Curious"
+          ]
+        },
+        {
+          "label": "Content",
+          "emotions": [
+            "Joyful",
+            "Free"
+          ]
+        },
+        {
+          "label": "Playful",
+          "emotions": [
+            "Cheeky",
+            "Aroused"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Surprised",
+      "branches": [
+        {
+          "label": "Excited",
+          "emotions": [
+            "Energetic",
+            "Eager"
+          ]
+        },
+        {
+          "label": "Amazed",
+          "emotions": [
+            "Awe",
+            "Astonished"
+          ]
+        },
+        {
+          "label": "Confused",
+          "emotions": [
+            "Perplexed",
+            "Disillusioned"
+          ]
+        },
+        {
+          "label": "Startled",
+          "emotions": [
+            "Dismayed",
+            "Shocked"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_disgusted_awful_nauseated",
+  "label": "Disgusted / Awful / Nauseated",
+  "group": "Disgusted",
+  "description": "Fold gradually, make a slow shallow head roll from side to side, and settle low.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": 0.0,
+        "shoulder_pitch_joint": 0.12,
+        "elbow_pitch_joint": -0.3,
+        "neck_yaw_joint": -0.16,
+        "head_pitch_joint": 0.32
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.0
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.04,
+        "shoulder_pitch_joint": 0.16,
+        "elbow_pitch_joint": -0.35,
+        "neck_yaw_joint": 0.16,
+        "head_pitch_joint": 0.4
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.85
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.0,
+        "shoulder_pitch_joint": 0.16,
+        "elbow_pitch_joint": -0.38,
+        "neck_yaw_joint": -0.06,
+        "head_pitch_joint": 0.45
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.0
+    },
+    {
+      "hold_seconds": 0.65
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 1.2
+    }
+  ]
+}

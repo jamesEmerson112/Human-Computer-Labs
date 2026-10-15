@@ -1,0 +1,40 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_surprised_startled_shocked",
+  "label": "Surprised / Startled / Shocked",
+  "group": "Surprised",
+  "description": "Retreat farther with a raised head and a long still pause.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": -0.028,
+        "shoulder_pitch_joint": 0.098,
+        "elbow_pitch_joint": -0.126,
+        "neck_yaw_joint": 0.042,
+        "head_pitch_joint": -0.212
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.175
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.08,
+        "shoulder_pitch_joint": 0.34,
+        "elbow_pitch_joint": -0.41,
+        "neck_yaw_joint": 0.12,
+        "head_pitch_joint": -0.32
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.175
+    },
+    {
+      "hold_seconds": 1.0
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 0.6
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_angry_mad_jealous",
+  "label": "Angry / Mad / Jealous",
+  "group": "Angry",
+  "description": "Turn toward a rival while keeping the head in a fixed sideways watch.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": 0.28,
+        "shoulder_pitch_joint": -0.12,
+        "elbow_pitch_joint": -0.2,
+        "neck_yaw_joint": -0.3,
+        "head_pitch_joint": 0.12
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.65
+    },
+    {
+      "hold_seconds": 0.75
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.28,
+        "shoulder_pitch_joint": -0.12,
+        "elbow_pitch_joint": -0.2,
+        "neck_yaw_joint": -0.21,
+        "head_pitch_joint": 0.08
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.65
+    },
+    {
+      "hold_seconds": 0.45
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.28,
+        "shoulder_pitch_joint": -0.12,
+        "elbow_pitch_joint": -0.2,
+        "neck_yaw_joint": -0.39,
+        "head_pitch_joint": 0.14
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.65
+    },
+    {
+      "hold_seconds": 0.6
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 0.65
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_disgust_disapproval",
+  "label": "Disgust / Disapproval",
+  "group": "Disgust",
+  "description": "Make a measured refusal with the shade lowered.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": 0.12,
+        "shoulder_pitch_joint": 0.04,
+        "elbow_pitch_joint": -0.14,
+        "neck_yaw_joint": -0.28,
+        "head_pitch_joint": 0.2
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.7
+    },
+    {
+      "hold_seconds": 0.22
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.12,
+        "shoulder_pitch_joint": 0.04,
+        "elbow_pitch_joint": -0.14,
+        "neck_yaw_joint": -0.03,
+        "head_pitch_joint": 0.2
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.7
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.12,
+        "shoulder_pitch_joint": 0.04,
+        "elbow_pitch_joint": -0.14,
+        "neck_yaw_joint": -0.53,
+        "head_pitch_joint": 0.2
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.7
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.12,
+        "shoulder_pitch_joint": 0.04,
+        "elbow_pitch_joint": -0.14,
+        "neck_yaw_joint": -0.28,
+        "head_pitch_joint": 0.27
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.7
+    },
+    {
+      "hold_seconds": 0.55
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 0.7
+    }
+  ]
+}

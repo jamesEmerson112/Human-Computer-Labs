@@ -1,0 +1,98 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_fearful_anxious",
+  "label": "Fearful / Anxious",
+  "group": "Fearful",
+  "description": "Make several small checking turns from a withdrawn stance.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": 0.08,
+        "shoulder_pitch_joint": 0.18,
+        "elbow_pitch_joint": -0.24,
+        "neck_yaw_joint": -0.22,
+        "head_pitch_joint": 0.08
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.45
+    },
+    {
+      "hold_seconds": 0.225
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.08,
+        "shoulder_pitch_joint": 0.18,
+        "elbow_pitch_joint": -0.24,
+        "neck_yaw_joint": -0.16,
+        "head_pitch_joint": 0.115
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.27
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.08,
+        "shoulder_pitch_joint": 0.18,
+        "elbow_pitch_joint": -0.24,
+        "neck_yaw_joint": -0.28,
+        "head_pitch_joint": 0.045
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.27
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.08,
+        "shoulder_pitch_joint": 0.18,
+        "elbow_pitch_joint": -0.24,
+        "neck_yaw_joint": -0.16,
+        "head_pitch_joint": 0.115
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.27
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.08,
+        "shoulder_pitch_joint": 0.18,
+        "elbow_pitch_joint": -0.24,
+        "neck_yaw_joint": -0.28,
+        "head_pitch_joint": 0.045
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.27
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.08,
+        "shoulder_pitch_joint": 0.18,
+        "elbow_pitch_joint": -0.24,
+        "neck_yaw_joint": -0.16,
+        "head_pitch_joint": 0.115
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.27
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.08,
+        "shoulder_pitch_joint": 0.18,
+        "elbow_pitch_joint": -0.24,
+        "neck_yaw_joint": -0.28,
+        "head_pitch_joint": 0.045
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.27
+    },
+    {
+      "hold_seconds": 0.45
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 0.6
+    }
+  ]
+}

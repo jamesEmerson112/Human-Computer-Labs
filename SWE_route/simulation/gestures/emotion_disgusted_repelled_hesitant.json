@@ -1,0 +1,57 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_disgusted_repelled_hesitant",
+  "label": "Disgusted / Repelled / Hesitant",
+  "group": "Disgusted",
+  "description": "Start an approach, pause halfway, and draw back.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": 0.08,
+        "shoulder_pitch_joint": -0.04,
+        "elbow_pitch_joint": -0.08,
+        "neck_yaw_joint": -0.1,
+        "head_pitch_joint": -0.07
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.0
+    },
+    {
+      "hold_seconds": 0.45
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.048,
+        "shoulder_pitch_joint": 0.124,
+        "elbow_pitch_joint": -0.048,
+        "neck_yaw_joint": -0.06,
+        "head_pitch_joint": 0.098
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.0
+    },
+    {
+      "hold_seconds": 0.375
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.16,
+        "shoulder_pitch_joint": 0.08,
+        "elbow_pitch_joint": -0.16,
+        "neck_yaw_joint": -0.2,
+        "head_pitch_joint": 0.06
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.0
+    },
+    {
+      "hold_seconds": 0.75
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 1.0
+    }
+  ]
+}

@@ -2,7 +2,7 @@ import './style.css';
 import { Connection } from './connection';
 import { Stage } from './stage';
 import type { Gesture, Hello, SceneDescription, State } from './protocol';
-import { REVIEW_STORAGE_KEY, createReport, getReview, parseReport, updateReview, type Reviews } from './reviews';
+import { MAX_REVIEW_FILE_BYTES, REVIEW_STORAGE_KEY, admitCatalog, createReport, getReview, mergeHistory, parseMigration, parseReport, reconcileStorage, restoreReview, reviewRing, serializeReport, updateReview, type ParsedReviewReport, type ReviewHistory, type ReviewMigration, type Reviews } from './reviews';
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <header class="app-header">
@@ -19,7 +19,7 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
       <div class="stage-footer"><span class="orbit-hint"><span aria-hidden="true">⤢</span> Drag to orbit · scroll to zoom</span><span id="render-rate">— fps</span></div>
       <div class="transport">
         <div class="activity-block"><span class="activity-dot"></span><div><span class="eyebrow">NOW PLAYING</span><strong id="activity">Waiting for the controller</strong></div></div>
-        <div class="transport-actions"><button id="reset" class="secondary" data-command disabled>Reset pose</button><button id="stop" class="stop-button" data-command disabled><span aria-hidden="true">■</span> Stop</button></div>
+        <div class="transport-actions"><button id="reset" class="secondary" data-command disabled>Neutral / Reset pose</button><button id="stop" class="stop-button" data-command disabled><span aria-hidden="true">■</span> Stop</button></div>
       </div>
     </section>
     <aside class="control-panel" aria-label="Lamp controls">
@@ -27,6 +27,7 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
         <div class="section-heading"><h2>Gesture library</h2><span id="gesture-count" class="count">— clips</span></div>
         <p class="section-note">Check animations that pass. Every unchecked animation counts as failed.</p>
         <div class="library-filters"><label class="sr-only" for="group-filter">Emotion family</label><select id="group-filter"><option value="All">All families</option></select><label class="sr-only" for="gesture-search">Search gestures</label><input id="gesture-search" type="search" placeholder="Find a feeling…" autocomplete="off"></div>
+        <label class="sr-only" for="ring-filter">Review round</label><select id="ring-filter"><option value="all">All review rounds</option><option value="core">Round 1 · Core emotions</option><option value="middle">Round 2 · Middle emotions</option><option value="outer">Round 3 · Outer emotions</option><option value="utility">Utility gestures</option></select>
         <div class="review-toolbar"><span id="review-summary" role="status">0 passed · 0 failed</span><label class="sr-only" for="review-filter">Review results</label><select id="review-filter"><option value="all">All results</option><option value="failed">Failed</option><option value="passed">Passed</option></select></div>
         <ul id="gesture-select" aria-label="Animations and pass checkboxes" aria-describedby="gesture-description"></ul>
         <div class="gesture-detail"><div><span id="gesture-family" class="eyebrow">SELECT A GESTURE</span><h3 id="gesture-label">A moment of expression</h3></div><p id="gesture-description">The gesture library appears when the controller connects.</p></div>
@@ -72,9 +73,15 @@ const gestureList = element<HTMLUListElement>('gesture-select');
 let selectedName = '';
 let filteredGestures: Gesture[] = [];
 let reviews: Reviews = {};
+let reviewHistory: ReviewHistory[] = [];
+let reviewMigration: ReviewMigration | undefined;
+let migrationWarning = '';
+let storageRestoreFailed = false;
 let reviewsLoaded = false;
+let catalogReady = false;
 let importPending = false;
 const reviewFilter = element<HTMLSelectElement>('review-filter');
+const ringFilter = element<HTMLSelectElement>('ring-filter');
 const reviewNotes = element<HTMLTextAreaElement>('review-notes');
 const groupFilter = element<HTMLSelectElement>('group-filter');
 const search = element<HTMLInputElement>('gesture-search');
@@ -92,7 +99,8 @@ try {
 
 function updateEnabled(): void {
   for (const input of document.querySelectorAll<HTMLButtonElement | HTMLInputElement | HTMLSelectElement>('[data-command]')) input.disabled = !ready || !sceneReady;
-  element<HTMLButtonElement>('play').disabled = !ready || !sceneReady || !selectedName;
+  element<HTMLButtonElement>('play').disabled = !ready || !sceneReady || !catalogReady || !selectedName;
+  element<HTMLButtonElement>('import-review').disabled = !catalogReady || !gestures.length || importPending;
 }
 
 function selectionChanged(): void {
@@ -101,7 +109,7 @@ function selectionChanged(): void {
   element('gesture-label').textContent = selected?.label ?? 'No matching gestures';
   element('gesture-description').textContent = selected?.description ?? 'Try another family or search term.';
   element('play-label').textContent = selected ? `Play ${selected.label}` : 'Play gesture';
-  reviewNotes.disabled = !selected;
+  reviewNotes.disabled = !selected || !catalogReady;
   reviewNotes.value = selected ? getReview(reviews, selected.name).notes : '';
   element('review-notes-label').textContent = selected ? `Notes for ${selected.label}` : 'Review notes';
   for (const button of gestureList.querySelectorAll<HTMLButtonElement>('[data-gesture]')) {
@@ -122,6 +130,7 @@ function filterGestures(): void {
   const term = search.value.trim().toLowerCase();
   filteredGestures = gestures.filter((gesture) =>
     (groupFilter.value === 'All' || (gesture.group || 'Original') === groupFilter.value)
+    && (ringFilter.value === 'all' || reviewRing(gesture) === ringFilter.value)
     && `${gesture.label} ${gesture.description} ${gesture.group}`.toLowerCase().includes(term)
     && (reviewFilter.value === 'all' || getReview(reviews, gesture.name).passed === (reviewFilter.value === 'passed')));
   gestureList.replaceChildren(...filteredGestures.map((gesture) => {
@@ -131,6 +140,7 @@ function filterGestures(): void {
     checkbox.type = 'checkbox';
     checkbox.dataset.reviewName = gesture.name;
     checkbox.checked = getReview(reviews, gesture.name).passed;
+    checkbox.disabled = !catalogReady;
     checkbox.setAttribute('aria-label', `Pass ${gesture.label}`);
     checkbox.title = `Mark ${gesture.label} as passed`;
     checkbox.addEventListener('change', () => {
@@ -143,7 +153,7 @@ function filterGestures(): void {
     button.dataset.gesture = gesture.name;
     button.textContent = gesture.label;
     button.addEventListener('click', () => { selectedName = gesture.name; selectionChanged(); });
-    button.addEventListener('dblclick', () => { if (ready && sceneReady) connection.send({ type: 'play', name: gesture.name }); });
+    button.addEventListener('dblclick', () => { if (ready && sceneReady && catalogReady) connection.send({ type: 'play', name: gesture.name }); });
     row.append(checkbox, button);
     return row;
   }));
@@ -171,24 +181,35 @@ function reviewMessage(message: string): void {
 
 function saveReview(message = 'Saved in this browser. Export when you’re done.'): void {
   try {
-    localStorage.setItem(REVIEW_STORAGE_KEY, JSON.stringify(createReport(gestures, reviews)));
+    if (storageRestoreFailed) throw new Error('Preserve unreadable saved data.');
+    localStorage.setItem(REVIEW_STORAGE_KEY, serializeReport(createReport(gestures, reviews, undefined, reviewHistory)));
     reviewMessage(message);
   } catch {
     reviewMessage('Changes are only saved in this tab. Export your review to keep them.');
   }
 }
 
-function loadReview(): void {
+function describeReview(result: ParsedReviewReport): string {
+  return `${result.migratedNames.length} renamed; ${result.resetNames.length} need another check; ${result.unknownNames.length} retired or unknown retained in history.`
+    + (result.legacy ? ' Legacy reviews use the recorded baseline; the original browser backup is kept.' : '')
+    + (result.legacy && migrationWarning ? ` ${migrationWarning}` : '');
+}
+
+function loadReview(nextGestures: Gesture[]): { reviews: Reviews; history: ReviewHistory[]; message?: string; failed: boolean } {
+  // Validate the catalog even when there is no browser data to restore.
+  createReport(nextGestures, {});
   try {
-    const saved = localStorage.getItem(REVIEW_STORAGE_KEY);
+    const saved = restoreReview(localStorage, nextGestures, reviewMigration);
     if (saved) {
-      reviews = parseReport(JSON.parse(saved), gestures).reviews;
-      reviewMessage('Restored your saved checks and notes.');
+      createReport(nextGestures, saved.reviews, undefined, saved.history);
+      return { reviews: saved.reviews, history: saved.history, failed: false,
+        message: `Restored saved checks and notes. ${describeReview(saved)}` };
     }
   } catch {
-    reviewMessage('Could not restore saved checks. Import a review file to recover them.');
+    return { reviews: {}, history: [], failed: true,
+      message: 'Could not restore saved checks. Saved data is untouched; export this tab or import a valid review file to recover.' };
   }
-  reviewsLoaded = true;
+  return { reviews: {}, history: [], failed: false };
 }
 
 const jointLabels: Record<string, string> = {
@@ -196,11 +217,36 @@ const jointLabels: Record<string, string> = {
 };
 
 function receiveHello(hello: Hello): void {
-  currentHello = hello;
-  gestures = hello.gestures;
-  if (!reviewsLoaded && gestures.length) loadReview();
+  try {
+    const next = reviewsLoaded && gestures.length
+      ? (() => {
+        const admitted = admitCatalog({ gestures, reviews, history: reviewHistory }, hello.gestures, reviewMigration);
+        return { reviews: admitted.reviews, history: admitted.history, failed: storageRestoreFailed,
+          message: `Catalog refreshed. ${describeReview(admitted)}` };
+      })()
+      : loadReview(hello.gestures);
+    // Commit identities and approvals together only after complete admission.
+    currentHello = hello;
+    gestures = hello.gestures;
+    reviews = next.reviews;
+    reviewHistory = next.history;
+    storageRestoreFailed = next.failed;
+    reviewsLoaded = true;
+    catalogReady = true;
+    if (next.message) {
+      if (next.failed) reviewMessage(next.message);
+      else saveReview(next.message);
+    }
+  } catch (error) {
+    catalogReady = false;
+    filterGestures();
+    const message = `Could not apply the updated catalog; earlier checks remain bound to their original animations. Playback and review editing are disabled. ${error instanceof Error ? error.message : String(error)}`;
+    reviewMessage(message);
+    showError(message);
+    return;
+  }
   element<HTMLButtonElement>('export-review').disabled = !gestures.length;
-  element<HTMLButtonElement>('import-review').disabled = !gestures.length || importPending;
+  element<HTMLButtonElement>('import-review').disabled = !catalogReady || !gestures.length || importPending;
   element('gesture-count').textContent = `${gestures.length} clips`;
   element('physics-rate').textContent = `${hello.physics_hz} Hz physics`;
   const previousGroup = groupFilter.value;
@@ -287,6 +333,16 @@ function receiveState(state: State, atMs: number): void {
   if (element<HTMLDetailsElement>('diagnostics-list').closest('details')?.open) updateDiagnostics(state);
 }
 
+// Resolve the baseline mapping before the first hello can restore v1 storage.
+// Failure is safe: legacy passes clear while notes and history remain available.
+try {
+  const response = await fetch('/api/review-migration', { cache: 'no-store', signal: AbortSignal.timeout(5000) });
+  if (!response.ok) throw new Error(`Migration unavailable (${response.status}).`);
+  reviewMigration = parseMigration(await response.json());
+} catch {
+  migrationWarning = 'The baseline mapping is unavailable; legacy approvals were cleared for review.';
+}
+
 const connection = new Connection({
   hello: receiveHello,
   state: receiveState,
@@ -304,6 +360,7 @@ const connection = new Connection({
 groupFilter.addEventListener('change', filterGestures);
 search.addEventListener('input', filterGestures);
 reviewFilter.addEventListener('change', filterGestures);
+ringFilter.addEventListener('change', filterGestures);
 reviewNotes.addEventListener('input', () => {
   if (!selectedName) return;
   reviews = updateReview(reviews, selectedName, { notes: reviewNotes.value });
@@ -329,8 +386,8 @@ gestureList.addEventListener('keydown', (event) => {
 });
 element('export-review').addEventListener('click', () => {
   if (!gestures.length) return;
-  const report = createReport(gestures, reviews);
-  const url = URL.createObjectURL(new Blob([JSON.stringify(report, null, 2) + '\n'], { type: 'application/json' }));
+  const report = createReport(gestures, reviews, undefined, reviewHistory);
+  const url = URL.createObjectURL(new Blob([serializeReport(report)], { type: 'application/json' }));
   const link = document.createElement('a');
   link.href = url;
   link.download = `lamp-animation-review-${new Date().toISOString().replace(/[:.]/g, '-')}.json`;
@@ -346,25 +403,39 @@ reviewFile.addEventListener('change', async () => {
   importPending = true;
   element<HTMLButtonElement>('import-review').disabled = true;
   try {
-    if (file.size > 1024 * 1024) throw new Error('Choose a review file smaller than 1 MiB.');
-    const imported = parseReport(JSON.parse(await file.text()), gestures);
-    reviews = imported.reviews;
-    saveReview(`Imported ${imported.matched} animations.${imported.unknownNames.length ? ` Skipped ${imported.unknownNames.length} unknown names.` : ''} Saved in this browser.`);
+    if (file.size > MAX_REVIEW_FILE_BYTES) throw new Error('Choose a review file no larger than 10 MiB.');
+    const imported = parseReport(JSON.parse(await file.text()), gestures, reviewMigration);
+    const previous = createReport(gestures, reviews, undefined, reviewHistory);
+    const history = mergeHistory(reviewHistory, imported.history, previous.animations
+      .filter((animation) => animation.updated_at !== null || animation.status === 'pass' || animation.notes)
+      .map((animation) => ({ animation, reason: 'Review before an imported replacement.', recorded_at: previous.exported_at })));
+    // A retired-only recovery adds history without replacing active checks.
+    const nextReviews = imported.matched ? imported.reviews : reviews;
+    createReport(gestures, nextReviews, undefined, history);
+    reviews = nextReviews;
+    reviewHistory = history;
+    storageRestoreFailed = false;
+    saveReview(`Imported ${imported.matched} animations. ${describeReview(imported)} Saved in this browser.`);
     filterGestures();
   } catch (error) {
     reviewMessage(`Import failed; your checks are unchanged. ${error instanceof Error ? error.message : String(error)}`);
   } finally {
     importPending = false;
     reviewFile.value = '';
-    element<HTMLButtonElement>('import-review').disabled = !gestures.length;
+    element<HTMLButtonElement>('import-review').disabled = !catalogReady || !gestures.length;
   }
 });
 window.addEventListener('storage', (event) => {
   if (event.key !== REVIEW_STORAGE_KEY || !gestures.length) return;
   try {
-    reviews = event.newValue ? parseReport(JSON.parse(event.newValue), gestures).reviews : {};
+    const incoming = reconcileStorage({ gestures, reviews, history: reviewHistory }, event.newValue ? JSON.parse(event.newValue) : null, reviewMigration);
+    // Persist recovered evidence before committing the replacement. A failed
+    // write keeps this tab's prior review intact and is reported below.
+    if (incoming.persist) localStorage.setItem(REVIEW_STORAGE_KEY, serializeReport(incoming.report));
+    reviews = incoming.reviews;
+    reviewHistory = incoming.history;
     filterGestures();
-    reviewMessage('Review updated from another tab.');
+    reviewMessage(`Review updated from another tab. ${describeReview(incoming)}`);
   } catch { reviewMessage('Could not load the review from another tab; this tab’s checks are unchanged.'); }
 });
 element('play').addEventListener('click', () => connection.send({ type: 'play', name: selectedName }));

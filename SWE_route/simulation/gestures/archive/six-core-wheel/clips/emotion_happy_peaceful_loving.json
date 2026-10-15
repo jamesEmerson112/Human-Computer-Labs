@@ -1,0 +1,57 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_happy_peaceful_loving",
+  "label": "Happy / Peaceful / Loving",
+  "group": "Happy",
+  "description": "Lean close and make a gentle small head dip.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": -0.08,
+        "shoulder_pitch_joint": -0.24,
+        "elbow_pitch_joint": -0.22,
+        "neck_yaw_joint": 0.12,
+        "head_pitch_joint": 0.04
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.1
+    },
+    {
+      "hold_seconds": 0.425
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.08,
+        "shoulder_pitch_joint": -0.3,
+        "elbow_pitch_joint": -0.22,
+        "neck_yaw_joint": 0.12,
+        "head_pitch_joint": 0.13
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.1
+    },
+    {
+      "hold_seconds": 0.85
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.08,
+        "shoulder_pitch_joint": -0.24,
+        "elbow_pitch_joint": -0.22,
+        "neck_yaw_joint": 0.12,
+        "head_pitch_joint": 0.04
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.1
+    },
+    {
+      "hold_seconds": 0.34
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 1.1
+    }
+  ]
+}

@@ -4,7 +4,7 @@ use crate::{
     physics::{Backend, CONTROL_DT, CONTROL_HZ, PHYSICS_HZ, Physics, discover_library},
 };
 use axum::{
-    Router,
+    Json, Router,
     extract::{
         State, WebSocketUpgrade,
         ws::{Message, WebSocket},
@@ -118,7 +118,7 @@ impl Runtime {
     }
 
     pub fn hello(&self) -> Value {
-        let gestures: Vec<Value> = self.gestures.values().map(|g| json!({"name":g.name,"label":g.label,"description":g.description,"group":g.group})).collect();
+        let gestures: Vec<Value> = self.gestures.values().map(|g| json!({"name":g.name,"label":g.label,"description":g.description,"group":g.group,"revision":g.revision})).collect();
         json!({"v":1,"type":"hello","gestures":gestures,"limits":self.controller.limits,"physics_hz":PHYSICS_HZ,"control_hz":CONTROL_HZ,"mujoco_version":"3.14.0"})
     }
 
@@ -303,6 +303,140 @@ struct Shared {
     commands: mpsc::Sender<Request>,
     snapshots: watch::Receiver<Arc<Snapshot>>,
     port: u16,
+    migration_path: PathBuf,
+}
+
+fn validate_review_migration(value: &Value, hello: &Value) -> Result<(), String> {
+    if value.get("schema_version").and_then(Value::as_u64) != Some(1) {
+        return Err("Unsupported review migration schema".into());
+    }
+    for key in ["source_catalog_id", "target_catalog_id"] {
+        if !value
+            .get(key)
+            .and_then(Value::as_str)
+            .is_some_and(|text| !text.is_empty() && text.len() <= 200)
+        {
+            return Err(format!("Migration is missing a valid {key}"));
+        }
+    }
+    if !value.get("retired").is_some_and(Value::is_array) {
+        return Err("Migration is missing retired entries".into());
+    }
+    let entries = value
+        .get("entries")
+        .and_then(Value::as_array)
+        .ok_or("Migration entries must be an array")?;
+    let catalog = hello
+        .get("gestures")
+        .and_then(Value::as_array)
+        .ok_or("Gesture catalog is unavailable")?;
+    let mut sources = BTreeSet::new();
+    let mut targets = BTreeSet::new();
+    for entry in entries {
+        if entry
+            .get("preserve_review")
+            .and_then(Value::as_bool)
+            .is_none()
+            || !entry
+                .get("reason")
+                .and_then(Value::as_str)
+                .is_some_and(|text| !text.is_empty() && text.len() <= 2000)
+        {
+            return Err("Migration entry needs preserve_review and reason".into());
+        }
+        for side in ["source", "target"] {
+            let item = entry
+                .get(side)
+                .ok_or("Migration entry needs source and target")?;
+            for key in ["name", "label", "group", "revision"] {
+                let text = item
+                    .get(key)
+                    .and_then(Value::as_str)
+                    .ok_or_else(|| format!("Migration {side} needs {key}"))?;
+                if text.len() > 256 || (key != "group" && text.is_empty()) {
+                    return Err(format!("Invalid migration {side} {key}"));
+                }
+                if key == "revision"
+                    && (text.len() != 64
+                        || !text
+                            .bytes()
+                            .all(|c| c.is_ascii_digit() || (b'a'..=b'f').contains(&c)))
+                {
+                    return Err("Migration revisions must be lowercase SHA-256".into());
+                }
+            }
+            let name = item["name"].as_str().unwrap();
+            let names = if side == "source" {
+                &mut sources
+            } else {
+                &mut targets
+            };
+            if !names.insert(name) {
+                return Err(format!("Duplicate migration {side}: {name}"));
+            }
+        }
+        let target = &entry["target"];
+        let current = catalog
+            .iter()
+            .find(|gesture| gesture["name"] == target["name"])
+            .ok_or_else(|| format!("Migration target is absent: {}", target["name"]))?;
+        for key in ["label", "group", "revision"] {
+            if current[key] != target[key] {
+                return Err(format!(
+                    "Migration is stale for {} ({key}); regenerate it against the current catalog",
+                    target["name"]
+                ));
+            }
+        }
+    }
+    Ok(())
+}
+
+async fn review_migration(State(shared): State<Shared>) -> Response {
+    let result = (|| {
+        let metadata = std::fs::metadata(&shared.migration_path).map_err(|error| {
+            (
+                if error.kind() == std::io::ErrorKind::NotFound {
+                    StatusCode::NOT_FOUND
+                } else {
+                    StatusCode::INTERNAL_SERVER_ERROR
+                },
+                "Review migration is unavailable".to_owned(),
+            )
+        })?;
+        if metadata.len() > 4 * 1024 * 1024 {
+            return Err((
+                StatusCode::CONFLICT,
+                "Review migration exceeds the size limit".into(),
+            ));
+        }
+        let text = std::fs::read_to_string(&shared.migration_path).map_err(|error| {
+            (
+                StatusCode::CONFLICT,
+                format!("Cannot read review migration: {error}"),
+            )
+        })?;
+        let migration = crate::gestures::parse_unique_json(&text).map_err(|error| {
+            (
+                StatusCode::CONFLICT,
+                format!("Invalid review migration: {error}"),
+            )
+        })?;
+        let hello: Value = serde_json::from_str(&shared.snapshots.borrow().hello)
+            .map_err(|error| (StatusCode::SERVICE_UNAVAILABLE, error.to_string()))?;
+        validate_review_migration(&migration, &hello)
+            .map_err(|error| (StatusCode::CONFLICT, error))?;
+        Ok::<_, (StatusCode, String)>(migration)
+    })();
+    match result {
+        Ok(migration) => ([("cache-control", "no-store")], Json(migration)).into_response(),
+        Err((status, error)) => (
+            status,
+            [("cache-control", "no-store")],
+            Json(json!({"error":error})),
+        )
+            .into_response(),
+    }
 }
 
 async fn local_only(
@@ -484,9 +618,11 @@ pub async fn serve(config: Config) -> Result<(), String> {
         commands,
         snapshots: receiver,
         port: config.port,
+        migration_path: config.root.join("catalogs/emotion-wheel-migration.json"),
     };
     let app = Router::new()
         .route("/ws", get(upgrade))
+        .route("/api/review-migration", get(review_migration))
         .nest_service("/assets", ServeDir::new(config.root.join("models/derived")))
         .route_service(
             "/api/scene",
@@ -534,6 +670,99 @@ pub async fn serve(config: Config) -> Result<(), String> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    fn migration_fixture() -> (Value, Value) {
+        let item = json!({"name":"nod","label":"Nod","group":"","revision":"a".repeat(64)});
+        let hello = json!({"gestures":[item.clone()]});
+        let migration = json!({"schema_version":1,"source_catalog_id":"old","target_catalog_id":"new",
+            "entries":[{"source":item.clone(),"target":item,"preserve_review":true,"reason":"Unchanged"}],"retired":[]});
+        (migration, hello)
+    }
+
+    #[test]
+    fn review_migration_rejects_stale_revisions_duplicates_and_invalid_metadata() {
+        let (migration, hello) = migration_fixture();
+        assert!(validate_review_migration(&migration, &hello).is_ok());
+        for key in ["name", "label", "group", "revision"] {
+            let mut changed = migration.clone();
+            changed["entries"][0]["target"][key] = json!(if key == "revision" {
+                "b".repeat(64)
+            } else {
+                "changed".into()
+            });
+            assert!(
+                validate_review_migration(&changed, &hello).is_err(),
+                "accepted stale {key}"
+            );
+        }
+        let mut duplicate = migration.clone();
+        duplicate["entries"]
+            .as_array_mut()
+            .unwrap()
+            .push(migration["entries"][0].clone());
+        assert!(validate_review_migration(&duplicate, &hello).is_err());
+        let mut invalid = migration.clone();
+        invalid["entries"][0]["source"]["revision"] = json!("A".repeat(64));
+        assert!(validate_review_migration(&invalid, &hello).is_err());
+        invalid = migration.clone();
+        invalid["entries"][0]["preserve_review"] = json!("true");
+        assert!(validate_review_migration(&invalid, &hello).is_err());
+        invalid = migration;
+        invalid["schema_version"] = json!(2);
+        assert!(validate_review_migration(&invalid, &hello).is_err());
+    }
+
+    #[tokio::test]
+    async fn review_migration_endpoint_returns_json_and_rejects_stale_or_missing_files() {
+        let (migration, hello) = migration_fixture();
+        let unique = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .unwrap()
+            .as_nanos();
+        let path = std::env::temp_dir().join(format!(
+            "lamp-review-test-{}-{unique}.json",
+            std::process::id()
+        ));
+        let (commands, _receiver) = mpsc::channel(1);
+        let (_sender, snapshots) = watch::channel(Arc::new(Snapshot {
+            hello: hello.to_string(),
+            state: String::new(),
+            revision: 0,
+        }));
+        let shared = Shared {
+            commands,
+            snapshots,
+            port: 8082,
+            migration_path: path.clone(),
+        };
+        assert_eq!(
+            review_migration(State(shared.clone())).await.status(),
+            StatusCode::NOT_FOUND
+        );
+        std::fs::write(&path, migration.to_string()).unwrap();
+        let response = review_migration(State(shared.clone())).await;
+        assert_eq!(response.status(), StatusCode::OK);
+        assert_eq!(response.headers()["content-type"], "application/json");
+        assert_eq!(response.headers()["cache-control"], "no-store");
+        let bytes = axum::body::to_bytes(response.into_body(), 4 * 1024 * 1024)
+            .await
+            .unwrap();
+        assert_eq!(serde_json::from_slice::<Value>(&bytes).unwrap(), migration);
+        let mut stale = migration;
+        stale["entries"][0]["target"]["revision"] = json!("b".repeat(64));
+        std::fs::write(&path, stale.to_string()).unwrap();
+        assert_eq!(
+            review_migration(State(shared.clone())).await.status(),
+            StatusCode::CONFLICT
+        );
+        std::fs::write(&path, "{invalid}").unwrap();
+        assert_eq!(
+            review_migration(State(shared)).await.status(),
+            StatusCode::CONFLICT
+        );
+        std::fs::remove_file(path).unwrap();
+    }
+
     #[test]
     fn clock_keeps_fractional_time_and_exact_control_rate() {
         let mut clock = FixedClock::default();

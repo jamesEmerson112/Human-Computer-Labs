@@ -1,0 +1,54 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_happy_playful_aroused",
+  "label": "Happy / Playful / Aroused",
+  "group": "Happy",
+  "description": "Wake into an alert lifted pose, sweep toward a stimulus, and lean in with interest.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": 0.0,
+        "shoulder_pitch_joint": -0.08,
+        "elbow_pitch_joint": -0.1,
+        "neck_yaw_joint": 0.0,
+        "head_pitch_joint": -0.26
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.55
+    },
+    {
+      "hold_seconds": 0.25
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.18,
+        "shoulder_pitch_joint": -0.16,
+        "elbow_pitch_joint": -0.14,
+        "neck_yaw_joint": 0.22,
+        "head_pitch_joint": -0.22
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.6
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.1,
+        "shoulder_pitch_joint": -0.28,
+        "elbow_pitch_joint": -0.2,
+        "neck_yaw_joint": 0.08,
+        "head_pitch_joint": -0.18
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.65
+    },
+    {
+      "hold_seconds": 0.8
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 0.8
+    }
+  ]
+}

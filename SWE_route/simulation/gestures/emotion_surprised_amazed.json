@@ -1,0 +1,57 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_surprised_amazed",
+  "label": "Surprised / Amazed",
+  "group": "Surprised",
+  "description": "Lift the shade gradually and hold the upward gaze.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": 0.0,
+        "shoulder_pitch_joint": 0.032,
+        "elbow_pitch_joint": -0.096,
+        "neck_yaw_joint": 0.04,
+        "head_pitch_joint": -0.136
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.7
+    },
+    {
+      "hold_seconds": 0.35
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.0,
+        "shoulder_pitch_joint": 0.08,
+        "elbow_pitch_joint": -0.24,
+        "neck_yaw_joint": 0.1,
+        "head_pitch_joint": -0.38
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.7
+    },
+    {
+      "hold_seconds": 1.0
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.0,
+        "shoulder_pitch_joint": 0.08,
+        "elbow_pitch_joint": -0.24,
+        "neck_yaw_joint": 0.1,
+        "head_pitch_joint": -0.3
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.56
+    },
+    {
+      "hold_seconds": 0.4
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 0.7
+    }
+  ]
+}

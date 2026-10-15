@@ -2,7 +2,7 @@ export type Vec3 = [number, number, number];
 export type Quat = [number, number, number, number];
 export interface Pose { position: Vec3; quaternion: Quat }
 export interface Limit { lower: number; upper: number; velocity: number }
-export interface Gesture { name: string; label: string; description: string; group: string }
+export interface Gesture { name: string; label: string; description: string; group: string; revision: string }
 export interface Hello {
   v: 1; type: 'hello'; gestures: Gesture[]; limits: Record<string, Limit>;
   physics_hz: number; control_hz: number;

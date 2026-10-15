@@ -1,0 +1,57 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_happy_intimate_sensitive",
+  "label": "Happy / Intimate / Sensitive",
+  "group": "Happy",
+  "description": "Offer a small careful approach and a soft nod.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": -0.03,
+        "shoulder_pitch_joint": -0.14,
+        "elbow_pitch_joint": -0.11,
+        "neck_yaw_joint": 0.09,
+        "head_pitch_joint": -0.06
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.05
+    },
+    {
+      "hold_seconds": 0.48
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.018,
+        "shoulder_pitch_joint": 0.064,
+        "elbow_pitch_joint": -0.066,
+        "neck_yaw_joint": 0.054,
+        "head_pitch_joint": 0.104
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.05
+    },
+    {
+      "hold_seconds": 0.4
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.06,
+        "shoulder_pitch_joint": -0.12,
+        "elbow_pitch_joint": -0.22,
+        "neck_yaw_joint": 0.18,
+        "head_pitch_joint": 0.08
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.05
+    },
+    {
+      "hold_seconds": 0.8
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 1.05
+    }
+  ]
+}

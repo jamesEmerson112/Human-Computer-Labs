@@ -26,7 +26,6 @@ from websockets.sync.client import connect
 
 PROJECT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT))
-FAMILIES = ("Anger", "Disgust", "Fear", "Happy", "Sad", "Surprise")
 
 PROBE = r"""
 (() => {
@@ -232,6 +231,14 @@ def terminate_tree(process: subprocess.Popen) -> None:
 
 def measure(args) -> None:
     from lamp_sim.benchmark import fingerprints
+    from lamp_sim.gestures import load_gestures
+    from lamp_sim.motion import load_limits
+
+    library = load_gestures(load_limits())
+    families = tuple(sorted({gesture.group for gesture in library.values() if gesture.group}))
+    if not families or any(sum(gesture.group == family and gesture.label == family
+                               for gesture in library.values()) != 1 for family in families):
+        raise ValueError("Each emotion family must contain exactly one same-label core clip")
 
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=False)
@@ -247,7 +254,7 @@ def measure(args) -> None:
     manifest = {
         "timestamp_utc": datetime.now(timezone.utc).isoformat(), "backend": "mujoco",
         "speed": 0.5, "repeats": args.repeats, "idle_seconds": args.idle_seconds,
-        "active_seconds": args.active_seconds, "families": FAMILIES,
+        "active_seconds": args.active_seconds, "families": families, "catalog_count": len(library),
         "source_sha256": fingerprints(), "harness_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
         "browser_mode": "headless=new", "requested_window": [1280, 900],
         "resource_sample_period_s": 0.5, "warmup_s": 5,
@@ -292,7 +299,7 @@ def measure(args) -> None:
         navigation_started = time.perf_counter()
         page.call("Page.navigate", {"url": url})
         for _ in range(120):
-            if page.evaluate("document.body && document.body.innerText.includes('Loaded 123 gestures.')"):
+            if page.evaluate("document.body && document.body.innerText.includes(%s)" % json.dumps(f"Loaded {len(library)} gestures.")):
                 break
             time.sleep(.25)
         else:
@@ -332,10 +339,10 @@ def measure(args) -> None:
                 phase_samples = []
                 while time.perf_counter() - phase_start < seconds:
                     now = time.perf_counter()
-                    if mode == "active" and index < len(FAMILIES) and now - phase_start >= index * seconds / len(FAMILIES):
+                    if mode == "active" and index < len(families) and now - phase_start >= index * seconds / len(families):
                         if opened:
                             page.toggle_family(opened)
-                        opened = FAMILIES[index]
+                        opened = families[index]
                         page.toggle_family(opened)
                         time.sleep(.15)
                         latency = page.play_family(opened)

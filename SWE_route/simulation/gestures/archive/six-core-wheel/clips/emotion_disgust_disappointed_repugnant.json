@@ -1,0 +1,54 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_disgust_disappointed_repugnant",
+  "label": "Disgust / Disappointed / Repugnant",
+  "group": "Disgust",
+  "description": "Recoil sharply while swinging the shade aside.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": -0.063,
+        "shoulder_pitch_joint": 0.084,
+        "elbow_pitch_joint": -0.098,
+        "neck_yaw_joint": 0.147,
+        "head_pitch_joint": -0.044
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.315
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.18,
+        "shoulder_pitch_joint": 0.3,
+        "elbow_pitch_joint": -0.33,
+        "neck_yaw_joint": 0.42,
+        "head_pitch_joint": 0.16
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.315
+    },
+    {
+      "hold_seconds": 0.6
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.18,
+        "shoulder_pitch_joint": 0.24,
+        "elbow_pitch_joint": -0.28,
+        "neck_yaw_joint": 0.42,
+        "head_pitch_joint": 0.26
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.54
+    },
+    {
+      "hold_seconds": 0.3
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 0.6
+    }
+  ]
+}

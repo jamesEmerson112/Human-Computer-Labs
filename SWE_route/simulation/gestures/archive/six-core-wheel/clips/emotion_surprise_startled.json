@@ -1,0 +1,40 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_surprise_startled",
+  "label": "Surprise / Startled",
+  "group": "Surprise",
+  "description": "Make a compact quick retreat and freeze.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": 0.014,
+        "shoulder_pitch_joint": 0.077,
+        "elbow_pitch_joint": -0.098,
+        "neck_yaw_joint": -0.035,
+        "head_pitch_joint": -0.177
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.21
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.04,
+        "shoulder_pitch_joint": 0.28,
+        "elbow_pitch_joint": -0.33,
+        "neck_yaw_joint": -0.1,
+        "head_pitch_joint": -0.22
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.21
+    },
+    {
+      "hold_seconds": 0.45
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 0.6
+    }
+  ]
+}

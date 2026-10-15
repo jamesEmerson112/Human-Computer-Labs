@@ -1,0 +1,57 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_happy_interested_curious",
+  "label": "Happy / Interested / Curious",
+  "group": "Happy",
+  "description": "Lean closer, tilt the gaze to one side, and approach again after a thoughtful pause.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": 0.0,
+        "shoulder_pitch_joint": -0.14,
+        "elbow_pitch_joint": -0.1,
+        "neck_yaw_joint": 0.12,
+        "head_pitch_joint": -0.12
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.75
+    },
+    {
+      "hold_seconds": 0.5
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.06,
+        "shoulder_pitch_joint": -0.2,
+        "elbow_pitch_joint": -0.16,
+        "neck_yaw_joint": 0.24,
+        "head_pitch_joint": 0.02
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.65
+    },
+    {
+      "hold_seconds": 0.6
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.06,
+        "shoulder_pitch_joint": -0.28,
+        "elbow_pitch_joint": -0.2,
+        "neck_yaw_joint": 0.08,
+        "head_pitch_joint": -0.12
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.8
+    },
+    {
+      "hold_seconds": 0.55
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 0.8
+    }
+  ]
+}

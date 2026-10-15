@@ -1,0 +1,54 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_happy_peaceful_thankful",
+  "label": "Happy / Peaceful / Thankful",
+  "group": "Happy",
+  "description": "Offer a slow appreciative bow, rise, and hold a gentle forward-facing pose.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": 0.0,
+        "shoulder_pitch_joint": -0.08,
+        "elbow_pitch_joint": -0.08,
+        "neck_yaw_joint": 0.0,
+        "head_pitch_joint": 0.18
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.8
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.0,
+        "shoulder_pitch_joint": -0.12,
+        "elbow_pitch_joint": -0.14,
+        "neck_yaw_joint": 0.0,
+        "head_pitch_joint": 0.32
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.75
+    },
+    {
+      "hold_seconds": 0.45
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.0,
+        "shoulder_pitch_joint": -0.14,
+        "elbow_pitch_joint": -0.1,
+        "neck_yaw_joint": 0.06,
+        "head_pitch_joint": -0.12
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.0
+    },
+    {
+      "hold_seconds": 0.8
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 1.0
+    }
+  ]
+}

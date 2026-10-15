@@ -1,0 +1,1971 @@
+{
+  "schema_version": 1,
+  "source_catalog_id": "six-core-wheel-2026-10-13",
+  "target_catalog_id": "emotion-wheel-without-bad-2026-10-14",
+  "revision_algorithm": "sha256 of the entire raw UTF-8 gesture file, including whitespace and final newline",
+  "review_rule": "checked_pass_unchecked_fail",
+  "line_endings": "Source hashes identify original raw bytes; active files use LF for stable checkout hashes. Line-ending-only changes do not change motion or meaning.",
+  "entries": [
+    {
+      "source": {
+        "name": "bow",
+        "label": "Bow",
+        "group": "",
+        "revision": "d546ae4ec599caef0f736163da567de245b9d412061809f60baa2ebb661bbc4c"
+      },
+      "target": {
+        "name": "bow",
+        "label": "Bow",
+        "group": "",
+        "revision": "d546ae4ec599caef0f736163da567de245b9d412061809f60baa2ebb661bbc4c"
+      },
+      "preserve_review": true,
+      "reason": "Original utility content and motion retained; active line endings normalized to LF."
+    },
+    {
+      "source": {
+        "name": "curious",
+        "label": "Curious lean",
+        "group": "",
+        "revision": "97dfdad2d972395a3bef9b49574d9e29e942a2146ffe34babeafd03cf87f5bb2"
+      },
+      "target": {
+        "name": "curious",
+        "label": "Curious lean",
+        "group": "",
+        "revision": "97dfdad2d972395a3bef9b49574d9e29e942a2146ffe34babeafd03cf87f5bb2"
+      },
+      "preserve_review": true,
+      "reason": "Original utility content and motion retained; active line endings normalized to LF."
+    },
+    {
+      "source": {
+        "name": "excited",
+        "label": "Excited",
+        "group": "",
+        "revision": "aca91187257b5c21187871ebb044804a4a4267c8f1057afe9839f19517e7864e"
+      },
+      "target": {
+        "name": "excited",
+        "label": "Excited",
+        "group": "",
+        "revision": "aca91187257b5c21187871ebb044804a4a4267c8f1057afe9839f19517e7864e"
+      },
+      "preserve_review": true,
+      "reason": "Original utility content and motion retained; active line endings normalized to LF."
+    },
+    {
+      "source": {
+        "name": "idle_hold",
+        "label": "Hold still",
+        "group": "",
+        "revision": "8d2dfae1e6474bbb1cdba70022c6e2fb14931c21df365a7550594bde5ad390d3"
+      },
+      "target": {
+        "name": "idle_hold",
+        "label": "Hold still",
+        "group": "",
+        "revision": "8d2dfae1e6474bbb1cdba70022c6e2fb14931c21df365a7550594bde5ad390d3"
+      },
+      "preserve_review": true,
+      "reason": "Original utility content and motion retained; active line endings normalized to LF."
+    },
+    {
+      "source": {
+        "name": "limit_sweep",
+        "label": "Limit sweep (diagnostic)",
+        "group": "",
+        "revision": "ae40cbc60e62c3f374519771a1d2103bd2df1d018896fbb5651841e5f356f34a"
+      },
+      "target": {
+        "name": "limit_sweep",
+        "label": "Limit sweep (diagnostic)",
+        "group": "",
+        "revision": "ae40cbc60e62c3f374519771a1d2103bd2df1d018896fbb5651841e5f356f34a"
+      },
+      "preserve_review": true,
+      "reason": "Original utility content and motion retained; active line endings normalized to LF."
+    },
+    {
+      "source": {
+        "name": "nod",
+        "label": "Nod",
+        "group": "",
+        "revision": "cca99497029e43e2032301601da4257f0cf29b34fa16b1c69a84bbc9d2a999c3"
+      },
+      "target": {
+        "name": "nod",
+        "label": "Nod",
+        "group": "",
+        "revision": "cca99497029e43e2032301601da4257f0cf29b34fa16b1c69a84bbc9d2a999c3"
+      },
+      "preserve_review": true,
+      "reason": "Original utility content and motion retained; active line endings normalized to LF."
+    },
+    {
+      "source": {
+        "name": "reach_hold",
+        "label": "Reach and hold",
+        "group": "",
+        "revision": "d9c15e6e825270c485ce083af01631b10872face2a0594773a6f9f118fe7c62c"
+      },
+      "target": {
+        "name": "reach_hold",
+        "label": "Reach and hold",
+        "group": "",
+        "revision": "d9c15e6e825270c485ce083af01631b10872face2a0594773a6f9f118fe7c62c"
+      },
+      "preserve_review": true,
+      "reason": "Original utility content and motion retained; active line endings normalized to LF."
+    },
+    {
+      "source": {
+        "name": "scan",
+        "label": "Look around",
+        "group": "",
+        "revision": "d6e46112184c86082681edeb7733910ecc0ca8183fb1f243811414c3d1599aee"
+      },
+      "target": {
+        "name": "scan",
+        "label": "Look around",
+        "group": "",
+        "revision": "d6e46112184c86082681edeb7733910ecc0ca8183fb1f243811414c3d1599aee"
+      },
+      "preserve_review": true,
+      "reason": "Original utility content and motion retained; active line endings normalized to LF."
+    },
+    {
+      "source": {
+        "name": "shake",
+        "label": "Shake head",
+        "group": "",
+        "revision": "4d6932e6e779b5e7cfaac34111237835bec260986f646c7f007259f7122574c3"
+      },
+      "target": {
+        "name": "shake",
+        "label": "Shake head",
+        "group": "",
+        "revision": "4d6932e6e779b5e7cfaac34111237835bec260986f646c7f007259f7122574c3"
+      },
+      "preserve_review": true,
+      "reason": "Original utility content and motion retained; active line endings normalized to LF."
+    },
+    {
+      "source": {
+        "name": "emotion_fear",
+        "label": "Fear",
+        "group": "Fear",
+        "revision": "9531a1542d4a8941243f68286bededd7aef6e5c0d147ba97c87a75fa1780210c"
+      },
+      "target": {
+        "name": "emotion_fearful",
+        "label": "Fearful",
+        "group": "Fearful",
+        "revision": "03729e7bc400029e66ae22c78b05b3ff2624adc88675b07fd4e69570e4b50b2b"
+      },
+      "preserve_review": true,
+      "reason": "Only the core-family name changes; branch meaning and all motion steps are retained."
+    },
+    {
+      "source": {
+        "name": "emotion_fear_scared",
+        "label": "Fear / Scared",
+        "group": "Fear",
+        "revision": "86b95d89390af045c01b0d40b9fd1c89604106a7a0b97e969c7aa2c9f61c2cc7"
+      },
+      "target": {
+        "name": "emotion_fearful_scared",
+        "label": "Fearful / Scared",
+        "group": "Fearful",
+        "revision": "5a2f4d692da4abfb3b7b00007b4e0834b9ad6be7e1d0ba61b3d34e4f2f4a0d4a"
+      },
+      "preserve_review": true,
+      "reason": "Only the core-family name changes; branch meaning and all motion steps are retained."
+    },
+    {
+      "source": {
+        "name": "emotion_fear_scared_frightened",
+        "label": "Fear / Scared / Frightened",
+        "group": "Fear",
+        "revision": "1bdb0202ce30e35304214e9a49f99bbbfb2fa330c475b717a66a07a48b0b5f99"
+      },
+      "target": {
+        "name": "emotion_fearful_scared_frightened",
+        "label": "Fearful / Scared / Frightened",
+        "group": "Fearful",
+        "revision": "04ace14a15988ecb6f357bd3ad11b09ef1f4fca0a54ac08b950ec10858bd67e2"
+      },
+      "preserve_review": true,
+      "reason": "Only the core-family name changes; branch meaning and all motion steps are retained."
+    },
+    {
+      "source": {
+        "name": "emotion_fear_anxious",
+        "label": "Fear / Anxious",
+        "group": "Fear",
+        "revision": "29ca3cd983dc4ac1d691a1fc4f8395fb44ceb52a39a4c71ec7533d50ad6ad3df"
+      },
+      "target": {
+        "name": "emotion_fearful_anxious",
+        "label": "Fearful / Anxious",
+        "group": "Fearful",
+        "revision": "84026c2e336b3e8f8f727505b3e54301e8e394fc9dbad3b69946d99f534696ad"
+      },
+      "preserve_review": true,
+      "reason": "Only the core-family name changes; branch meaning and all motion steps are retained."
+    },
+    {
+      "source": {
+        "name": "emotion_fear_anxious_overwhelmed",
+        "label": "Fear / Anxious / Overwhelmed",
+        "group": "Fear",
+        "revision": "4353540354bd50280d5f9d079474bc5cee22e573a53c80bdcfb66f48416a49d9"
+      },
+      "target": {
+        "name": "emotion_fearful_anxious_overwhelmed",
+        "label": "Fearful / Anxious / Overwhelmed",
+        "group": "Fearful",
+        "revision": "363a192d6757cf864184e247bf0f01984ebc57fe3c722ea8295dbf984f2ef8ec"
+      },
+      "preserve_review": true,
+      "reason": "Only the core-family name changes; branch meaning and all motion steps are retained."
+    },
+    {
+      "source": {
+        "name": "emotion_fear_anxious_worried",
+        "label": "Fear / Anxious / Worried",
+        "group": "Fear",
+        "revision": "ac6f335e4b116d754c0af58c9079622e9d9c7e7a8dfbdff1feee46158a4a5fb4"
+      },
+      "target": {
+        "name": "emotion_fearful_anxious_worried",
+        "label": "Fearful / Anxious / Worried",
+        "group": "Fearful",
+        "revision": "12ef41f1dbb3d3e270ad597d648364d4238ba50474caed6a9fabf6e92d732450"
+      },
+      "preserve_review": true,
+      "reason": "Only the core-family name changes; branch meaning and all motion steps are retained."
+    },
+    {
+      "source": {
+        "name": "emotion_fear_insecure",
+        "label": "Fear / Insecure",
+        "group": "Fear",
+        "revision": "da8d791bab3de6c0762a2535389a3f31f14c78cb78c447bb51d19f1149f92a91"
+      },
+      "target": {
+        "name": "emotion_fearful_insecure",
+        "label": "Fearful / Insecure",
+        "group": "Fearful",
+        "revision": "feccf9aa3382fbe4724a7a706c59c4c6673a6dd7f0cd1d2744b209e3299db802"
+      },
+      "preserve_review": true,
+      "reason": "Only the core-family name changes; branch meaning and all motion steps are retained."
+    },
+    {
+      "source": {
+        "name": "emotion_fear_insecure_inadequate",
+        "label": "Fear / Insecure / Inadequate",
+        "group": "Fear",
+        "revision": "a3b930352389508571adb8a9116c3470a6c7bb7da4ee558e9d1568c08b2bcf7f"
+      },
+      "target": {
+        "name": "emotion_fearful_insecure_inadequate",
+        "label": "Fearful / Insecure / Inadequate",
+        "group": "Fearful",
+        "revision": "d153fafedfb7432ad0b87640a9ce4abae3bcbb5ce0790240ce3ab739259694b0"
+      },
+      "preserve_review": true,
+      "reason": "Only the core-family name changes; branch meaning and all motion steps are retained."
+    },
+    {
+      "source": {
+        "name": "emotion_fear_insecure_inferior",
+        "label": "Fear / Insecure / Inferior",
+        "group": "Fear",
+        "revision": "357870c9c39a68a518f6dbe7453205ad05b5ca849ce6b8d098dcbf0097a4acbb"
+      },
+      "target": {
+        "name": "emotion_fearful_insecure_inferior",
+        "label": "Fearful / Insecure / Inferior",
+        "group": "Fearful",
+        "revision": "91df119611fbc665d3ef3e69c1c75459cd8754310ba816ae28b1013e6216f79f"
+      },
+      "preserve_review": true,
+      "reason": "Only the core-family name changes; branch meaning and all motion steps are retained."
+    },
+    {
+      "source": {
+        "name": "emotion_fear_submissive",
+        "label": "Fear / Submissive",
+        "group": "Fear",
+        "revision": "45a610da9d15f106c25a03064b045e9c08de0f93df035a2c66e1f60009c0639c"
+      },
+      "target": {
+        "name": "emotion_fearful_weak",
+        "label": "Fearful / Weak",
+        "group": "Fearful",
+        "revision": "569c18c0ea6be6d84a6de474bbcef88e882ddc054e15a0a9bf7137fb064283d9"
+      },
+      "preserve_review": false,
+      "reason": "A small sustained bow can suggest reduced agency; the new Weak meaning needs review."
+    },
+    {
+      "source": {
+        "name": "emotion_fear_submissive_worthless",
+        "label": "Fear / Submissive / Worthless",
+        "group": "Fear",
+        "revision": "4dcc11f88c5d7e812af3ef6bf764a3c0a3b81aa1f02319858142e9e5dfe6f5b8"
+      },
+      "target": {
+        "name": "emotion_fearful_weak_worthless",
+        "label": "Fearful / Weak / Worthless",
+        "group": "Fearful",
+        "revision": "5e73450771549554ef80cca70e2b0f2410920696a6f14fbb9a0c685f72081df3"
+      },
+      "preserve_review": false,
+      "reason": "Retain the slow contraction for the same leaf word, now under Weak."
+    },
+    {
+      "source": {
+        "name": "emotion_fear_submissive_insignificant",
+        "label": "Fear / Submissive / Insignificant",
+        "group": "Fear",
+        "revision": "b70e590ec24a1e259bc63f8535f59a579960680b1dac69cd19e71207fe266878"
+      },
+      "target": {
+        "name": "emotion_fearful_weak_insignificant",
+        "label": "Fearful / Weak / Insignificant",
+        "group": "Fearful",
+        "revision": "f6a3c4846fc0f688c642db96f7b9f640f5b2901c51aa7f3f8d802189f656301f"
+      },
+      "preserve_review": false,
+      "reason": "Retain the two-stage contraction for the same leaf word, now under Weak."
+    },
+    {
+      "source": {
+        "name": "emotion_fear_rejected",
+        "label": "Fear / Rejected",
+        "group": "Fear",
+        "revision": "4747e805e7ad2a4121bcc636111270a5c785861e73bd85c8f04143b8c3fa58b2"
+      },
+      "target": {
+        "name": "emotion_fearful_rejected",
+        "label": "Fearful / Rejected",
+        "group": "Fearful",
+        "revision": "a5501ade2982a84ca73a089f9d5b2727d11645c6927fd89833998d8177e2a4a3"
+      },
+      "preserve_review": true,
+      "reason": "Only the core-family name changes; branch meaning and all motion steps are retained."
+    },
+    {
+      "source": {
+        "name": "emotion_fear_rejected_alienated",
+        "label": "Fear / Rejected / Alienated",
+        "group": "Fear",
+        "revision": "7e4fee7bb3681b91e64fe6b9b29a512981693d5abb8824687a6a0ebff0e6d8e9"
+      },
+      "target": {
+        "name": "emotion_fearful_rejected_excluded",
+        "label": "Fearful / Rejected / Excluded",
+        "group": "Fearful",
+        "revision": "f20322086230b28e654abb237b9817ce54da699a7a7adca608ca4683ab3b9c9e"
+      },
+      "preserve_review": false,
+      "reason": "A withdrawn side-facing stance is a candidate for exclusion; Alienated is not an exact synonym."
+    },
+    {
+      "source": {
+        "name": "emotion_anger_threatened",
+        "label": "Anger / Threatened",
+        "group": "Anger",
+        "revision": "c5516385f892bd8905f937e70bdbe355ad62b9523939086bd7883332af27b63b"
+      },
+      "target": {
+        "name": "emotion_fearful_threatened",
+        "label": "Fearful / Threatened",
+        "group": "Fearful",
+        "revision": "cf6b3c148e083b6672766aa7e4a3abe26f9f6c38e3145ad4269d2c6b36e5cc85"
+      },
+      "preserve_review": false,
+      "reason": "The old braced retreat is relevant to threat but moves from Anger to Fearful."
+    },
+    {
+      "source": {
+        "name": "emotion_anger",
+        "label": "Anger",
+        "group": "Anger",
+        "revision": "4e1320888f8c09565023ab997ba682ff4e2f122569257a37c3cdbaa858f3dbd0"
+      },
+      "target": {
+        "name": "emotion_angry",
+        "label": "Angry",
+        "group": "Angry",
+        "revision": "7f4357cfc793d7a7cda4463683a03d27ae12a9eb506a2cd674ad9e0b441c0f26"
+      },
+      "preserve_review": true,
+      "reason": "Only the core-family name changes; branch meaning and all motion steps are retained."
+    },
+    {
+      "source": {
+        "name": "emotion_anger_hateful_resentful",
+        "label": "Anger / Hateful / Resentful",
+        "group": "Anger",
+        "revision": "1c42801966508cc89e292080c0b18e856c5196279e51651c1c0150812ec10547"
+      },
+      "target": {
+        "name": "emotion_angry_let_down_resentful",
+        "label": "Angry / Let down / Resentful",
+        "group": "Angry",
+        "revision": "6316ea3c88f8fad675875615bffd14947b41da23e9fe1933a05b297bd998fe6c"
+      },
+      "preserve_review": false,
+      "reason": "Keep the low sideways withdrawal; Resentful now belongs under Let down."
+    },
+    {
+      "source": {
+        "name": "emotion_fear_humiliated",
+        "label": "Fear / Humiliated",
+        "group": "Fear",
+        "revision": "1682a493f9ef3c1315b4388565a2813e7dc3ef793beb000d074d9a30ccedf3a7"
+      },
+      "target": {
+        "name": "emotion_angry_humiliated",
+        "label": "Angry / Humiliated",
+        "group": "Angry",
+        "revision": "d784d66d691f23634c13233cad0d17130162449386ded82ed6740de97197fc55"
+      },
+      "preserve_review": false,
+      "reason": "Retain the low averted posture for Humiliated, now in the Angry family."
+    },
+    {
+      "source": {
+        "name": "emotion_fear_humiliated_disrespected",
+        "label": "Fear / Humiliated / Disrespected",
+        "group": "Fear",
+        "revision": "36748ecec8026aa83fa22e801304d9232c9428b1cd5f3960bbd05f8c5dc52ed2"
+      },
+      "target": {
+        "name": "emotion_angry_humiliated_disrespected",
+        "label": "Angry / Humiliated / Disrespected",
+        "group": "Angry",
+        "revision": "5fc796f58c2edc8f06bf046bd6ba8afbfb4a25bbb30c62c52b132bb3f6ec33ea"
+      },
+      "preserve_review": false,
+      "reason": "Retain the interrupted approach for Disrespected, now in the Angry family."
+    },
+    {
+      "source": {
+        "name": "emotion_fear_humiliated_ridiculed",
+        "label": "Fear / Humiliated / Ridiculed",
+        "group": "Fear",
+        "revision": "94724ffa5f9923311b6b2b6f01660dbd14e9e98ad339a28e85d693ea3b0ee3cd"
+      },
+      "target": {
+        "name": "emotion_angry_humiliated_ridiculed",
+        "label": "Angry / Humiliated / Ridiculed",
+        "group": "Angry",
+        "revision": "46aa4aaa7c117bfeb1493edd7f89db1e1214e3b4901f003c6cb88a0d4ad6f30b"
+      },
+      "preserve_review": false,
+      "reason": "Retain the double flinch for Ridiculed, now in the Angry family."
+    },
+    {
+      "source": {
+        "name": "emotion_anger_hateful",
+        "label": "Anger / Hateful",
+        "group": "Anger",
+        "revision": "7c506a2122c46c7c6e50c247f3fbe8d97a4a4207709e7c3da9df355a2a7106ee"
+      },
+      "target": {
+        "name": "emotion_angry_bitter",
+        "label": "Angry / Bitter",
+        "group": "Angry",
+        "revision": "b68fe84b1d7d7676527aa5f64d348322fd92d55c48a9897c4e21531edb9f88ff"
+      },
+      "preserve_review": false,
+      "reason": "The deliberate refusing sweep is a candidate for lingering bitterness; meaning changed."
+    },
+    {
+      "source": {
+        "name": "emotion_anger_hateful_violated",
+        "label": "Anger / Hateful / Violated",
+        "group": "Anger",
+        "revision": "4b4e96237cd4ebf83165d3919db89a46b02bf161cac3a20d07691aaa1a1f7eb0"
+      },
+      "target": {
+        "name": "emotion_angry_bitter_violated",
+        "label": "Angry / Bitter / Violated",
+        "group": "Angry",
+        "revision": "38ef6e3359f88843cf9c07030c53c4dc4c56d13d8d174258633a7683a195a51d"
+      },
+      "preserve_review": false,
+      "reason": "Retain the protective contraction for Violated, now under Bitter."
+    },
+    {
+      "source": {
+        "name": "emotion_anger_mad",
+        "label": "Anger / Mad",
+        "group": "Anger",
+        "revision": "38e1662e2331e66ebb4cd5a76231994db56e8ed4c263e791a7fc0e4f8286c8e4"
+      },
+      "target": {
+        "name": "emotion_angry_mad",
+        "label": "Angry / Mad",
+        "group": "Angry",
+        "revision": "3a50171c9e8837cb54b6db9751d96060a5b0009d911bf9f636104333c4b4df33"
+      },
+      "preserve_review": true,
+      "reason": "Only the core-family name changes; branch meaning and all motion steps are retained."
+    },
+    {
+      "source": {
+        "name": "emotion_anger_mad_furious",
+        "label": "Anger / Mad / Furious",
+        "group": "Anger",
+        "revision": "29323f2c93136a77c257644760f99e349f2c7fb9d62a79d8742d9fd7f19ffb27"
+      },
+      "target": {
+        "name": "emotion_angry_mad_furious",
+        "label": "Angry / Mad / Furious",
+        "group": "Angry",
+        "revision": "43d395f852134ada2541cbfa8bad90fe2714af2f3366734e438cec1bc708d07c"
+      },
+      "preserve_review": true,
+      "reason": "Only the core-family name changes; branch meaning and all motion steps are retained."
+    },
+    {
+      "source": {
+        "name": "emotion_anger_threatened_jealous",
+        "label": "Anger / Threatened / Jealous",
+        "group": "Anger",
+        "revision": "c64411ffe5df4400a3180e863944902dff5d9be5fe9a9934f4b5079dadea97a4"
+      },
+      "target": {
+        "name": "emotion_angry_mad_jealous",
+        "label": "Angry / Mad / Jealous",
+        "group": "Angry",
+        "revision": "5f48671f9a51ce4c3f24c8031fc9746988e59cb6eaa3fc6c870ff7b3913a0f65"
+      },
+      "preserve_review": false,
+      "reason": "Retain the fixed sideways watch for Jealous, now under Mad."
+    },
+    {
+      "source": {
+        "name": "emotion_anger_aggressive",
+        "label": "Anger / Aggressive",
+        "group": "Anger",
+        "revision": "e0f1c8eceaa630bf782b64e9b5d6f1badd2e4465822847491cf61c551257a531"
+      },
+      "target": {
+        "name": "emotion_angry_aggressive",
+        "label": "Angry / Aggressive",
+        "group": "Angry",
+        "revision": "38260f03fb0e8050db0530ea26f3c4184bbb6a725b502c5b0d6767b49ca84fc0"
+      },
+      "preserve_review": true,
+      "reason": "Only the core-family name changes; branch meaning and all motion steps are retained."
+    },
+    {
+      "source": {
+        "name": "emotion_anger_aggressive_provoked",
+        "label": "Anger / Aggressive / Provoked",
+        "group": "Anger",
+        "revision": "23da45d6b85a3ca03f3915c49c0d75ddee0aefe477d40d62de87ae48c50b9a3a"
+      },
+      "target": {
+        "name": "emotion_angry_aggressive_provoked",
+        "label": "Angry / Aggressive / Provoked",
+        "group": "Angry",
+        "revision": "b36b128a9ce20098d5a7073f1ca1ca57abe34e9cfe769ca5c2a2e68908779ee4"
+      },
+      "preserve_review": true,
+      "reason": "Only the core-family name changes; branch meaning and all motion steps are retained."
+    },
+    {
+      "source": {
+        "name": "emotion_anger_aggressive_hostile",
+        "label": "Anger / Aggressive / Hostile",
+        "group": "Anger",
+        "revision": "362956101a0feb037561ab6f8c5d388d0377df22680622de1cbca32ab43e824e"
+      },
+      "target": {
+        "name": "emotion_angry_aggressive_hostile",
+        "label": "Angry / Aggressive / Hostile",
+        "group": "Angry",
+        "revision": "e62ead18f1092dfffdf9decf93bf82c4b2ffe8fa402122648aafa8d2d650e0a5"
+      },
+      "preserve_review": true,
+      "reason": "Only the core-family name changes; branch meaning and all motion steps are retained."
+    },
+    {
+      "source": {
+        "name": "emotion_anger_frustrated",
+        "label": "Anger / Frustrated",
+        "group": "Anger",
+        "revision": "a430ba4c2288f2b36607fa1949aee6de42b4e847721e5754d7c619b0efb8740b"
+      },
+      "target": {
+        "name": "emotion_angry_frustrated",
+        "label": "Angry / Frustrated",
+        "group": "Angry",
+        "revision": "14e9565e8e52727dfbe730d7cfe17841d5c7fddd63cc1cfc870916e1767e3049"
+      },
+      "preserve_review": true,
+      "reason": "Only the core-family name changes; branch meaning and all motion steps are retained."
+    },
+    {
+      "source": {
+        "name": "emotion_anger_frustrated_infuriated",
+        "label": "Anger / Frustrated / Infuriated",
+        "group": "Anger",
+        "revision": "1bd45e21a2042bd94c95b4774bc5d13db31f5c0de28a411296a8270f9ec6d087"
+      },
+      "target": {
+        "name": "emotion_angry_frustrated_infuriated",
+        "label": "Angry / Frustrated / Infuriated",
+        "group": "Angry",
+        "revision": "9f5a9cccf2f8f63105a6227202aa1248bbdcca4aec892751d398ab326784a973"
+      },
+      "preserve_review": true,
+      "reason": "Only the core-family name changes; branch meaning and all motion steps are retained."
+    },
+    {
+      "source": {
+        "name": "emotion_anger_frustrated_irritated",
+        "label": "Anger / Frustrated / Irritated",
+        "group": "Anger",
+        "revision": "3f127ee4a4c4474a75854bf7c23820a8b5cbfb796776a75a2d952005390613b9"
+      },
+      "target": {
+        "name": "emotion_angry_frustrated_annoyed",
+        "label": "Angry / Frustrated / Annoyed",
+        "group": "Angry",
+        "revision": "60cca2a3bacc6b0b64f271d30d6f6c96a05f50be5cbd4258215f21207e68a177"
+      },
+      "preserve_review": false,
+      "reason": "Two small neck flicks fit a candidate annoyance cue; the label changes from Irritated."
+    },
+    {
+      "source": {
+        "name": "emotion_anger_distant",
+        "label": "Anger / Distant",
+        "group": "Anger",
+        "revision": "cfa3126ab3c9021a7ab0a24e25caa668c865c3d2fb78e3a3b6705e6372e7ad90"
+      },
+      "target": {
+        "name": "emotion_angry_distant",
+        "label": "Angry / Distant",
+        "group": "Angry",
+        "revision": "d3055737fd470b76e7c4b4fb93c260cbe1fb0b2aee09957ca5c50e4a9a3b90a3"
+      },
+      "preserve_review": true,
+      "reason": "Only the core-family name changes; branch meaning and all motion steps are retained."
+    },
+    {
+      "source": {
+        "name": "emotion_anger_distant_withdrawn",
+        "label": "Anger / Distant / Withdrawn",
+        "group": "Anger",
+        "revision": "7d7f1ee8b44da84fb27f510bb1941b6b24aafea0dd00c7f9240f90ec1bd2e842"
+      },
+      "target": {
+        "name": "emotion_angry_distant_withdrawn",
+        "label": "Angry / Distant / Withdrawn",
+        "group": "Angry",
+        "revision": "1c6c8b9090da1bf24b2ed33abbef46500c572e7e604189b504cdff21d7478b8a"
+      },
+      "preserve_review": true,
+      "reason": "Only the core-family name changes; branch meaning and all motion steps are retained."
+    },
+    {
+      "source": {
+        "name": "emotion_anger_critical",
+        "label": "Anger / Critical",
+        "group": "Anger",
+        "revision": "43fae916941073204474fb3ed72b4f2680f99b882d9186ac4acc34d430a7af1c"
+      },
+      "target": {
+        "name": "emotion_angry_critical",
+        "label": "Angry / Critical",
+        "group": "Angry",
+        "revision": "be3db047b69054cf7594a116f27795773bb7de50fb0159f3d93d81882ab8ecc4"
+      },
+      "preserve_review": true,
+      "reason": "Only the core-family name changes; branch meaning and all motion steps are retained."
+    },
+    {
+      "source": {
+        "name": "emotion_anger_critical_skeptical",
+        "label": "Anger / Critical / Skeptical",
+        "group": "Anger",
+        "revision": "9d6d9adc5490ca5fdf56d8c1e9295b0b9624b9a169bc8bef62c32e9c953f7b5e"
+      },
+      "target": {
+        "name": "emotion_angry_critical_skeptical",
+        "label": "Angry / Critical / Skeptical",
+        "group": "Angry",
+        "revision": "829c00e315ddb84a29bd47042311198632a34a114860314c7364a5ab815ed620"
+      },
+      "preserve_review": true,
+      "reason": "Only the core-family name changes; branch meaning and all motion steps are retained."
+    },
+    {
+      "source": {
+        "name": "emotion_disgust",
+        "label": "Disgust",
+        "group": "Disgust",
+        "revision": "d013647fc7c6ab3cf65e842aaf99a1e46326f89f76404f82815d32e101af56dc"
+      },
+      "target": {
+        "name": "emotion_disgusted",
+        "label": "Disgusted",
+        "group": "Disgusted",
+        "revision": "2d246b8fc1f188b67b894b76b2e5eb504b50ee01274ccdfef5fede9a1fac55b3"
+      },
+      "preserve_review": true,
+      "reason": "Only the core-family name changes; branch meaning and all motion steps are retained."
+    },
+    {
+      "source": {
+        "name": "emotion_disgust_disapproval",
+        "label": "Disgust / Disapproval",
+        "group": "Disgust",
+        "revision": "39632f645637f0c03fb9803287c31b5f262987bbc09f9c76d7f5704c87cdcabc"
+      },
+      "target": {
+        "name": "emotion_disgusted_disapproving",
+        "label": "Disgusted / Disapproving",
+        "group": "Disgusted",
+        "revision": "7635c700aafc9459d999d56ebe4d08a059b9634e98447b70b4dee39318bb1324"
+      },
+      "preserve_review": false,
+      "reason": "Disapproval changes grammatical form to Disapproving; conservative review reset for this branch rename."
+    },
+    {
+      "source": {
+        "name": "emotion_disgust_disapproval_judgmental",
+        "label": "Disgust / Disapproval / Judgmental",
+        "group": "Disgust",
+        "revision": "98683d3011e41bf722758ae6830f14dabd6fa14462338332a3c9f7f34a245766"
+      },
+      "target": {
+        "name": "emotion_disgusted_disapproving_judgmental",
+        "label": "Disgusted / Disapproving / Judgmental",
+        "group": "Disgusted",
+        "revision": "e79e64944dddde8067b2572851782bb141d8cbfc58b9c258033cb4403050b83b"
+      },
+      "preserve_review": false,
+      "reason": "Retain the measured inspection; conservative review reset for the Disapproval branch rename."
+    },
+    {
+      "source": {
+        "name": "emotion_disgust_disappointed",
+        "label": "Disgust / Disappointed",
+        "group": "Disgust",
+        "revision": "facdcd14c1ac058de66f5712962cff2b5dda8eb19eeedd9a3a1b57ae655583da"
+      },
+      "target": {
+        "name": "emotion_disgusted_disappointed",
+        "label": "Disgusted / Disappointed",
+        "group": "Disgusted",
+        "revision": "fac44673112ac3ed612072a8b999f892750f5fef5fdcb999543cc42167d5b880"
+      },
+      "preserve_review": true,
+      "reason": "Only the core-family name changes; branch meaning and all motion steps are retained."
+    },
+    {
+      "source": {
+        "name": "emotion_disgust_disappointed_revolted",
+        "label": "Disgust / Disappointed / Revolted",
+        "group": "Disgust",
+        "revision": "22bee0937b50196412046d594166a958eb3f316616b11294c3e1a58461e56327"
+      },
+      "target": {
+        "name": "emotion_disgusted_disappointed_revolted",
+        "label": "Disgusted / Disappointed / Revolted",
+        "group": "Disgusted",
+        "revision": "cf519bc5542da05d3c46d96062307e903b7136916942107d1f6a6c176983e974"
+      },
+      "preserve_review": true,
+      "reason": "Only the core-family name changes; branch meaning and all motion steps are retained."
+    },
+    {
+      "source": {
+        "name": "emotion_disgust_awful",
+        "label": "Disgust / Awful",
+        "group": "Disgust",
+        "revision": "b809b4d7766fa32d4da011ca7fa7f928b3ef9b0b7b4c9ba59496f81e9c6f7cf6"
+      },
+      "target": {
+        "name": "emotion_disgusted_awful",
+        "label": "Disgusted / Awful",
+        "group": "Disgusted",
+        "revision": "07c2dd805773f581cfbcb67c80a2c71c68d66e5584365c9a7c4c3817a751ba8f"
+      },
+      "preserve_review": true,
+      "reason": "Only the core-family name changes; branch meaning and all motion steps are retained."
+    },
+    {
+      "source": {
+        "name": "emotion_disgust_awful_detestable",
+        "label": "Disgust / Awful / Detestable",
+        "group": "Disgust",
+        "revision": "e8aed5b31a4edfaa9937df49bd9e4d137e32ac531f8de7340cee4ffdc3268579"
+      },
+      "target": {
+        "name": "emotion_disgusted_awful_detestable",
+        "label": "Disgusted / Awful / Detestable",
+        "group": "Disgusted",
+        "revision": "20adeabbf17d22837232911bd0fb2337d34a90eb67831e7f7a7e6402e8847fcd"
+      },
+      "preserve_review": true,
+      "reason": "Only the core-family name changes; branch meaning and all motion steps are retained."
+    },
+    {
+      "source": {
+        "name": "emotion_disgust_avoidance",
+        "label": "Disgust / Avoidance",
+        "group": "Disgust",
+        "revision": "f74a1aec8f3823e7032edb2a75017593e067ff3250313cb14268a2738a6f1657"
+      },
+      "target": {
+        "name": "emotion_disgusted_repelled",
+        "label": "Disgusted / Repelled",
+        "group": "Disgusted",
+        "revision": "b3b1b989ea0edc2502b9a3fb3dbf4fa20309de844d198319aba63c69cd5cf2d6"
+      },
+      "preserve_review": false,
+      "reason": "A sustained averted stance is a candidate for repulsion; Avoidance described an action."
+    },
+    {
+      "source": {
+        "name": "emotion_disgust_avoidance_hesitant",
+        "label": "Disgust / Avoidance / Hesitant",
+        "group": "Disgust",
+        "revision": "81af60915c1f91fd6694181d7d182db86a863261f8182ae5238f804f9deb5a99"
+      },
+      "target": {
+        "name": "emotion_disgusted_repelled_hesitant",
+        "label": "Disgusted / Repelled / Hesitant",
+        "group": "Disgusted",
+        "revision": "1074f9c51d4298bde8e1a401eac6a3b3bbe7389e08b1b91218ec67686adc1206"
+      },
+      "preserve_review": false,
+      "reason": "Retain the interrupted approach for Hesitant, now under Repelled."
+    },
+    {
+      "source": {
+        "name": "emotion_sad",
+        "label": "Sad",
+        "group": "Sad",
+        "revision": "7cb3fea485b635114580e0e12fb8b0a981da52e98546ada8263722cb8a759358"
+      },
+      "target": {
+        "name": "emotion_sad",
+        "label": "Sad",
+        "group": "Sad",
+        "revision": "dd9d523a6f1b998fb2dcf012969fcf76f871f46ce3e287346c7d7f293e9e5f14"
+      },
+      "preserve_review": true,
+      "reason": "Full path, meaning, and motion retained; active line endings normalized to LF."
+    },
+    {
+      "source": {
+        "name": "emotion_anger_hurt",
+        "label": "Anger / Hurt",
+        "group": "Anger",
+        "revision": "da29f2cb9db66f8677f59438b4889eef50646e28af59f507816a6bc682881d25"
+      },
+      "target": {
+        "name": "emotion_sad_hurt",
+        "label": "Sad / Hurt",
+        "group": "Sad",
+        "revision": "96920d41bc21bafb9c7c0b4b823e1e52e3f5c38e55a588849aa90beda0ea52cc"
+      },
+      "preserve_review": false,
+      "reason": "The flinch followed by a droop is retained for Hurt, moving from Anger to Sad."
+    },
+    {
+      "source": {
+        "name": "emotion_anger_hurt_embarrassed",
+        "label": "Anger / Hurt / Embarrassed",
+        "group": "Anger",
+        "revision": "af4050de0f8446eb7bad46888a09f5c9f0dfd2fc1e6a6e885de177b22e1bf10e"
+      },
+      "target": {
+        "name": "emotion_sad_hurt_embarrassed",
+        "label": "Sad / Hurt / Embarrassed",
+        "group": "Sad",
+        "revision": "5e8ce29fa5f62d414726ea54eedad0c2c3247201fa19535cae821d7851f4f5e5"
+      },
+      "preserve_review": false,
+      "reason": "Retain the hesitant averted dip for Embarrassed, moving from Anger to Sad."
+    },
+    {
+      "source": {
+        "name": "emotion_sad_depressed",
+        "label": "Sad / Depressed",
+        "group": "Sad",
+        "revision": "70ea8c6d30f566d76e21398478c583253ec4c95784c5a2a3154adc975c7a7cb2"
+      },
+      "target": {
+        "name": "emotion_sad_depressed",
+        "label": "Sad / Depressed",
+        "group": "Sad",
+        "revision": "d3ffc980e7f649cf002ff1ac05994ac3ab9276fc25640bc26cfd7cd026900478"
+      },
+      "preserve_review": true,
+      "reason": "Full path, meaning, and motion retained; active line endings normalized to LF."
+    },
+    {
+      "source": {
+        "name": "emotion_sad_depressed_inferior",
+        "label": "Sad / Depressed / Inferior",
+        "group": "Sad",
+        "revision": "7034d424260b0649128ce26facc711e6cf3a7bea7847dec2af62aee0f21f1305"
+      },
+      "target": {
+        "name": "emotion_sad_depressed_inferior",
+        "label": "Sad / Depressed / Inferior",
+        "group": "Sad",
+        "revision": "4025751faa3505952df5eb44057c56850f8653f0ae79561dcfc7a76a296b8abb"
+      },
+      "preserve_review": true,
+      "reason": "Full path, meaning, and motion retained; active line endings normalized to LF."
+    },
+    {
+      "source": {
+        "name": "emotion_sad_depressed_empty",
+        "label": "Sad / Depressed / Empty",
+        "group": "Sad",
+        "revision": "310ef6bd6e65f7ee6782726e2d5c208f3fa51023e54ee1f01dd47d5494dac4b3"
+      },
+      "target": {
+        "name": "emotion_sad_depressed_empty",
+        "label": "Sad / Depressed / Empty",
+        "group": "Sad",
+        "revision": "3796ed1640a70f2a6441193653835094afc69cf91cf15f0c782df0b0d3366d82"
+      },
+      "preserve_review": true,
+      "reason": "Full path, meaning, and motion retained; active line endings normalized to LF."
+    },
+    {
+      "source": {
+        "name": "emotion_sad_guilty",
+        "label": "Sad / Guilty",
+        "group": "Sad",
+        "revision": "01918c756fb247c3880ea07e582ea5b6ccbca4cc1a24fc169d43385aebc13c11"
+      },
+      "target": {
+        "name": "emotion_sad_guilty",
+        "label": "Sad / Guilty",
+        "group": "Sad",
+        "revision": "f2287db82198ef8792a47186dfcb2eab1f5efa72864bef479bd5b535cee809a6"
+      },
+      "preserve_review": true,
+      "reason": "Full path, meaning, and motion retained; active line endings normalized to LF."
+    },
+    {
+      "source": {
+        "name": "emotion_sad_guilty_remorseful",
+        "label": "Sad / Guilty / Remorseful",
+        "group": "Sad",
+        "revision": "4e582f2278c819b29df5d9ed476c60d398b844fdf9fcc793c53c624b2310c3f3"
+      },
+      "target": {
+        "name": "emotion_sad_guilty_remorseful",
+        "label": "Sad / Guilty / Remorseful",
+        "group": "Sad",
+        "revision": "7f3663d9b6d1902b7f1f67055ed465b35b426c321d4fb979a146fe9e37c9d2a9"
+      },
+      "preserve_review": true,
+      "reason": "Full path, meaning, and motion retained; active line endings normalized to LF."
+    },
+    {
+      "source": {
+        "name": "emotion_sad_guilty_ashamed",
+        "label": "Sad / Guilty / Ashamed",
+        "group": "Sad",
+        "revision": "51f3f7c4bc138f798224ea7246f3d76261e691ddcdb9a33fb619fdc41316ab7f"
+      },
+      "target": {
+        "name": "emotion_sad_guilty_ashamed",
+        "label": "Sad / Guilty / Ashamed",
+        "group": "Sad",
+        "revision": "06f866545045daa78caf39bad44475d327c61d171ab6b7f7f73f0fd4e5a0f931"
+      },
+      "preserve_review": true,
+      "reason": "Full path, meaning, and motion retained; active line endings normalized to LF."
+    },
+    {
+      "source": {
+        "name": "emotion_sad_despair",
+        "label": "Sad / Despair",
+        "group": "Sad",
+        "revision": "1230fdd31ce1fd1165ac9a94a54c5b2107fa21e3436fc64b56e5b628e972f617"
+      },
+      "target": {
+        "name": "emotion_sad_despair",
+        "label": "Sad / Despair",
+        "group": "Sad",
+        "revision": "fd0e3931f9c7c165b233cb9f3f2aeac40c0ccdc7741ea3b77860921f1f2858d6"
+      },
+      "preserve_review": true,
+      "reason": "Full path, meaning, and motion retained; active line endings normalized to LF."
+    },
+    {
+      "source": {
+        "name": "emotion_sad_despair_powerless",
+        "label": "Sad / Despair / Powerless",
+        "group": "Sad",
+        "revision": "e3e9e184ecae88b706b7dca794e6df6f3183d2624b8f105e6f1c533ac5d04c69"
+      },
+      "target": {
+        "name": "emotion_sad_despair_powerless",
+        "label": "Sad / Despair / Powerless",
+        "group": "Sad",
+        "revision": "93e6926337eb3f9ba7bb57bd2e639edf3cfcb940b701e37f7b2f6b93b5e7345c"
+      },
+      "preserve_review": true,
+      "reason": "Full path, meaning, and motion retained; active line endings normalized to LF."
+    },
+    {
+      "source": {
+        "name": "emotion_anger_hurt_devastated",
+        "label": "Anger / Hurt / Devastated",
+        "group": "Anger",
+        "revision": "b7294788f1771de396eb35ea0e0c1bbe0603cd87a6ea8df1f1ae45e656c9ee1f"
+      },
+      "target": {
+        "name": "emotion_sad_despair_grief",
+        "label": "Sad / Despair / Grief",
+        "group": "Sad",
+        "revision": "33ccab11fef49e1bbb172b2d92db459b8df7c3495f672f0ed581be8fbf3e51c9"
+      },
+      "preserve_review": false,
+      "reason": "A heavy two-stage fold is a candidate for grief; Devastated is not treated as an equivalent label."
+    },
+    {
+      "source": {
+        "name": "emotion_sad_despair_vulnerable",
+        "label": "Sad / Despair / Vulnerable",
+        "group": "Sad",
+        "revision": "fdec45d572102508f17ec3c1639bc6100f891175b9452d0d658b63bb0ac89301"
+      },
+      "target": {
+        "name": "emotion_sad_vulnerable",
+        "label": "Sad / Vulnerable",
+        "group": "Sad",
+        "revision": "81c648c792164ce1270b3edfb291eeec25fd7a3cbdbe8fa1912f6a25e5e88855"
+      },
+      "preserve_review": false,
+      "reason": "The tentative retreat moves from an outer leaf to its own Vulnerable branch."
+    },
+    {
+      "source": {
+        "name": "emotion_sad_abandoned_victimized",
+        "label": "Sad / Abandoned / Victimized",
+        "group": "Sad",
+        "revision": "1e4382226b77f9a07063d63cb20f957dab98b2fa998fb1e2c045bd794b5fa64f"
+      },
+      "target": {
+        "name": "emotion_sad_vulnerable_victimized",
+        "label": "Sad / Vulnerable / Victimized",
+        "group": "Sad",
+        "revision": "52552bd7e5ca551b44b117935aca319e1d860ad177fa2dc28ec26e3cefc781e9"
+      },
+      "preserve_review": false,
+      "reason": "Retain the protective contraction for Victimized, now under Vulnerable."
+    },
+    {
+      "source": {
+        "name": "emotion_sad_lonely",
+        "label": "Sad / Lonely",
+        "group": "Sad",
+        "revision": "fb0ae856c6800e4fdb3b8ca22e24cc89fb63030e78a3795bae473baf57021ee4"
+      },
+      "target": {
+        "name": "emotion_sad_lonely",
+        "label": "Sad / Lonely",
+        "group": "Sad",
+        "revision": "b8996e29ea34f904296604e8fcf6d4facd9b09070c053274708f18907124ff27"
+      },
+      "preserve_review": true,
+      "reason": "Full path, meaning, and motion retained; active line endings normalized to LF."
+    },
+    {
+      "source": {
+        "name": "emotion_sad_lonely_abandoned",
+        "label": "Sad / Lonely / Abandoned",
+        "group": "Sad",
+        "revision": "244dd441717b026ad4b7e9a21603da43f31f7c51c9b3335a32ad12834042bf91"
+      },
+      "target": {
+        "name": "emotion_sad_lonely_abandoned",
+        "label": "Sad / Lonely / Abandoned",
+        "group": "Sad",
+        "revision": "925a981b163143fb1dc6d19dde27646cdb2edbf05229df653882db852f7923fb"
+      },
+      "preserve_review": true,
+      "reason": "Full path, meaning, and motion retained; active line endings normalized to LF."
+    },
+    {
+      "source": {
+        "name": "emotion_sad_lonely_isolated",
+        "label": "Sad / Lonely / Isolated",
+        "group": "Sad",
+        "revision": "bb79f5f70978983061410f3cf059eee0128f07b3aebf2051364bbcf9c746ed0c"
+      },
+      "target": {
+        "name": "emotion_sad_lonely_isolated",
+        "label": "Sad / Lonely / Isolated",
+        "group": "Sad",
+        "revision": "1054db68bee762a19b29e6512b8cc9e9c988447fcd61b07b3d863dfa0174fe6a"
+      },
+      "preserve_review": true,
+      "reason": "Full path, meaning, and motion retained; active line endings normalized to LF."
+    },
+    {
+      "source": {
+        "name": "emotion_happy",
+        "label": "Happy",
+        "group": "Happy",
+        "revision": "e44cf051a5504abfad66ecc61a207c5a4f62b6e7505e09b921035b54c1df2277"
+      },
+      "target": {
+        "name": "emotion_happy",
+        "label": "Happy",
+        "group": "Happy",
+        "revision": "54cbd9ef239fab24aa9c360bdac296b2c7c3c57bf9bc0abeb9cd3761c73a1719"
+      },
+      "preserve_review": true,
+      "reason": "Full path, meaning, and motion retained; active line endings normalized to LF."
+    },
+    {
+      "source": {
+        "name": "emotion_happy_optimistic",
+        "label": "Happy / Optimistic",
+        "group": "Happy",
+        "revision": "91254c1a90914e7c0588eb57778fc2e9d888540c6f5bdb13059695a25596c8e5"
+      },
+      "target": {
+        "name": "emotion_happy_optimistic",
+        "label": "Happy / Optimistic",
+        "group": "Happy",
+        "revision": "51615311a32a3130770f4404f5aacad019b6b1937a796f5d445d712c6c3fab06"
+      },
+      "preserve_review": true,
+      "reason": "Full path, meaning, and motion retained; active line endings normalized to LF."
+    },
+    {
+      "source": {
+        "name": "emotion_happy_optimistic_inspired",
+        "label": "Happy / Optimistic / Inspired",
+        "group": "Happy",
+        "revision": "b73f68bd6143c2eb25032e0011a206cb442d3ed9d6857445ea980ccc1d6b6746"
+      },
+      "target": {
+        "name": "emotion_happy_optimistic_inspired",
+        "label": "Happy / Optimistic / Inspired",
+        "group": "Happy",
+        "revision": "64c0a50956f233e4bd065cb7bb21f7bb956e84a1a16ff3a9e2fdfac8f5fab5ce"
+      },
+      "preserve_review": true,
+      "reason": "Full path, meaning, and motion retained; active line endings normalized to LF."
+    },
+    {
+      "source": {
+        "name": "emotion_happy_peaceful_hopeful",
+        "label": "Happy / Peaceful / Hopeful",
+        "group": "Happy",
+        "revision": "98d8857a860cd6e714ff273acdd473d45e3dbc5fb5ba2ba678579ef2f2979ed8"
+      },
+      "target": {
+        "name": "emotion_happy_optimistic_hopeful",
+        "label": "Happy / Optimistic / Hopeful",
+        "group": "Happy",
+        "revision": "68ede1fd6752597f58a3148e9061fcc82c4bcc83089e961f2827b82c3e0c1b4b"
+      },
+      "preserve_review": false,
+      "reason": "Retain the gradual upward gaze for Hopeful, now under Optimistic."
+    },
+    {
+      "source": {
+        "name": "emotion_happy_intimate",
+        "label": "Happy / Intimate",
+        "group": "Happy",
+        "revision": "58935da1c7ca86aa10063c87015547e7b050235cf6806fb11720aa643c4f044d"
+      },
+      "target": {
+        "name": "emotion_happy_trusting_intimate",
+        "label": "Happy / Trusting / Intimate",
+        "group": "Happy",
+        "revision": "7975f5914585151624ef8290cf4e883231899db7bf7205047410239ff8abc0fc"
+      },
+      "preserve_review": false,
+      "reason": "A close lingering approach becomes the Intimate leaf under Trusting, rather than a middle-ring category."
+    },
+    {
+      "source": {
+        "name": "emotion_happy_intimate_sensitive",
+        "label": "Happy / Intimate / Sensitive",
+        "group": "Happy",
+        "revision": "07b1c3215608220c8bd04cb3ba28d47971749162c45f0fd56a5edf76c68d20d7"
+      },
+      "target": {
+        "name": "emotion_happy_trusting_sensitive",
+        "label": "Happy / Trusting / Sensitive",
+        "group": "Happy",
+        "revision": "3f97db66d8824f7d160650b9bb29a859c915f39e00179fb94c3951de8ff3d139"
+      },
+      "preserve_review": false,
+      "reason": "Retain the careful approach for Sensitive, now under Trusting."
+    },
+    {
+      "source": {
+        "name": "emotion_happy_peaceful",
+        "label": "Happy / Peaceful",
+        "group": "Happy",
+        "revision": "6049da11bdda8e0defa0f7109eb0425555506d57bda6f6da6ab4baded719ac16"
+      },
+      "target": {
+        "name": "emotion_happy_peaceful",
+        "label": "Happy / Peaceful",
+        "group": "Happy",
+        "revision": "88309fc48319ec510d7f9dcc2c0857530a460798eb5c742b164af2ff7a41a4b6"
+      },
+      "preserve_review": true,
+      "reason": "Full path, meaning, and motion retained; active line endings normalized to LF."
+    },
+    {
+      "source": {
+        "name": "emotion_happy_peaceful_loving",
+        "label": "Happy / Peaceful / Loving",
+        "group": "Happy",
+        "revision": "3af43344a632c4046c1e4fcea939e8110ea7251bb06472e572ce214f7c43f09b"
+      },
+      "target": {
+        "name": "emotion_happy_peaceful_loving",
+        "label": "Happy / Peaceful / Loving",
+        "group": "Happy",
+        "revision": "3a3fad1d0d384e11901d7320aacb18d7219283bc01a9ce8d9658b120dab70ca7"
+      },
+      "preserve_review": true,
+      "reason": "Full path, meaning, and motion retained; active line endings normalized to LF."
+    },
+    {
+      "source": {
+        "name": "emotion_happy_powerful",
+        "label": "Happy / Powerful",
+        "group": "Happy",
+        "revision": "003edf8fb9a04892aff02244747cc6747a88c5702b336cbc8a40509e305bfdfe"
+      },
+      "target": {
+        "name": "emotion_happy_powerful",
+        "label": "Happy / Powerful",
+        "group": "Happy",
+        "revision": "cd4a9a3030cf554d85617a8854c712db29e1d94cc54f499734685ef000502f78"
+      },
+      "preserve_review": true,
+      "reason": "Full path, meaning, and motion retained; active line endings normalized to LF."
+    },
+    {
+      "source": {
+        "name": "emotion_happy_powerful_courageous",
+        "label": "Happy / Powerful / Courageous",
+        "group": "Happy",
+        "revision": "c0463b6513c53578e74dddec07c49815f9e4978ec39d6e66d12b7e2628066fcd"
+      },
+      "target": {
+        "name": "emotion_happy_powerful_courageous",
+        "label": "Happy / Powerful / Courageous",
+        "group": "Happy",
+        "revision": "3e3ca0fe97cac8fc38e1c559844ca0cf9c8b920d42e14bfe5482497d26fd6fcc"
+      },
+      "preserve_review": true,
+      "reason": "Full path, meaning, and motion retained; active line endings normalized to LF."
+    },
+    {
+      "source": {
+        "name": "emotion_happy_accepted",
+        "label": "Happy / Accepted",
+        "group": "Happy",
+        "revision": "a41401d7971ef9c67ed3958daec3f4045870410c9ecce4203b1ce51f9ee176f3"
+      },
+      "target": {
+        "name": "emotion_happy_accepted",
+        "label": "Happy / Accepted",
+        "group": "Happy",
+        "revision": "cd0f7e54ff3d5b7b4214d69c4510b68e1dec87581631e23992d83bacaf332b68"
+      },
+      "preserve_review": true,
+      "reason": "Full path, meaning, and motion retained; active line endings normalized to LF."
+    },
+    {
+      "source": {
+        "name": "emotion_happy_accepted_fulfilled",
+        "label": "Happy / Accepted / Fulfilled",
+        "group": "Happy",
+        "revision": "e3fdce4586b3808e9904735edfe0a569e6b7a62d5d99e36327d0a5216253a9f8"
+      },
+      "target": {
+        "name": "emotion_happy_accepted_valued",
+        "label": "Happy / Accepted / Valued",
+        "group": "Happy",
+        "revision": "5009cf18dba0221e8fb47ff09e0919ba47ef6eceab4c5e09bdb158fce1794d42"
+      },
+      "preserve_review": false,
+      "reason": "The relaxed open pose is a candidate for feeling valued; Fulfilled expressed a different meaning."
+    },
+    {
+      "source": {
+        "name": "emotion_happy_accepted_respected",
+        "label": "Happy / Accepted / Respected",
+        "group": "Happy",
+        "revision": "8daefdbf8ccfe3c203c17493db299bb3b50ce0e8acfc0507f9126da44e92939f"
+      },
+      "target": {
+        "name": "emotion_happy_accepted_respected",
+        "label": "Happy / Accepted / Respected",
+        "group": "Happy",
+        "revision": "557aafcef7d658fa405a0e58072e00e84cfe44c4dbc993b0c6f6ece8dd9fd529"
+      },
+      "preserve_review": true,
+      "reason": "Full path, meaning, and motion retained; active line endings normalized to LF."
+    },
+    {
+      "source": {
+        "name": "emotion_happy_proud",
+        "label": "Happy / Proud",
+        "group": "Happy",
+        "revision": "5b00919cf119bdb4d8afa87ab4d3de7a0973213a619a421ff7e2923246f51814"
+      },
+      "target": {
+        "name": "emotion_happy_proud",
+        "label": "Happy / Proud",
+        "group": "Happy",
+        "revision": "9d7a0ab83713d80ddaed2f6a2a9cb76fcf4aaf55e601d65606135d599f9c058c"
+      },
+      "preserve_review": true,
+      "reason": "Full path, meaning, and motion retained; active line endings normalized to LF."
+    },
+    {
+      "source": {
+        "name": "emotion_happy_proud_confident",
+        "label": "Happy / Proud / Confident",
+        "group": "Happy",
+        "revision": "1d7d0d6143be84583e233616d932de515758296b0e86377109f9810c3bea5857"
+      },
+      "target": {
+        "name": "emotion_happy_proud_confident",
+        "label": "Happy / Proud / Confident",
+        "group": "Happy",
+        "revision": "1536c651eb95fec8853fd3251f27de9ca3e386992a2682759a97f384cd3d6d8e"
+      },
+      "preserve_review": true,
+      "reason": "Full path, meaning, and motion retained; active line endings normalized to LF."
+    },
+    {
+      "source": {
+        "name": "emotion_happy_interested",
+        "label": "Happy / Interested",
+        "group": "Happy",
+        "revision": "f98c26020c5ef4d333ea8cd60132830dc50f023976be764c8ec26a2f01181b53"
+      },
+      "target": {
+        "name": "emotion_happy_interested",
+        "label": "Happy / Interested",
+        "group": "Happy",
+        "revision": "25eb39124fab976dafc47760b7b914576cbfe453f8f1fefa1129215b913cf1aa"
+      },
+      "preserve_review": true,
+      "reason": "Full path, meaning, and motion retained; active line endings normalized to LF."
+    },
+    {
+      "source": {
+        "name": "emotion_happy_interested_inquisitive",
+        "label": "Happy / Interested / Inquisitive",
+        "group": "Happy",
+        "revision": "fa540722dacabad564675b8a507262f494e35d8a3479cba69e5ff791125734ce"
+      },
+      "target": {
+        "name": "emotion_happy_interested_inquisitive",
+        "label": "Happy / Interested / Inquisitive",
+        "group": "Happy",
+        "revision": "fc7f4d7cfbcbaff77be70f9522a678eb4987d1312da331030e4a4d2da9c00640"
+      },
+      "preserve_review": true,
+      "reason": "Full path, meaning, and motion retained; active line endings normalized to LF."
+    },
+    {
+      "source": {
+        "name": "emotion_happy_joyful",
+        "label": "Happy / Joyful",
+        "group": "Happy",
+        "revision": "e8dcb44363177d45e75237d6ebe9a500bc810026772be19bdfb2e0145b60f386"
+      },
+      "target": {
+        "name": "emotion_happy_content_joyful",
+        "label": "Happy / Content / Joyful",
+        "group": "Happy",
+        "revision": "abc699df8298823fa8e6cff5a4eadbc4297a28944c211cf56e7d6aa0a4b10cb5"
+      },
+      "preserve_review": false,
+      "reason": "Retain the welcoming double bounce for Joyful as a leaf under Content."
+    },
+    {
+      "source": {
+        "name": "emotion_happy_joyful_liberated",
+        "label": "Happy / Joyful / Liberated",
+        "group": "Happy",
+        "revision": "3d255117c84655480d5aa9e3b255f25cdb66b8e6d94e66976d271ab9383ed8a6"
+      },
+      "target": {
+        "name": "emotion_happy_content_free",
+        "label": "Happy / Content / Free",
+        "group": "Happy",
+        "revision": "981e0fedf9db96e98e4bc79e4950137150d3b0bfc1372c637aa84d932ba90170"
+      },
+      "preserve_review": false,
+      "reason": "The broad unfolding is a candidate for feeling free, moved from Liberated under Joyful."
+    },
+    {
+      "source": {
+        "name": "emotion_happy_intimate_playful",
+        "label": "Happy / Intimate / Playful",
+        "group": "Happy",
+        "revision": "56d504c3604b6586a664e4008333173cd1349fe04ba3c08a5e93e0722364197c"
+      },
+      "target": {
+        "name": "emotion_happy_playful",
+        "label": "Happy / Playful",
+        "group": "Happy",
+        "revision": "ddedc52a0fac94eb93a63460337eacce52db780c6b704825c5e74a76c37b1852"
+      },
+      "preserve_review": false,
+      "reason": "The peek and quick bob become a middle-ring Playful category rather than a leaf under Intimate."
+    },
+    {
+      "source": {
+        "name": "emotion_surprise",
+        "label": "Surprise",
+        "group": "Surprise",
+        "revision": "c99dc60604247a5392713044d0beadccb03c49b01012e4ee0fa8a74c27ba28f6"
+      },
+      "target": {
+        "name": "emotion_surprised",
+        "label": "Surprised",
+        "group": "Surprised",
+        "revision": "8c95f6dc5cf039850c375a725a77112281241b62f707d09f6be8e1ad8750032d"
+      },
+      "preserve_review": true,
+      "reason": "Only the core-family name changes; branch meaning and all motion steps are retained."
+    },
+    {
+      "source": {
+        "name": "emotion_surprise_excited",
+        "label": "Surprise / Excited",
+        "group": "Surprise",
+        "revision": "f8a09480172aeb7b82478c77fd85eedc2e80fd83a5dfbce55aca0eb088f21068"
+      },
+      "target": {
+        "name": "emotion_surprised_excited",
+        "label": "Surprised / Excited",
+        "group": "Surprised",
+        "revision": "3cdb4701a2cbc765c2cf5ff12a9ac0ef98d1f8823dae9f7e83a3d213f7027553"
+      },
+      "preserve_review": true,
+      "reason": "Only the core-family name changes; branch meaning and all motion steps are retained."
+    },
+    {
+      "source": {
+        "name": "emotion_surprise_excited_energetic",
+        "label": "Surprise / Excited / Energetic",
+        "group": "Surprise",
+        "revision": "372cb60df4116b1d4f5fbbabdf06bfe1225d5eb3f0309c46c266fae4911bcb08"
+      },
+      "target": {
+        "name": "emotion_surprised_excited_energetic",
+        "label": "Surprised / Excited / Energetic",
+        "group": "Surprised",
+        "revision": "7b54be48ddc3002c9332ab6d5d9ee09f646845cef7078e6ab79766700c12e846"
+      },
+      "preserve_review": true,
+      "reason": "Only the core-family name changes; branch meaning and all motion steps are retained."
+    },
+    {
+      "source": {
+        "name": "emotion_surprise_excited_eager",
+        "label": "Surprise / Excited / Eager",
+        "group": "Surprise",
+        "revision": "a35e12202307e5553c226f47954b3342203bca7df7375c632b40779aba3353f8"
+      },
+      "target": {
+        "name": "emotion_surprised_excited_eager",
+        "label": "Surprised / Excited / Eager",
+        "group": "Surprised",
+        "revision": "d7c4822fcb60673f98d2d28ef864b02ebd414b7be3eadb54246e88766b6a78dc"
+      },
+      "preserve_review": true,
+      "reason": "Only the core-family name changes; branch meaning and all motion steps are retained."
+    },
+    {
+      "source": {
+        "name": "emotion_surprise_amazed",
+        "label": "Surprise / Amazed",
+        "group": "Surprise",
+        "revision": "1d9cc58350a038f39886810d8db86951e4e6f90982faaac9d7f6dbab8b154a61"
+      },
+      "target": {
+        "name": "emotion_surprised_amazed",
+        "label": "Surprised / Amazed",
+        "group": "Surprised",
+        "revision": "d2073b974aa28f4349b8ed276a69e7132966abc49cee60a98b0161f139bd6629"
+      },
+      "preserve_review": true,
+      "reason": "Only the core-family name changes; branch meaning and all motion steps are retained."
+    },
+    {
+      "source": {
+        "name": "emotion_surprise_amazed_awe",
+        "label": "Surprise / Amazed / Awe",
+        "group": "Surprise",
+        "revision": "d4acc4ca0c18f36e6df5e7470748526208652674b28bf77f54f20bc5c8e09e51"
+      },
+      "target": {
+        "name": "emotion_surprised_amazed_awe",
+        "label": "Surprised / Amazed / Awe",
+        "group": "Surprised",
+        "revision": "e583b0cd37ce5e98d0106a68e4460b861da8d139136923826db59e9e362b4ae7"
+      },
+      "preserve_review": true,
+      "reason": "Only the core-family name changes; branch meaning and all motion steps are retained."
+    },
+    {
+      "source": {
+        "name": "emotion_surprise_amazed_astonished",
+        "label": "Surprise / Amazed / Astonished",
+        "group": "Surprise",
+        "revision": "45f2b0f1e4caab91785d60a9214ba5deea62849b8468e7738c67cac292ef65ad"
+      },
+      "target": {
+        "name": "emotion_surprised_amazed_astonished",
+        "label": "Surprised / Amazed / Astonished",
+        "group": "Surprised",
+        "revision": "d6735bd62fda9c7f07250489c0bb7fbae4b236c744805b1f341cee9f172726b8"
+      },
+      "preserve_review": true,
+      "reason": "Only the core-family name changes; branch meaning and all motion steps are retained."
+    },
+    {
+      "source": {
+        "name": "emotion_surprise_confused",
+        "label": "Surprise / Confused",
+        "group": "Surprise",
+        "revision": "f709f7539ce47083a4aa97ae573d74c0b1d74f6f50d26605469e7c884b79b59c"
+      },
+      "target": {
+        "name": "emotion_surprised_confused",
+        "label": "Surprised / Confused",
+        "group": "Surprised",
+        "revision": "1e079db9448ef9c489ad273eb365d1d4f433c64c418a9e3f4de8d23983660c2a"
+      },
+      "preserve_review": true,
+      "reason": "Only the core-family name changes; branch meaning and all motion steps are retained."
+    },
+    {
+      "source": {
+        "name": "emotion_surprise_confused_perplexed",
+        "label": "Surprise / Confused / Perplexed",
+        "group": "Surprise",
+        "revision": "5e5683cde28d243515dac6330ddccfab63592c56bc393c033e1d14b7b1a82f3f"
+      },
+      "target": {
+        "name": "emotion_surprised_confused_perplexed",
+        "label": "Surprised / Confused / Perplexed",
+        "group": "Surprised",
+        "revision": "c748868e29c5d7a66cc96fea978590524b5beb99de1dbad1ef030c092f1b842b"
+      },
+      "preserve_review": true,
+      "reason": "Only the core-family name changes; branch meaning and all motion steps are retained."
+    },
+    {
+      "source": {
+        "name": "emotion_surprise_confused_disillusioned",
+        "label": "Surprise / Confused / Disillusioned",
+        "group": "Surprise",
+        "revision": "2ff7febff27397e0589f096574304f30d8046bc8aee285ebb3e08a5d2004bff4"
+      },
+      "target": {
+        "name": "emotion_surprised_confused_disillusioned",
+        "label": "Surprised / Confused / Disillusioned",
+        "group": "Surprised",
+        "revision": "e1dd4f7d15d251aafebbdd66364bafe19ac7e5bdbd14b1cb53978116c7ad84df"
+      },
+      "preserve_review": true,
+      "reason": "Only the core-family name changes; branch meaning and all motion steps are retained."
+    },
+    {
+      "source": {
+        "name": "emotion_surprise_startled",
+        "label": "Surprise / Startled",
+        "group": "Surprise",
+        "revision": "9861f09fdfbcfb2a06aa7718220aa6c3129ef745ac622135a393cf347ae79591"
+      },
+      "target": {
+        "name": "emotion_surprised_startled",
+        "label": "Surprised / Startled",
+        "group": "Surprised",
+        "revision": "89f5b91aa2564d09242b7ce90fcb4398214ddb0b2737f4847a9dc233c777498a"
+      },
+      "preserve_review": true,
+      "reason": "Only the core-family name changes; branch meaning and all motion steps are retained."
+    },
+    {
+      "source": {
+        "name": "emotion_surprise_startled_dismayed",
+        "label": "Surprise / Startled / Dismayed",
+        "group": "Surprise",
+        "revision": "11e3186b63f285d0661bcd8030e204608f2d6f80d17a9849259432903d5bd626"
+      },
+      "target": {
+        "name": "emotion_surprised_startled_dismayed",
+        "label": "Surprised / Startled / Dismayed",
+        "group": "Surprised",
+        "revision": "e69b22de6b206abc7a0598632d8c06f5d0f0863fd50ed459273ef5320c41a846"
+      },
+      "preserve_review": true,
+      "reason": "Only the core-family name changes; branch meaning and all motion steps are retained."
+    },
+    {
+      "source": {
+        "name": "emotion_surprise_startled_shocked",
+        "label": "Surprise / Startled / Shocked",
+        "group": "Surprise",
+        "revision": "f04d464e58dad5266d34bb39fb0bafe9d63de85b7a2f462818d9f7b130837d9d"
+      },
+      "target": {
+        "name": "emotion_surprised_startled_shocked",
+        "label": "Surprised / Startled / Shocked",
+        "group": "Surprised",
+        "revision": "a025bf87e45dc9645fdf6fac5ad902400e987ff340378c143b02a5da6157dacc"
+      },
+      "preserve_review": true,
+      "reason": "Only the core-family name changes; branch meaning and all motion steps are retained."
+    }
+  ],
+  "added": [
+    {
+      "name": "emotion_fearful_scared_helpless",
+      "label": "Fearful / Scared / Helpless",
+      "group": "Fearful",
+      "revision": "398dc67e575b6fe621f496c76ccd8f8ccb2eaeb5e1ab60f73ef069aad470b825",
+      "reason": "Helpless emphasizes blocked action, unlike the retained Frightened double flinch."
+    },
+    {
+      "name": "emotion_fearful_rejected_persecuted",
+      "label": "Fearful / Rejected / Persecuted",
+      "group": "Fearful",
+      "revision": "25ef8d260c821e7c95d2a71d8e8a34f1f395b3b1080c06313f197555e92a6500",
+      "reason": "Persecuted suggests being pursued; repeated rearward checks differ from Excluded's held withdrawal."
+    },
+    {
+      "name": "emotion_fearful_threatened_nervous",
+      "label": "Fearful / Threatened / Nervous",
+      "group": "Fearful",
+      "revision": "8efd5596ce99eb5f3a52764a705e96541c813e9268dbb5e59b3335df3b982fa9",
+      "reason": "Nervous uses small uneven checking turns rather than the larger sustained exposure retreat."
+    },
+    {
+      "name": "emotion_fearful_threatened_exposed",
+      "label": "Fearful / Threatened / Exposed",
+      "group": "Fearful",
+      "revision": "2c0a0b9b8bed183e00d3ce668bcaed2abba52f63116cf70acdcc76eff9c321f1",
+      "reason": "Exposed begins in visible openness before a protective withdrawal, unlike a repeated nervous scan."
+    },
+    {
+      "name": "emotion_angry_let_down",
+      "label": "Angry / Let down",
+      "group": "Angry",
+      "revision": "513e47f76471824ff7263002da6bfa6ce49209f6b235d673a9e8815640f07265",
+      "reason": "Let down needs failed expectation; the original Hurt motion is reserved for Sad / Hurt."
+    },
+    {
+      "name": "emotion_angry_let_down_betrayed",
+      "label": "Angry / Let down / Betrayed",
+      "group": "Angry",
+      "revision": "93d1c6da2ff5e773fb9d70842850bd74d7a031eadba906b5eca998fe3aeb185f",
+      "reason": "Betrayed juxtaposes initial openness and a sudden guarded look back; Resentful stays withdrawn."
+    },
+    {
+      "name": "emotion_angry_bitter_indignant",
+      "label": "Angry / Bitter / Indignant",
+      "group": "Angry",
+      "revision": "d5caa702a806f0161266d8716ba8734ae4729877599f2ca82bf5eaf018cb82ed",
+      "reason": "Indignant expresses a firm objection with an upright head rather than Violated's protective contraction."
+    },
+    {
+      "name": "emotion_angry_distant_numb",
+      "label": "Angry / Distant / Numb",
+      "group": "Angry",
+      "revision": "1e8d45f8032dcd4390310b7f6323d5ff9aa8346a92f56082c2281c773b4a2525",
+      "reason": "Numb deliberately has low movement and a long still interval; it does not use Suspicious checking behavior."
+    },
+    {
+      "name": "emotion_angry_critical_dismissive",
+      "label": "Angry / Critical / Dismissive",
+      "group": "Angry",
+      "revision": "de36856aec197bf05fcae6d5b16f8a7ab03ccd7d308285409c17244b34e86002",
+      "reason": "Dismissive ends attention decisively, unlike Skeptical's continuing sideways inspection."
+    },
+    {
+      "name": "emotion_disgusted_disapproving_embarrassed",
+      "label": "Disgusted / Disapproving / Embarrassed",
+      "group": "Disgusted",
+      "revision": "7b22b92363362b635cae9d3aec1e043285bf53362af8797c0cdb59079f7d5ca5",
+      "reason": "This Embarrassed branch depicts discomfort at what is observed; Sad / Hurt / Embarrassed keeps its inward hesitant bow."
+    },
+    {
+      "name": "emotion_disgusted_disappointed_appalled",
+      "label": "Disgusted / Disappointed / Appalled",
+      "group": "Disgusted",
+      "revision": "d8c3681274d488ce319d85a51f1feeff04f9cbcaa18a5e49fdf090de78e74d9c",
+      "reason": "Appalled combines disbelief and rejection; the retained Revolted clip has a repeated shudder."
+    },
+    {
+      "name": "emotion_disgusted_awful_nauseated",
+      "label": "Disgusted / Awful / Nauseated",
+      "group": "Disgusted",
+      "revision": "88ff45fcb4ecb338361be907c7b090b3e7c5a5f9eef6aeb99eba6ca073ac9c67",
+      "reason": "Nauseated uses a slow uncomfortable sway, not the old Revulsion clip's sharp tremors."
+    },
+    {
+      "name": "emotion_disgusted_repelled_horrified",
+      "label": "Disgusted / Repelled / Horrified",
+      "group": "Disgusted",
+      "revision": "56f35fb5598f2fb94da8854c2ef69d6dfd1cee2e6299536be451f7e68b2ebd55",
+      "reason": "Horrified has a large fast protective retreat and sustained avoidance; Hesitant makes an interrupted approach."
+    },
+    {
+      "name": "emotion_sad_hurt_disappointed",
+      "label": "Sad / Hurt / Disappointed",
+      "group": "Sad",
+      "revision": "e4de4fbce4dedd09dcdb29614f59c904340b81beee9fe1b152eb7452eb580eea",
+      "reason": "Disappointed in Hurt emphasizes unreturned expectation; Disgusted / Disappointed retains its distinct older movement."
+    },
+    {
+      "name": "emotion_sad_vulnerable_fragile",
+      "label": "Sad / Vulnerable / Fragile",
+      "group": "Sad",
+      "revision": "07785752c9cbd6076c56c1594deb5e54a1f39849067aa12e65d812ab8f046c79",
+      "reason": "Fragile uses an interrupted low-amplitude lift; Victimized holds a stronger defensive withdrawal."
+    },
+    {
+      "name": "emotion_happy_trusting",
+      "label": "Happy / Trusting",
+      "group": "Happy",
+      "revision": "199c4947ff11138698f41030c71236feb4dd193c4a43be07867a048390f7465e",
+      "reason": "Trusting is a gradual commitment to approach; Intimate stays close and Sensitive uses smaller tentative movement."
+    },
+    {
+      "name": "emotion_happy_peaceful_thankful",
+      "label": "Happy / Peaceful / Thankful",
+      "group": "Happy",
+      "revision": "5bf3e81ef5cd9084486f3b86d27e1e2632c28ea47c85267898dc0ec3335885b4",
+      "reason": "Thankful centers a deliberate bow and recovery, while Loving remains close and softly dips."
+    },
+    {
+      "name": "emotion_happy_powerful_creative",
+      "label": "Happy / Powerful / Creative",
+      "group": "Happy",
+      "revision": "8f6d8589cf145b2a6f6408bed14ff1b13285102eb2bdbb3f12fdfbe235129ab4",
+      "reason": "Creative uses exploration followed by commitment, unlike Courageous's retreat then direct advance."
+    },
+    {
+      "name": "emotion_happy_proud_successful",
+      "label": "Happy / Proud / Successful",
+      "group": "Happy",
+      "revision": "e61a9c4fc9179afa287e8c3eaa2cecd88a1cd613316c0ed87dc5ea1466cd0b12",
+      "reason": "Successful shows effort resolving into achievement; Confident starts with steady assured movement."
+    },
+    {
+      "name": "emotion_happy_interested_curious",
+      "label": "Happy / Interested / Curious",
+      "group": "Happy",
+      "revision": "3a0491cebb77ffb8dd5bed6847c9306daae8f943849ed493f6826e515c3d0d93",
+      "reason": "Curious focuses on one object with a second approach; Inquisitive's retained clip checks two viewing angles."
+    },
+    {
+      "name": "emotion_happy_content",
+      "label": "Happy / Content",
+      "group": "Happy",
+      "revision": "fc2714b6f4644e653e177870605757620a0faf6c8da7cc0184f3960bb1b96ef4",
+      "reason": "Content is restrained and unhurried; Joyful and Free are its more active distinct leaves."
+    },
+    {
+      "name": "emotion_happy_playful_cheeky",
+      "label": "Happy / Playful / Cheeky",
+      "group": "Happy",
+      "revision": "8075f684cb624dc0392b0dc1f4ee54944ad5e9daa922989990a66cc2b00fafc6",
+      "reason": "Cheeky emphasizes a mismatched body and head direction followed by a teasing beat; no arbitrary jitter."
+    },
+    {
+      "name": "emotion_happy_playful_aroused",
+      "label": "Happy / Playful / Aroused",
+      "group": "Happy",
+      "revision": "48d9f383c40527c32176a38be954e10fce8b725a74aa2c96cdefc1b189370d08",
+      "reason": "Aroused is interpreted as heightened activation and attention, expressed by a wake-and-orient sequence."
+    }
+  ],
+  "retired": [
+    {
+      "name": "emotion_anger_critical_sarcastic",
+      "label": "Anger / Critical / Sarcastic",
+      "group": "Anger",
+      "revision": "2735c6f33c553364bf89aa8600af4a780f6b9ba53751cf253ba1e8e9ce83ff99",
+      "reason": "Old wheel path has no selected target mapping; raw motion and review history remain archived."
+    },
+    {
+      "name": "emotion_anger_distant_suspicious",
+      "label": "Anger / Distant / Suspicious",
+      "group": "Anger",
+      "revision": "417c878a81f99f5e84debf65b9c045dea5397c4c1acb51c3bb8a41472e7be2b8",
+      "reason": "Old wheel path has no selected target mapping; raw motion and review history remain archived."
+    },
+    {
+      "name": "emotion_anger_mad_enraged",
+      "label": "Anger / Mad / Enraged",
+      "group": "Anger",
+      "revision": "42b52abfe3310b4845f4e6ddd01f4a0babc4f3639cb05395acb1744bcd0f25bb",
+      "reason": "Old wheel path has no selected target mapping; raw motion and review history remain archived."
+    },
+    {
+      "name": "emotion_anger_threatened_insecure",
+      "label": "Anger / Threatened / Insecure",
+      "group": "Anger",
+      "revision": "9cf9b9eec32ca661757266964886ae5e65db913c2ab8aeec115d492c3248a64a",
+      "reason": "Old wheel path has no selected target mapping; raw motion and review history remain archived."
+    },
+    {
+      "name": "emotion_disgust_avoidance_aversion",
+      "label": "Disgust / Avoidance / Aversion",
+      "group": "Disgust",
+      "revision": "3ad487045a45d33001ed34e4090c3143f4e0c2597fa310d0d25e31125d039e55",
+      "reason": "Old wheel path has no selected target mapping; raw motion and review history remain archived."
+    },
+    {
+      "name": "emotion_disgust_awful_revulsion",
+      "label": "Disgust / Awful / Revulsion",
+      "group": "Disgust",
+      "revision": "bafab252da188b862189b604d63dc183725b622971e22556845fb2d7e1029b62",
+      "reason": "Old wheel path has no selected target mapping; raw motion and review history remain archived."
+    },
+    {
+      "name": "emotion_disgust_disappointed_repugnant",
+      "label": "Disgust / Disappointed / Repugnant",
+      "group": "Disgust",
+      "revision": "0b0b6f9d08156ab81233039d802fdba3844544bcfa87184c5424b0190c03be0d",
+      "reason": "Old wheel path has no selected target mapping; raw motion and review history remain archived."
+    },
+    {
+      "name": "emotion_disgust_disapproval_loathing",
+      "label": "Disgust / Disapproval / Loathing",
+      "group": "Disgust",
+      "revision": "4024fcadc3526a9a3bb62ff68ce9ba91054748099c84608c6ff7bb931d7bf9d7",
+      "reason": "Old wheel path has no selected target mapping; raw motion and review history remain archived."
+    },
+    {
+      "name": "emotion_fear_rejected_inadequate",
+      "label": "Fear / Rejected / Inadequate",
+      "group": "Fear",
+      "revision": "9a48be63520840663575054a85539b1d445a94d16faebde0554bb1a0a9f973f4",
+      "reason": "Old wheel path has no selected target mapping; raw motion and review history remain archived."
+    },
+    {
+      "name": "emotion_fear_scared_terrified",
+      "label": "Fear / Scared / Terrified",
+      "group": "Fear",
+      "revision": "8efcc4cc5b92e70f04136a43daa73039f91617e48b765b344b4f5240aa36df1e",
+      "reason": "Old wheel path has no selected target mapping; raw motion and review history remain archived."
+    },
+    {
+      "name": "emotion_happy_interested_amused",
+      "label": "Happy / Interested / Amused",
+      "group": "Happy",
+      "revision": "72b581baf27148666b381ddadbb9f7341c3f9fee4a2514510a5fcc514a0fc788",
+      "reason": "Old wheel path has no selected target mapping; raw motion and review history remain archived."
+    },
+    {
+      "name": "emotion_happy_joyful_ecstatic",
+      "label": "Happy / Joyful / Ecstatic",
+      "group": "Happy",
+      "revision": "30833197ff586778ddbfb1a18a3d942216dad1eda87cfcbd3d3e52e69a2821b9",
+      "reason": "Old wheel path has no selected target mapping; raw motion and review history remain archived."
+    },
+    {
+      "name": "emotion_happy_optimistic_open",
+      "label": "Happy / Optimistic / Open",
+      "group": "Happy",
+      "revision": "ed7751631caec4d519c43d945548de06d2bdcc2ba86f74818d48651e7e6c81ad",
+      "reason": "Old wheel path has no selected target mapping; raw motion and review history remain archived."
+    },
+    {
+      "name": "emotion_happy_powerful_provocative",
+      "label": "Happy / Powerful / Provocative",
+      "group": "Happy",
+      "revision": "14b9bc0841890cca2e7db61f64273f77fde4221fe81559ce14fc27a7f8de784b",
+      "reason": "Old wheel path has no selected target mapping; raw motion and review history remain archived."
+    },
+    {
+      "name": "emotion_happy_proud_important",
+      "label": "Happy / Proud / Important",
+      "group": "Happy",
+      "revision": "4ef413424e627aa9e7c35e2e29c3607a43c69c9db082bf4bfc2d93ca31d31255",
+      "reason": "Old wheel path has no selected target mapping; raw motion and review history remain archived."
+    },
+    {
+      "name": "emotion_sad_abandoned",
+      "label": "Sad / Abandoned",
+      "group": "Sad",
+      "revision": "f551186720fa79cc41b612da107ed8bfac69adeb394caeaf095e8d0ca2482883",
+      "reason": "Old wheel path has no selected target mapping; raw motion and review history remain archived."
+    },
+    {
+      "name": "emotion_sad_abandoned_ignored",
+      "label": "Sad / Abandoned / Ignored",
+      "group": "Sad",
+      "revision": "ed9524d982beca086f6e99549ab9b908cffd974be14716a144b8a51598b97275",
+      "reason": "Old wheel path has no selected target mapping; raw motion and review history remain archived."
+    },
+    {
+      "name": "emotion_sad_bored",
+      "label": "Sad / Bored",
+      "group": "Sad",
+      "revision": "4ea18f7b979846dea53114978f928defc19e2a0115c82458624836980de0609c",
+      "reason": "Old wheel path has no selected target mapping; raw motion and review history remain archived."
+    },
+    {
+      "name": "emotion_sad_bored_apathetic",
+      "label": "Sad / Bored / Apathetic",
+      "group": "Sad",
+      "revision": "52bbcc07d45d464807b4c06e0f8def57cf40aa3347bc139c94cb48a3cd13ab2a",
+      "reason": "Old wheel path has no selected target mapping; raw motion and review history remain archived."
+    },
+    {
+      "name": "emotion_sad_bored_indifferent",
+      "label": "Sad / Bored / Indifferent",
+      "group": "Sad",
+      "revision": "8c27b3a3fd186b7be5399c18733b60608ece254c120438cc6ddcbb9de5ceed3f",
+      "reason": "Old wheel path has no selected target mapping; raw motion and review history remain archived."
+    }
+  ],
+  "counts": {
+    "source": 123,
+    "target": 126,
+    "mapped": 103,
+    "added": 23,
+    "retired": 20,
+    "preserve_review": 74
+  }
+}

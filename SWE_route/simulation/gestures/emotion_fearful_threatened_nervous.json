@@ -1,0 +1,57 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_fearful_threatened_nervous",
+  "label": "Fearful / Threatened / Nervous",
+  "group": "Fearful",
+  "description": "Make three small anticipatory checks, pausing before each change of gaze.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": 0.0,
+        "shoulder_pitch_joint": 0.1,
+        "elbow_pitch_joint": -0.18,
+        "neck_yaw_joint": -0.14,
+        "head_pitch_joint": -0.03
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.4
+    },
+    {
+      "hold_seconds": 0.2
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.0,
+        "shoulder_pitch_joint": 0.11,
+        "elbow_pitch_joint": -0.2,
+        "neck_yaw_joint": 0.14,
+        "head_pitch_joint": -0.07
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.3
+    },
+    {
+      "hold_seconds": 0.38
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.0,
+        "shoulder_pitch_joint": 0.13,
+        "elbow_pitch_joint": -0.23,
+        "neck_yaw_joint": -0.08,
+        "head_pitch_joint": 0.02
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.3
+    },
+    {
+      "hold_seconds": 0.65
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 0.8
+    }
+  ]
+}

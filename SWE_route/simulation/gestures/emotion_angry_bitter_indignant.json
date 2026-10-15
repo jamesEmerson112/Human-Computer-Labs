@@ -1,0 +1,65 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_angry_bitter_indignant",
+  "label": "Angry / Bitter / Indignant",
+  "group": "Angry",
+  "description": "Lift into a firm upright stance and give one measured refusing sweep.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": 0.0,
+        "shoulder_pitch_joint": -0.12,
+        "elbow_pitch_joint": -0.14,
+        "neck_yaw_joint": 0.0,
+        "head_pitch_joint": -0.26
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.5
+    },
+    {
+      "hold_seconds": 0.35
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.0,
+        "shoulder_pitch_joint": -0.12,
+        "elbow_pitch_joint": -0.14,
+        "neck_yaw_joint": -0.26,
+        "head_pitch_joint": -0.2
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.5
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.0,
+        "shoulder_pitch_joint": -0.12,
+        "elbow_pitch_joint": -0.14,
+        "neck_yaw_joint": 0.26,
+        "head_pitch_joint": -0.2
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.6
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.0,
+        "shoulder_pitch_joint": -0.12,
+        "elbow_pitch_joint": -0.14,
+        "neck_yaw_joint": 0.0,
+        "head_pitch_joint": -0.22
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.5
+    },
+    {
+      "hold_seconds": 0.7
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 0.8
+    }
+  ]
+}

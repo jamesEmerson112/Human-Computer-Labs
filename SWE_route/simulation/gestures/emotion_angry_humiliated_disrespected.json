@@ -1,0 +1,54 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_angry_humiliated_disrespected",
+  "label": "Angry / Humiliated / Disrespected",
+  "group": "Angry",
+  "description": "Pull back from an attempted approach and lower the head.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": -0.063,
+        "shoulder_pitch_joint": 0.049,
+        "elbow_pitch_joint": -0.098,
+        "neck_yaw_joint": 0.105,
+        "head_pitch_joint": 0.005
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.49
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.18,
+        "shoulder_pitch_joint": 0.2,
+        "elbow_pitch_joint": -0.33,
+        "neck_yaw_joint": 0.3,
+        "head_pitch_joint": 0.3
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.49
+    },
+    {
+      "hold_seconds": 0.9
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": -0.18,
+        "shoulder_pitch_joint": 0.14,
+        "elbow_pitch_joint": -0.28,
+        "neck_yaw_joint": 0.3,
+        "head_pitch_joint": 0.4
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.84
+    },
+    {
+      "hold_seconds": 0.45
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 0.7
+    }
+  ]
+}

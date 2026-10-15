@@ -27,7 +27,8 @@ def snapshot(motion):
 limits = load_limits()
 names = sorted(limits)
 gestures = load_gestures(limits)
-print(json.dumps({"limits": {name: asdict(limit) for name, limit in limits.items()}}))
+print(json.dumps({"limits": {name: asdict(limit) for name, limit in limits.items()},
+                  "gesture_names": sorted(gestures)}))
 for gesture in gestures.values():
     for start in ("neutral", "lower", "upper"):
         motion = MotionController(limits)

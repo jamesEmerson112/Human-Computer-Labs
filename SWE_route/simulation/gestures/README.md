@@ -1,8 +1,10 @@
 # Editing lamp gestures
 
-Each `.json` file in this folder defines one gesture. The viewer creates a button
-from its `label`, or a dropdown entry inside its optional `group` folder.
-Edit or add a file, save it, then click **Reload gestures**.
+Each top-level `.json` file in this folder defines one gesture. The native viewer
+lists its `label` and optional emotion family. The Python reference viewer creates
+a button or an entry in its optional `group` folder. Archive subfolders are not
+loaded. Edit or add a file, save it, then click **Reload gestures** in the Python
+reference viewer, or restart the native controller and refresh its viewer.
 The whole folder is validated before replacing the loaded library. A failed
 reload shows the filename and error and keeps the previous working gestures.
 An already-playing gesture finishes its original sequence unless interrupted.
@@ -70,11 +72,20 @@ show both. Stop requests a physical hold rather than freezing the simulated body
 
 ## Gesture comparison suite
 
-The library contains **123 gestures**: the original nine below and
-[114 emotion-wheel gestures](emotions.md) spanning every entry in all three
-rings of the supplied wheel. The catalog preserves repeated words in their
-respective branches. Choose a family and emotion in the viewer, then click
-**Play emotion**. Every emotion clip returns to its starting pose.
+The library contains **126 gestures**: the original nine below and
+[117 emotion-wheel gestures](emotions.md) spanning the selected wheel's three
+rings with the entire **Bad** branch excluded. The six families are Fearful,
+Angry, Disgusted, Sad, Happy, and Surprised. Repeated words retain their complete
+branch context. Choose a family and emotion in the viewer, then play the clip.
+Every emotion clip returns to its starting pose. **Neutral / Reset pose** is a
+separate action; `idle_hold` holds the current pose and does not reset to neutral.
+
+The native review checklist uses **checked = pass; unchecked = fail**. The
+[coverage audit](../catalogs/emotion-wheel-audit.md) explains the migration.
+Original clips and catalog documents are byte-preserved in
+[the archive](archive/six-core-wheel/manifest.json). Approvals transfer only for
+unchanged meaning and verified motion revisions; reassigned and authored clips
+need a fresh human review. Technical checks do not establish recognition.
 
 | File | What it exercises |
 |---|---|
@@ -121,7 +132,14 @@ From `SWE_route/simulation/`:
 
 ```powershell
 uv run --locked python -m lamp_sim --check-gestures
+uv run --locked python tools/build_emotion_library.py --check
 ```
+
+The second command verifies the frozen archive, active file hashes, and generated
+audit/migration metadata. It does not modify files. `--apply` is the explicit
+archive-and-migrate command; it refuses to overwrite edited or unknown active
+clips. For later animation revisions, update the authoring decision and migration
+metadata deliberately so a previous pass cannot silently approve a changed motion.
 
 For Python integrations, load and validate the same data before playback:
 

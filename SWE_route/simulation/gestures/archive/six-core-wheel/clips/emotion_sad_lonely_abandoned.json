@@ -1,0 +1,71 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_sad_lonely_abandoned",
+  "label": "Sad / Lonely / Abandoned",
+  "group": "Sad",
+  "description": "Reach toward one side, wait for a response, and withdraw.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": 0.12,
+        "shoulder_pitch_joint": 0.01,
+        "elbow_pitch_joint": -0.19,
+        "neck_yaw_joint": -0.14,
+        "head_pitch_joint": 0.05
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.3
+    },
+    {
+      "hold_seconds": 0.72
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.072,
+        "shoulder_pitch_joint": 0.154,
+        "elbow_pitch_joint": -0.114,
+        "neck_yaw_joint": -0.084,
+        "head_pitch_joint": 0.17
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.3
+    },
+    {
+      "hold_seconds": 0.6
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.24,
+        "shoulder_pitch_joint": 0.0,
+        "elbow_pitch_joint": -0.38,
+        "neck_yaw_joint": -0.28,
+        "head_pitch_joint": 0.22
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.3
+    },
+    {
+      "hold_seconds": 1.2
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.24,
+        "shoulder_pitch_joint": 0.18,
+        "elbow_pitch_joint": -0.38,
+        "neck_yaw_joint": -0.28,
+        "head_pitch_joint": 0.3
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.3
+    },
+    {
+      "hold_seconds": 1.2
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 1.3
+    }
+  ]
+}

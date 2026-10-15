@@ -1,0 +1,51 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_angry_critical_dismissive",
+  "label": "Angry / Critical / Dismissive",
+  "group": "Angry",
+  "description": "Give a short sideways head flick, turn the body away, and break the gaze.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": 0.0,
+        "shoulder_pitch_joint": -0.06,
+        "elbow_pitch_joint": -0.06,
+        "neck_yaw_joint": -0.12,
+        "head_pitch_joint": -0.12
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.45
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.0,
+        "shoulder_pitch_joint": -0.06,
+        "elbow_pitch_joint": -0.06,
+        "neck_yaw_joint": 0.3,
+        "head_pitch_joint": 0.12
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.3
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.28,
+        "shoulder_pitch_joint": 0.08,
+        "elbow_pitch_joint": -0.1,
+        "neck_yaw_joint": 0.38,
+        "head_pitch_joint": 0.16
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.7
+    },
+    {
+      "hold_seconds": 0.9
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 0.8
+    }
+  ]
+}

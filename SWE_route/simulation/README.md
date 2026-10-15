@@ -12,7 +12,7 @@ needed to run this playground.
 The native stack lives alongside the Python reference:
 **Three.js controls → WebSocket → Rust motion controller → MuJoCo 3.14.0 → observed body poses → Three.js**.
 Rust owns motion and physics in one process; the browser interpolates observed
-poses for display. The same 123 JSON gestures and supplied robot assets are used.
+poses for display. Both runtimes use the same 126 JSON gestures and supplied robot assets.
 The Python launch command below remains available for comparison.
 
 Prerequisites: Rust 1.92 or newer, Node.js 22.12 or newer, and a C compiler
@@ -70,8 +70,48 @@ to revise. Exporting and checking boxes do not change gesture JSON or start moti
 **Import review** restores a saved file, replacing the current checks and notes.
 Unknown names are skipped and reported; animations missing from the imported
 file are unchecked. Invalid or unrelated files leave the existing review intact.
-Reviews follow animation names; if you manually replace a passed animation's
-motion, uncheck it until you have reviewed the replacement.
+Version 2 reviews include each animation's revision. Editing a gesture invalidates
+its earlier pass while retaining notes and the previous decision in exportable
+history. Version 1 reports can migrate through the explicit old-to-new catalog
+mapping; because they have no revision hashes, this assumes they describe the
+archived original library. Changed or reassigned motions require a new check.
+The original browser storage is retained as a backup.
+
+### Audit the selected emotion wheel
+
+The selected wheel contains **Fearful, Angry, Disgusted, Sad, Happy, and
+Surprised**. Its complete **Bad** branch is excluded. There are **117 emotion
+entries** (6 core, 37 middle, 74 outer), plus the nine original utility clips.
+**Neutral / Reset pose** is a separate control that smoothly requests zero joint
+angles; `idle_hold` holds the current pose and is not a reset animation.
+
+Use the ring filter to review core emotions first, then middle and outer rings.
+For each comparison, use Reset pose, the same camera, and Normal pace. Judge the
+movement's meaning, intensity, timing, and distinction from neighboring labels.
+Check accepted motions and note what should change on failed ones. Repeated
+words retain their full branch path. No automated check assigns human approval.
+
+The [catalog audit](catalogs/emotion-wheel-audit.md) records retained, renamed,
+reassigned, added, and retired entries. The [migration manifest](catalogs/emotion-wheel-migration.json)
+records which reviews can transfer; the original files are preserved under
+[`gestures/archive/six-core-wheel/`](gestures/archive/six-core-wheel/).
+Archived documents retain their original bytes and relative links; use the
+active [emotion catalog](gestures/emotions.md) to browse the current files.
+
+To record a new technical audit, first generate a matching physics reference,
+then choose a fresh audit output directory:
+
+```powershell
+uv run --locked python -m lamp_sim.benchmark --repeats 1 --speed 0.5 --output benchmarks/my-wheel/reference
+uv run --locked python tools/audit_emotion_motion.py --physics-reference benchmarks/my-wheel/reference --output benchmarks/my-wheel/motion-audit
+```
+
+The audit checks requested limits, velocity, completion, interruption, return
+poses, and reset. It also reports actual MuJoCo tracking and contact observations
+from neutral starts, plus close trajectory pairs to inspect visually. Similarity
+flags are review prompts, not proof that an expression is right or wrong.
+The [recorded wheel audit](benchmarks/2026-10-14-wheel-audit/README.md) includes
+the latest technical results and the ten similar pairs to prioritize in review.
 
 ### Ubuntu and standalone deployment
 
@@ -205,12 +245,12 @@ may still settle. **Reset pose** smoothly requests zero.
 
 ## Edit movements as JSON
 
-The library loads **123 gestures** from [`gestures/`](gestures/README.md): the
-original nine above plus [114 emotion-wheel entries](gestures/emotions.md).
-In **Try a movement > Gestures**, expand Anger, Disgust, Sad, Happy, Surprise,
-or Fear, choose an **Emotion**, and click **Play emotion**. The new clips cover
-all three rings of the supplied wheel, including context-specific variants of
-repeated words. Each has a distinct motion sequence and returns to its starting
+The library loads **126 gestures** from [`gestures/`](gestures/README.md): the
+original nine above plus [117 emotion-wheel entries](gestures/emotions.md).
+In the Python viewer's **Try a movement > Gestures**, expand Angry, Disgusted,
+Sad, Happy, Surprised, or Fearful, choose an **Emotion**, and click **Play emotion**.
+The clips cover all three rings of the selected wheel except its Bad branch,
+including context-specific variants of repeated words. Each returns to its starting
 pose. These are expressive interpretations that need human evaluation for
 recognizability. Restart an older running viewer to load the grouped controls.
 
@@ -285,12 +325,13 @@ and source hashes. Keep existing runs unchanged. Add a gesture JSON, validate it
 then rerun with the same settings to compare. These are headless measurements;
 they do not measure browser FPS or establish Ubuntu performance.
 The preserved October 1 baseline covers the original nine gestures only.
-With the full emotion library, three repeats across four modes produce 1,476
+With the full emotion library, three repeats across four modes produce 1,512
 measured trials plus warmups, so allow more time for a complete run.
 
 The [October 13 baseline](benchmarks/2026-10-13-current-setup/README.md) records
-the current Python/MuJoCo/viser setup before any controller-language or frontend
-changes. It includes all 123 gestures plus a separate browser workload.
+the previous Python/MuJoCo/viser setup before any controller-language or frontend
+changes. It includes the original 123 gestures plus a separate browser workload.
+It is a historical workload, not a matching reference for the current 126 clips.
 To repeat both measurements, choose new output directories and run sequentially:
 
 ```powershell

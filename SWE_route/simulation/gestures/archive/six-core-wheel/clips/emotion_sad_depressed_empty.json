@@ -1,0 +1,29 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_sad_depressed_empty",
+  "label": "Sad / Depressed / Empty",
+  "group": "Sad",
+  "description": "Move into a subdued low pose and remain nearly still.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": 0.0,
+        "shoulder_pitch_joint": 0.08,
+        "elbow_pitch_joint": -0.32,
+        "neck_yaw_joint": 0.04,
+        "head_pitch_joint": 0.3
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 1.5
+    },
+    {
+      "hold_seconds": 3.0
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 1.5
+    }
+  ]
+}

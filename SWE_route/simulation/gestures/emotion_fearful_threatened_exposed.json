@@ -1,0 +1,54 @@
+{
+  "$schema": "../gesture.schema.json",
+  "schema_version": 1,
+  "name": "emotion_fearful_threatened_exposed",
+  "label": "Fearful / Threatened / Exposed",
+  "group": "Fearful",
+  "description": "Freeze with the shade raised, then tuck inward and turn partly away.",
+  "units": "radians",
+  "steps": [
+    {
+      "offsets": {
+        "base_yaw_joint": 0.0,
+        "shoulder_pitch_joint": -0.06,
+        "elbow_pitch_joint": -0.08,
+        "neck_yaw_joint": 0.0,
+        "head_pitch_joint": -0.22
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.45
+    },
+    {
+      "hold_seconds": 0.65
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.16,
+        "shoulder_pitch_joint": 0.18,
+        "elbow_pitch_joint": -0.32,
+        "neck_yaw_joint": 0.25,
+        "head_pitch_joint": 0.16
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.5
+    },
+    {
+      "offsets": {
+        "base_yaw_joint": 0.2,
+        "shoulder_pitch_joint": 0.2,
+        "elbow_pitch_joint": -0.42,
+        "neck_yaw_joint": 0.3,
+        "head_pitch_joint": 0.32
+      },
+      "on_limit": "reverse",
+      "duration_seconds": 0.7
+    },
+    {
+      "hold_seconds": 0.8
+    },
+    {
+      "return_to_start": true,
+      "duration_seconds": 0.8
+    }
+  ]
+}

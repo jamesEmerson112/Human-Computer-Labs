@@ -1,0 +1,12 @@
+{
+  "$schema": "../gesture.schema.json", "schema_version": 1,
+  "name": "excited", "label": "Excited", "units": "radians",
+  "description": "Quick alternating head and neck motion to reveal lag and overshoot.",
+  "steps": [
+    {"offsets": {"head_pitch_joint": 0.2, "neck_yaw_joint": 0.3, "elbow_pitch_joint": -0.15}},
+    {"offsets": {"head_pitch_joint": -0.2, "neck_yaw_joint": -0.3, "elbow_pitch_joint": 0.0}},
+    {"offsets": {"head_pitch_joint": 0.2, "neck_yaw_joint": 0.3, "elbow_pitch_joint": -0.15}},
+    {"offsets": {"head_pitch_joint": -0.2, "neck_yaw_joint": -0.3, "elbow_pitch_joint": 0.0}},
+    {"return_to_start": true}
+  ]
+}
