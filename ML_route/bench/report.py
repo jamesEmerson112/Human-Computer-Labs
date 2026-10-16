@@ -232,8 +232,8 @@ def vision_heads_tables():
     if r is None:
         return ["Not run."]
     out = ["**Text only.** Weighted F1 on MELD test. The first row repeats last night's best fair text set to "
-           "check that the run reproduces; the others use Nemotron's transcripts.", ""]
-    out += seeded_table({**r.get("reproducibility", {}), **r.get("text_nemotron", {})}, False)
+           "check that the run reproduces; the others use Whisper's transcripts, the words the demo reads.", ""]
+    out += seeded_table({**r.get("reproducibility", {}), **r.get("text_nemotron", {}), **r.get("text_live", {})}, False)
     base = next(iter(r.get("reproducibility", {}).values()), {})
     if "mlp" in base and r.get("last_night_mlp_test_wf1") is not None:
         out += ["", f"Last night's single MLP run on this set scored {r['last_night_mlp_test_wf1']}; seed 0 here "

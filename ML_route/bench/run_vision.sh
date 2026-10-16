@@ -67,24 +67,10 @@ if [ "$CLIPS" -eq 1 ]; then
 else
   skip frames "no complete clips"
 fi
-# nemotron_text.py reads the decoded audio that last night's audio_cache.py left on the volume; rebuild it if gone.
-if [ ! -f /workspace/audio/train.npz ] || [ ! -f /workspace/audio/dev.npz ] || [ ! -f /workspace/audio/test.npz ]; then
-  if [ "$CLIPS" -eq 1 ]; then
-    step audio_cache "$HF" audio_cache.py
-  else
-    skip audio_cache "no complete clips, so nemotron_text.py will fail"
-  fi
-fi
-step nemotron_text "$HF" nemotron_text.py
-step features_nemotron "$HF" features.py --text roberta-base --voice none --versions nemotron
-# EmbeddingGemma is gated; without a token, the cached weights from the earlier run are used offline.
-if [ -s "$HF_HOME/token" ] || [ -n "${HF_TOKEN:-}" ]; then
-  step features_nemotron_gemma "$HF" features.py --text embeddinggemma-300m --voice none --versions nemotron
-else
-  echo "$(date -u +%FT%TZ) note: no Hugging Face token, EmbeddingGemma runs offline from the cache" >> "$STATUS"
-  step features_nemotron_gemma env HF_HUB_OFFLINE=1 "$HF" features.py --text embeddinggemma-300m --voice none \
-    --versions nemotron
-fi
+# The demo reads Whisper's words, and last night's run already extracted the Whisper-text features, so the
+# Nemotron transcripts and their text features are not rebuilt.
+skip nemotron_text "the user chose Whisper for speech to text; heads pair vision with Whisper text"
+skip features_nemotron "Whisper-text features from the earlier run are used"
 if [ "$CLIPS" -eq 1 ]; then
   step vision_features "$HF" vision_features.py --encoders all
   step vlm_qwen3.5-4b "$HF" vlm_features.py --models qwen3.5-4b=Qwen/Qwen3.5-4B

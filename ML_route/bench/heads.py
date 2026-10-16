@@ -2,7 +2,7 @@
 
 Contents:
 - SUSPECT: encoders left out of the best-text pick
-- VIEWS, SEEDS, TEXT_BASE, TEXT_NEMOTRON, VOICE_SETS: what the --vision mode scores
+- VIEWS, SEEDS, TEXT_BASE, TEXT_LIVE, VOICE_SETS: what the --vision mode scores
 - load: reads one encoder's features for a split
 - join: lines up text and voice features by clip
 - subset: keeps only the named clips of one feature set
@@ -37,8 +37,9 @@ SEEDS = (0, 1, 2)
 """Description: The MLP seeds used in --vision mode."""
 TEXT_BASE = ("roberta-base", "completed")
 """Description: Last night's best fair text set, MELD's published words, whose MLP scored 61.36 on test."""
-TEXT_NEMOTRON = [("roberta-base", "nemotron"), ("embeddinggemma-300m", "nemotron")]
-"""Description: Text sets built from Nemotron's transcripts, the words a live demo would actually have."""
+TEXT_LIVE = [("embeddinggemma-300m", "whisper"), ("roberta-base", "whisper")]
+"""Description: Text sets built from Whisper's transcripts, the words the live demo reads; EmbeddingGemma is the
+chosen text encoder, so it comes first and feeds the all-three row."""
 VOICE_SETS = [("emotion2vec-plus-large", "audio"), ("hubert-large", "audio")]
 """Description: The voice sets joined in the all-three row."""
 
@@ -311,7 +312,7 @@ def gain(joined, alone):
 
 def vision():
     """
-    Description: Scores the reproducibility row, the Nemotron text rows, every vision set alone, every
+    Description: Scores the reproducibility row, the Whisper text rows, every vision set alone, every
     vision set joined with each base text set, and the best text with the best vision set and two voice
     sets, then writes heads_vision.json. Every joined row also carries the text-only scores on exactly
     the same train, dev and test clips, and the gain over them.
@@ -320,7 +321,7 @@ def vision():
     Constraints: never writes heads.json; a missing or failing set is recorded and skipped. The file is
     rewritten after every row, so a run killed part way keeps the rows it finished.
     """
-    results = {"reproducibility": {}, "text_nemotron": {}, "vision": {}, "text_plus_vision": {}, "all_three": {}}
+    results = {"reproducibility": {}, "text_live": {}, "vision": {}, "text_plus_vision": {}, "all_three": {}}
     alone_cache = {}
     out_path = RESULTS / "heads_vision.json"
 
@@ -380,28 +381,28 @@ def vision():
         old = json.loads(last.read_text(encoding="utf-8")).get("text", {}).get("/".join(TEXT_BASE), {})
         results["last_night_mlp_test_wf1"] = old.get("mlp", {}).get("test_wf1")
     run("reproducibility", "/".join(TEXT_BASE), lambda: evaluate_seeds(*splits(*TEXT_BASE)))
-    for text in TEXT_NEMOTRON:
-        run("text_nemotron", "/".join(text), lambda text=text: evaluate_seeds(*splits(*text)))
+    for text in TEXT_LIVE:
+        run("text_live", "/".join(text), lambda text=text: evaluate_seeds(*splits(*text)))
     vision_sets = sorted((p.name, v) for p in FEATS.iterdir() if p.is_dir() for v in VIEWS
                          if (p / f"{v}_train.npz").exists())
     print("vision sets:", ["/".join(s) for s in vision_sets], flush=True)
     for vs in vision_sets:
         run("vision", "/".join(vs), lambda vs=vs: evaluate_seeds(*splits(*vs)))
     for vs in vision_sets:
-        for text in (TEXT_BASE, TEXT_NEMOTRON[0]):
+        for text in (TEXT_BASE, *TEXT_LIVE):
             run("text_plus_vision", f"{'/'.join(text)}+{'/'.join(vs)}", with_text(text, [vs]))
     scored = [(k, v["mlp"]["dev_wf1_mean"]) for k, v in results["vision"].items() if "mlp" in v]
     if scored:
         best = max(scored, key=lambda kv: kv[1])[0]
         results["best_vision_by_dev"] = best
         others = [tuple(best.split("/", 1))] + VOICE_SETS
-        key = "+".join("/".join(s) for s in [TEXT_NEMOTRON[0]] + others)
-        run("all_three", key, with_text(TEXT_NEMOTRON[0], others))
+        key = "+".join("/".join(s) for s in [TEXT_LIVE[0]] + others)
+        run("all_three", key, with_text(TEXT_LIVE[0], others))
     results["notes"] = (
         "One line at a time with no dialogue context. Logistic regression runs once; the MLP runs with seeds "
         f"{', '.join(str(s) for s in SEEDS)} and is reported as the mean and sample standard deviation over "
-        "them; seed 0 is the seed last night's single run used. The nemotron rows train, tune and test on "
-        "Nemotron's transcripts of the clips, the words a live demo would have; completed rows use MELD's "
+        "them; seed 0 is the seed last night's single run used. The whisper rows train, tune and test on "
+        "Whisper's transcripts of the clips, the words the live demo reads; completed rows use MELD's "
         "published words. Vision sets miss clips whose frames failed to extract, so a joined row drops those "
         "clips from train, dev and test alike; each joined row is therefore compared with the text-only heads "
         "trained and scored on exactly the same clips, and the gain is the difference. The gain's standard "
