@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MELD Emotion Prototype</title>
+<meta name="description" content="A take-home ML prototype: words and voice in, a MELD emotion and a short reply out.">
+<style>
+:root {
+  --bg: #fbfaf7;
+  --fg: #1f2328;
+  --muted: #5d6470;
+  --line: #dcd9d2;
+  --card: #ffffff;
+  --accent: #1a6b63;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #14171b;
+    --fg: #e8e6e1;
+    --muted: #a3a8b0;
+    --line: #2c3138;
+    --card: #1b1f24;
+    --accent: #5cc2b6;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #14171b;
+  --fg: #e8e6e1;
+  --muted: #a3a8b0;
+  --line: #2c3138;
+  --card: #1b1f24;
+  --accent: #5cc2b6;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font: 16px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+main { max-width: 760px; margin: 0 auto; padding: 48px 16px 64px; }
+h1 { font-size: 1.9rem; line-height: 1.2; margin: 0 0 12px; }
+.lede { color: var(--muted); margin: 0 0 32px; }
+.cards { display: grid; gap: 14px; }
+a.card {
+  display: block;
+  padding: 18px 20px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--card);
+  color: inherit;
+  text-decoration: none;
+}
+a.card:hover, a.card:focus-visible { border-color: var(--accent); outline: none; }
+.card strong { display: block; font-size: 1.1rem; color: var(--accent); margin-bottom: 4px; }
+.card span { color: var(--muted); }
+footer { margin-top: 40px; font-size: 0.9rem; color: var(--muted); }
+footer a { color: var(--accent); }
+</style>
+</head>
+<body>
+<main>
+  <h1>MELD emotion prototype</h1>
+  <p class="lede">A take-home submission for the ML route: each MELD clip goes through Whisper for its words, three
+  frozen encoders for features, a small head trained in Rust for one of seven emotions, and LFM2.5 for a short
+  reply. The whole inference path holds about 2.8 billion learned parameters, under the brief's 6 billion.</p>
+
+  <div class="cards">
+    <a class="card" href="explainers/meld-head-training.html">
+      <strong>How the head is trained</strong>
+      <span>The approach, the model library with a 6B combo builder, the track comparison, the A40 results and
+      the training steps.</span>
+    </a>
+    <a class="card" href="explainers/bench-results.html">
+      <strong>Benchmark results</strong>
+      <span>Sortable tables from the A40 run: speech to text, frozen encoders with trained heads, reply-writer
+      speed and vision-language models.</span>
+    </a>
+    <a class="card" href="https://github.com/jamesEmerson112/Human-Computer-Labs">
+      <strong>Source and steps to reproduce</strong>
+      <span>The repository and its README: environments, cleaned labels, Whisper transcripts, features, Rust
+      training and the live player.</span>
+    </a>
+  </div>
+
+  <footer>Built on <a href="https://affective-meld.github.io/">MELD</a>, the Multimodal EmotionLines Dataset.</footer>
+</main>
+</body>
+</html>

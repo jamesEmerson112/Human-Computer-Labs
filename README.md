@@ -158,4 +158,4 @@ For each clip, Whisper writes the words, the head picks the emotion, and LFM2.5 
 
 - `ML_route/bench/results/README.md` holds the A40 benchmarks: speech-to-text models, frozen encoders with trained heads, reply-writer speed, and vision-language models.
 - `ML_route/hello_world/hyperparameters.toml` records the head's training settings and the measured effect of each technique.
-- `docs/explainers/meld-head-training.html` explains the approach, with an interactive version at https://claude.ai/artifact/D7XqirEfGAJDvMPBq1xemQ.
+- The project site at https://jamesemerson112.github.io/Human-Computer-Labs/ hosts the explainer (`docs/explainers/meld-head-training.html`), which covers the approach, the model library and the training steps, and the sortable benchmark results (`docs/explainers/bench-results.html`).

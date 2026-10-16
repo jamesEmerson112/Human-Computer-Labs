@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Saved copy of the artifact https://claude.ai/artifact/J6sK8834i2KEjDgpEr92iD, for GitHub Pages. -->
+<title>MELD Overnight Benchmarks</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column of sortable tables, each section a benchmark, with a facts strip on top. */
+:root {
+  --bg: #f4f6f6;
+  --panel: #ffffff;
+  --fg: #172022;
+  --muted: #5a6a6d;
+  --line: #d9e1e2;
+  --accent: #0f7b74;
+  --best: #d8f1e6;
+  --best-fg: #0b5a3a;
+  --best-line: #2f9d6a;
+  --bar: #9fcfca;
+  --flag: #a8552a;
+  --font-display: "IBM Plex Sans Condensed", "Arial Narrow", system-ui, sans-serif;
+  --font-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111719; --panel: #182124; --fg: #e3ebec; --muted: #93a4a7; --line: #2a3639;
+    --accent: #4fc2b8; --best: #143a2b; --best-fg: #8fe3b8; --best-line: #46b883; --bar: #2c6661;
+    --flag: #e39566; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #111719; --panel: #182124; --fg: #e3ebec; --muted: #93a4a7; --line: #2a3639;
+  --accent: #4fc2b8; --best: #143a2b; --best-fg: #8fe3b8; --best-line: #46b883; --bar: #2c6661;
+  --flag: #e39566; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font: 15px/1.55 var(--font-body); }
+.wrap { max-width: 980px; margin: 0 auto; padding-inline: 16px; padding-block: 32px 64px; display: grid; gap: 40px; }
+header { display: grid; gap: 10px; }
+h1, h2 { font-family: var(--font-display); font-weight: 600; text-wrap: balance; margin: 0; line-height: 1.15; }
+h1 { font-size: 2rem; }
+h2 { font-size: 1.35rem; }
+h3 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin: 0; font-weight: 600; }
+p { margin: 0; max-width: 68ch; }
+.sub { color: var(--muted); }
+.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+.fact { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 12px 14px; display: grid; gap: 2px; min-width: 0; }
+.fact b { font: 500 1.5rem/1.2 var(--font-mono); color: var(--best-fg); }
+.fact span { color: var(--muted); font-size: 0.85rem; }
+section { display: grid; gap: 14px; }
+.legend { display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: 0.85rem; color: var(--muted); align-items: center; }
+.swatch { display: inline-block; width: 14px; height: 14px; border-radius: 3px; background: var(--best); border: 1px solid var(--best-line); vertical-align: -2px; margin-right: 6px; }
+.tick-key { display: inline-block; width: 2px; height: 14px; background: var(--flag); vertical-align: -2px; margin-right: 6px; }
+.scroll { overflow-x: auto; background: var(--panel); border: 1px solid var(--line); border-radius: 6px; }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+table.grid { table-layout: fixed; min-width: 780px; }
+table.grid td:not(.num) { white-space: normal; overflow-wrap: anywhere; }
+th, td { padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--line); white-space: nowrap; }
+tbody tr:last-child td { border-bottom: 0; }
+th { padding: 0; font-weight: 600; font-size: 0.82rem; color: var(--muted); vertical-align: bottom; }
+th button { all: unset; cursor: pointer; display: flex; gap: 6px; align-items: center; padding: 10px 12px; width: 100%; box-sizing: border-box; }
+th button:hover { color: var(--fg); }
+th button:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+th.num button { justify-content: flex-end; text-align: right; }
+th[aria-sort="ascending"], th[aria-sort="descending"] { color: var(--accent); }
+.arrow { font-size: 0.7rem; width: 0.8em; }
+td.num { text-align: right; font-family: var(--font-mono); font-size: 0.88rem; }
+td.best { background: var(--best); color: var(--best-fg); font-weight: 500; box-shadow: inset 3px 0 0 var(--best-line); }
+td.best::after { content: " ★"; font-size: 0.75rem; }
+.cellbar { display: inline-grid; grid-template-columns: 70px auto; gap: 8px; align-items: center; justify-content: end; }
+.bar { position: relative; height: 6px; background: var(--line); border-radius: 3px; }
+.bar i { position: absolute; inset: 0 auto 0 0; background: var(--bar); border-radius: 3px; }
+.bar s { position: absolute; top: -3px; bottom: -3px; width: 2px; background: var(--flag); }
+td.best .bar i { background: var(--best-line); }
+tr.suspect td { color: var(--muted); }
+tr.suspect td.num { text-decoration: line-through; text-decoration-color: var(--flag); }
+.flag.chosen { color: var(--best-line); border-color: var(--best-line); }
+.choices { border: 1px solid var(--best-line); border-radius: 10px; padding: 12px 16px; margin: 0 0 16px; }
+.choices h2 { margin: 0 0 6px; font-size: 1rem; }
+.choices ul { margin: 0; padding-left: 20px; display: grid; gap: 4px; }
+.flag { font-size: 0.72rem; color: var(--flag); border: 1px solid var(--flag); border-radius: 999px; padding: 0 7px; margin-left: 8px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chips button { font: 500 0.82rem var(--font-body); color: var(--fg); background: var(--panel); border: 1px solid var(--line); border-radius: 999px; padding: 4px 12px; cursor: pointer; }
+.chips button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--panel); }
+.chips button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.notes { display: grid; gap: 8px; color: var(--muted); font-size: 0.9rem; }
+.group { display: grid; gap: 10px; }
+footer { display: grid; gap: 10px; border-top: 1px solid var(--line); padding-top: 24px; }
+footer p { color: var(--muted); font-size: 0.9rem; }
+code { font-family: var(--font-mono); font-size: 0.85em; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>MELD Overnight Benchmarks</h1>
+    <p class="sub">One NVIDIA A40 48 GB Runpod pod (Secure Cloud, EU-SE-1, 9 vCPUs), run on 2026-10-15. Every score is on MELD's test split of 2,610 lines. Click any column heading to sort by it.</p>
+    <div class="legend">
+      <span><span class="swatch"></span>Best value in that column ★</span>
+      <span><span class="tick-key"></span>Always answering neutral (31.27 weighted F1)</span>
+    </div>
+  </header>
+
+  <section class="choices" aria-label="Choices made from these results">
+    <h2>Our choices so far</h2>
+    <ul>
+      <li><b>Track:</b> text plus vision, chosen on 2026-10-15.</li>
+      <li><b>Speech to text:</b> Whisper large-v3-turbo in int8. Nemotron was about three times faster, but Whisper keeps the punctuation that carries emotion. On 30 test clips Whisper kept 11 of MELD's 23 exclamation marks, and Nemotron kept none.</li>
+      <li><b>Text encoder:</b> EmbeddingGemma 300M by default. EmoBERTa-large is only a backup demo, because its scores may not be fair.</li>
+      <li><b>Reply writer:</b> Liquid AI's LFM2.5 1.2B Instruct, the fastest below at 122 ms per reply.</li>
+      <li><b>Vision encoder:</b> not chosen yet; a second A40 run is testing them.</li>
+    </ul>
+  </section>
+
+  <div class="facts" aria-label="Headline results">
+    <div class="fact"><b>167 ms</b><span>Whisper large-v3-turbo, int8, per line, the chosen speech-to-text model</span></div>
+    <div class="fact"><b>61.4</b><span>Best text head: RoBERTa-base with an MLP</span></div>
+    <div class="fact"><b>61.6</b><span>Best text plus voice: EmbeddingGemma with HuBERT-large</span></div>
+    <div class="fact"><b>54.8</b><span>Best zero-shot vision model, given the words: Qwen3.5-4B</span></div>
+  </div>
+
+  <section id="asr">
+    <h2>Speech to text</h2>
+    <div class="scroll"><table data-table="asr"></table></div>
+    <div class="notes">
+      <p>Word error rate is measured against MELD's own text after Whisper's English normaliser. Many clips also hold words from the line before or after, which no model can avoid, so the absolute rates are high. Compare the rows with each other. The saved MELD.Whisper test transcripts score 31.80% the same way, which matches the int8 row.</p>
+      <p>Times are for one clip per call with the audio already decoded. GPU memory for the NeMo models (Nemotron and Parakeet) includes PyTorch's cached pool, so it overstates what the model needs.</p>
+    </div>
+  </section>
+
+  <section id="heads">
+    <h2>Frozen encoders with a small head</h2>
+    <p class="sub">Each encoder turns a line into numbers without being trained. Only the small head on top is trained on MELD: a logistic regression or a small two-layer network (MLP). Scores are weighted F1. The heads read one line at a time with no dialogue context.</p>
+    <div class="group">
+      <h3>Text only</h3>
+      <div class="chips" role="group" aria-label="Text version">
+        <button type="button" id="tv-all" data-version="all" aria-pressed="true">All text</button>
+        <button type="button" id="tv-raw" data-version="raw" aria-pressed="false">Raw</button>
+        <button type="button" id="tv-completed" data-version="completed" aria-pressed="false">Completed</button>
+        <button type="button" id="tv-whisper" data-version="whisper" aria-pressed="false">Whisper</button>
+      </div>
+      <div class="scroll"><table class="grid" data-table="text"></table></div>
+    </div>
+    <div class="group">
+      <h3>Voice only</h3>
+      <div class="scroll"><table class="grid" data-table="voice"></table></div>
+    </div>
+    <div class="group">
+      <h3>Text plus voice</h3>
+      <div class="scroll"><table class="grid" data-table="both"></table></div>
+    </div>
+    <div class="notes">
+      <p>Raw and Completed are trained on MELD's published text and on our fixed text, and both are tested on MELD's published test text. Whisper is trained and tested on Whisper's transcripts, which is what a live demo would read.</p>
+      <p>EmoBERTa-large's released weights have likely seen MELD's test lines. It scores 77.9 here against 63.46 on its own model card, so its rows are struck through and never marked best. The text plus voice runs pair the voice encoders with EmbeddingGemma, the best text encoder on dev once EmoBERTa was left out.</p>
+    </div>
+  </section>
+
+  <section id="reply">
+    <h2>Reply writers</h2>
+    <div class="scroll"><table data-table="reply"></table></div>
+    <div class="notes">
+      <p>Hugging Face transformers generate in bf16 at batch size 1, greedy, up to 40 new tokens, over 50 MELD test lines with the gold emotion in the prompt. Reasoning models ran with thinking turned off.</p>
+      <p>Nemotron 3 Nano, the Qwen3.5 family and LFM2.5 use Mamba, gated delta-rule or short-convolution layers, and they ran on transformers' slow reference kernels because causal-conv1d, mamba-ssm and flash-linear-attention were not installed. Their speeds here understate what they reach with those kernels or with vLLM.</p>
+      <p>Parameters loaded counts only the part that writes text. For Qwen3.5-4B (4.66B in the catalog), Qwen3.5-2B (2.27B) and Gemma 4 E2B it leaves out the vision and audio parts that the 6B limit counts.</p>
+    </div>
+  </section>
+
+  <section id="vlm">
+    <h2>Zero-shot vision-language models</h2>
+    <p class="sub">No MELD training. Each model saw 8 frames from the clip, once alone and once with the spoken line, and picked one of MELD's seven labels.</p>
+    <div class="scroll"><table data-table="vlm"></table></div>
+    <div class="notes">
+      <p>The prediction is the label whose first token the model scores highest as the start of its answer, from one forward pass, so every answer is a label. A first try that let models write freely was thrown away, because Qwen3.5-4B opened 1,579 of 1,585 answers with an explanation instead of a label.</p>
+      <p>Each model had a 40-minute limit, so a row may cover a random subset of the 2,457 clips whose frames extracted. Some labels' first tokens are short fragments that can also start other words, so those labels may be picked slightly too often. OneEmo's paper feeds 16 frames with its own prompt and reports a MELD hit rate, which is not weighted F1, so its lower score here is not a direct contradiction of that paper.</p>
+    </div>
+  </section>
+
+  <footer>
+    <h2>About the run</h2>
+    <p>The pod ran from 08:58 to 16:21 UTC, 7.4 hours. At $0.59 an hour that is about $4.35 of GPU time. Runpod's billing showed $3.93 when the pod was stopped, and its figures can lag. The pod is stopped with its 150 GB volume kept, which bills about $1 a day.</p>
+    <p>Frames failed to extract for 153 of the 2,610 test clips. The source tables are in <code>ML_route/bench/results/README.md</code>.</p>
+  </footer>
+</div>
+
+<script>
+const RAW = [{"head": ["Model", "Word error rate", "Median ms per line", "95th percentile ms", "Real-time factor", "GPU memory MiB"], "rows": [["whisper-turbo-fp16", "31.9%", "164.0", "273.0", "0.0533", "2700"], ["whisper-turbo-int8", "31.75%", "167.4", "272.8", "0.0546", "1505"], ["nemotron-1120ms", "33.43%", "56.0", "120.4", "0.0214", "7279"], ["nemotron-160ms", "34.81%", "57.2", "123.3", "0.022", "7279"], ["parakeet-tdt-v3", "31.93%", "57.1", "133.9", "0.0224", "7135"]]}, {"head": ["Features", "Logistic regression", "MLP"], "rows": [["deberta-v3-large/raw", "57.34", "55.03"], ["deberta-v3-large/completed", "57.53", "58.01"], ["deberta-v3-large/whisper", "47.76", "49.08"], ["embeddinggemma-300m/raw", "58.65", "58.51"], ["embeddinggemma-300m/completed", "58.44", "60.7"], ["embeddinggemma-300m/whisper", "47.51", "49.89"], ["emoberta-large/raw", "75.16", "77.91"], ["emoberta-large/completed", "74.97", "77.41"], ["emoberta-large/whisper", "58.74", "61.98"], ["modernbert-large/raw", "55.39", "59.79"], ["modernbert-large/completed", "55.35", "59.5"], ["modernbert-large/whisper", "46.88", "49.23"], ["mpnet-base/raw", "54.08", "58.12"], ["mpnet-base/completed", "55.1", "58.2"], ["mpnet-base/whisper", "45.55", "47.85"], ["roberta-base/raw", "58.31", "60.98"], ["roberta-base/completed", "57.32", "61.36"], ["roberta-base/whisper", "47.84", "49.75"], ["roberta-large/raw", "58.77", "59.7"], ["roberta-large/completed", "58.46", "60.0"], ["roberta-large/whisper", "49.01", "51.1"]]}, {"head": ["Features", "Logistic regression", "MLP"], "rows": [["emotion2vec-plus-large", "47.9", "47.93"], ["hubert-large", "46.81", "44.08"], ["wav2vec2-superb-er", "44.61", "44.59"], ["wavlm-base-plus", "46.42", "47.7"], ["wavlm-large", "47.73", "47.58"]]}, {"head": ["Features", "Logistic regression", "MLP"], "rows": [["embeddinggemma-300m+emotion2vec-plus-large", "56.3", "57.69"], ["embeddinggemma-300m+hubert-large", "57.46", "61.62"], ["embeddinggemma-300m+wav2vec2-superb-er", "55.51", "60.52"], ["embeddinggemma-300m+wavlm-base-plus", "56.14", "61.48"], ["embeddinggemma-300m+wavlm-large", "56.07", "60.88"]]}, {"head": ["Model", "Parameters loaded", "Time to first token, median ms", "Tokens per second", "Whole reply, median ms"], "rows": [["granite-4.1-3b", "3.40B", "28.3", "39.0", "333.2"], ["nemotron-3-nano-4b", "3.97B", "55.0", "48.6", "857.2"], ["phi-4-mini-instruct", "3.84B", "29.8", "43.8", "274.6"], ["smollm3-3b", "3.08B", "25.2", "47.2", "356.4"], ["lfm2.5-1.2b-instruct", "1.17B", "14.8", "85.0", "122.3"], ["qwen3.5-4b", "4.21B", "53.4", "26.3", "619.0"], ["qwen3.5-2b", "1.88B", "41.6", "34.9", "365.7"], ["gemma-4-e2b-it", "5.10B", "46.3", "26.0", "392.2"], ["llama-3.2-3b-instruct", "3.21B", "21.4", "56.2", "235.0"]]}, {"head": ["Model", "Clips", "Frames only, weighted F1", "Frames and words, weighted F1", "Unparsed answers", "Median ms per clip"], "rows": [["qwen3.5-4b", "1793", "36.53", "54.82", "0 / 0", "521.9 / 527.0"], ["oneemo", "1890", "39.28", "47.98", "0 / 0", "522.7 / 526.5"], ["internvl3.5-4b", "863", "35.74", "52.12", "0 / 0", "1038.4 / 1038.6"], ["gemma-4-e2b", "1477", "33.41", "51.42", "0 / 0", "610.0 / 611.7"], ["qwen2.5-omni-3b", "1489", "37.5", "53.53", "0 / 0", "637.5 / 638.2"]]}];
+const NEUTRAL = 31.27;
+const NAMES = {
+  "whisper-turbo-fp16": "Whisper large-v3-turbo, fp16",
+  "whisper-turbo-int8": "Whisper large-v3-turbo, int8",
+  "nemotron-1120ms": "Nemotron Streaming 0.6B, 1120 ms",
+  "nemotron-160ms": "Nemotron Streaming 0.6B, 160 ms",
+  "parakeet-tdt-v3": "Parakeet TDT 0.6B v3",
+  "granite-4.1-3b": "Granite 4.1 3B", "nemotron-3-nano-4b": "Nemotron 3 Nano 4B",
+  "phi-4-mini-instruct": "Phi-4-mini", "smollm3-3b": "SmolLM3 3B",
+  "lfm2.5-1.2b-instruct": "LFM2.5 1.2B", "qwen3.5-4b": "Qwen3.5-4B", "qwen3.5-2b": "Qwen3.5-2B",
+  "gemma-4-e2b-it": "Gemma 4 E2B", "gemma-4-e2b": "Gemma 4 E2B",
+  "llama-3.2-3b-instruct": "Llama 3.2 3B", "oneemo": "OneEmo", "internvl3.5-4b": "InternVL3.5-4B",
+  "qwen2.5-omni-3b": "Qwen2.5-Omni-3B", "deberta-v3-large": "DeBERTa-v3-large",
+  "embeddinggemma-300m": "EmbeddingGemma 300M", "emoberta-large": "EmoBERTa-large",
+  "modernbert-large": "ModernBERT-large", "mpnet-base": "MPNet-base", "roberta-base": "RoBERTa-base",
+  "roberta-large": "RoBERTa-large", "emotion2vec-plus-large": "emotion2vec+ large",
+  "hubert-large": "HuBERT-large", "wav2vec2-superb-er": "wav2vec 2.0 SUPERB-ER",
+  "wavlm-base-plus": "WavLM base+", "wavlm-large": "WavLM-large"
+};
+const VERSIONS = { raw: "Raw", completed: "Completed", whisper: "Whisper" };
+/* Total parameter counts by page id, from "params" in docs/research/ml-model-catalog.json (safetensors
+   totals; emotion2vec+ from its weights-file tensor count). */
+const PARAMS = {
+  "roberta-base": 124697947, "roberta-large": 355412571, "modernbert-large": 395881664,
+  "deberta-v3-large": 436768869, "emoberta-large": 355367433, "mpnet-base": 109486978,
+  "embeddinggemma-300m": 302863104, "wavlm-base-plus": 94381936, "wavlm-large": 315453120,
+  "hubert-large": 315438720, "wav2vec2-superb-er": 94569617, "emotion2vec-plus-large": 162140185
+};
+const size = n => ({ show: n >= 1e9 ? (n / 1e9).toFixed(2) + "B" : Math.round(n / 1e6) + "M", v: n });
+const CHOSEN = { "whisper-turbo-int8": true, "embeddinggemma-300m": true, "lfm2.5-1.2b-instruct": true };
+const name = id => NAMES[id] || id;
+const num = s => parseFloat(String(s).replace(/[%B,]/g, ""));
+
+/**
+ * Description: The column layout of each table.
+ * Fields: per table, a list of columns with key, label, type ("text" or "num"), better ("high",
+ * "low" or absent when no value is better), and f1 when the column is a weighted F1 score.
+ */
+const COLS = {
+  asr: [
+    { key: "model", label: "Model", type: "text" },
+    { key: "wer", label: "Word error rate", type: "num", better: "low" },
+    { key: "med", label: "Median ms per line", type: "num", better: "low" },
+    { key: "p95", label: "95th percentile ms", type: "num", better: "low" },
+    { key: "rtf", label: "Real-time factor", type: "num", better: "low" },
+    { key: "mem", label: "GPU memory MiB", type: "num", better: "low" }
+  ],
+  text: [
+    { key: "enc", label: "Text encoder", type: "text" },
+    { key: "ver", label: "Text", type: "text" },
+    { key: "size", label: "Size", type: "num" },
+    { key: "lr", label: "Logistic regression", type: "num", better: "high", f1: true },
+    { key: "mlp", label: "MLP", type: "num", better: "high", f1: true }
+  ],
+  voice: [
+    { key: "enc", label: "Voice encoder", type: "text" },
+    { key: "size", label: "Size", type: "num" },
+    { key: "lr", label: "Logistic regression", type: "num", better: "high", f1: true },
+    { key: "mlp", label: "MLP", type: "num", better: "high", f1: true }
+  ],
+  both: [
+    { key: "tenc", label: "Text encoder", type: "text" },
+    { key: "venc", label: "Voice encoder", type: "text" },
+    { key: "size", label: "Size", type: "num" },
+    { key: "lr", label: "Logistic regression", type: "num", better: "high", f1: true },
+    { key: "mlp", label: "MLP", type: "num", better: "high", f1: true }
+  ],
+  reply: [
+    { key: "model", label: "Model", type: "text" },
+    { key: "params", label: "Parameters loaded, B", type: "num" },
+    { key: "ttft", label: "First token, median ms", type: "num", better: "low" },
+    { key: "tps", label: "Tokens per second", type: "num", better: "high" },
+    { key: "reply", label: "Whole reply, median ms", type: "num", better: "low" }
+  ],
+  vlm: [
+    { key: "model", label: "Model", type: "text" },
+    { key: "clips", label: "Clips scored", type: "num" },
+    { key: "f", label: "Frames only, F1", type: "num", better: "high", f1: true },
+    { key: "fw", label: "Frames and words, F1", type: "num", better: "high", f1: true },
+    { key: "fms", label: "Frames only, ms", type: "num", better: "low" },
+    { key: "fwms", label: "Frames and words, ms", type: "num", better: "low" }
+  ]
+};
+
+/**
+ * Description: Turns the README's six tables into row objects for each page table.
+ * Inputs: none; reads RAW.
+ * Outputs: a map from table key to rows, each row holding a display string and a sort value per column.
+ */
+function buildRows() {
+  const cell = s => ({ show: s, v: num(s) });
+  const t = (show, v) => ({ show, v: v ?? show.toLowerCase() });
+  const [asr, text, voice, both, reply, vlm] = RAW.map(x => x.rows);
+  return {
+    asr: asr.map(r => ({ model: t(name(r[0])), chosen: !!CHOSEN[r[0]], wer: cell(r[1]), med: cell(r[2]), p95: cell(r[3]), rtf: cell(r[4]), mem: cell(r[5]) })),
+    text: text.map(r => {
+      const [enc, ver] = r[0].split("/");
+      return { enc: t(name(enc)), ver: t(VERSIONS[ver] || ver), version: ver, size: size(PARAMS[enc]), lr: cell(r[1]), mlp: cell(r[2]),
+               suspect: enc === "emoberta-large", chosen: !!CHOSEN[enc] };
+    }),
+    voice: voice.map(r => ({ enc: t(name(r[0])), size: size(PARAMS[r[0]]), lr: cell(r[1]), mlp: cell(r[2]) })),
+    both: both.map(r => {
+      const [te, ve] = r[0].split("+");
+      return { tenc: t(name(te)), venc: t(name(ve)), size: size(PARAMS[te] + PARAMS[ve]), lr: cell(r[1]), mlp: cell(r[2]) };
+    }),
+    reply: reply.map(r => ({ model: t(name(r[0])), chosen: !!CHOSEN[r[0]], params: { show: r[1].replace("B", ""), v: num(r[1]) },
+                             ttft: cell(r[2]), tps: cell(r[3]), reply: cell(r[4]) })),
+    vlm: vlm.map(r => {
+      const [fms, fwms] = r[5].split("/").map(s => s.trim());
+      return { model: t(name(r[0])), clips: { show: Number(r[1]).toLocaleString("en-US"), v: num(r[1]) },
+               f: cell(r[2]), fw: cell(r[3]), fms: cell(fms), fwms: cell(fwms) };
+    })
+  };
+}
+
+const ROWS = buildRows();
+
+/**
+ * Description: Column widths in percent shared by the three score tables so their columns line up.
+ * Fields: per table, the widths in column order; the voice table's one name column spans two name columns.
+ */
+const GRID = { text: [27, 16, 11, 23, 23], voice: [43, 11, 23, 23], both: [27, 16, 11, 23, 23] };
+const DEFAULT_SORT = { asr: ["wer", "asc"], text: ["mlp", "desc"], voice: ["mlp", "desc"], both: ["mlp", "desc"],
+                       reply: ["reply", "asc"], vlm: ["fw", "desc"] };
+const state = { version: "all", sort: {} };
+try {
+  const saved = JSON.parse(localStorage.getItem("meld-bench-sort-v1") || "null");
+  if (saved && saved.sort) Object.assign(state, saved);
+} catch (e) {}
+for (const k in DEFAULT_SORT) if (!state.sort[k] || !COLS[k].some(c => c.key === state.sort[k][0])) state.sort[k] = DEFAULT_SORT[k];
+
+/**
+ * Description: Saves the sort and filter choice for this viewer.
+ * Inputs: none
+ * Outputs: none
+ */
+function save() {
+  try { localStorage.setItem("meld-bench-sort-v1", JSON.stringify(state)); } catch (e) {}
+}
+
+/**
+ * Description: Draws one table with its header buttons, sorted rows and best-value highlights.
+ * Inputs:
+ * - key: the table key in COLS.
+ * Outputs: none
+ * Constraints: the best value is picked from the rows shown, leaving out suspect rows.
+ */
+function render(key) {
+  const table = document.querySelector(`table[data-table="${key}"]`);
+  const cols = COLS[key];
+  const [sk, dir] = state.sort[key];
+  let rows = ROWS[key].slice();
+  if (key === "text" && state.version !== "all") rows = rows.filter(r => r.version === state.version);
+  rows.sort((a, b) => {
+    const x = a[sk].v, y = b[sk].v;
+    const c = typeof x === "number" ? x - y : String(x).localeCompare(String(y));
+    return dir === "asc" ? c : -c;
+  });
+  const best = {};
+  for (const c of cols) {
+    if (!c.better) continue;
+    const vals = rows.filter(r => !r.suspect).map(r => r[c.key].v);
+    if (vals.length) best[c.key] = c.better === "high" ? Math.max(...vals) : Math.min(...vals);
+  }
+  const head = cols.map(c => {
+    const on = c.key === sk;
+    const aria = on ? (dir === "asc" ? "ascending" : "descending") : "none";
+    const arrow = on ? (dir === "asc" ? "▲" : "▼") : "";
+    return `<th scope="col" class="${c.type}" aria-sort="${aria}"><button type="button" data-key="${c.key}">` +
+           `${c.label}<span class="arrow" aria-hidden="true">${arrow}</span></button></th>`;
+  }).join("");
+  const body = rows.map(r => {
+    const tds = cols.map((c, i) => {
+      const val = r[c.key];
+      if (c.type === "text") {
+        const flag = i === 0 && r.suspect ? `<span class="flag">likely saw test lines</span>`
+          : i === 0 && r.chosen ? `<span class="flag chosen">chosen</span>` : "";
+        return `<td>${val.show}${flag}</td>`;
+      }
+      const isBest = !r.suspect && c.key in best && val.v === best[c.key];
+      const content = c.f1
+        ? `<span class="cellbar"><span class="bar"><i style="width:${val.v}%"></i><s style="left:${NEUTRAL}%"></s></span>${val.show}</span>`
+        : val.show;
+      return `<td class="num${isBest ? " best" : ""}">${content}</td>`;
+    }).join("");
+    return `<tr class="${r.suspect ? "suspect" : ""}">${tds}</tr>`;
+  }).join("");
+  const group = GRID[key] ? `<colgroup>${GRID[key].map(w => `<col style="width:${w}%">`).join("")}</colgroup>` : "";
+  table.innerHTML = `${group}<thead><tr>${head}</tr></thead><tbody>${body}</tbody>`;
+  table.querySelectorAll("th button").forEach(btn => btn.addEventListener("click", () => {
+    const k = btn.dataset.key;
+    const col = cols.find(c => c.key === k);
+    const [ck, cd] = state.sort[key];
+    const first = col.type === "text" ? "asc" : col.better === "low" ? "asc" : "desc";
+    state.sort[key] = [k, ck === k ? (cd === "asc" ? "desc" : "asc") : first];
+    save();
+    render(key);
+    table.querySelector(`th button[data-key="${k}"]`).focus();
+  }));
+}
+
+document.querySelectorAll(".chips button").forEach(btn => {
+  btn.setAttribute("aria-pressed", String(btn.dataset.version === state.version));
+  btn.addEventListener("click", () => {
+    state.version = btn.dataset.version;
+    document.querySelectorAll(".chips button").forEach(b => b.setAttribute("aria-pressed", String(b === btn)));
+    save();
+    render("text");
+  });
+});
+Object.keys(COLS).forEach(render);
+</script>
+</body>
+</html>
