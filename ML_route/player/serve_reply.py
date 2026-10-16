@@ -17,11 +17,18 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE.parent / "text_fixes"))
 from transcribe import CACHE  # noqa: E402
 
-HOST = "127.0.0.1"
-PORT = 8768
+HOST     = "127.0.0.1"
+PORT     = 8768
 MODEL_ID = "LiquidAI/LFM2.5-1.2B-Instruct"
-FEELS = {"neutral": "calm", "joy": "happy", "surprise": "surprised", "anger": "angry", "sadness": "sad",
-         "disgust": "disgusted", "fear": "scared"}
+FEELS    = {
+    "neutral": "calm",
+    "joy": "happy",
+    "surprise": "surprised",
+    "anger": "angry",
+    "sadness": "sad",
+    "disgust": "disgusted",
+    "fear": "scared",
+}
 """Description: MELD's seven labels, the only emotions a request may name, each with the adjective the prompt uses."""
 MAX_NEW_TOKENS = 40
 """Description: The longest reply in tokens, the same cap the A40 reply benchmark used."""
@@ -32,7 +39,7 @@ SYSTEM = ("You are a warm, caring friend in a conversation. Speak directly to th
           "or explain yourself.")
 """Description: The system prompt for every reply."""
 
-model = None
+model     = None
 tokenizer = None
 
 
@@ -58,18 +65,19 @@ def write_reply(text, emotion, speaker):
     turns with the speech models, so this server runs one call at a time.
     """
     import torch
-    who = speaker or "Your friend"
+
+    who          = speaker or "Your friend"
     user_message = (
         f'{who} says to you: "{text}"\n'
         f"{who} sounds {FEELS[emotion]}. Write what you say back."
     )
-    messages = [
+    messages     = [
         {"role": "system", "content": SYSTEM},
         {"role": "user", "content": user_message},
     ]
 
     started = time.perf_counter()
-    inputs = tokenizer.apply_chat_template(
+    inputs  = tokenizer.apply_chat_template(
         messages,
         add_generation_prompt=True,
         return_tensors="pt",
@@ -85,8 +93,8 @@ def write_reply(text, emotion, speaker):
     done = time.perf_counter()
 
     prompt_length = inputs["input_ids"].shape[1]
-    new_tokens = out[0, prompt_length:]
-    reply = tokenizer.decode(new_tokens, skip_special_tokens=True).strip()
+    new_tokens    = out[0, prompt_length:]
+    reply         = tokenizer.decode(new_tokens, skip_special_tokens=True).strip()
     return {
         "reply": reply,
         "tokens": int(new_tokens.shape[0]),
@@ -123,8 +131,8 @@ class Handler(BaseHTTPRequestHandler):
             return
 
         if url.path == "/api/reply":
-            query = parse_qs(url.query)
-            text = query.get("text", [""])[0].strip()
+            query   = parse_qs(url.query)
+            text    = query.get("text", [""])[0].strip()
             emotion = query.get("emotion", [""])[0]
             speaker = query.get("speaker", [""])[0].strip()[:60]
 
@@ -173,15 +181,27 @@ def main():
     global model, tokenizer
     import torch
     from transformers import AutoModelForCausalLM, AutoTokenizer
+
     if not torch.cuda.is_available():
         sys.exit("CUDA is not available to PyTorch; LFM2.5 needs the GPU")
-    started = time.perf_counter()
+
+    started   = time.perf_counter()
     tokenizer = AutoTokenizer.from_pretrained(MODEL_ID, cache_dir=str(CACHE))
-    model = AutoModelForCausalLM.from_pretrained(MODEL_ID, cache_dir=str(CACHE), dtype=torch.float16).to("cuda").eval()
-    loaded = time.perf_counter()
-    warm = write_reply("Hi, how are you?", "neutral", "")
-    print(f"LFM2.5 loaded on {torch.cuda.get_device_name(0)} in {loaded - started:.1f} s, "
-          f"warm-up reply {warm['model_ms']} ms", flush=True)
+    model     = AutoModelForCausalLM.from_pretrained(
+        MODEL_ID,
+        cache_dir=str(CACHE),
+        dtype=torch.float16,
+    ).to("cuda").eval()
+    loaded    = time.perf_counter()
+    warm      = write_reply("Hi, how are you?", "neutral", "")
+
+    gpu_name = torch.cuda.get_device_name(0)
+    print(
+        f"LFM2.5 loaded on {gpu_name} in {loaded - started:.1f} s, "
+        f"warm-up reply {warm['model_ms']} ms",
+        flush=True,
+    )
+
     server = ThreadingHTTPServer((HOST, PORT), Handler)
     print(f"Reply server on http://{HOST}:{PORT} (Ctrl+C stops it)", flush=True)
     try:
