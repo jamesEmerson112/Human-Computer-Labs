@@ -1,10 +1,11 @@
-"""Serves the MELD player, transcribes its clips live with Whisper, and writes replies with LFM2.5 when serve_reply.py runs.
+"""Serves the MELD player, transcribes its clips live with Whisper, reads emotions when serve_emotion.py runs, and writes replies with LFM2.5 when serve_reply.py runs.
 
 Contents:
-- Handler: serves ML_route/data plus the /api/status, /api/transcribe and /api/reply endpoints
+- Handler: serves ML_route/data plus the /api/status, /api/transcribe, /api/emotion and /api/reply endpoints
 - transcribe_clip: decodes one clip and runs Whisper on it, with timings
 - helper_status: asks a helper server whether its model is loaded
 - forward: passes one request to a helper server, taking a turn on the GPU
+- forward_emotion: passes one clip and its words to serve_emotion.py, taking a turn on the GPU
 - forward_reply: passes one line to serve_reply.py, taking a turn on the GPU
 - main: loads Whisper, warms it up and starts the server
 """
@@ -36,10 +37,12 @@ CLIP_NAME = re.compile(r"^dia\d+_utt\d+$")
 """Description: The only clip names the server accepts, so no other file can be requested."""
 REPLY_URL = "http://127.0.0.1:8768"
 """Description: Where serve_reply.py listens."""
+EMOTION_URL = "http://127.0.0.1:8769"
+"""Description: Where serve_emotion.py listens."""
 
 model = None
 gpu_lock = threading.Lock()
-"""Description: Held while any model runs, so Whisper and LFM2.5 take turns on the one GPU."""
+"""Description: Held while any model runs, so Whisper, the emotion encoders and LFM2.5 take turns on the one GPU."""
 
 
 def ms(seconds):
@@ -125,6 +128,19 @@ def forward(base, script, path, params):
     return status, body
 
 
+def forward_emotion(split, clip, text):
+    """
+    Description: Passes one clip and its words to serve_emotion.py while holding the GPU turn.
+    Inputs:
+    - split: "train", "dev" or "test".
+    - clip: a clip name such as dia47_utt3.
+    - text: the words spoken in the clip, which may be empty.
+    Outputs: (HTTP status, response dict), with wait_ms set to the time spent waiting for the turn.
+    """
+    params = {"split": split, "clip": clip, "text": text}
+    return forward(EMOTION_URL, "serve_emotion.py", "/api/emotion", params)
+
+
 def forward_reply(text, emotion, speaker, history):
     """
     Description: Passes one line to serve_reply.py while holding the GPU turn.
@@ -141,9 +157,9 @@ def forward_reply(text, emotion, speaker, history):
 
 class Handler(SimpleHTTPRequestHandler):
     """
-    Description: Serves the files in ML_route/data and answers the two API paths.
+    Description: Serves the files in ML_route/data and answers the API paths.
     Methods:
-    - do_GET: routes /api/status, /api/transcribe and /api/reply, and serves files otherwise.
+    - do_GET: routes /api/status, /api/transcribe, /api/emotion and /api/reply, and serves files otherwise.
     - send_json: writes one JSON response.
     - log_message: logs API requests only, so video requests stay quiet.
     """
@@ -161,8 +177,20 @@ class Handler(SimpleHTTPRequestHandler):
         if url.path == "/api/status":
             whisper = {"model": MODEL_NAME, "device": DEVICE, "compute": COMPUTE,
                        "ready": model is not None}
-            self.send_json(200, {**whisper, "models": {"whisper": whisper,
-                                                       "reply": helper_status(REPLY_URL, "serve_reply.py")}})
+            self.send_json(200, {**whisper, "models": {
+                "whisper": whisper,
+                "emotion": helper_status(EMOTION_URL, "serve_emotion.py"),
+                "reply": helper_status(REPLY_URL, "serve_reply.py"),
+            }})
+            return
+        if url.path == "/api/emotion":
+            query = parse_qs(url.query)
+            split = query.get("split", [""])[0]
+            clip = query.get("clip", [""])[0]
+            if split not in CLIP_DIRS or not CLIP_NAME.match(clip):
+                self.send_json(400, {"error": "unknown split or clip name"})
+                return
+            self.send_json(*forward_emotion(split, clip, query.get("text", [""])[0]))
             return
         if url.path == "/api/reply":
             query = parse_qs(url.query)
