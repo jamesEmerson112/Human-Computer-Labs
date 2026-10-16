@@ -200,6 +200,7 @@ fn default_hyperparameters() -> Hyperparameters {
         feature_dim: 3840,
         hidden_dim: 256,
         num_classes: 7,
+        leaky_slope: 0.01,
     }
 }
 
@@ -280,6 +281,7 @@ fn print_out_train_data(dialogues: Option<&[u32]>) -> std::io::Result<()> {
  * - `feature_dim`: length of one encoder feature vector.
  * - `hidden_dim`: width of the head's hidden layer.
  * - `num_classes`: number of emotions, 7 for MELD.
+ * - `leaky_slope`: Leaky ReLU's slope for negative inputs; 0 gives a plain ReLU.
  */
 #[derive(Deserialize)]
 #[serde(default, deny_unknown_fields)]
@@ -301,4 +303,5 @@ struct Hyperparameters {
     feature_dim:     usize,
     hidden_dim:      usize,
     num_classes:     usize,
+    leaky_slope:     f32,
 }

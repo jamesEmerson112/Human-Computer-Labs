@@ -55,7 +55,8 @@ pub(crate) fn zero_grad_all(grads: &mut ClassifierHead) {
 /**
  * Description: Works out how each weight should change to lower the loss, and adds it to `grads`.
  * For softmax with cross-entropy the score gradient is `p - onehot(target)`; it flows back through
- * `W2`, then through the ReLU, which passes it only where the hidden unit was positive.
+ * `W2`, then through the Leaky ReLU, which passes it in full where the hidden unit was positive and
+ * scaled by `leaky_slope` where it was not.
  * Inputs:
  * - `head`: the weights.
  * - `features`: the input that produced `logits`.
@@ -85,14 +86,13 @@ pub(crate) fn backward(
     }
 
     for j in 0..head.hidden_dim {
-        // ReLU passes the gradient only where the unit was active.
-        if h[j] <= 0.0 {
-            continue;
-        }
-        grads.b1[j] += d_hidden[j];
+        // Leaky ReLU's slope is 1 where the unit was active and leaky_slope where it was not.
+        let slope    = if h[j] > 0.0 { 1.0 } else { head.leaky_slope };
+        let d_pre    = d_hidden[j] * slope;
+        grads.b1[j] += d_pre;
         let row      = &mut grads.w1[j * head.feature_dim..(j + 1) * head.feature_dim];
         for (g, &x) in row.iter_mut().zip(features) {
-            *g += d_hidden[j] * x;
+            *g += d_pre * x;
         }
     }
 }
@@ -180,6 +180,7 @@ mod tests {
             feature_dim: 4,
             hidden_dim:  3,
             num_classes: 3,
+            leaky_slope: 0.01,
             w1: vec![0.3, -0.2, 0.5, 0.1, -0.4, 0.2, 0.3, -0.1, 0.25, 0.15, -0.35, 0.4],
             b1: vec![0.05, 0.1, -0.02],
             w2: vec![0.2, -0.3, 0.4, -0.1, 0.25, 0.3, 0.15, -0.2, 0.1],

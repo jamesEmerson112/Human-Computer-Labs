@@ -30,3 +30,4 @@ weight_decay = 0.01   # AdamW weight decay
 feature_dim = 3840   # EmbeddingGemma 768 + EmoBERTa-large 1,024 + HuBERT-large 2,048
 hidden_dim  = 256    # width of the head's hidden layer
 num_classes = 7      # number of emotions in MELD
+leaky_slope = 0.01   # Leaky ReLU slope for negative inputs; 0.0 gives a plain ReLU
