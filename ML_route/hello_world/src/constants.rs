@@ -6,7 +6,6 @@
 //! - `OUTPUT_TXT`: path of the text file the dialogues are written to
 //! - `DEFAULT_DIALOGUES`: the dialogues written when none are given
 //! - `TEST_DIALOGUES`: five randomly picked dialogues to test with
-//! - `MS_PER_SECOND`: milliseconds in one second
 //! - `CLIPS_DIR`: folder holding the MELD training clips
 //! - `EMOTIONS`: MELD's seven emotion names in a fixed order
 //! - `REPLIES`: three placeholder replies for each emotion
@@ -37,12 +36,6 @@ pub const DEFAULT_DIALOGUES: &[u32] = &[1036];
  * Description: Five training Dialogue_IDs picked at random on 2026-10-14.
  */
 pub const TEST_DIALOGUES: [u32; 5] = [557, 631, 700, 960, 963];
-
-/**
- * Description: Milliseconds in one second, used to turn the training clock
- * and the time limit into the same unit.
- */
-pub const MS_PER_SECOND: f32 = 1000.0;
 
 /**
  * Description: Folder holding the MELD training clips, relative to this

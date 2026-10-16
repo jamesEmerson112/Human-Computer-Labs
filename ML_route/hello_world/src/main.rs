@@ -5,7 +5,7 @@
 //! - `default_hyperparameters`: the training settings for one run
 //! - `print_out_train_data`: writes each chosen training dialogue as a table to `OUTPUT_TXT`
 //! - `Hyperparameters`, `Utterance`, `ClassifierHead`, `AdamState`: training placeholders
-//! - `load_split` to `train`: unimplemented training steps, modelled on `parameter_golf`
+//! - `load_split` to `save_head`: unimplemented training steps for the MELD emotion head
 
 // The training placeholders below are not wired up yet, so their warnings are silenced.
 #![allow(dead_code, unused_variables)]
@@ -13,12 +13,19 @@
 mod constants;
 
 use constants::{
-    DEFAULT_DIALOGUES, DEV_CSV, MS_PER_SECOND, OUTPUT_TXT, TEST_DIALOGUES,
-    TRAIN_CSV,
+    DEFAULT_DIALOGUES, DEV_CSV, OUTPUT_TXT, TEST_DIALOGUES, TRAIN_CSV,
 };
 use std::fs::File;
 use std::io::{BufWriter, Write};
-use std::time::Instant;
+
+// The chosen combo for the MELD demo (6B parameter limit; 3.11B with both backups loaded, 2.65B without):
+// - Speech to text:  Whisper large-v3-turbo, int8     808.9M
+// - Text encoder:    EmoBERTa-large (trained on MELD)  355.4M  first choice; likely saw MELD test lines
+// - Text backup:     EmbeddingGemma-300m              302.9M
+// - Voice encoder:   HuBERT-large                     315.4M
+// - Voice backup:    emotion2vec+ large               162.1M
+// - Reply writer:    LFM2.5-1.2B-Instruct             1.17B   (LFM2.5-2.6B tried as a larger option)
+// - Emotion head:    trained here on MELD             under 1M
 
 /**
  * Description: Prints "Hello, World!", writes the five test dialogues to
@@ -29,52 +36,45 @@ use std::time::Instant;
  * training function that is still `todo!()`.
  */
 fn main() {
-    println!("Hello, World!");
-    print_out_train_data(Some(&TEST_DIALOGUES))
-        .expect("could not write the output file");
+    println!("Hello, World!");                       // say hello
+    print_out_train_data(Some(&TEST_DIALOGUES))      // write five test dialogues to dialogues.txt
+        .expect("could not write the output file");  // stop if the file can't be written
 
-    let hp            = default_hyperparameters();
-    let train_data    = load_split(&hp.train_csv);
-    let dev_data      = load_split(&hp.dev_csv);
-    let mut head      = init_weights(&hp);
-    let mut grads     = init_weights(&hp);
-    let mut state     = AdamState { m: Vec::new(), v: Vec::new(), step: 0 };
-    let time_limit_ms = hp.max_wallclock_seconds * MS_PER_SECOND;
-    let start         = Instant::now();
+    let hp         = default_hyperparameters();                            // training settings for this run
+    let train_data = load_split(&hp.train_csv);                            // labelled training lines
+    let dev_data   = load_split(&hp.dev_csv);                              // labelled dev lines for validation
+    let mut head   = init_weights(&hp);                                    // the head's weights, random at first
+    let mut grads  = init_weights(&hp);                                    // gradient buffer, same shape
+    let mut state  = AdamState { m: Vec::new(), v: Vec::new(), step: 0 };  // AdamW's running averages
 
-    for step in 0..hp.iterations {
-        let (batch_features, batch_labels) =
-            next_batch(&train_data, hp.batch_size, step);
+    for step in 0..hp.iterations {                         // one training step per pass
+        let (batch_features, batch_labels) =               // this step's inputs and labels
+            next_batch(&train_data, hp.batch_size, step);  // take the next batch
 
-        zero_grad_all(&mut grads);
-        let mut train_loss = 0.0;
-        for (features, &label) in batch_features.iter().zip(&batch_labels) {
-            let logits  = forward(&head, features);
-            train_loss += cross_entropy(&logits, label);
-            backward(&head, features, &logits, label, &mut grads);
+        zero_grad_all(&mut grads);                                            // clear last step's gradients
+        let mut train_loss = 0.0;                                             // running loss for this batch
+        for (features, &label) in batch_features.iter().zip(&batch_labels) {  // each line with its emotion
+            let logits  = forward(&head, features);                           // score the seven emotions
+            train_loss += cross_entropy(&logits, label);                      // add how wrong they were
+            backward(&head, features, &logits, label, &mut grads);            // add this line's gradients
         }
-        train_loss /= batch_labels.len() as f32;
+        train_loss /= batch_labels.len() as f32;                              // average over the batch
 
-        let elapsed_ms = start.elapsed().as_secs_f32() * MS_PER_SECOND;
-        let lr         = hp.lr * lr_mul(step, elapsed_ms, &hp);
-        adamw_step(&mut head, &grads, &mut state, lr, hp.weight_decay);
+        let lr = hp.lr * lr_mul(step, &hp);                              // learning rate after warmdown
+        adamw_step(&mut head, &grads, &mut state, lr, hp.weight_decay);  // update the weights
 
-        if step % hp.train_log_every == 0 {
-            println!(
+        if step % hp.train_log_every == 0 {                                       // every few steps
+            println!(                                                             // print the training loss
                 "step {step}/{} train_loss {train_loss:.4} lr {lr:.6}",
                 hp.iterations
             );
         }
-        if step % hp.val_loss_every == 0 {
-            let (val_loss, val_f1) = eval_val(&head, &dev_data, hp.feature_dim);
-            println!(
+        if step % hp.val_loss_every == 0 {                                        // every validation interval
+            let (val_loss, val_f1) = eval_val(&head, &dev_data, hp.feature_dim);  // score on dev
+            println!(                                                             // print the dev scores
                 "step {step} val_loss {val_loss:.4} \
                  val_weighted_f1 {val_f1:.4}"
             );
-        }
-        if elapsed_ms > time_limit_ms {
-            println!("stopping at step {step}: time limit reached");
-            break;
         }
     }
 }
@@ -93,10 +93,8 @@ fn default_hyperparameters() -> Hyperparameters {
         val_loss_every: 100,
         train_log_every: 20,
         iterations: 2000,
-        warmup_steps: 20,
         warmdown_iters: 200,
         batch_size: 32,
-        max_wallclock_seconds: 600.0,
         lr: 1e-3,
         weight_decay: 0.01,
         feature_dim: 1536,
@@ -118,24 +116,48 @@ fn default_hyperparameters() -> Hyperparameters {
  */
 fn print_out_train_data(dialogues: Option<&[u32]>) -> std::io::Result<()> {
     let dialogues = dialogues.unwrap_or(DEFAULT_DIALOGUES);
-    let mut out = BufWriter::new(File::create(OUTPUT_TXT)?);
+    let mut out   = BufWriter::new(File::create(OUTPUT_TXT)?);
+
     for &dialogue in dialogues {
-        let mut reader = csv::Reader::from_path(TRAIN_CSV).expect("could not read the MELD training file");
+        let mut reader = csv::Reader::from_path(TRAIN_CSV)
+            .expect("could not read the MELD training file");
+
         writeln!(out)?;
         writeln!(out, "Dialogue {dialogue}")?;
-        writeln!(out, "{:<5} {:<13} {:<16} {:<8} {:<9} {}", "No.", "Clip", "Speaker", "Emotion", "Sentiment", "Utterance")?;
+        writeln!(
+            out,
+            "{:<5} {:<13} {:<16} {:<8} {:<9} {}",
+            "No.",
+            "Clip",
+            "Speaker",
+            "Emotion",
+            "Sentiment",
+            "Utterance",
+        )?;
         writeln!(out, "{}", "-".repeat(80))?;
+
         for record in reader.records() {
             let row = record.expect("could not parse a row");
             if row[5] != dialogue.to_string() {
                 continue;
             }
+
             let clip = format!("dia{}_utt{}", &row[5], &row[6]);
             // MELD stores the apostrophe as the control character U+0092.
             let utterance = row[1].replace('\u{92}', "'");
-            writeln!(out, "{:<5} {:<13} {:<16} {:<8} {:<9} {}", &row[0], clip, &row[2], &row[3], &row[4], utterance)?;
+            writeln!(
+                out,
+                "{:<5} {:<13} {:<16} {:<8} {:<9} {}",
+                &row[0],
+                clip,
+                &row[2],
+                &row[3],
+                &row[4],
+                utterance,
+            )?;
         }
     }
+
     println!("Wrote {} dialogues to {OUTPUT_TXT}", dialogues.len());
     Ok(())
 }
@@ -149,10 +171,8 @@ fn print_out_train_data(dialogues: Option<&[u32]>) -> std::io::Result<()> {
  * - `val_loss_every`: run validation every this many steps.
  * - `train_log_every`: print the training loss every this many steps.
  * - `iterations`: total training steps.
- * - `warmup_steps`: steps run once and then discarded, to warm up before timing starts.
  * - `warmdown_iters`: steps over which the learning rate falls to zero at the end.
  * - `batch_size`: lines per training step.
- * - `max_wallclock_seconds`: stop training after this many seconds.
  * - `lr`: peak learning rate.
  * - `weight_decay`: AdamW weight decay.
  * - `feature_dim`: length of one encoder feature vector.
@@ -167,10 +187,8 @@ struct Hyperparameters {
     val_loss_every: usize,
     train_log_every: usize,
     iterations: usize,
-    warmup_steps: usize,
     warmdown_iters: usize,
     batch_size: usize,
-    max_wallclock_seconds: f32,
     lr: f32,
     weight_decay: f32,
     feature_dim: usize,
@@ -240,17 +258,6 @@ fn emotion_to_index(emotion: &str) -> usize {
 }
 
 /**
- * Description: Turns one line into a feature vector with the frozen encoder.
- * Inputs:
- * - `text`: the utterance.
- * - `feature_dim`: expected vector length.
- * Outputs: the feature vector.
- */
-fn extract_features(text: &str, feature_dim: usize) -> Vec<f32> {
-    todo!()
-}
-
-/**
  * Description: Picks the next training batch, like `DistributedTokenLoader::next_batch`.
  * Inputs:
  * - `data`: all training lines.
@@ -258,7 +265,11 @@ fn extract_features(text: &str, feature_dim: usize) -> Vec<f32> {
  * - `step`: current step, used to walk through the data.
  * Outputs: the batch's feature vectors and their labels.
  */
-fn next_batch(data: &[Utterance], batch_size: usize, step: usize) -> (Vec<Vec<f32>>, Vec<usize>) {
+fn next_batch(
+    data: &[Utterance],
+    batch_size: usize,
+    step: usize,
+) -> (Vec<Vec<f32>>, Vec<usize>) {
     todo!()
 }
 
@@ -304,7 +315,13 @@ fn cross_entropy(logits: &[f32], target: usize) -> f32 {
  * - `grads`: gradients, same shape as the head, added to in place.
  * Outputs: none
  */
-fn backward(head: &ClassifierHead, features: &[f32], logits: &[f32], target: usize, grads: &mut ClassifierHead) {
+fn backward(
+    head: &ClassifierHead,
+    features: &[f32],
+    logits: &[f32],
+    target: usize,
+    grads: &mut ClassifierHead,
+) {
     todo!()
 }
 
@@ -328,19 +345,24 @@ fn zero_grad_all(grads: &mut ClassifierHead) {
  * - `weight_decay`: how strongly weights shrink each step.
  * Outputs: none
  */
-fn adamw_step(head: &mut ClassifierHead, grads: &ClassifierHead, state: &mut AdamState, lr: f32, weight_decay: f32) {
+fn adamw_step(
+    head: &mut ClassifierHead,
+    grads: &ClassifierHead,
+    state: &mut AdamState,
+    lr: f32,
+    weight_decay: f32,
+) {
     todo!()
 }
 
 /**
- * Description: Scales the learning rate down during the final warmdown, like `lr_mul` in `parameter_golf`.
+ * Description: Scales the learning rate down over the last `warmdown_iters` steps, counted in steps only.
  * Inputs:
  * - `step`: current step.
- * - `elapsed_ms`: training time so far.
- * - `hp`: iterations, warmdown length and time limit.
+ * - `hp`: iterations and warmdown length.
  * Outputs: a multiplier from 0 to 1.
  */
-fn lr_mul(step: usize, elapsed_ms: f32, hp: &Hyperparameters) -> f32 {
+fn lr_mul(step: usize, hp: &Hyperparameters) -> f32 {
     todo!()
 }
 
@@ -357,43 +379,12 @@ fn eval_val(head: &ClassifierHead, dev: &[Utterance], feature_dim: usize) -> (f3
 }
 
 /**
- * Description: Packs the head's weights into int8 bytes to save, like `quantize_state_dict_int8`.
+ * Description: Writes the trained head's weights to disk.
  * Inputs:
  * - `head`: the weights.
- * Outputs: the packed bytes.
- */
-fn quantize_state_dict_int8(head: &ClassifierHead) -> Vec<u8> {
-    todo!()
-}
-
-/**
- * Description: Writes the packed head to disk.
- * Inputs:
- * - `bytes`: the packed weights.
  * - `path`: where to write them.
  * Outputs: `Ok(())`, or the write error.
  */
-fn save_head(bytes: &[u8], path: &str) -> std::io::Result<()> {
-    todo!()
-}
-
-/**
- * Description: Prints a message and appends it to the run's log file, like `log0`.
- * Inputs:
- * - `msg`: the message.
- * - `log_path`: the log file.
- * Outputs: none
- */
-fn log0(msg: &str, log_path: &str) {
-    todo!()
-}
-
-/**
- * Description: Runs the whole training loop: load, warm up, train with validation, then save.
- * Inputs:
- * - `hp`: the training settings.
- * Outputs: none
- */
-fn train(hp: &Hyperparameters) {
+fn save_head(head: &ClassifierHead, path: &str) -> std::io::Result<()> {
     todo!()
 }
