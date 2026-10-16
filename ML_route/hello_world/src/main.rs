@@ -25,10 +25,12 @@ use constants::{
     TEST_DIALOGUES, TRAIN_CSV,
 };
 use serde::Deserialize;
-use step3_1_load::load_split;
+use step3_1_load::{apply_standardizer, fit_standardizer, load_split};
 use step3_2_forward::{forward, init_weights};
 use step3_3_loss::cross_entropy;
-use step3_4_update::{adamw_step, backward, lr_mul, zero_grad_all, AdamState};
+use step3_4_update::{
+    adamw_step, backward, clip_grad_norm, ema_update, lr_mul, scale_grads, zero_grad_all, AdamState,
+};
 use step3_5_loop::next_batch;
 use step3_6_eval::eval_val;
 use step3_7_save::save_head;
@@ -68,7 +70,8 @@ use std::io::{BufWriter, Write};
  * Inputs: none
  * Outputs: none
  * Constraints: panics when a file cannot be read or written; run it from `ML_route/hello_world`
- * after `prepare_features.py`, ideally with `cargo run --release`.
+ * after `prepare_features.py`, ideally with `cargo run --release`. An optional first argument names
+ * another settings file, such as `cargo run --release -- other.toml`.
  */
 fn main() {
     println!("Hello, World!");                       // say hello
@@ -77,14 +80,25 @@ fn main() {
 
     // [1] and [2] happen before this program runs: copy the features from the pod, then
     // join them into x_<split>.npy and y_<split>.npy with prepare_features.py.
-    let hp         = load_hyperparameters(HYPERPARAMETERS_TOML);            // training settings for this run
-    let train_data = load_split(&hp.train_csv, &hp.features_dir, "train");  // [3.1] training lines with features
-    let dev_data   = load_split(&hp.dev_csv, &hp.features_dir, "dev");      // [3.1] dev lines for validation
+    let settings_path  = std::env::args().nth(1).unwrap_or(HYPERPARAMETERS_TOML.to_string());  // optional settings file
+    let hp             = load_hyperparameters(&settings_path);                                 // training settings for this run
+    let mut train_data = load_split(&hp.train_csv, &hp.features_dir, "train");                 // [3.1] training lines with features
+    let mut dev_data   = load_split(&hp.dev_csv, &hp.features_dir, "dev");                     // [3.1] dev lines for validation
     println!("loaded {} train lines and {} dev lines", train_data.len(), dev_data.len());
 
-    let mut head      = init_weights(&hp);                                    // [3.2] the head's weights, random at first
-    let mut grads     = init_weights(&hp);                                    // [3.4] gradient buffer, same shape
+    let mut head = init_weights(&hp);                         // [3.2] the head's weights, random at first
+    if hp.standardize {                                       // [3.1] scale every feature column
+        let (mean, spread) = fit_standardizer(&train_data);   // fitted on train only
+        apply_standardizer(&mut train_data, &mean, &spread);  // scale train
+        apply_standardizer(&mut dev_data, &mean, &spread);    // scale dev the same way
+        head.feature_mean = mean;                             // kept in the head for the player
+        head.feature_std  = spread;
+    }
+
+    let mut grads     = head.clone();                                         // [3.4] gradient buffer, same shape
     let mut state     = AdamState { m: Vec::new(), v: Vec::new(), step: 0 };  // [3.4] AdamW's running averages
+    let mut ema_head  = head.clone();                                         // [3.4] slow average of the weights
+    let use_ema       = hp.ema_decay > 0.0;                                   // score the average instead of the live weights
     let mut best_head = head.clone();                                         // [3.5] the best head so far by dev score
     let mut best_f1   = f32::NEG_INFINITY;                                    // [3.5] its dev weighted F1
     let mut best_step = 0;                                                    // [3.5] the step it came from
@@ -102,22 +116,28 @@ fn main() {
         }
         train_loss /= batch_labels.len() as f32;                              // average over the batch
 
-        let lr = hp.lr * lr_mul(step, &hp);                              // [3.4] learning rate after warmdown
+        scale_grads(&mut grads, 1.0 / batch_labels.len() as f32);        // [3.4] batch sums to batch means
+        let grad_norm = clip_grad_norm(&mut grads, hp.grad_clip_norm);   // [3.4] cap the step's size
+        let lr        = hp.lr * lr_mul(step, &hp);                       // [3.4] learning rate after warmdown
         adamw_step(&mut head, &grads, &mut state, lr, hp.weight_decay);  // [3.4] update the weights
+        if use_ema {
+            ema_update(&mut ema_head, &head, hp.ema_decay);              // [3.4] follow the weights slowly
+        }
 
         if step % hp.train_log_every == 0 {                                              // every few steps
             println!(                                                                    // print the training loss
-                "step {step}/{} train_loss {train_loss:.4} lr {lr:.6}",
+                "step {step}/{} train_loss {train_loss:.4} grad_norm {grad_norm:.3} lr {lr:.6}",
                 hp.iterations
             );
         }
         let last_step = step + 1 == hp.iterations;                                       // always score the final weights
         if step % hp.val_loss_every == 0 || last_step {                                  // every validation interval
-            let (val_loss, val_f1) = eval_val(&head, &dev_data, hp.feature_dim);         // [3.6] score on dev
+            let scored             = if use_ema { &ema_head } else { &head };            // the weights to judge
+            let (val_loss, val_f1) = eval_val(scored, &dev_data, hp.feature_dim);        // [3.6] score on dev
             println!("step {step} val_loss {val_loss:.4} val_weighted_f1 {val_f1:.2}");  // print the dev scores
             if val_f1 > best_f1 {                                                        // a new best on dev?
                 best_f1   = val_f1;                                                      // remember its score
-                best_head = head.clone();                                                // keep a copy of these weights
+                best_head = scored.clone();                                              // keep a copy of these weights
                 best_step = step;                                                        // and when they were reached
             }
         }
@@ -125,9 +145,12 @@ fn main() {
 
     println!("best dev weighted F1 {best_f1:.2} at step {best_step}");
 
-    let test_data            = load_split(&hp.test_csv, &hp.features_dir, "test");  // [4] the test lines
-    let (test_loss, test_f1) = eval_val(&best_head, &test_data, hp.feature_dim);    // [4] score the best head
-    println!(                                                                       // [4] report it
+    let mut test_data = load_split(&hp.test_csv, &hp.features_dir, "test");       // [4] the test lines
+    if hp.standardize {                                                           // [4] scaled like train
+        apply_standardizer(&mut test_data, &best_head.feature_mean, &best_head.feature_std);
+    }
+    let (test_loss, test_f1) = eval_val(&best_head, &test_data, hp.feature_dim);  // [4] score the best head
+    println!(                                                                     // [4] report it
         "test: {} lines, loss {test_loss:.4}, weighted F1 {test_f1:.2}",
         test_data.len()
     );
@@ -201,6 +224,11 @@ fn default_hyperparameters() -> Hyperparameters {
         hidden_dim: 256,
         num_classes: 7,
         leaky_slope: 0.01,
+        square_activation: false,
+        logit_softcap: 0.0,
+        standardize: false,
+        ema_decay: 0.0,
+        grad_clip_norm: 0.0,
     }
 }
 
@@ -282,26 +310,36 @@ fn print_out_train_data(dialogues: Option<&[u32]>) -> std::io::Result<()> {
  * - `hidden_dim`: width of the head's hidden layer.
  * - `num_classes`: number of emotions, 7 for MELD.
  * - `leaky_slope`: Leaky ReLU's slope for negative inputs; 0 gives a plain ReLU.
+ * - `square_activation`: squares the Leaky ReLU output (LeakyReLU²).
+ * - `logit_softcap`: caps the scores with `c * tanh(z / c)`; 0 turns it off.
+ * - `standardize`: scales every feature column to mean 0 and spread 1, fitted on train.
+ * - `ema_decay`: keeps and scores a slow average of the weights; 0 turns it off.
+ * - `grad_clip_norm`: caps the batch-mean gradient's combined size; 0 turns it off.
  */
 #[derive(Deserialize)]
 #[serde(default, deny_unknown_fields)]
 struct Hyperparameters {
-    train_csv:       String,
-    dev_csv:         String,
-    test_csv:        String,
-    features_dir:    String,
-    head_path:       String,
-    run_id:          String,
-    seed:            u64,
-    val_loss_every:  usize,
-    train_log_every: usize,
-    iterations:      usize,
-    warmdown_iters:  usize,
-    batch_size:      usize,
-    lr:              f32,
-    weight_decay:    f32,
-    feature_dim:     usize,
-    hidden_dim:      usize,
-    num_classes:     usize,
-    leaky_slope:     f32,
+    train_csv:         String,
+    dev_csv:           String,
+    test_csv:          String,
+    features_dir:      String,
+    head_path:         String,
+    run_id:            String,
+    seed:              u64,
+    val_loss_every:    usize,
+    train_log_every:   usize,
+    iterations:        usize,
+    warmdown_iters:    usize,
+    batch_size:        usize,
+    lr:                f32,
+    weight_decay:      f32,
+    feature_dim:       usize,
+    hidden_dim:        usize,
+    num_classes:       usize,
+    leaky_slope:       f32,
+    square_activation: bool,
+    logit_softcap:     f32,
+    standardize:       bool,
+    ema_decay:         f32,
+    grad_clip_norm:    f32,
 }

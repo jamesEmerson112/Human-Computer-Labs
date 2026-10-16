@@ -4,6 +4,8 @@
 //! - `Utterance`: one MELD line with its label and features
 //! - `load_split`: reads one label file and attaches each clip's features
 //! - `emotion_to_index`: maps an emotion name to its class index
+//! - `fit_standardizer`: each feature column's mean and spread on train
+//! - `apply_standardizer`: scales features to mean 0 and spread 1
 
 use std::collections::HashMap;
 
@@ -95,4 +97,52 @@ pub(crate) fn emotion_to_index(emotion: &str) -> usize {
         .iter()
         .position(|&name| name == emotion)
         .unwrap_or_else(|| panic!("unknown emotion: {emotion}"))
+}
+
+/**
+ * Description: Fits the standardisation on the training lines: each feature column's mean and
+ * spread (standard deviation). Scaling every column to mean 0 and spread 1 puts the text and voice
+ * features on the same footing, so no encoder dominates just because its numbers are larger.
+ * Inputs:
+ * - `train`: the training lines; dev and test must never be used here.
+ * Outputs: (mean, spread), each `feature_dim` long; a spread of 0 is stored as 1.
+ * Constraints: `train` must not be empty.
+ */
+pub(crate) fn fit_standardizer(train: &[Utterance]) -> (Vec<f32>, Vec<f32>) {
+    let width = train[0].features.len();
+    let count = train.len() as f64;
+
+    let mut sum    = vec![0.0f64; width];
+    let mut sum_sq = vec![0.0f64; width];
+    for line in train {
+        for (c, &x) in line.features.iter().enumerate() {
+            sum[c]    += x as f64;
+            sum_sq[c] += (x as f64) * (x as f64);
+        }
+    }
+
+    let mean   = sum.iter().map(|s| (s / count) as f32).collect::<Vec<f32>>();
+    let spread = (0..width)
+        .map(|c| {
+            let variance = (sum_sq[c] / count - (sum[c] / count).powi(2)).max(0.0);
+            let std      = variance.sqrt() as f32;
+            if std > 0.0 { std } else { 1.0 }
+        })
+        .collect();
+    (mean, spread)
+}
+
+/**
+ * Description: Scales every line's features with a fitted standardisation: `(x - mean) / spread`.
+ * Inputs:
+ * - `lines`: the lines to scale, changed in place.
+ * - `mean`, `spread`: from `fit_standardizer`.
+ * Outputs: none
+ */
+pub(crate) fn apply_standardizer(lines: &mut [Utterance], mean: &[f32], spread: &[f32]) {
+    for line in lines {
+        for ((x, m), s) in line.features.iter_mut().zip(mean).zip(spread) {
+            *x = (*x - m) / s;
+        }
+    }
 }

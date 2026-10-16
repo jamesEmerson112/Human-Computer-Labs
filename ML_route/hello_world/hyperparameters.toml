@@ -31,3 +31,10 @@ feature_dim = 3840   # EmbeddingGemma 768 + EmoBERTa-large 1,024 + HuBERT-large 
 hidden_dim  = 256    # width of the head's hidden layer
 num_classes = 7      # number of emotions in MELD
 leaky_slope = 0.01   # Leaky ReLU slope for negative inputs; 0.0 gives a plain ReLU
+
+# Techniques from parameter_golf (off by default until measured)
+square_activation = false   # LeakyReLU²: square the Leaky ReLU output
+logit_softcap     = 0.0     # cap scores with c * tanh(z / c); parameter_golf used 30
+standardize       = false   # scale each feature column to mean 0 and spread 1, fitted on train
+ema_decay         = 0.0     # score a slow average of the weights; parameter_golf used 0.9965
+grad_clip_norm    = 0.0     # cap the batch-mean gradient's size; parameter_golf used 0.3
