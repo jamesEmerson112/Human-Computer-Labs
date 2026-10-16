@@ -4,12 +4,25 @@ import { STLLoader } from 'three/addons/loaders/STLLoader.js';
 import type { Pose, SceneDescription, State, Visual } from './protocol';
 import { PoseBuffer } from './interpolation';
 
+/**
+ * Description: Optional settings for a Stage that is not the server viewer.
+ * Fields:
+ * - benchmark: the benchmark look; when undefined the page URL decides and the body class follows it.
+ * - zoom: false lets the mouse wheel scroll the page instead of zooming.
+ * - poseSource: link poses for a frame time in ms, used in place of the server pose buffer.
+ */
+export interface StageOptions {
+  benchmark?: boolean;
+  zoom?: boolean;
+  poseSource?: (nowMs: number) => Record<string, Pose> | undefined;
+}
+
 export class Stage {
   readonly buffer = new PoseBuffer();
   readonly renderer: THREE.WebGLRenderer;
   readonly scene = new THREE.Scene();
   private camera = new THREE.PerspectiveCamera(42, 1, 0.01, 30);
-  private controls: OrbitControls;
+  readonly controls: OrbitControls;
   private links = new Map<string, THREE.Group>();
   private axes = new THREE.Group();
   private spotlight = new THREE.SpotLight(0xffe5a9, 0, 5, Math.PI / 6, 0.65, 2);
@@ -22,10 +35,13 @@ export class Stage {
   private lastRateMs = performance.now();
   private fps = 0;
   private stopped = false;
-  private benchmark = new URLSearchParams(location.search).has('benchmark');
+  private frameRequest = 0;
+  private resizeObserver: ResizeObserver;
+  private benchmark: boolean;
 
-  constructor(private element: HTMLElement, private onFrameRate: (fps: number) => void) {
-    document.body.classList.toggle('benchmark', this.benchmark);
+  constructor(private element: HTMLElement, private onFrameRate: (fps: number) => void, private options: StageOptions = {}) {
+    this.benchmark = options.benchmark ?? new URLSearchParams(location.search).has('benchmark');
+    if (options.benchmark === undefined) document.body.classList.toggle('benchmark', this.benchmark);
     this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, powerPreference: 'default' });
     this.renderer.setPixelRatio(this.benchmark ? 1 : Math.min(devicePixelRatio, 1.5));
     this.renderer.shadowMap.enabled = !this.benchmark;
@@ -33,7 +49,9 @@ export class Stage {
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
     this.renderer.toneMappingExposure = 1.25;
-    this.renderer.domElement.setAttribute('aria-label', 'Interactive 3D lamp. Drag to orbit, scroll to zoom.');
+    this.renderer.domElement.setAttribute('aria-label', options.zoom === false
+      ? 'Interactive 3D lamp. Drag to orbit.'
+      : 'Interactive 3D lamp. Drag to orbit, scroll to zoom.');
     this.element.append(this.renderer.domElement);
     this.scene.background = new THREE.Color('#151e22');
     this.scene.fog = new THREE.Fog('#151e22', 3.5, 10);
@@ -45,9 +63,11 @@ export class Stage {
     this.controls.minDistance = 0.35;
     this.controls.maxDistance = 5;
     this.controls.maxPolarAngle = Math.PI * 0.49;
+    if (options.zoom === false) this.controls.enableZoom = false;
     this.resetView();
     this.setupEnvironment();
-    new ResizeObserver(() => this.resize()).observe(this.element);
+    this.resizeObserver = new ResizeObserver(() => this.resize());
+    this.resizeObserver.observe(this.element);
     this.resize();
     this.render(performance.now());
   }
@@ -138,7 +158,8 @@ export class Stage {
     this.scene.add(this.spotlight, this.spotlight.target, this.axes);
   }
 
-  async load(description: SceneDescription): Promise<void> {
+  /** Build the lamp visuals; given mesh bytes keyed by scene mesh name, no asset is fetched. */
+  async load(description: SceneDescription, meshData?: ReadonlyMap<string, ArrayBuffer>): Promise<void> {
     if (description.schema_version !== 1 || description.coordinate_system !== 'z-up') throw new Error('Unsupported scene description.');
     const loader = new STLLoader();
     const meshes = new Map<string, Promise<THREE.BufferGeometry>>();
@@ -152,6 +173,11 @@ export class Stage {
       if (visual.type === 'sphere') return Promise.resolve(new THREE.SphereGeometry(size[0], 32, 20));
       if (visual.type === 'box') return Promise.resolve(new THREE.BoxGeometry(...size));
       if (!visual.mesh) throw new Error('A scene mesh has no asset path.');
+      if (meshData) {
+        const bytes = meshData.get(visual.mesh);
+        if (!bytes) throw new Error(`No mesh data for ${visual.mesh}.`);
+        if (!meshes.has(visual.mesh)) meshes.set(visual.mesh, Promise.resolve(loader.parse(bytes)));
+      }
       if (!meshes.has(visual.mesh)) meshes.set(visual.mesh, loader.loadAsync(`/assets/${visual.mesh.split('/').map(encodeURIComponent).join('/')}`));
       return meshes.get(visual.mesh)!;
     };
@@ -190,6 +216,34 @@ export class Stage {
     this.buffer.push(state, atMs);
     this.lightEnabled = state.light.enabled;
     this.brightness = state.light.brightness;
+  }
+
+  /** Set the lamp light without a server state, as the embedded lamp does. */
+  setLight(enabled: boolean, brightness: number): void {
+    this.lightEnabled = enabled;
+    this.brightness = brightness;
+  }
+
+  /** Pause or resume the render loop; resuming twice never starts a second loop. */
+  setRunning(running: boolean): void {
+    if (running === !this.stopped) return;
+    this.stopped = !running;
+    if (!running) {
+      cancelAnimationFrame(this.frameRequest);
+      return;
+    }
+    this.frames = 0;
+    this.lastRateMs = performance.now();
+    this.render(this.lastRateMs);
+  }
+
+  /** Stop rendering for good and release the canvas, controls and GPU resources. */
+  dispose(): void {
+    this.setRunning(false);
+    this.resizeObserver.disconnect();
+    this.controls.dispose();
+    this.renderer.dispose();
+    this.renderer.domElement.remove();
   }
 
   setAxes(enabled: boolean): void { this.axes.visible = enabled; }
@@ -235,12 +289,14 @@ export class Stage {
     this.camera.aspect = width / height;
     this.camera.updateProjectionMatrix();
     this.renderer.setSize(width, height);
+    // Resizing clears the canvas, so a paused stage draws one frame to stay visible.
+    if (this.stopped) this.renderer.render(this.scene, this.camera);
   }
 
   private render = (now: number): void => {
     if (this.stopped) return;
-    requestAnimationFrame(this.render);
-    const poses = this.buffer.sample(now);
+    this.frameRequest = requestAnimationFrame(this.render);
+    const poses = this.options.poseSource ? this.options.poseSource(now) : this.buffer.sample(now);
     if (poses) this.applyPoses(poses);
     this.controls.update();
     this.renderer.render(this.scene, this.camera);

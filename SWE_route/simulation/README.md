@@ -316,6 +316,14 @@ Add a JSON file with a unique name and label to get another button, or use the
 optional `group` field to put it in a family selector. An invalid
 file displays an error and leaves the previous working library available.
 
+The same library also drives the desk lamp in the MELD player page,
+`ML_route/data/meld-player.html`. For each line it picks a clip from the
+`group` family that matches the line's emotion, or a calm utility clip such as
+`nod` for neutral. That page copies the gestures in when it is
+built, so an edit reaches it only after a rebuild with
+`ML_route/player/build_player.py`. The root
+[README](../../README.md#8-run-the-live-player) gives the build commands.
+
 Files describe joint targets or starting-pose offsets, explicit pauses, and
 returns to the starting pose. Python still enforces motion limits and timing.
 See the [gesture authoring guide](gestures/README.md) for the complete format

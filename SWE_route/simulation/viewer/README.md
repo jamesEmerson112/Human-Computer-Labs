@@ -10,6 +10,10 @@ npm test
 npm run build
 ```
 
+`npm test` also checks the MELD player's embedded lamp against Python. `tests/embed-motion-parity.test.ts` replays `controller/tests/python_reference.py` for every gesture and requires positions and targets to match within 1e-12. `tests/embed-kinematics.test.ts` compares the forward kinematics with yourdfpy through `tests/python_kinematics.py`. Both run the simulation's locked Python environment at `../.venv`, so run `uv sync --locked` in `SWE_route/simulation` first, or set `LAMP_PYTHON` to another interpreter.
+
+`npm run build:embed` builds that lamp as one classic script for the MELD player page, `ML_route/data/meld-player.html`. The embed lives in `src/embed/` and ports the URDF reader, forward kinematics, gesture loader and `lamp_sim/motion.py` playback to TypeScript, so it runs in the page with no server and no fetch. The build writes `embed-dist/lamp-embed.js` and `embed-dist/lamp-embed.sources.json`, which records a sha256 of every source file. `ML_route/player/build_player.py` inlines the script and refuses one that is missing or was built from sources that have changed since. `embed-dist/` is gitignored, because the committed player page already carries the script.
+
 The Rust server serves `dist/` on its local port (8082 by default), `/api/scene`, `/assets/`, and `/ws`. During development, start the Rust server on port 8082 first, then run `npm run dev` and open `http://127.0.0.1:5173`. Vite stays on loopback port 5173 and exits if that port is occupied. It forwards scene, asset, and WebSocket requests to port 8082 after checking the original local Host and matching Origin; WebSockets require an Origin. The native server's origin restrictions remain enabled. Run the built viewer through the native server for measurements.
 
 Choose a family or search, select a gesture, and press Play. Stop or Escape interrupts playback. Manual joint sliders send a new target when released. Angles are displayed in degrees and transmitted in radians. Pace, light controls, reset pose, and gesture reload are acknowledged by the controller. Reset view, Light view, and axes affect only the browser.

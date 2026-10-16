@@ -10,6 +10,8 @@
   --line: #e2e2de; --accent: #2f6fde; --accent-fg: #ffffff;
   --now: #eaf1fd; --hit: #1f7a3a; --miss: #9a9aa0; --warn: #b4541a;
   --shade: rgba(0, 0, 0, 0.62);
+  /* The sticky header's height; the page script updates it when the header wraps to two rows. */
+  --header-h: 59px;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
@@ -71,7 +73,9 @@ main {
 }
 @media (min-width: 960px) {
   main { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); }
-  .stage { position: sticky; top: 72px; align-self: start; }
+  .stage { position: sticky; top: calc(var(--header-h) + 13px); align-self: start; }
+  /* With the lamp under the video the stage can outgrow the window, so it scrolls on its own. */
+  .stage { max-height: calc(100vh - var(--header-h) - 29px); overflow-y: auto; }
 }
 .panel {
   background: var(--panel); border: 1px solid var(--line);
@@ -100,6 +104,13 @@ main {
   font-size: 13px; pointer-events: none;
 }
 .tag:empty { display: none; }
+.lampbox {
+  position: relative; margin-top: 10px; height: clamp(130px, min(11vw, 20vh), 220px);
+  background: #151e22; border: 1px solid var(--line); border-radius: 8px; overflow: hidden;
+}
+.lampbox[hidden] { display: none; }
+.lampstage { position: absolute; inset: 0; }
+.lampstage canvas { display: block; }
 .tag b { font-weight: 600; }
 .tag { max-width: calc(100% - 20px); }
 .reply { font-style: italic; color: var(--muted); margin-top: 2px; }
@@ -162,7 +173,6 @@ td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
 .row .text { cursor: pointer; }
 .breakdown { margin-top: 10px; }
 .breakdown td:first-child { text-transform: capitalize; }
-.hint { color: var(--muted); font-size: 13px; margin: 0 0 8px; }
 .listhead { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px; }
 @media (max-width: 700px) { header { position: static; } }
 .listhead h2 { font-size: 15px; margin: 0 0 6px; }
@@ -205,6 +215,10 @@ kbd {
       <div class="tag" id="tag"></div>
       <div class="caption" id="caption"></div>
     </div>
+    <div class="lampbox" id="lampbox" hidden>
+      <div class="lampstage" id="lampstage"></div>
+      <div class="tag" id="lampclip"></div>
+    </div>
     <div class="now" id="now">Pick lines on the right, then press Play selected.</div>
     <div class="controls">
       <button class="primary" id="play">Play selected</button>
@@ -236,6 +250,22 @@ kbd {
       <span class="small" id="replystatus"></span>
       <label><input type="checkbox" id="liveemotion"> Live emotion</label>
       <span class="small" id="emotionstatus"></span>
+      <label><input type="checkbox" id="lamp"> Lamp</label>
+      <label>Lamp pace
+        <select id="lamppace">
+          <option value="0.5">0.5x</option>
+          <option value="0.75">0.75x</option>
+          <option value="1">1x</option>
+          <option value="1.5">1.5x</option>
+          <option value="2">2x</option>
+          <option value="3">3x</option>
+          <option value="4">4x</option>
+          <option value="5">5x</option>
+          <option value="7.5" selected>7.5x</option>
+        </select>
+      </label>
+      <span class="small" id="lampstatus" aria-live="polite"></span>
+      <label title="Show each line's transcript, emotion confidence and timings"><input type="checkbox" id="debug"> Debug</label>
     </div>
     <div class="tabs" role="tablist">
       <button role="tab" id="tab-output" aria-selected="true" aria-controls="panel-output">Output</button>
@@ -285,25 +315,18 @@ kbd {
         <button id="none">Select none</button>
       </div>
     </div>
-    <p class="hint">With <code>serve.py</code>, <code>serve_emotion.py</code> and
-    <code>serve_reply.py</code> running, every line gets three model outputs when
-    its clip ends. Whisper transcribes the clip's audio. The trained emotion head
-    reads the clip's sound with HuBERT and its words with EmbeddingGemma and
-    EmoBERTa. The words are the live Whisper transcript when live speech-to-text
-    is on, and the saved Whisper transcript otherwise. LFM2.5 then writes a reply
-    that answers the head's emotion and words. By default the reply also sees the
-    dialogue's earlier lines, and the menu beside Live reply switches it to the
-    line alone. The grey tag is MELD's own label, and the head's emotion turns
-    green when the two agree. The time beside it is how long the emotion took
-    after the clip ended. The models take turns on the one GPU, so later ones
-    wait. A random emotion, marked random, appears only when Live emotion is off
-    or its server is down, and the reply then answers MELD's own label. A canned
-    reply, marked Placeholder reply, appears only when Live reply is off or its
-    server is down. The head trained on the train split and was picked by its
-    dev score, so the page is meant for the test split.</p>
     <div class="lines" id="lines"></div>
   </section>
 </main>
+<script>
+// The lamp's URDF, scene, shade mesh and gesture library, inlined by build_player.py.
+const LAMP = __LAMP_DATA__;
+</script>
+<script>
+// The SWE lamp bundle (SWE_route/simulation/viewer, npm run build:embed), which defines LampEmbed. It sits in
+// its own script element, so a bundle that fails to load leaves the player working without the lamp.
+__LAMP_EMBED__
+</script>
 <script>
 const DATA = __DATA__;
 const FOLDERS = {
@@ -402,8 +425,8 @@ function renderLines() {
       : `<div class="guess ${guess.guess === emotion ? "hit" : ""}"` +
         ` title="${guess.source === "head" ? "The trained head's emotion" : "A random guess"}">${guess.guess}` +
         `${guess.source === "random" ? `<span class="source">random</span>` : ""}` +
-        `<span class="latency" title="Time from the end of the clip to the emotion">` +
-        `${formatLatency(guess.latency)}</span></div>`;
+        `${debugOn() ? `<span class="latency" title="Time from the end of the clip to the emotion">` +
+        `${formatLatency(guess.latency)}</span>` : ""}</div>`;
     const note = missing.has(key(utt)) ? `<div class="note">no clip</div>` : "";
     const fixed = line[4] && state.version !== "whisper"
       ? `<div class="fix" title="Before the audio fix: ${esc(line[4])}">audio fix</div>` : "";
@@ -413,7 +436,7 @@ function renderLines() {
       <button class="play" title="Play this line only" aria-label="Play line ${utt}">&#9654;</button>
       <div class="text" title="Click to play this line"><span class="utt">${utt}</span><span class="who">${esc(speaker)}</span>:
         ${esc(textOf(line))}${guess && !guess.pending && guess.reply && !liveReplyOn()
-          ? `<div class="reply"><span>Placeholder reply:</span> ${esc(guess.reply)}</div>` : ""}${liveHtml(utt)}${emotionHtml(utt)}${replyHtml(utt)}</div>
+          ? `<div class="reply"><span>Placeholder reply:</span> ${esc(guess.reply)}</div>` : ""}${debugOn() ? liveHtml(utt) + emotionHtml(utt) : ""}${replyHtml(utt)}</div>
       <div class="tags"><div class="label">${emotion}</div>${guessHtml}${note}${fixed}</div>
     </div>`;
   }).join("");
@@ -433,8 +456,8 @@ function gapNote(previous, utt) {
 }
 
 /**
- * Description: Writes one output record as a line of the Text log: the clip, the line, the emotion and the
- * reply, marking a random emotion "(random)" and a canned reply "(placeholder)".
+ * Description: Writes one output record as a line of the Text log: the clip, the line, the emotion, the
+ * reply and the lamp's clip, marking a random emotion "(random)" and a canned reply "(placeholder)".
  * Inputs:
  * - o: the record.
  * Outputs: the text line.
@@ -447,7 +470,8 @@ function textRecord(o) {
   const reply = o.reply != null ? `"${o.reply}"${o.reply_source === "placeholder" ? " (placeholder)" : ""}`
     : error ? `(no reply: ${shortError(error)})`
     : o.reply_source === "lfm2.5" ? "(writing the reply…)" : "";
-  return `${o.clip}  ${o.speaker}: "${o.text}"  ->  ${emotion}  ${reply}`;
+  const lampClip = o.lamp_clip ? `  lamp: ${gestureLabel(o.lamp_clip)}` : "";
+  return `${o.clip}  ${o.speaker}: "${o.text}"  ->  ${emotion}  ${reply}${lampClip}`;
 }
 
 /**
@@ -678,7 +702,7 @@ function playNext() {
     if (wholeDialogue && $("continue").checked &&
         state.pos < IDS[state.split].length - 1) {
       state.pos += 1;
-      loadDialogue();
+      loadDialogue(true);
       playList(lines().map((l) => l[0]), true);
       return;
     }
@@ -708,6 +732,7 @@ function playNext() {
   current().currentTime = 0;
   current().play().catch(() => {});
   $("pause").textContent = "Pause";
+  runLamp(true);
   renderLines();
   const row = document.querySelector(`.row[data-utt="${playing}"]`);
   if (row) row.scrollIntoView({ block: "nearest", behavior: "smooth" });
@@ -858,6 +883,16 @@ function requestReply(mode, split, dia, utt, text, emotion, speaker, record, sen
 }
 
 /**
+ * Description: Says whether debug mode is on, which shows each line's live transcript, emotion
+ * confidence and timings beside the reply.
+ * Inputs: none
+ * Outputs: true when the Debug box is ticked.
+ */
+function debugOn() {
+  return $("debug").checked;
+}
+
+/**
  * Description: Says whether live replies are on and their server is ready, in which case the canned
  * placeholder replies are hidden.
  * Inputs: none
@@ -931,6 +966,7 @@ function replyCell(mode, utt) {
   if (result.error) {
     return `could not reply <span class="small" title="${esc(result.error)}">(${esc(shortError(result.error))})</span>`;
   }
+  if (!debugOn()) return esc(result.reply);
   const queued = result.wait_ms > 20 ? `, waiting for the GPU ${seconds(result.wait_ms)}` : "";
   const seen = mode === "context" ? `, after ${result.history_lines} earlier lines (${result.prompt_tokens} prompt tokens)` : "";
   const aim = result.long_turn ? ", long turn" : result.target_words ? `, aimed at ${result.target_words} words` : "";
@@ -942,7 +978,8 @@ function replyHtml(utt) {
   return REPLY_MODES.map((m) => {
     const cell = replyCell(m.id, utt);
     if (!cell) return "";
-    return `<div class="live"><span class="livelabel">Live reply, ${m.label}:</span> ${cell}</div>`;
+    const label = debugOn() ? `Live reply, ${m.label}:` : "Reply:";
+    return `<div class="live"><span class="livelabel">${label}</span> ${cell}</div>`;
   }).join("");
 }
 
@@ -1059,6 +1096,7 @@ async function startEmotion(split, dia, utt, line, saved, record, ended, heard) 
     Object.assign(record, { emotion: guess.guess, emotion_source: "random", live_emotion_error: emotions[lineKey].error });
   }
   delete guess.pending;
+  lampReact(lineKey, guess.guess, record);
   const asked = emotion
     ? startReply(split, dia, utt, words.trim() ? words : line[3], emotion, line[1], record, ended)
     : startReply(split, dia, utt, cutWords(saved), line[2], line[1], record, ended);
@@ -1134,6 +1172,176 @@ function renderLiveAverage() {
   $("liveavg").textContent = `Live models on average over ${lines} lines: ${parts.join(", ")}`;
 }
 
+/* ---------- lamp (the SWE route's desk lamp, inlined by build_player.py) ---------- */
+
+// The mounted lamp, or null before it mounts or after it failed; lampFailed holds the failure message.
+let lamp = null;
+let lampFailed = null;
+// Stop and navigation bump lampEpoch, so emotions that arrive afterwards for earlier lines are dropped.
+let lampEpoch = 0;
+// Each ended line takes the next lampSeq, and lampShown is the newest one that reached the lamp, so an
+// older line's late emotion never overrides a newer line's reaction.
+let lampSeq = 0;
+let lampShown = 0;
+// Each output record's {seq, epoch}, kept off the record so lamp_clip is its only lamp field.
+const lampStamps = new WeakMap();
+let gestureLabels = null;
+// The lamp's latest activity text, and whether a video pause has paused the lamp. While paused the
+// status reads "Lamp paused", and resuming shows the latest activity again.
+let lampActivity = "";
+let lampPaused = false;
+
+/**
+ * Description: Looks up a gesture's label, such as its emotion wheel path, from the inlined library.
+ * Inputs:
+ * - name: the gesture name.
+ * Outputs: the label, or the name itself when the library has no such gesture.
+ */
+function gestureLabel(name) {
+  if (!gestureLabels) {
+    gestureLabels = {};
+    try {
+      for (const g of LAMP.gestures) gestureLabels[g.name] = g.label;
+    } catch (e) {}
+  }
+  return gestureLabels[name] ?? name;
+}
+
+/**
+ * Description: Mounts the lamp in #lampstage the first time it is needed.
+ * Inputs: none
+ * Outputs: the lamp handle, or null when the lamp cannot run.
+ * Constraints: call it only while #lampbox is shown, because the lamp sizes its canvas from the box. On a
+ * failure, such as a bundle that did not load or no WebGL, it shows "Lamp unavailable: …", turns the Lamp
+ * box off and disables it, and the rest of the player keeps working.
+ */
+function ensureLamp() {
+  if (lamp || lampFailed) return lamp;
+  try {
+    if (typeof LAMP === "undefined") throw new Error("the lamp data did not load");
+    if (typeof LampEmbed === "undefined") throw new Error("the lamp script did not load");
+    lamp = LampEmbed.mount($("lampstage"), LAMP, {
+      onActivity: (text) => {
+        lampActivity = text;
+        if (!lampPaused) $("lampstatus").textContent = text;
+      },
+    });
+  } catch (err) {
+    lamp = null;
+    lampFailed = err.message || String(err);
+    $("lampstatus").textContent = `Lamp unavailable: ${lampFailed}`;
+    $("lamp").checked = false;
+    $("lamp").disabled = true;
+    $("lamppace").disabled = true;
+    $("lampbox").hidden = true;
+    return null;
+  }
+  try {
+    lamp.setPace(Number($("lamppace").value));
+  } catch (err) {
+    $("lampstatus").textContent = `Lamp: ${err.message || err}`;
+  }
+  return lamp;
+}
+
+/**
+ * Description: Shows or hides the lamp to match the Lamp box, mounting it the first time it shows.
+ * Inputs: none; reads #lamp.
+ * Outputs: none
+ * Constraints: a hidden lamp is paused rather than removed, so turning it back on shows it where it was.
+ * A lamp error is shown in #lampstatus and never stops the player from starting.
+ */
+function applyLamp() {
+  const on = $("lamp").checked;
+  $("lampbox").hidden = !on;
+  if (on) {
+    if (ensureLamp()) runLamp(!(playing !== null && current().paused));
+  } else if (lamp) {
+    try {
+      lamp.setRunning(false);
+      $("lampstatus").textContent = "";
+    } catch (err) {
+      $("lampstatus").textContent = `Lamp: ${err.message || err}`;
+    }
+  }
+}
+
+/**
+ * Description: Pauses or resumes the lamp along with the video, while the lamp is on, and shows
+ * "Lamp paused" in #lampstatus while it is paused.
+ * Inputs:
+ * - running: false to pause, true to resume.
+ * Outputs: none
+ * Constraints: a lamp error is shown in #lampstatus rather than thrown.
+ */
+function runLamp(running) {
+  if (!lamp || !$("lamp").checked) return;
+  try {
+    lamp.setRunning(running);
+  } catch (err) {
+    $("lampstatus").textContent = `Lamp: ${err.message || err}`;
+    return;
+  }
+  lampPaused = !running;
+  $("lampstatus").textContent = running ? lampActivity : "Lamp paused";
+}
+
+/**
+ * Description: Gives a line that just ended its place in the lamp's order.
+ * Inputs:
+ * - record: the line's output record.
+ * Outputs: none
+ */
+function stampLamp(record) {
+  lampSeq += 1;
+  lampStamps.set(record, { seq: lampSeq, epoch: lampEpoch });
+}
+
+/**
+ * Description: Plays a lamp clip for a line's emotion: a random clip from the emotion's family on the
+ * emotion wheel, or a calm clip for neutral, interrupting the lamp from its current pose.
+ * Inputs:
+ * - lineKey: the line's key, as key() builds it.
+ * - emotion: the MELD emotion shown for the line, from the head or the random fallback.
+ * - record: the line's output record, which gets lamp_clip (the gesture name) when a clip plays.
+ * Outputs: none
+ * Constraints: the call is dropped when Stop or navigation came after the line ended, or when a newer
+ * line already reacted, and also when the Lamp box is off or the lamp is unavailable.
+ */
+function lampReact(lineKey, emotion, record) {
+  const stamp = lampStamps.get(record);
+  if (!stamp || stamp.epoch !== lampEpoch || stamp.seq < lampShown) return;
+  lampShown = stamp.seq;
+  if (!$("lamp").checked || !ensureLamp()) return;
+  try {
+    const clip = lamp.react(emotion);
+    if (!clip) return;
+    record.lamp_clip = clip.name;
+    $("lampclip").innerHTML = `${esc(emotion)} &rarr; <b>${esc(clip.label)}</b>${clip.calm ? " (calm)" : ""}`;
+    $("lampclip").dataset.key = lineKey;
+  } catch (err) {
+    $("lampstatus").textContent = `Lamp: ${err.message || err}`;
+  }
+}
+
+/**
+ * Description: Sends the lamp home and drops every emotion still on its way, for Stop and navigation.
+ * Inputs: none
+ * Outputs: none
+ */
+function resetLamp() {
+  lampEpoch += 1;
+  $("lampclip").innerHTML = "";
+  $("lampclip").dataset.key = "";
+  if (!lamp) return;
+  try {
+    lamp.reset();
+    runLamp(true);
+  } catch (err) {
+    $("lampstatus").textContent = `Lamp: ${err.message || err}`;
+  }
+}
+
 function showFirstFrame(utt) {
   const video = current();
   const src = clipSrc(utt);
@@ -1143,7 +1351,14 @@ function showFirstFrame(utt) {
   video.load();
 }
 
-function stop() {
+/**
+ * Description: Stops playback, empties the queue and clears the caption and tag.
+ * Inputs:
+ * - keepLamp: true to leave the lamp's last reaction playing, as auto-advance to the next dialogue does;
+ *   otherwise the lamp goes home and emotions still on their way are dropped.
+ * Outputs: none
+ */
+function stop(keepLamp) {
   queue = [];
   playing = null;
   endedAt = null;
@@ -1156,13 +1371,14 @@ function stop() {
   showCaption(null);
   $("tag").innerHTML = "";
   $("tag").dataset.key = "";
+  if (!keepLamp) resetLamp();
 }
 
 function togglePause() {
   const video = current();
   if (playing === null) { $("play").click(); return; }
-  if (video.paused) { video.play().catch(() => {}); $("pause").textContent = "Pause"; }
-  else { video.pause(); $("pause").textContent = "Resume"; }
+  if (video.paused) { video.play().catch(() => {}); $("pause").textContent = "Pause"; runLamp(true); }
+  else { video.pause(); $("pause").textContent = "Resume"; runLamp(false); }
 }
 
 for (const video of players) {
@@ -1191,6 +1407,7 @@ for (const video of players) {
       latency_ms: Number(latency.toFixed(3)),
     };
     output.push(record);
+    stampLamp(record);
     $("tag").dataset.key = lineKey;
     const heard = startLive(state.split, dialogueId(), playing, record);
     if (head) {
@@ -1199,6 +1416,8 @@ for (const video of players) {
     } else if (!startReply(state.split, dialogueId(), playing, textOf(line), line[2], line[1], record)) {
       usePlaceholder(guesses[lineKey], record, guess);
     }
+    // With the head on, the lamp reacts in startEmotion once the emotion is known.
+    if (!head) lampReact(lineKey, guess, record);
     $("tag").innerHTML = head
       ? `${esc(clipName(playing))} &rarr; reading the emotion&hellip;`
       : tagHtml(clipName(playing), guess, guesses[lineKey].reply, { random: true });
@@ -1218,8 +1437,14 @@ for (const video of players) {
 
 /* ---------- navigation ---------- */
 
-function loadDialogue() {
-  stop();
+/**
+ * Description: Shows the current dialogue: stops playback, selects every line and shows the first frame.
+ * Inputs:
+ * - keepLamp: true when auto-advance loads the next dialogue, so the lamp's last reaction is not cut off.
+ * Outputs: none
+ */
+function loadDialogue(keepLamp) {
+  stop(keepLamp);
   found = null;
   selected = new Set(lines().map((line) => line[0]));
   showFirstFrame(lines()[0][0]);
@@ -1484,6 +1709,35 @@ applyTheme(recall("theme") || "auto");
   $("liveemotion").addEventListener("change", () => store("liveemotion", $("liveemotion").checked ? "1" : "0"));
   $("replymode").value = recall("replymode") === "single" ? "single" : "context";
   $("replymode").addEventListener("change", () => store("replymode", $("replymode").value));
+  // The lamp is on by default, and off by default when the system asks for reduced motion.
+  const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+  const lampSaved = recall("lamp");
+  $("lamp").checked = lampSaved === null ? !reduceMotion : lampSaved === "1";
+  const lampPace = recall("lamp-pace");
+  if ([...$("lamppace").options].some((o) => o.value === lampPace)) $("lamppace").value = lampPace;
+  $("debug").checked = recall("debug") === "1";
+  $("debug").addEventListener("change", () => {
+    store("debug", $("debug").checked ? "1" : "0");
+    renderLines();
+  });
+  $("lamp").addEventListener("change", () => {
+    store("lamp", $("lamp").checked ? "1" : "0");
+    applyLamp();
+  });
+  $("lamppace").addEventListener("change", () => {
+    store("lamp-pace", $("lamppace").value);
+    try {
+      if (lamp) lamp.setPace(Number($("lamppace").value));
+    } catch (err) {
+      $("lampstatus").textContent = `Lamp: ${err.message || err}`;
+    }
+  });
+  // The sticky stage sits below the header, which wraps to two rows on narrower windows.
+  const header = document.querySelector("header");
+  const fitHeader = () => document.documentElement.style.setProperty("--header-h", `${header.offsetHeight}px`);
+  fitHeader();
+  if (typeof ResizeObserver !== "undefined") new ResizeObserver(fitHeader).observe(header);
+  applyLamp();
   checkLive();
   const captionMode = recall("caption-mode");
   if (["line", "words", "off"].includes(captionMode)) $("captions").value = captionMode;
