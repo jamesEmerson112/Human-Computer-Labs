@@ -72,25 +72,27 @@ pub(crate) fn backward(
     target: usize,
     grads: &mut ClassifierHead,
 ) {
-    let h            = hidden(head, features);
-    let mut d_logits = softmax(logits);
+    let h             = hidden(head, features);
+    let mut d_logits  = softmax(logits);
     d_logits[target] -= 1.0;
 
     let mut d_hidden = vec![0.0; head.hidden_dim];
     for (k, &d) in d_logits.iter().enumerate() {
         grads.b2[k] += d;
         for j in 0..head.hidden_dim {
-            grads.w2[k * head.hidden_dim + j] += d * h[j];
-            d_hidden[j]                       += d * head.w2[k * head.hidden_dim + j];
+            let w2_index        = k * head.hidden_dim + j;
+            grads.w2[w2_index] += d * h[j];
+            d_hidden[j]        += d * head.w2[w2_index];
         }
     }
 
     for j in 0..head.hidden_dim {
         // Leaky ReLU's slope is 1 where the unit was active and leaky_slope where it was not.
-        let slope    = if h[j] > 0.0 { 1.0 } else { head.leaky_slope };
-        let d_pre    = d_hidden[j] * slope;
-        grads.b1[j] += d_pre;
-        let row      = &mut grads.w1[j * head.feature_dim..(j + 1) * head.feature_dim];
+        let slope     = if h[j] > 0.0 { 1.0 } else { head.leaky_slope };
+        let d_pre     = d_hidden[j] * slope;
+        grads.b1[j]  += d_pre;
+        let row_start = j * head.feature_dim;
+        let row       = &mut grads.w1[row_start..row_start + head.feature_dim];
         for (g, &x) in row.iter_mut().zip(features) {
             *g += d_pre * x;
         }
