@@ -1,0 +1,32 @@
+# Training settings for the MELD emotion head, read by `cargo run` from this folder.
+# Any setting left out falls back to its default in main.rs's default_hyperparameters().
+
+# Data
+train_csv = "../data/MELD.Completed/train_sent_emo.csv"   # label file to train on
+dev_csv   = "../data/MELD.Completed/dev_sent_emo.csv"     # label file to validate on
+test_csv  = "../data/MELD.Completed/test_sent_emo.csv"    # label file to test on, MELD's published words
+
+features_dir = "../data/fusion"                  # joined features from prepare_features.py
+head_path    = "../data/heads/meld-head.json"    # where the trained head is saved
+
+# Run
+run_id = "meld-head"   # name used for the log and the saved head
+seed   = 1337          # random seed for weight init and shuffling
+
+# Logging
+val_loss_every  = 100   # run validation every this many steps
+train_log_every = 20    # print the training loss every this many steps
+
+# Schedule
+iterations     = 2000   # total training steps
+warmdown_iters = 200    # steps over which the learning rate falls to zero at the end
+batch_size     = 32     # lines per training step
+
+# Optimiser
+lr           = 1e-3   # peak learning rate
+weight_decay = 0.01   # AdamW weight decay
+
+# Head shape
+feature_dim = 3840   # EmbeddingGemma 768 + EmoBERTa-large 1,024 + HuBERT-large 2,048
+hidden_dim  = 256    # width of the head's hidden layer
+num_classes = 7      # number of emotions in MELD

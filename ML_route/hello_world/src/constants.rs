@@ -3,7 +3,11 @@
 //! APIs:
 //! - `TRAIN_CSV`: path to the MELD training label file
 //! - `DEV_CSV`: path to the MELD dev label file
+//! - `TEST_CSV`: path to the MELD test label file
+//! - `FEATURES_DIR`: folder of the joined encoder features
+//! - `HEAD_JSON`: where the trained head is saved
 //! - `OUTPUT_TXT`: path of the text file the dialogues are written to
+//! - `HYPERPARAMETERS_TOML`: path of the training settings file
 //! - `DEFAULT_DIALOGUES`: the dialogues written when none are given
 //! - `TEST_DIALOGUES`: five randomly picked dialogues to test with
 //! - `CLIPS_DIR`: folder holding the MELD training clips
@@ -23,9 +27,31 @@ pub const TRAIN_CSV: &str = "../data/MELD.Completed/train_sent_emo.csv";
 pub const DEV_CSV: &str = "../data/MELD.Completed/dev_sent_emo.csv";
 
 /**
+ * Description: Path to the MELD test label file in MELD.Completed, which keeps MELD's published
+ * words, relative to this crate's folder.
+ */
+pub const TEST_CSV: &str = "../data/MELD.Completed/test_sent_emo.csv";
+
+/**
+ * Description: Folder of the joined features that `prepare_features.py` writes, relative to this
+ * crate's folder.
+ */
+pub const FEATURES_DIR: &str = "../data/fusion";
+
+/**
+ * Description: Where the trained head is saved, relative to this crate's folder.
+ */
+pub const HEAD_JSON: &str = "../data/heads/meld-head.json";
+
+/**
  * Description: Path of the text file the dialogues are written to, relative to this crate's folder.
  */
 pub const OUTPUT_TXT: &str = "dialogues.txt";
+
+/**
+ * Description: Path of the training settings file, relative to this crate's folder.
+ */
+pub const HYPERPARAMETERS_TOML: &str = "hyperparameters.toml";
 
 /**
  * Description: The Dialogue_IDs that `print_out_train_data` writes when it is given `None`.
