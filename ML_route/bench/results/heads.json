@@ -1,0 +1,630 @@
+{
+ "text": {
+  "deberta-v3-large/raw": {
+   "dim": 1024,
+   "test_lines": 2610,
+   "logreg": {
+    "dev_wf1": 55.14,
+    "test_wf1": 57.34,
+    "settings": {
+     "weight_decay": 0.0001,
+     "weighted_loss": false
+    }
+   },
+   "mlp": {
+    "dev_wf1": 55.12,
+    "test_wf1": 55.03,
+    "settings": {
+     "weighted_loss": true,
+     "epoch": 32
+    }
+   }
+  },
+  "deberta-v3-large/completed": {
+   "dim": 1024,
+   "test_lines": 2610,
+   "logreg": {
+    "dev_wf1": 54.9,
+    "test_wf1": 57.53,
+    "settings": {
+     "weight_decay": 0.1,
+     "weighted_loss": false
+    }
+   },
+   "mlp": {
+    "dev_wf1": 55.8,
+    "test_wf1": 58.01,
+    "settings": {
+     "weighted_loss": false,
+     "epoch": 14
+    }
+   }
+  },
+  "deberta-v3-large/whisper": {
+   "dim": 1024,
+   "test_lines": 2610,
+   "logreg": {
+    "dev_wf1": 43.89,
+    "test_wf1": 47.76,
+    "settings": {
+     "weight_decay": 0.1,
+     "weighted_loss": false
+    }
+   },
+   "mlp": {
+    "dev_wf1": 45.61,
+    "test_wf1": 49.08,
+    "settings": {
+     "weighted_loss": false,
+     "epoch": 8
+    }
+   }
+  },
+  "embeddinggemma-300m/raw": {
+   "dim": 768,
+   "test_lines": 2610,
+   "logreg": {
+    "dev_wf1": 54.52,
+    "test_wf1": 58.65,
+    "settings": {
+     "weight_decay": 0.0001,
+     "weighted_loss": false
+    }
+   },
+   "mlp": {
+    "dev_wf1": 58.2,
+    "test_wf1": 58.51,
+    "settings": {
+     "weighted_loss": false,
+     "epoch": 48
+    }
+   }
+  },
+  "embeddinggemma-300m/completed": {
+   "dim": 768,
+   "test_lines": 2610,
+   "logreg": {
+    "dev_wf1": 54.5,
+    "test_wf1": 58.44,
+    "settings": {
+     "weight_decay": 0.1,
+     "weighted_loss": false
+    }
+   },
+   "mlp": {
+    "dev_wf1": 58.58,
+    "test_wf1": 60.7,
+    "settings": {
+     "weighted_loss": false,
+     "epoch": 7
+    }
+   }
+  },
+  "embeddinggemma-300m/whisper": {
+   "dim": 768,
+   "test_lines": 2610,
+   "logreg": {
+    "dev_wf1": 45.07,
+    "test_wf1": 47.51,
+    "settings": {
+     "weight_decay": 0.1,
+     "weighted_loss": false
+    }
+   },
+   "mlp": {
+    "dev_wf1": 47.59,
+    "test_wf1": 49.89,
+    "settings": {
+     "weighted_loss": false,
+     "epoch": 1
+    }
+   }
+  },
+  "emoberta-large/raw": {
+   "dim": 1024,
+   "test_lines": 2610,
+   "logreg": {
+    "dev_wf1": 75.44,
+    "test_wf1": 75.16,
+    "settings": {
+     "weight_decay": 0.1,
+     "weighted_loss": false
+    }
+   },
+   "mlp": {
+    "dev_wf1": 80.07,
+    "test_wf1": 77.91,
+    "settings": {
+     "weighted_loss": false,
+     "epoch": 5
+    }
+   }
+  },
+  "emoberta-large/completed": {
+   "dim": 1024,
+   "test_lines": 2610,
+   "logreg": {
+    "dev_wf1": 75.01,
+    "test_wf1": 74.97,
+    "settings": {
+     "weight_decay": 0.1,
+     "weighted_loss": false
+    }
+   },
+   "mlp": {
+    "dev_wf1": 79.59,
+    "test_wf1": 77.41,
+    "settings": {
+     "weighted_loss": false,
+     "epoch": 5
+    }
+   }
+  },
+  "emoberta-large/whisper": {
+   "dim": 1024,
+   "test_lines": 2610,
+   "logreg": {
+    "dev_wf1": 56.73,
+    "test_wf1": 58.74,
+    "settings": {
+     "weight_decay": 0.1,
+     "weighted_loss": false
+    }
+   },
+   "mlp": {
+    "dev_wf1": 62.8,
+    "test_wf1": 61.98,
+    "settings": {
+     "weighted_loss": false,
+     "epoch": 3
+    }
+   }
+  },
+  "modernbert-large/raw": {
+   "dim": 1024,
+   "test_lines": 2610,
+   "logreg": {
+    "dev_wf1": 53.98,
+    "test_wf1": 55.39,
+    "settings": {
+     "weight_decay": 0.1,
+     "weighted_loss": false
+    }
+   },
+   "mlp": {
+    "dev_wf1": 57.31,
+    "test_wf1": 59.79,
+    "settings": {
+     "weighted_loss": false,
+     "epoch": 1
+    }
+   }
+  },
+  "modernbert-large/completed": {
+   "dim": 1024,
+   "test_lines": 2610,
+   "logreg": {
+    "dev_wf1": 52.35,
+    "test_wf1": 55.35,
+    "settings": {
+     "weight_decay": 0.1,
+     "weighted_loss": false
+    }
+   },
+   "mlp": {
+    "dev_wf1": 56.69,
+    "test_wf1": 59.5,
+    "settings": {
+     "weighted_loss": false,
+     "epoch": 1
+    }
+   }
+  },
+  "modernbert-large/whisper": {
+   "dim": 1024,
+   "test_lines": 2610,
+   "logreg": {
+    "dev_wf1": 46.2,
+    "test_wf1": 46.88,
+    "settings": {
+     "weight_decay": 0.1,
+     "weighted_loss": false
+    }
+   },
+   "mlp": {
+    "dev_wf1": 48.05,
+    "test_wf1": 49.23,
+    "settings": {
+     "weighted_loss": false,
+     "epoch": 1
+    }
+   }
+  },
+  "mpnet-base/raw": {
+   "dim": 768,
+   "test_lines": 2610,
+   "logreg": {
+    "dev_wf1": 51.8,
+    "test_wf1": 54.08,
+    "settings": {
+     "weight_decay": 0.1,
+     "weighted_loss": false
+    }
+   },
+   "mlp": {
+    "dev_wf1": 54.51,
+    "test_wf1": 58.12,
+    "settings": {
+     "weighted_loss": false,
+     "epoch": 1
+    }
+   }
+  },
+  "mpnet-base/completed": {
+   "dim": 768,
+   "test_lines": 2610,
+   "logreg": {
+    "dev_wf1": 52.42,
+    "test_wf1": 55.1,
+    "settings": {
+     "weight_decay": 0.1,
+     "weighted_loss": false
+    }
+   },
+   "mlp": {
+    "dev_wf1": 54.53,
+    "test_wf1": 58.2,
+    "settings": {
+     "weighted_loss": false,
+     "epoch": 5
+    }
+   }
+  },
+  "mpnet-base/whisper": {
+   "dim": 768,
+   "test_lines": 2610,
+   "logreg": {
+    "dev_wf1": 44.2,
+    "test_wf1": 45.55,
+    "settings": {
+     "weight_decay": 0.0001,
+     "weighted_loss": false
+    }
+   },
+   "mlp": {
+    "dev_wf1": 46.58,
+    "test_wf1": 47.85,
+    "settings": {
+     "weighted_loss": false,
+     "epoch": 1
+    }
+   }
+  },
+  "roberta-base/raw": {
+   "dim": 768,
+   "test_lines": 2610,
+   "logreg": {
+    "dev_wf1": 56.02,
+    "test_wf1": 58.31,
+    "settings": {
+     "weight_decay": 0.01,
+     "weighted_loss": false
+    }
+   },
+   "mlp": {
+    "dev_wf1": 58.36,
+    "test_wf1": 60.98,
+    "settings": {
+     "weighted_loss": false,
+     "epoch": 7
+    }
+   }
+  },
+  "roberta-base/completed": {
+   "dim": 768,
+   "test_lines": 2610,
+   "logreg": {
+    "dev_wf1": 55.8,
+    "test_wf1": 57.32,
+    "settings": {
+     "weight_decay": 0.1,
+     "weighted_loss": false
+    }
+   },
+   "mlp": {
+    "dev_wf1": 58.09,
+    "test_wf1": 61.36,
+    "settings": {
+     "weighted_loss": false,
+     "epoch": 2
+    }
+   }
+  },
+  "roberta-base/whisper": {
+   "dim": 768,
+   "test_lines": 2610,
+   "logreg": {
+    "dev_wf1": 47.68,
+    "test_wf1": 47.84,
+    "settings": {
+     "weight_decay": 0.001,
+     "weighted_loss": false
+    }
+   },
+   "mlp": {
+    "dev_wf1": 49.98,
+    "test_wf1": 49.75,
+    "settings": {
+     "weighted_loss": false,
+     "epoch": 1
+    }
+   }
+  },
+  "roberta-large/raw": {
+   "dim": 1024,
+   "test_lines": 2610,
+   "logreg": {
+    "dev_wf1": 54.17,
+    "test_wf1": 58.77,
+    "settings": {
+     "weight_decay": 0.1,
+     "weighted_loss": false
+    }
+   },
+   "mlp": {
+    "dev_wf1": 58.25,
+    "test_wf1": 59.7,
+    "settings": {
+     "weighted_loss": false,
+     "epoch": 12
+    }
+   }
+  },
+  "roberta-large/completed": {
+   "dim": 1024,
+   "test_lines": 2610,
+   "logreg": {
+    "dev_wf1": 55.53,
+    "test_wf1": 58.46,
+    "settings": {
+     "weight_decay": 0.1,
+     "weighted_loss": false
+    }
+   },
+   "mlp": {
+    "dev_wf1": 58.4,
+    "test_wf1": 60.0,
+    "settings": {
+     "weighted_loss": false,
+     "epoch": 29
+    }
+   }
+  },
+  "roberta-large/whisper": {
+   "dim": 1024,
+   "test_lines": 2610,
+   "logreg": {
+    "dev_wf1": 45.51,
+    "test_wf1": 49.01,
+    "settings": {
+     "weight_decay": 0.1,
+     "weighted_loss": false
+    }
+   },
+   "mlp": {
+    "dev_wf1": 49.12,
+    "test_wf1": 51.1,
+    "settings": {
+     "weighted_loss": false,
+     "epoch": 7
+    }
+   }
+  }
+ },
+ "voice": {
+  "emotion2vec-plus-large": {
+   "dim": 1024,
+   "test_lines": 2610,
+   "logreg": {
+    "dev_wf1": 49.33,
+    "test_wf1": 47.9,
+    "settings": {
+     "weight_decay": 0.1,
+     "weighted_loss": false
+    }
+   },
+   "mlp": {
+    "dev_wf1": 49.58,
+    "test_wf1": 47.93,
+    "settings": {
+     "weighted_loss": false,
+     "epoch": 29
+    }
+   }
+  },
+  "hubert-large": {
+   "dim": 2048,
+   "test_lines": 2610,
+   "logreg": {
+    "dev_wf1": 44.28,
+    "test_wf1": 46.81,
+    "settings": {
+     "weight_decay": 0.01,
+     "weighted_loss": false
+    }
+   },
+   "mlp": {
+    "dev_wf1": 45.06,
+    "test_wf1": 44.08,
+    "settings": {
+     "weighted_loss": false,
+     "epoch": 23
+    }
+   }
+  },
+  "wav2vec2-superb-er": {
+   "dim": 1536,
+   "test_lines": 2610,
+   "logreg": {
+    "dev_wf1": 40.18,
+    "test_wf1": 44.61,
+    "settings": {
+     "weight_decay": 0.1,
+     "weighted_loss": false
+    }
+   },
+   "mlp": {
+    "dev_wf1": 42.09,
+    "test_wf1": 44.59,
+    "settings": {
+     "weighted_loss": false,
+     "epoch": 7
+    }
+   }
+  },
+  "wavlm-base-plus": {
+   "dim": 1536,
+   "test_lines": 2610,
+   "logreg": {
+    "dev_wf1": 43.32,
+    "test_wf1": 46.42,
+    "settings": {
+     "weight_decay": 0.1,
+     "weighted_loss": false
+    }
+   },
+   "mlp": {
+    "dev_wf1": 44.83,
+    "test_wf1": 47.7,
+    "settings": {
+     "weighted_loss": false,
+     "epoch": 5
+    }
+   }
+  },
+  "wavlm-large": {
+   "dim": 2048,
+   "test_lines": 2610,
+   "logreg": {
+    "dev_wf1": 44.71,
+    "test_wf1": 47.73,
+    "settings": {
+     "weight_decay": 0.01,
+     "weighted_loss": false
+    }
+   },
+   "mlp": {
+    "dev_wf1": 47.26,
+    "test_wf1": 47.58,
+    "settings": {
+     "weighted_loss": false,
+     "epoch": 44
+    }
+   }
+  }
+ },
+ "text_plus_voice": {
+  "embeddinggemma-300m+emotion2vec-plus-large": {
+   "dim": 1792,
+   "test_lines": 2610,
+   "logreg": {
+    "dev_wf1": 56.7,
+    "test_wf1": 56.3,
+    "settings": {
+     "weight_decay": 0.1,
+     "weighted_loss": false
+    }
+   },
+   "mlp": {
+    "dev_wf1": 59.61,
+    "test_wf1": 57.69,
+    "settings": {
+     "weighted_loss": false,
+     "epoch": 49
+    }
+   }
+  },
+  "embeddinggemma-300m+hubert-large": {
+   "dim": 2816,
+   "test_lines": 2610,
+   "logreg": {
+    "dev_wf1": 58.43,
+    "test_wf1": 57.46,
+    "settings": {
+     "weight_decay": 0.01,
+     "weighted_loss": false
+    }
+   },
+   "mlp": {
+    "dev_wf1": 57.45,
+    "test_wf1": 61.62,
+    "settings": {
+     "weighted_loss": false,
+     "epoch": 7
+    }
+   }
+  },
+  "embeddinggemma-300m+wav2vec2-superb-er": {
+   "dim": 2304,
+   "test_lines": 2610,
+   "logreg": {
+    "dev_wf1": 51.14,
+    "test_wf1": 55.51,
+    "settings": {
+     "weight_decay": 0.1,
+     "weighted_loss": false
+    }
+   },
+   "mlp": {
+    "dev_wf1": 58.19,
+    "test_wf1": 60.52,
+    "settings": {
+     "weighted_loss": false,
+     "epoch": 3
+    }
+   }
+  },
+  "embeddinggemma-300m+wavlm-base-plus": {
+   "dim": 2304,
+   "test_lines": 2610,
+   "logreg": {
+    "dev_wf1": 53.0,
+    "test_wf1": 56.14,
+    "settings": {
+     "weight_decay": 0.1,
+     "weighted_loss": false
+    }
+   },
+   "mlp": {
+    "dev_wf1": 59.15,
+    "test_wf1": 61.48,
+    "settings": {
+     "weighted_loss": false,
+     "epoch": 3
+    }
+   }
+  },
+  "embeddinggemma-300m+wavlm-large": {
+   "dim": 2816,
+   "test_lines": 2610,
+   "logreg": {
+    "dev_wf1": 52.94,
+    "test_wf1": 56.07,
+    "settings": {
+     "weight_decay": 0.01,
+     "weighted_loss": false
+    }
+   },
+   "mlp": {
+    "dev_wf1": 58.07,
+    "test_wf1": 60.88,
+    "settings": {
+     "weighted_loss": false,
+     "epoch": 5
+    }
+   }
+  }
+ },
+ "best_text_by_dev": "embeddinggemma-300m",
+ "notes": "One line at a time with no dialogue context. Test text for raw and completed is MELD's published test text; for whisper it is Whisper's test transcript. EmoBERTa-large's released weights have likely seen MELD's test lines (77.9 here against 63.46 on its own card), so its scores are not comparable and it is left out of the best-text pick."
+}

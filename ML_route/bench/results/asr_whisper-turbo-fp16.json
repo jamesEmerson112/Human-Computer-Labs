@@ -1,0 +1,19 @@
+{
+ "model": "whisper-turbo-fp16",
+ "clips": 2610,
+ "scored_clips": 2607,
+ "wer_pct": 31.9,
+ "substitutions": 1493,
+ "deletions": 1750,
+ "insertions": 4181,
+ "ms_mean": 181.1,
+ "ms_median": 164.0,
+ "ms_p95": 273.0,
+ "ms_max": 5495.9,
+ "audio_s_mean": 3.397,
+ "real_time_factor": 0.0533,
+ "load_s": 9.6,
+ "gpu_mib_peak_over_idle": 2700,
+ "reference": "MELD.Completed test text, which keeps MELD's published words",
+ "timing": "one clip per call, from the end of the clip's audio to the text, audio already decoded"
+}

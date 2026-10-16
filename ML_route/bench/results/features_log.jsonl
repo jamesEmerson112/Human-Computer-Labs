@@ -1,0 +1,13 @@
+{"encoder": "roberta-base", "kind": "text", "seconds": 51}
+{"encoder": "roberta-large", "kind": "text", "seconds": 93}
+{"encoder": "modernbert-large", "kind": "text", "seconds": 111}
+{"encoder": "deberta-v3-large", "kind": "text", "seconds": 143}
+{"encoder": "emoberta-large", "kind": "text", "seconds": 122}
+{"encoder": "mpnet-base", "kind": "text", "seconds": 41}
+{"encoder": "embeddinggemma-300m", "kind": "text", "error": "                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/root/envs/hf/lib/python3.12/site-packages/transformers/configuration_utils.py\", line 792, in get_config_dict\n    config_dict, kwargs = cls._get_config_dict(pretrained_model_name_or_path, **kwargs)\n                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/root/envs/hf/lib/python3.12/site-packages/transformers/configuration_utils.py\", line 844, in _get_config_dict\n    resolved_config_file = cached_file(\n                           ^^^^^^^^^^^^\n  File \"/root/envs/hf/lib/python3.12/site-packages/transformers/utils/hub.py\", line 370, in cached_file\n    file = cached_files(path_or_repo_id=path_or_repo_id, filenames=[filename], **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/root/envs/hf/lib/python3.12/site-packages/transformers/utils/hub.py\", line 610, in cached_files\n    raise OSError(\nOSError: You are trying to access a gated repo.\nMake sure to have access to it at https://huggingface.co/google/embeddinggemma-300m.\n401 Client Error. (Request ID: Root=1-6ad0a4a2-6555f50924226ba87fd41da7;f37b9028-05e5-48c9-bac0-7c4f1bcd7ebe)\n\nCannot access gated repo for url https://huggingface.co/google/embeddinggemma-300m/resolve/57c266a740f537b4dc058e1b0cda161fd15afa75/config.json.\nAccess to model google/embeddinggemma-300m is restricted. You must have access to it and be authenticated to access it. Please log in.\n"}
+{"encoder": "wavlm-base-plus", "kind": "voice", "seconds": 178}
+{"encoder": "wavlm-large", "kind": "voice", "seconds": 315}
+{"encoder": "hubert-large", "kind": "voice", "seconds": 227}
+{"encoder": "wav2vec2-superb-er", "kind": "voice", "seconds": 109}
+{"encoder": "emotion2vec-plus-large", "kind": "voice", "seconds": 242}
+{"encoder": "embeddinggemma-300m", "kind": "text", "seconds": 81}

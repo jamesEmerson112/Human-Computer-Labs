@@ -1,0 +1,85 @@
+{
+ "model": "qwen2.5-omni-3b",
+ "repo": "Qwen/Qwen2.5-Omni-3B",
+ "clips": 1489,
+ "test_clips_available": 2457,
+ "subset": true,
+ "load_s": 50.6,
+ "params": 4703464448,
+ "gpu_mib_allocated_peak": 10362,
+ "label_first_tokens": {
+  "neutral": [
+   20628,
+   58694,
+   59568,
+   86907
+  ],
+  "joy": [
+   4123,
+   15888,
+   27138,
+   79771
+  ],
+  "surprise": [
+   12761,
+   19784,
+   23043,
+   84484
+  ],
+  "anger": [
+   4003,
+   7416,
+   10743,
+   19234
+  ],
+  "sadness": [
+   30681,
+   50878,
+   59665,
+   82114
+  ],
+  "disgust": [
+   4093,
+   4243,
+   4839,
+   67062
+  ],
+  "fear": [
+   69,
+   8679,
+   41967,
+   90371
+  ]
+ },
+ "frames": {
+  "wf1": 37.5,
+  "accuracy": 49.16,
+  "unparsed": 0,
+  "ms_median": 637.5,
+  "predicted": {
+   "neutral": 1339,
+   "joy": 61,
+   "surprise": 18,
+   "anger": 68,
+   "sadness": 3,
+   "disgust": 0,
+   "fear": 0
+  }
+ },
+ "frames_text": {
+  "wf1": 53.53,
+  "accuracy": 59.97,
+  "unparsed": 0,
+  "ms_median": 638.2,
+  "predicted": {
+   "neutral": 1114,
+   "joy": 54,
+   "surprise": 180,
+   "anger": 106,
+   "sadness": 14,
+   "disgust": 21,
+   "fear": 0
+  }
+ },
+ "setup": "8 evenly spaced frames at 640 px wide, bf16, one forward pass; the label whose first token scores highest as the answer's first token is the prediction; clips in a fixed shuffled order (seed 0)"
+}

@@ -1,0 +1,31 @@
+2026-10-15T09:24:45Z start asr_whisper-turbo-fp16
+2026-10-15T09:32:57Z end asr_whisper-turbo-fp16 rc=0 492s
+2026-10-15T09:32:57Z start asr_whisper-turbo-int8
+2026-10-15T09:41:14Z end asr_whisper-turbo-int8 rc=0 497s
+2026-10-15T09:41:14Z start asr_nemotron-1120ms
+2026-10-15T09:45:08Z end asr_nemotron-1120ms rc=0 234s
+2026-10-15T09:45:08Z start asr_nemotron-160ms
+2026-10-15T09:48:49Z end asr_nemotron-160ms rc=0 221s
+2026-10-15T09:48:49Z start asr_parakeet-tdt-v3
+2026-10-15T09:52:44Z end asr_parakeet-tdt-v3 rc=0 235s
+2026-10-15T09:52:44Z start features
+2026-10-15T10:20:04Z end features rc=0 1640s
+2026-10-15T10:20:04Z start heads
+2026-10-15T10:32:33Z end heads rc=0 749s
+2026-10-15T10:32:33Z start reply_speed
+2026-10-15T10:42:44Z end reply_speed rc=0 611s
+2026-10-15T10:42:44Z start vlm
+2026-10-15T12:32:15Z stopped vlm (free-text answers unusable)
+2026-10-15T12:32:19Z start vlm_scored
+2026-10-15T15:16:54Z end vlm_scored rc=0 9875s
+2026-10-15T15:16:54Z ALL_DONE
+2026-10-15T15:16:54Z start features_extra
+2026-10-15T15:18:18Z end features_extra rc=0 84s
+2026-10-15T15:18:18Z start heads_rerun
+2026-10-15T15:32:22Z end heads_rerun rc=0 844s
+2026-10-15T15:32:22Z start reply_speed_extra
+2026-10-15T15:37:39Z end reply_speed_extra rc=0 317s
+2026-10-15T15:37:39Z EXTRA_DONE
+2026-10-15T15:37:44Z start vlm_omni
+2026-10-15T16:19:22Z end vlm_omni rc=0 2498s
+2026-10-15T16:19:22Z OMNI_DONE

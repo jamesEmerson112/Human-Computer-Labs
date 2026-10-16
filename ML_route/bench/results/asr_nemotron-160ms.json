@@ -1,0 +1,19 @@
+{
+ "model": "nemotron-160ms",
+ "clips": 2610,
+ "scored_clips": 2607,
+ "wer_pct": 34.81,
+ "substitutions": 1712,
+ "deletions": 2641,
+ "insertions": 3747,
+ "ms_mean": 74.9,
+ "ms_median": 57.2,
+ "ms_p95": 123.3,
+ "ms_max": 1694.9,
+ "audio_s_mean": 3.397,
+ "real_time_factor": 0.022,
+ "load_s": 17.0,
+ "gpu_mib_peak_over_idle": 7279,
+ "reference": "MELD.Completed test text, which keeps MELD's published words",
+ "timing": "one clip per call, from the end of the clip's audio to the text, audio already decoded"
+}

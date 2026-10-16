@@ -1,0 +1,118 @@
+{
+ "nemotron-3-nano-4b": {
+  "ttft_ms_median": 55.0,
+  "ttft_ms_p95": 55.5,
+  "decode_tokens_per_s_median": 48.6,
+  "reply_ms_median": 857.2,
+  "samples": [
+   {
+    "prompt": "Someone said \"Why do all you're coffee mugs have numbers on the bottom?\" and sounds surprise. Reply in one short, kind sentence.",
+    "reply": "Oh, they're just numbered to keep track of them!"
+   },
+   {
+    "prompt": "Someone said \"Oh. That's so Monica can keep track. That way if one on them is missing, she can be like, 'Where's number 27?!'\" and sounds anger. Reply in one short, kind sentence.",
+    "reply": "I understand, but let's focus on what's important."
+   },
+   {
+    "prompt": "Someone said \"Y'know what?\" and sounds neutral. Reply in one short, kind sentence.",
+    "reply": "Yep, that's a great point!"
+   }
+  ],
+  "load_s": 30.1,
+  "params": 3973556832,
+  "gpu_mib_allocated_peak": 7878
+ },
+ "smollm3-3b": {
+  "ttft_ms_median": 25.2,
+  "ttft_ms_p95": 30.8,
+  "decode_tokens_per_s_median": 47.2,
+  "reply_ms_median": 356.4,
+  "samples": [
+   {
+    "prompt": "Someone said \"Why do all you're coffee mugs have numbers on the bottom?\" and sounds surprise. Reply in one short, kind sentence.",
+    "reply": "They're just unique and personal to each mug, like a little fingerprint."
+   },
+   {
+    "prompt": "Someone said \"Oh. That's so Monica can keep track. That way if one on them is missing, she can be like, 'Where's number 27?!'\" and sounds anger. Reply in one short, kind sentence.",
+    "reply": "I'm sorry, but I'm not sure what you're referring to. Could you please clarify?"
+   },
+   {
+    "prompt": "Someone said \"Y'know what?\" and sounds neutral. Reply in one short, kind sentence.",
+    "reply": "I'm not sure what you're referring to, but I'm here to help if you need any clarification."
+   }
+  ],
+  "load_s": 27.6,
+  "params": 3075098624,
+  "gpu_mib_allocated_peak": 6000
+ },
+ "qwen3.5-4b": {
+  "ttft_ms_median": 53.4,
+  "ttft_ms_p95": 62.7,
+  "decode_tokens_per_s_median": 26.3,
+  "reply_ms_median": 619.0,
+  "samples": [
+   {
+    "prompt": "Someone said \"Why do all you're coffee mugs have numbers on the bottom?\" and sounds surprise. Reply in one short, kind sentence.",
+    "reply": "I just wanted to make sure you could find your favorite mug easily!"
+   },
+   {
+    "prompt": "Someone said \"Oh. That's so Monica can keep track. That way if one on them is missing, she can be like, 'Where's number 27?!'\" and sounds anger. Reply in one short, kind sentence.",
+    "reply": "I'm sorry you're feeling frustrated; I hope you can find some peace today."
+   },
+   {
+    "prompt": "Someone said \"Y'know what?\" and sounds neutral. Reply in one short, kind sentence.",
+    "reply": "That's a great way to start a new conversation."
+   }
+  ],
+  "load_s": 30.6,
+  "params": 4205751296,
+  "gpu_mib_allocated_peak": 8199
+ },
+ "gemma-4-e2b-it": {
+  "ttft_ms_median": 46.3,
+  "ttft_ms_p95": 54.7,
+  "decode_tokens_per_s_median": 26.0,
+  "reply_ms_median": 392.2,
+  "samples": [
+   {
+    "prompt": "Someone said \"Why do all you're coffee mugs have numbers on the bottom?\" and sounds surprise. Reply in one short, kind sentence.",
+    "reply": "\"Oh, those are just little codes for tracking!\""
+   },
+   {
+    "prompt": "Someone said \"Oh. That's so Monica can keep track. That way if one on them is missing, she can be like, 'Where's number 27?!'\" and sounds anger. Reply in one short, kind sentence.",
+    "reply": "It sounds like you're feeling frustrated about tracking things."
+   },
+   {
+    "prompt": "Someone said \"Y'know what?\" and sounds neutral. Reply in one short, kind sentence.",
+    "reply": "\"What's on your mind?\""
+   }
+  ],
+  "load_s": 39.6,
+  "params": 5104297504,
+  "gpu_mib_allocated_peak": 9769
+ },
+ "llama-3.2-3b-instruct": {
+  "ttft_ms_median": 21.4,
+  "ttft_ms_p95": 24.6,
+  "decode_tokens_per_s_median": 56.2,
+  "reply_ms_median": 235.0,
+  "samples": [
+   {
+    "prompt": "Someone said \"Why do all you're coffee mugs have numbers on the bottom?\" and sounds surprise. Reply in one short, kind sentence.",
+    "reply": "Those numbers are actually the manufacturer's serial number, which helps track production and quality control."
+   },
+   {
+    "prompt": "Someone said \"Oh. That's so Monica can keep track. That way if one on them is missing, she can be like, 'Where's number 27?!'\" and sounds anger. Reply in one short, kind sentence.",
+    "reply": "That's a ridiculous and unfair expectation to place on Monica."
+   },
+   {
+    "prompt": "Someone said \"Y'know what?\" and sounds neutral. Reply in one short, kind sentence.",
+    "reply": "I think I do."
+   }
+  ],
+  "load_s": 40.0,
+  "params": 3212749824,
+  "gpu_mib_allocated_peak": 6153
+ },
+ "setup": "Hugging Face transformers generate, bf16, batch size 1, greedy, up to 40 new tokens, 50 MELD test lines with the gold emotion in the prompt"
+}

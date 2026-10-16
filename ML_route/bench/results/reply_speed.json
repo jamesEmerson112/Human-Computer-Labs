@@ -1,0 +1,170 @@
+{
+ "granite-4.1-3b": {
+  "ttft_ms_median": 28.3,
+  "ttft_ms_p95": 33.6,
+  "decode_tokens_per_s_median": 39.0,
+  "reply_ms_median": 333.2,
+  "samples": [
+   {
+    "prompt": "Someone said \"Why do all you're coffee mugs have numbers on the bottom?\" and sounds surprise. Reply in one short, kind sentence.",
+    "reply": "The numbers indicate the size of each mug."
+   },
+   {
+    "prompt": "Someone said \"Oh. That's so Monica can keep track. That way if one on them is missing, she can be like, 'Where's number 27?!'\" and sounds anger. Reply in one short, kind sentence.",
+    "reply": "It sounds like you’re expressing frustration; perhaps we can find a more collaborative way to keep track together."
+   },
+   {
+    "prompt": "Someone said \"Y'know what?\" and sounds neutral. Reply in one short, kind sentence.",
+    "reply": "It sounds like you have an interesting thought or observation coming."
+   }
+  ],
+  "load_s": 54.6,
+  "params": 3402836480,
+  "gpu_mib_allocated_peak": 6506
+ },
+ "nemotron-3-nano-4b": {
+  "ttft_ms_median": 55.4,
+  "ttft_ms_p95": 58.2,
+  "decode_tokens_per_s_median": 44.7,
+  "reply_ms_median": 927.4,
+  "samples": [
+   {
+    "prompt": "Someone said \"Why do all you're coffee mugs have numbers on the bottom?\" and sounds surprise. Reply in one short, kind sentence.",
+    "reply": "We need to reply in one short, kind sentence. The user: \"Someone said 'Why do all you're coffee mugs have numbers on the bottom?' and sounds surprise. Reply in one short"
+   },
+   {
+    "prompt": "Someone said \"Oh. That's so Monica can keep track. That way if one on them is missing, she can be like, 'Where's number 27?!'\" and sounds anger. Reply in one short, kind sentence.",
+    "reply": "We need to reply in one short, kind sentence. The user says: \"Someone said 'Oh. That's so Monica can keep track. That way if one on them is missing, she can"
+   },
+   {
+    "prompt": "Someone said \"Y'know what?\" and sounds neutral. Reply in one short, kind sentence.",
+    "reply": "We need to reply in one short, kind sentence. The user says: \"Someone said 'Y'know what?' and sounds neutral. Reply in one short, kind sentence.\" So we need to"
+   }
+  ],
+  "load_s": 146.9,
+  "params": 3973556832,
+  "gpu_mib_allocated_peak": 7876
+ },
+ "phi-4-mini-instruct": {
+  "ttft_ms_median": 29.8,
+  "ttft_ms_p95": 31.8,
+  "decode_tokens_per_s_median": 43.8,
+  "reply_ms_median": 274.6,
+  "samples": [
+   {
+    "prompt": "Someone said \"Why do all you're coffee mugs have numbers on the bottom?\" and sounds surprise. Reply in one short, kind sentence.",
+    "reply": "\"Each number represents a unique mug in my collection!\""
+   },
+   {
+    "prompt": "Someone said \"Oh. That's so Monica can keep track. That way if one on them is missing, she can be like, 'Where's number 27?!'\" and sounds anger. Reply in one short, kind sentence.",
+    "reply": "I understand that can be frustrating. If you need help tracking something, I'm here to assist!"
+   },
+   {
+    "prompt": "Someone said \"Y'know what?\" and sounds neutral. Reply in one short, kind sentence.",
+    "reply": "\"Sure, what do you have in mind?\""
+   }
+  ],
+  "load_s": 21.3,
+  "params": 3836021760,
+  "gpu_mib_allocated_peak": 7335
+ },
+ "smollm3-3b": {
+  "ttft_ms_median": 34.3,
+  "ttft_ms_p95": 35.1,
+  "decode_tokens_per_s_median": 44.9,
+  "reply_ms_median": 903.1,
+  "samples": [
+   {
+    "prompt": "Someone said \"Why do all you're coffee mugs have numbers on the bottom?\" and sounds surprise. Reply in one short, kind sentence.",
+    "reply": "<think>\nOkay, the user is asking why all their coffee mugs have numbers on the bottom. They sound surprised, so I need to respond in a kind and concise way. Let me think about"
+   },
+   {
+    "prompt": "Someone said \"Oh. That's so Monica can keep track. That way if one on them is missing, she can be like, 'Where's number 27?!'\" and sounds anger. Reply in one short, kind sentence.",
+    "reply": "<think>\nOkay, let's see. The user provided a scenario where someone is expressing frustration about Monica's method of keeping track of items, specifically mentioning that if one is missing, Monica can ask,"
+   },
+   {
+    "prompt": "Someone said \"Y'know what?\" and sounds neutral. Reply in one short, kind sentence.",
+    "reply": "<think>\nOkay, the user wants a reply to someone who said \"Y'know what?\" in a neutral tone. Let me think about how to respond. The phrase \"Y'know what?\""
+   }
+  ],
+  "load_s": 21.4,
+  "params": 3075098624,
+  "gpu_mib_allocated_peak": 6027
+ },
+ "lfm2.5-1.2b-instruct": {
+  "ttft_ms_median": 14.8,
+  "ttft_ms_p95": 15.4,
+  "decode_tokens_per_s_median": 85.0,
+  "reply_ms_median": 122.3,
+  "samples": [
+   {
+    "prompt": "Someone said \"Why do all you're coffee mugs have numbers on the bottom?\" and sounds surprise. Reply in one short, kind sentence.",
+    "reply": "They’re there for a reason, like a helpful reminder!"
+   },
+   {
+    "prompt": "Someone said \"Oh. That's so Monica can keep track. That way if one on them is missing, she can be like, 'Where's number 27?!'\" and sounds anger. Reply in one short, kind sentence.",
+    "reply": "It sounds like they're frustrated that Monica can't help with the tracking!"
+   },
+   {
+    "prompt": "Someone said \"Y'know what?\" and sounds neutral. Reply in one short, kind sentence.",
+    "reply": "It seems like they're just casually acknowledging something without strong emotion."
+   }
+  ],
+  "load_s": 12.0,
+  "params": 1170340608,
+  "gpu_mib_allocated_peak": 2245
+ },
+ "qwen3.5-4b": {
+  "ttft_ms_median": 55.4,
+  "ttft_ms_p95": 57.6,
+  "decode_tokens_per_s_median": 25.3,
+  "reply_ms_median": 1594.9,
+  "samples": [
+   {
+    "prompt": "Someone said \"Why do all you're coffee mugs have numbers on the bottom?\" and sounds surprise. Reply in one short, kind sentence.",
+    "reply": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Input:** A statement (\"Why do all you're coffee mugs have numbers on the bottom?\") with a"
+   },
+   {
+    "prompt": "Someone said \"Oh. That's so Monica can keep track. That way if one on them is missing, she can be like, 'Where's number 27?!'\" and sounds anger. Reply in one short, kind sentence.",
+    "reply": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Input:** A quote: \"Oh. That's so Monica can keep track. That way if one on them"
+   },
+   {
+    "prompt": "Someone said \"Y'know what?\" and sounds neutral. Reply in one short, kind sentence.",
+    "reply": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   Input: Someone said \"Y'know what?\" and sounds neutral.\n    *   Task: Reply in one"
+   }
+  ],
+  "load_s": 31.5,
+  "params": 4205751296,
+  "gpu_mib_allocated_peak": 8199
+ },
+ "qwen3.5-2b": {
+  "ttft_ms_median": 41.6,
+  "ttft_ms_p95": 44.2,
+  "decode_tokens_per_s_median": 34.9,
+  "reply_ms_median": 365.7,
+  "samples": [
+   {
+    "prompt": "Someone said \"Why do all you're coffee mugs have numbers on the bottom?\" and sounds surprise. Reply in one short, kind sentence.",
+    "reply": "That's a great question! The numbers are just a fun way to help me remember which mug is yours."
+   },
+   {
+    "prompt": "Someone said \"Oh. That's so Monica can keep track. That way if one on them is missing, she can be like, 'Where's number 27?!'\" and sounds anger. Reply in one short, kind sentence.",
+    "reply": "It's wonderful that you're thinking about how to help her stay organized and feel safe!"
+   },
+   {
+    "prompt": "Someone said \"Y'know what?\" and sounds neutral. Reply in one short, kind sentence.",
+    "reply": "\"Y'know what?\" sounds like you're just curious to hear what I have to say!"
+   }
+  ],
+  "load_s": 26.5,
+  "params": 1881825088,
+  "gpu_mib_allocated_peak": 3628
+ },
+ "gemma-4-e2b-it": {
+  "error": "perf_counter()\n                 ^^^^^^^^^^^\n  File \"/workspace/bench/reply_speed.py\", line 48, in load_model\n    model = AutoModelForImageTextToText.from_pretrained(repo, dtype=torch.bfloat16)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/root/envs/hf/lib/python3.12/site-packages/transformers/models/auto/auto_factory.py\", line 411, in from_pretrained\n    return model_class.from_pretrained(\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/root/envs/hf/lib/python3.12/site-packages/transformers/modeling_utils.py\", line 4242, in from_pretrained\n    checkpoint_files, sharded_metadata = _get_resolved_checkpoint_files(\n                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/root/envs/hf/lib/python3.12/site-packages/transformers/modeling_utils.py\", line 755, in _get_resolved_checkpoint_files\n    raise OSError(\nOSError: Can't load the model for 'google/gemma-4-E2B-it'. If you were trying to load it from 'https://huggingface.co/models', make sure you don't have a local directory with the same name. Otherwise, make sure 'google/gemma-4-E2B-it' is the correct path to a directory containing a file named pytorch_model.bin.\n"
+ },
+ "llama-3.2-3b-instruct": {
+  "error": "                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/root/envs/hf/lib/python3.12/site-packages/transformers/configuration_utils.py\", line 844, in _get_config_dict\n    resolved_config_file = cached_file(\n                           ^^^^^^^^^^^^\n  File \"/root/envs/hf/lib/python3.12/site-packages/transformers/utils/hub.py\", line 370, in cached_file\n    file = cached_files(path_or_repo_id=path_or_repo_id, filenames=[filename], **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/root/envs/hf/lib/python3.12/site-packages/transformers/utils/hub.py\", line 610, in cached_files\n    raise OSError(\nOSError: You are trying to access a gated repo.\nMake sure to have access to it at https://huggingface.co/meta-llama/Llama-3.2-3B-Instruct.\n403 Client Error. (Request ID: Root=1-6ad0ae23-79a39da10d56dc7d6ba5d0bc;9c9b9d5f-816b-4163-b511-5f03debdff62)\n\nCannot access gated repo for url https://huggingface.co/meta-llama/Llama-3.2-3B-Instruct/resolve/0cb88a4f764b7a12671c53f0838cd831a0843b95/config.json.\nYour request to access model meta-llama/Llama-3.2-3B-Instruct is awaiting a review from the repo authors.\n"
+ },
+ "setup": "Hugging Face transformers generate, bf16, batch size 1, greedy, up to 40 new tokens, 50 MELD test lines with the gold emotion in the prompt"
+}

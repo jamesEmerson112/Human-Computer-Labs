@@ -1,0 +1,85 @@
+{
+ "model": "internvl3.5-4b",
+ "repo": "OpenGVLab/InternVL3_5-4B-HF",
+ "clips": 863,
+ "test_clips_available": 2457,
+ "subset": true,
+ "load_s": 40.0,
+ "params": 4732489216,
+ "gpu_mib_allocated_peak": 20977,
+ "label_first_tokens": {
+  "neutral": [
+   20628,
+   58694,
+   59568,
+   86907
+  ],
+  "joy": [
+   4123,
+   15888,
+   27138,
+   79771
+  ],
+  "surprise": [
+   12761,
+   19784,
+   23043,
+   84484
+  ],
+  "anger": [
+   4003,
+   7416,
+   10743,
+   19234
+  ],
+  "sadness": [
+   30681,
+   50878,
+   59665,
+   82114
+  ],
+  "disgust": [
+   4093,
+   4243,
+   4839,
+   67062
+  ],
+  "fear": [
+   69,
+   8679,
+   41967,
+   90371
+  ]
+ },
+ "frames": {
+  "wf1": 35.74,
+  "accuracy": 35.69,
+  "unparsed": 0,
+  "ms_median": 1038.4,
+  "predicted": {
+   "neutral": 379,
+   "joy": 198,
+   "surprise": 82,
+   "anger": 90,
+   "sadness": 9,
+   "disgust": 70,
+   "fear": 35
+  }
+ },
+ "frames_text": {
+  "wf1": 52.12,
+  "accuracy": 50.75,
+  "unparsed": 0,
+  "ms_median": 1038.6,
+  "predicted": {
+   "neutral": 318,
+   "joy": 178,
+   "surprise": 168,
+   "anger": 74,
+   "sadness": 36,
+   "disgust": 66,
+   "fear": 23
+  }
+ },
+ "setup": "8 evenly spaced frames at 640 px wide, bf16, one forward pass; the label whose first token scores highest as the answer's first token is the prediction; clips in a fixed shuffled order (seed 0)"
+}

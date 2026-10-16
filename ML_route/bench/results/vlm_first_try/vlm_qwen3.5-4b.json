@@ -1,0 +1,41 @@
+{
+ "model": "qwen3.5-4b",
+ "repo": "Qwen/Qwen3.5-4B",
+ "clips": 1585,
+ "test_clips_available": 2457,
+ "subset": true,
+ "load_s": 38.5,
+ "params": 4539265536,
+ "gpu_mib_allocated_peak": 9595,
+ "frames": {
+  "wf1": 32.85,
+  "accuracy": 49.4,
+  "unparsed": 1579,
+  "ms_median": 783.8,
+  "predicted": {
+   "neutral": 1582,
+   "joy": 3,
+   "surprise": 0,
+   "anger": 0,
+   "sadness": 0,
+   "disgust": 0,
+   "fear": 0
+  }
+ },
+ "frames_text": {
+  "wf1": 32.6,
+  "accuracy": 49.34,
+  "unparsed": 1585,
+  "ms_median": 786.5,
+  "predicted": {
+   "neutral": 1585,
+   "joy": 0,
+   "surprise": 0,
+   "anger": 0,
+   "sadness": 0,
+   "disgust": 0,
+   "fear": 0
+  }
+ },
+ "setup": "8 evenly spaced frames at 640 px wide, bf16, greedy, up to 8 new tokens; unparsed answers count as neutral; clips in a fixed shuffled order (seed 0)"
+}

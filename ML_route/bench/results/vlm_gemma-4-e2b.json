@@ -1,0 +1,85 @@
+{
+ "model": "gemma-4-e2b",
+ "repo": "google/gemma-4-E2B-it",
+ "clips": 1477,
+ "test_clips_available": 2457,
+ "subset": true,
+ "load_s": 43.7,
+ "params": 5104297504,
+ "gpu_mib_allocated_peak": 12094,
+ "label_first_tokens": {
+  "neutral": [
+   12643,
+   20809,
+   45258,
+   77092
+  ],
+  "joy": [
+   3672,
+   12690,
+   25473,
+   62752
+  ],
+  "surprise": [
+   13279,
+   14089,
+   122367,
+   192564
+  ],
+  "anger": [
+   4751,
+   12165,
+   25046,
+   171064
+  ],
+  "sadness": [
+   27375,
+   37918,
+   55655,
+   55882
+  ],
+  "disgust": [
+   2763,
+   3725,
+   4830,
+   56107
+  ],
+  "fear": [
+   9891,
+   52839,
+   117159,
+   143355
+  ]
+ },
+ "frames": {
+  "wf1": 33.41,
+  "accuracy": 35.34,
+  "unparsed": 0,
+  "ms_median": 610.0,
+  "predicted": {
+   "neutral": 727,
+   "joy": 359,
+   "surprise": 283,
+   "anger": 24,
+   "sadness": 82,
+   "disgust": 0,
+   "fear": 2
+  }
+ },
+ "frames_text": {
+  "wf1": 51.42,
+  "accuracy": 51.73,
+  "unparsed": 0,
+  "ms_median": 611.7,
+  "predicted": {
+   "neutral": 588,
+   "joy": 308,
+   "surprise": 356,
+   "anger": 52,
+   "sadness": 118,
+   "disgust": 33,
+   "fear": 22
+  }
+ },
+ "setup": "8 evenly spaced frames at 640 px wide, bf16, one forward pass; the label whose first token scores highest as the answer's first token is the prediction; clips in a fixed shuffled order (seed 0)"
+}

@@ -1,0 +1,19 @@
+{
+ "model": "parakeet-tdt-v3",
+ "clips": 2610,
+ "scored_clips": 2607,
+ "wer_pct": 31.93,
+ "substitutions": 1548,
+ "deletions": 1807,
+ "insertions": 4075,
+ "ms_mean": 76.0,
+ "ms_median": 57.1,
+ "ms_p95": 133.9,
+ "ms_max": 1634.2,
+ "audio_s_mean": 3.397,
+ "real_time_factor": 0.0224,
+ "load_s": 31.0,
+ "gpu_mib_peak_over_idle": 7135,
+ "reference": "MELD.Completed test text, which keeps MELD's published words",
+ "timing": "one clip per call, from the end of the clip's audio to the text, audio already decoded"
+}

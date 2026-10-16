@@ -1,0 +1,85 @@
+{
+ "model": "oneemo",
+ "repo": "Jiaha0Hu4ng/OneEmo",
+ "clips": 1890,
+ "test_clips_available": 2457,
+ "subset": true,
+ "load_s": 41.2,
+ "params": 4539265536,
+ "gpu_mib_allocated_peak": 10207,
+ "label_first_tokens": {
+  "neutral": [
+   20002,
+   56710,
+   57555,
+   83907
+  ],
+  "joy": [
+   3987,
+   15420,
+   26265,
+   77023
+  ],
+  "surprise": [
+   12395,
+   19181,
+   22325,
+   81570
+  ],
+  "anger": [
+   3869,
+   7181,
+   10427,
+   18654
+  ],
+  "sadness": [
+   29680,
+   49166,
+   57649,
+   79280
+  ],
+  "disgust": [
+   3957,
+   4104,
+   4684,
+   64797
+  ],
+  "fear": [
+   69,
+   8415,
+   40580,
+   87263
+  ]
+ },
+ "frames": {
+  "wf1": 39.28,
+  "accuracy": 45.19,
+  "unparsed": 0,
+  "ms_median": 522.7,
+  "predicted": {
+   "neutral": 1355,
+   "joy": 265,
+   "surprise": 120,
+   "anger": 63,
+   "sadness": 49,
+   "disgust": 16,
+   "fear": 22
+  }
+ },
+ "frames_text": {
+  "wf1": 47.98,
+  "accuracy": 54.55,
+  "unparsed": 0,
+  "ms_median": 526.5,
+  "predicted": {
+   "neutral": 1469,
+   "joy": 189,
+   "surprise": 145,
+   "anger": 31,
+   "sadness": 31,
+   "disgust": 18,
+   "fear": 7
+  }
+ },
+ "setup": "8 evenly spaced frames at 640 px wide, bf16, one forward pass; the label whose first token scores highest as the answer's first token is the prediction; clips in a fixed shuffled order (seed 0)"
+}
