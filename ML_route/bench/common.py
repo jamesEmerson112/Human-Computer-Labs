@@ -39,7 +39,7 @@ def read_split(split, version="MELD.Completed"):
     Description: Reads one split's label file.
     Inputs:
     - split: "train", "dev" or "test".
-    - version: "MELD.Raw", "MELD.Completed", "MELD.Whisper" or "MELD.Nemotron".
+    - version: "MELD.Raw", "MELD.Completed" or "MELD.Whisper".
     Outputs: a list of dicts with clip, text, speaker, label (class index) and path (the mp4).
     Constraints: when the MELD_LIMIT environment variable is set, only that many first rows are
     returned, for quick local tests.

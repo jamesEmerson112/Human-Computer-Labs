@@ -35,11 +35,11 @@ VIEWS = ("frame", "face", "tower", "reader", "reader_text")
 """Description: The vision feature views, stored as FEATS/<encoder>/<view>_<split>.npz."""
 SEEDS = (0, 1, 2)
 """Description: The MLP seeds used in --vision mode."""
-TEXT_BASE = ("roberta-base", "completed")
-"""Description: Last night's best fair text set, MELD's published words, whose MLP scored 61.36 on test."""
-TEXT_LIVE = [("embeddinggemma-300m", "whisper"), ("roberta-base", "whisper")]
-"""Description: Text sets built from Whisper's transcripts, the words the live demo reads; EmbeddingGemma is the
-chosen text encoder, so it comes first and feeds the all-three row."""
+TEXT_BASE = ("embeddinggemma-300m", "completed")
+"""Description: The chosen text encoder on MELD's published words, whose MLP scored 60.7 on test on 2026-10-15."""
+TEXT_LIVE = [("embeddinggemma-300m", "whisper")]
+"""Description: Text sets built from Whisper's transcripts, the words the live demo reads; the first feeds the
+all-three row."""
 VOICE_SETS = [("emotion2vec-plus-large", "audio"), ("hubert-large", "audio")]
 """Description: The voice sets joined in the all-three row."""
 

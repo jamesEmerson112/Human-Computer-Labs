@@ -12,7 +12,6 @@ Contents:
 - flatten: turns a nested result dict into table rows and prose notes
 - generic_section: renders a result file whose layout is not fixed as a two-column table and notes
 - cell: makes any value safe for one Markdown table cell
-- nemotron_section: the Nemotron transcript section from nemotron_text.json
 - timing_table: the per-encoder milliseconds per clip from vision_timing.json, with each writer's note
 - faces_section: the face-finding notes from faces_stats.json and the frame counts from frames_failed.json and
   frames_repeated.json
@@ -233,7 +232,7 @@ def vision_heads_tables():
         return ["Not run."]
     out = ["**Text only.** Weighted F1 on MELD test. The first row repeats last night's best fair text set to "
            "check that the run reproduces; the others use Whisper's transcripts, the words the demo reads.", ""]
-    out += seeded_table({**r.get("reproducibility", {}), **r.get("text_nemotron", {}), **r.get("text_live", {})}, False)
+    out += seeded_table({**r.get("reproducibility", {}), **r.get("text_live", {})}, False)
     base = next(iter(r.get("reproducibility", {}).values()), {})
     if "mlp" in base and r.get("last_night_mlp_test_wf1") is not None:
         out += ["", f"Last night's single MLP run on this set scored {r['last_night_mlp_test_wf1']}; seed 0 here "
@@ -304,53 +303,6 @@ def cell(v):
     if isinstance(v, list):
         v = ", ".join(str(x) for x in v)
     return " ".join(str(v).replace("|", "/").split())
-
-
-def nemotron_section():
-    """
-    Description: Builds the Nemotron transcript section from nemotron_text.json, as written by nemotron_text.py:
-    a per-split table, then the test word error rate and the batch check as prose.
-    Inputs: none
-    Outputs: a list of Markdown lines.
-    Constraints: falls back to generic_section when the file has no per-split dicts.
-    """
-    r = load("nemotron_text")
-    if r is None:
-        return ["Not run."]
-    out = ["MELD.Nemotron is MELD.Completed with each line's words replaced by Nemotron Speech Streaming's "
-           "transcript of the clip. Word error rate is on test against MELD.Completed's words, with the same "
-           "normaliser as the speech-to-text race.", ""]
-    per_split = {k: v for k, v in (r.get("splits") or {}).items() if isinstance(v, dict)}
-    if not per_split:
-        return out + generic_section("nemotron_text")
-    out += ["| Split | Lines | Transcribed | Missing audio | Empty transcripts | Kept MELD.Completed words | "
-            "Median ms per line | 95th percentile ms | Batch sizes |", "|---|---:|---:|---:|---:|---:|---:|---:|---|"]
-    for split, v in per_split.items():
-        out.append(f"| {split} | {cell(v.get('rows'))} | {cell(v.get('transcribed'))} | "
-                   f"{cell(v.get('missing_audio'))} | {cell(v.get('empty_transcripts'))} | "
-                   f"{cell(v.get('csv_rows_kept_completed_text'))} | {cell(v.get('ms_median'))} | "
-                   f"{cell(v.get('ms_p95'))} | {cell(v.get('batch_sizes'))} |")
-    t = r.get("test") or {}
-    facts = [f"Model: {r.get('model', 'unknown')}, {r.get('runtime', '')}, {r.get('dtype', '')}, on "
-             f"{r.get('device', 'unknown')}."]
-    if "wer_pct" in t:
-        facts.append(f"Test word error rate: {t['wer_pct']}% over {t.get('scored_clips', '?')} clips "
-                     f"({t.get('substitutions', '?')} substitutions, {t.get('deletions', '?')} deletions, "
-                     f"{t.get('insertions', '?')} insertions); the same model through the NeMo toolkit scored "
-                     f"{t.get('nemo_toolkit_wer_pct', '?')}% last night.")
-    if "wer_pct_without_clips_over_cap" in t:
-        facts.append(f"Without clips over the player's decode-step cap it is "
-                     f"{t['wer_pct_without_clips_over_cap']}%.")
-    if "same_text_as_nemo_toolkit" in t:
-        facts.append(f"Texts identical to the NeMo toolkit's: {t['same_text_as_nemo_toolkit']}.")
-    check = r.get("batch_check")
-    if isinstance(check, dict):
-        facts.append(f"Batch check at {check.get('batch', '?')}: {check.get('same', '?')} of "
-                     f"{check.get('clips', '?')} test texts matched the one-at-a-time texts, so dev and train "
-                     f"used batch {r.get('batch_used_for_dev_train', '?')}.")
-    if r.get("timing"):
-        facts.append(f"Timing: {r['timing']}.")
-    return out + ["", " ".join(facts)]
 
 
 def timing_table():
@@ -432,7 +384,6 @@ def main():
              "", "## Zero-shot vision-language models", ""] + vlm_table() + ["", NOTES_VLM,
              "", "## About the run", ""] + [p + "\n" for p in RUN_NOTES] + [
              "## Vision features with a small head", ""] + vision_heads_tables() + [
-             "", "## Nemotron transcripts as text", ""] + nemotron_section() + [
              "", "## Vision encoder speed", ""] + timing_table() + [
              "", "## Faces and frames", ""] + faces_section()
     (RESULTS / "README.md").write_text("\n".join(lines) + "\n", encoding="utf-8")

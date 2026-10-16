@@ -22,27 +22,20 @@ import torch
 from common import DATA, FEATS, RESULTS, SAMPLE_RATE, load_audio_cache, read_split
 
 TEXT_ENCODERS = {
-    "roberta-base": "FacebookAI/roberta-base",
-    "roberta-large": "FacebookAI/roberta-large",
-    "modernbert-large": "answerdotai/ModernBERT-large",
-    "deberta-v3-large": "microsoft/deberta-v3-large",
-    "emoberta-large": "tae898/emoberta-large",
-    "mpnet-base": "sentence-transformers/all-mpnet-base-v2",
     "embeddinggemma-300m": "google/embeddinggemma-300m",
+    "emoberta-large": "tae898/emoberta-large",
 }
-"""Description: Text encoders by short name. EmoBERTa's released weights were trained on MELD with no
-splits named, and have likely seen MELD's test lines."""
+"""Description: Text encoders by short name: the chosen EmbeddingGemma 300M and the EmoBERTa-large backup.
+EmoBERTa's released weights were trained on MELD with no splits named, and have likely seen MELD's test lines.
+The other encoders' 2026-10-15 features and results stay on the pod volume and in results/."""
 VOICE_ENCODERS = {
-    "wavlm-base-plus": "microsoft/wavlm-base-plus",
-    "wavlm-large": "microsoft/wavlm-large",
     "hubert-large": "facebook/hubert-large-ll60k",
-    "wav2vec2-superb-er": "superb/wav2vec2-base-superb-er",
     "emotion2vec-plus-large": "emotion2vec/emotion2vec_plus_large",
 }
-"""Description: Voice encoders by short name."""
-TEXT_VERSIONS = {"raw": "MELD.Raw", "completed": "MELD.Completed", "whisper": "MELD.Whisper",
-                 "nemotron": "MELD.Nemotron"}
-"""Description: The versions of the label text, by short name. MELD.Nemotron is written by nemotron_text.py."""
+"""Description: Voice encoders by short name: the chosen HuBERT-large and the emotion2vec+ large backup. The other
+encoders' 2026-10-15 features and results stay on the pod volume and in results/."""
+TEXT_VERSIONS = {"raw": "MELD.Raw", "completed": "MELD.Completed", "whisper": "MELD.Whisper"}
+"""Description: The versions of the label text, by short name."""
 MAX_AUDIO_S = 20.0
 """Description: Longer clips are cut to this many seconds before encoding."""
 
@@ -164,8 +157,8 @@ def main():
     Inputs: none; reads --text and --voice (comma-separated short names, "all" or "none") and
     --versions (comma-separated text version short names, or "all") from the command line.
     Outputs: none
-    Constraints: --versions all skips a text version whose label files are missing, such as MELD.Nemotron
-    before nemotron_text.py has run; a version named explicitly must exist.
+    Constraints: --versions all skips a text version whose label files are missing; a version named
+    explicitly must exist.
     """
     ap = argparse.ArgumentParser()
     ap.add_argument("--text", default="all")

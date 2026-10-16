@@ -26,7 +26,7 @@ nohup nvidia-smi --query-gpu=timestamp,utilization.gpu,memory.used,power.draw --
 
 for i in $(seq 1 40); do grep -q ASR_LOCAL_OK $LOG/local_envs.log 2>/dev/null && break; sleep 30; done
 ASR=$(pick asr ASR)
-for m in whisper-turbo-fp16 whisper-turbo-int8 nemotron-1120ms nemotron-160ms parakeet-tdt-v3; do
+for m in whisper-turbo-int8; do
   step asr_$m $ASR asr_race.py --model $m
 done
 

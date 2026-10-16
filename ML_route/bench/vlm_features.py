@@ -341,8 +341,8 @@ def run_split(name, model, processor, hook, label_ids, split, with_text, minutes
     frames, failed_frames = extract_frames(rows, split)
     rows = [r for r in rows if r["clip"] in frames]
     labels = {r["clip"]: r["label"] for r in rows}
-    nemotron = (DATA / "MELD.Nemotron" / f"{split}_sent_emo.csv").exists()
-    text_version = "MELD.Nemotron" if nemotron else "MELD.Completed"
+    whisper = (DATA / "MELD.Whisper" / f"{split}_sent_emo.csv").exists()
+    text_version = "MELD.Whisper" if whisper else "MELD.Completed"
     words = {r["clip"]: r["text"] for r in read_split(split, text_version)} if with_text else {}
     state, text_source = load_partial(name, split)
     if with_text:

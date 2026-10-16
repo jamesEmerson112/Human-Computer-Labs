@@ -2,340 +2,8 @@
   "checked": "2026-10-14",
   "counting": "Total learned parameters, each counted once. Where a weight file stores a tied table twice (FastVLM-1.5B, Ministral 3 3B), params is the unique count and params_upper is the file total.",
   "removed_rule": "On 2026-10-14 the user removed every model that a newer successor has replaced, usually a newer version from the same maker; CLIP counts as replaced by SigLIP 2. replaced_by names the successor kept in the catalog.",
+  "not_chosen_rule": "On 2026-10-15 the user chose Whisper large-v3-turbo in int8 for speech to text, because it keeps the punctuation that carries emotion, and removed the other speech-to-text candidates from the catalog. They stay here as notes; the A40 benchmark results in ML_route/bench/results keep their measurements. On 2026-10-16 the user chose EmbeddingGemma 300M as the text encoder, with EmoBERTa-large kept as a backup, and removed the other text-encoder candidates from the catalog. They stay here as notes; the A40 benchmark results in ML_route/bench/results keep their measurements. On 2026-10-16 the user chose HuBERT-large as the voice encoder, with emotion2vec+ large as the backup, and removed the other voice-encoder candidates the same way.",
   "models": [
-    {
-      "id": "nvidia-nemotron-speech-streaming-en-0.6b",
-      "name": "NVIDIA Nemotron Speech Streaming EN 0.6B",
-      "role": "speech to words",
-      "hf_id": "nvidia/nemotron-speech-streaming-en-0.6b",
-      "params": 618084865,
-      "params_basis": "safetensors",
-      "params_source": "https://huggingface.co/api/models/nvidia/nemotron-speech-streaming-en-0.6b",
-      "feature_dim": null,
-      "inputs": "audio",
-      "released": "2026-03-13",
-      "released_source": "https://huggingface.co/nvidia/nemotron-speech-streaming-en-0.6b",
-      "paper_title": "Stateful Conformer with Cache-based Inference for Streaming Automatic Speech Recognition",
-      "paper_url": "https://arxiv.org/abs/2312.17279",
-      "license": "NVIDIA Open Model License",
-      "note": "The date is for the current checkpoint, and an older January 2026 checkpoint sits on a separate branch.",
-      "architecture": "encoder + decoder",
-      "details": {
-        "maker": "NVIDIA",
-        "summary": "Nemotron Speech Streaming is a 600M-parameter English streaming ASR model with a cache-aware FastConformer encoder of 24 layers and an RNN-T decoder. It caches encoder self-attention and convolution states, so each audio chunk is processed once with no overlapping computation.",
-        "meld_slot": "It would turn each spoken line into punctuated words in either track while the speaker is still talking.",
-        "meld_good": "Chunk size is chosen at runtime among 80, 160, 560 and 1120 ms without retraining, and the output already carries punctuation and capitalization for the text encoder.",
-        "meld_weak": "It is optimized for NVIDIA GPUs with input length bounded by GPU memory, CPU speed is undocumented, and AMI meeting WER rises to 14.71% at 160 ms chunks.",
-        "scores": [
-          {
-            "text": "WER is 2.32% on LibriSpeech test-clean and 4.84% on test-other with 1.12 s chunks.",
-            "url": "https://huggingface.co/nvidia/nemotron-speech-streaming-en-0.6b"
-          },
-          {
-            "text": "WER is 2.56% on LibriSpeech test-clean with 0.16 s chunks, and the Open ASR Leaderboard average is 7.67% at that chunk size.",
-            "url": "https://huggingface.co/nvidia/nemotron-speech-streaming-en-0.6b"
-          },
-          {
-            "text": "WER is 11.73% on AMI with 1.12 s chunks.",
-            "url": "https://huggingface.co/nvidia/nemotron-speech-streaming-en-0.6b"
-          }
-        ],
-        "training_data": "It was trained on about 530k hours of English, mainly NVIDIA's 250k-hour Riva ASR set plus the English part of Granary (YouTube-Commons, YODAS2, LibriLight).",
-        "languages": "It covers English (en-US) only.",
-        "input_limits": "It takes mono WAV audio streamed in 80, 160, 560 or 1120 ms chunks built from 80 ms frames with 70 frames of left context.",
-        "output": "It emits English text with punctuation and capitalization incrementally as each chunk is processed.",
-        "sources": [
-          "https://huggingface.co/nvidia/nemotron-speech-streaming-en-0.6b",
-          "https://arxiv.org/abs/2312.17279"
-        ]
-      }
-    },
-    {
-      "id": "moonshine-streaming-tiny",
-      "name": "Moonshine Streaming tiny",
-      "role": "speech to words",
-      "hf_id": "moonshine-ai/moonshine-streaming-tiny",
-      "params": 44054720,
-      "params_basis": "safetensors",
-      "params_source": "https://huggingface.co/api/models/moonshine-ai/moonshine-streaming-tiny",
-      "feature_dim": null,
-      "inputs": "audio",
-      "released": "2026-02-12",
-      "released_source": "https://arxiv.org/abs/2602.12241",
-      "paper_title": "Moonshine v2: Ergodic Streaming Encoder ASR for Latency-Critical Speech Applications",
-      "paper_url": "https://arxiv.org/abs/2602.12241",
-      "license": "MIT",
-      "note": "The card lists 34M parameters, but the safetensors file holds 44.05M.",
-      "architecture": "encoder + decoder",
-      "details": {
-        "maker": "Useful Sensors",
-        "summary": "Moonshine Streaming Tiny is a 34M-parameter streaming ASR model with a sliding-window Transformer encoder that uses no positional embeddings, an adapter, and an autoregressive Transformer decoder. Bounded local attention keeps encoder cost per frame fixed as the utterance grows.",
-        "meld_slot": "It would turn each spoken line into words on CPU in either track and could produce partial transcripts while the speaker talks.",
-        "meld_good": "It uses 50 Hz features with 80 ms of lookahead, the Moonshine v2 paper measures 50 ms response latency on an Apple M3, and it is MIT licensed.",
-        "meld_weak": "Full-output latency grows with transcript length because the decoder is autoregressive, the Transformers port is not fully streaming, and it can hallucinate words.",
-        "scores": [
-          {
-            "text": "WER is 4.49% on LibriSpeech clean and 12.09% on LibriSpeech other.",
-            "url": "https://huggingface.co/moonshine-ai/moonshine-streaming-tiny"
-          },
-          {
-            "text": "Average WER is 12.01% across eight Open ASR benchmarks, with 19.03% on AMI.",
-            "url": "https://huggingface.co/moonshine-ai/moonshine-streaming-tiny"
-          },
-          {
-            "text": "Response latency is 50 ms on an Apple M3 in a live transcription test.",
-            "url": "https://arxiv.org/html/2602.12241"
-          }
-        ],
-        "training_data": "It was trained on roughly 300K hours of speech: about 200K hours of public web data and open datasets plus 100K hours prepared in-house.",
-        "languages": "It covers English only.",
-        "input_limits": "It takes 16 kHz audio framed at 50 Hz (20 ms), and attention windows span 16 past frames and up to 4 future frames, giving 80 ms lookahead.",
-        "output": "It outputs English text tokens decoded autoregressively from the streamed encoder states.",
-        "sources": [
-          "https://huggingface.co/moonshine-ai/moonshine-streaming-tiny",
-          "https://arxiv.org/abs/2602.12241",
-          "https://arxiv.org/html/2602.12241"
-        ]
-      }
-    },
-    {
-      "id": "nvidia-parakeet-realtime-eou-120m-v1",
-      "name": "NVIDIA Parakeet Realtime EOU 120M v1",
-      "role": "speech to words",
-      "hf_id": "nvidia/parakeet_realtime_eou_120m-v1",
-      "params": 114892307,
-      "params_basis": "weights-file tensor count",
-      "params_source": "https://huggingface.co/nvidia/parakeet_realtime_eou_120m-v1/resolve/main/parakeet_realtime_eou_120m-v1.nemo",
-      "feature_dim": null,
-      "inputs": "audio",
-      "released": "2025-10-14",
-      "released_source": "https://huggingface.co/api/models/nvidia/parakeet_realtime_eou_120m-v1/commits/main",
-      "paper_title": "Stateful Conformer with Cache-based Inference for Streaming Automatic Speech Recognition",
-      "paper_url": "https://arxiv.org/abs/2312.17279",
-      "license": "NVIDIA Open Model License",
-      "note": "This English streaming recognizer emits an end-of-utterance token, so it can also serve as the turn detector.",
-      "architecture": "encoder + decoder",
-      "details": {
-        "maker": "NVIDIA",
-        "summary": "Parakeet Realtime EOU is a 120M-parameter English streaming ASR model with a FastConformer encoder of 17 layers, attention context [70,1], and an RNN-T decoder. It also emits an <EOU> token when it judges that the utterance has ended.",
-        "meld_slot": "It would transcribe each line in either track and could replace the separate turn detector through its end-of-utterance token.",
-        "meld_good": "It streams at 80 to 160 ms latency and flags end of utterance with a 160 ms median delay, so one model covers both ASR and endpointing.",
-        "meld_weak": "It outputs lowercase text without punctuation, which removes cues for the text encoder, and its EOU latencies were measured on TTS audio rather than noisy TV speech.",
-        "scores": [
-          {
-            "text": "Average WER is 9.30% on the Open ASR Leaderboard sets in the 160 ms streaming setting.",
-            "url": "https://huggingface.co/nvidia/parakeet_realtime_eou_120m-v1"
-          },
-          {
-            "text": "WER is 3.61% on LibriSpeech test-clean and 7.79% on test-other at 160 ms streaming.",
-            "url": "https://huggingface.co/nvidia/parakeet_realtime_eou_120m-v1"
-          },
-          {
-            "text": "End-of-utterance latency is 160 ms at p50, 280 ms at p90 and 320 ms at p95 on TTS-generated DialogStudio audio.",
-            "url": "https://huggingface.co/nvidia/parakeet_realtime_eou_120m-v1"
-          }
-        ],
-        "training_data": "It was trained on NeMo ASR Set 3.0 (10,000 human-transcribed hours) plus AMI, DialogStudio, Granary, Speech Commands and LibriTTS, mixing human and TTS audio.",
-        "languages": "It covers English only.",
-        "input_limits": "It takes single-channel 16 kHz audio, needs at least 160 ms of input, and runs in streaming mode with 80 to 160 ms latency.",
-        "output": "It outputs lowercase English text without punctuation, with an <EOU> token appended at each detected utterance end.",
-        "sources": [
-          "https://huggingface.co/nvidia/parakeet_realtime_eou_120m-v1",
-          "https://arxiv.org/abs/2312.17279"
-        ]
-      }
-    },
-    {
-      "id": "nvidia-parakeet-tdt-0.6b-v3",
-      "name": "NVIDIA Parakeet TDT 0.6B v3",
-      "role": "speech to words",
-      "hf_id": "nvidia/parakeet-tdt-0.6b-v3",
-      "params": 627057286,
-      "params_basis": "safetensors",
-      "params_source": "https://huggingface.co/api/models/nvidia/parakeet-tdt-0.6b-v3",
-      "feature_dim": null,
-      "inputs": "audio",
-      "released": "2025-08-14",
-      "released_source": "https://huggingface.co/nvidia/parakeet-tdt-0.6b-v3",
-      "paper_title": "Canary-1B-v2 & Parakeet-TDT-0.6B-v3: Efficient and High-Performance Models for Multilingual ASR and AST",
-      "paper_url": "https://arxiv.org/abs/2509.14128",
-      "license": "CC-BY-4.0",
-      "note": "This version covers 25 European languages, and the card rounds it to 600 million.",
-      "architecture": "encoder + decoder",
-      "details": {
-        "maker": "NVIDIA",
-        "summary": "Parakeet TDT 0.6B v3 is a 600M-parameter multilingual ASR model with a FastConformer encoder and a Token-and-Duration Transducer decoder, which predicts each token and the number of frames it covers. Skipping frames by predicted duration makes decoding faster than a standard transducer.",
-        "meld_slot": "It would transcribe each finished line into punctuated words in either track, working offline on the whole segment rather than streaming.",
-        "meld_good": "It outputs punctuation, capitalization and word-level timestamps, detects the spoken language automatically, and reaches 1.93% WER on LibriSpeech test-clean.",
-        "meld_weak": "It is a full-attention offline model optimized for NVIDIA GPUs, so it adds per-line latency on CPU, and its English WER is slightly worse than v2.",
-        "scores": [
-          {
-            "text": "Average WER is 6.34% on the Hugging Face Open ASR Leaderboard.",
-            "url": "https://huggingface.co/nvidia/parakeet-tdt-0.6b-v3"
-          },
-          {
-            "text": "WER is 1.93% on LibriSpeech test-clean and 3.59% on test-other.",
-            "url": "https://huggingface.co/nvidia/parakeet-tdt-0.6b-v3"
-          },
-          {
-            "text": "Average WER is 11.97% on FLEURS across its 25 languages.",
-            "url": "https://huggingface.co/nvidia/parakeet-tdt-0.6b-v3"
-          }
-        ],
-        "training_data": "It was trained on 10,000 hours of human-transcribed NeMo ASR Set 3.0 plus 660,000 hours of pseudo-labeled Granary data.",
-        "languages": "It covers 25 European languages, including English, German, French, Spanish, Italian, Russian and Ukrainian.",
-        "input_limits": "It takes 16 kHz mono WAV or FLAC audio, up to 24 minutes with full attention on an A100 80GB or 3 hours with local attention.",
-        "output": "It outputs text with punctuation and capitalization plus word-level and segment-level timestamps.",
-        "sources": [
-          "https://huggingface.co/nvidia/parakeet-tdt-0.6b-v3",
-          "https://arxiv.org/abs/2509.14128",
-          "https://arxiv.org/abs/2304.06795"
-        ]
-      }
-    },
-    {
-      "id": "distil-whisper-distil-large-v3.5",
-      "name": "Distil-Whisper distil-large-v3.5",
-      "role": "speech to words",
-      "hf_id": "distil-whisper/distil-large-v3.5",
-      "params": 756405760,
-      "params_basis": "safetensors",
-      "params_source": "https://huggingface.co/api/models/distil-whisper/distil-large-v3.5",
-      "feature_dim": null,
-      "inputs": "audio",
-      "released": "2025-03-19",
-      "released_source": "https://huggingface.co/api/models/distil-whisper/distil-large-v3.5/commits/main",
-      "paper_title": "Distil-Whisper: Robust Knowledge Distillation via Large-Scale Pseudo Labelling",
-      "paper_url": "https://arxiv.org/abs/2311.00430",
-      "license": "MIT",
-      "note": "The date is when the model card was added, although the repo was created on 2024-12-05.",
-      "architecture": "encoder + decoder",
-      "details": {
-        "maker": "Hugging Face (Distil-Whisper team)",
-        "summary": "Distil-Large-v3.5 is a 756M-parameter English encoder-decoder Transformer distilled from Whisper large-v3, keeping the frozen teacher encoder and a two-layer decoder. It was distilled with a patient-teacher schedule and SpecAugment on 98k hours of public data.",
-        "meld_slot": "It would transcribe each finished English line in either track as a faster drop-in for Whisper large-v3.",
-        "meld_good": "It is about 1.5x faster than large-v3-turbo with slightly better short-form OOD WER, returns segment timestamps, and has documented whisper.cpp and Faster-Whisper paths.",
-        "meld_weak": "It is built around 30 s input windows, and its long-form OOD WER of 11.39% trails large-v3-turbo at 10.25%.",
-        "scores": [
-          {
-            "text": "Short-form OOD WER is 7.08%, against 7.30% for Whisper large-v3-turbo.",
-            "url": "https://huggingface.co/distil-whisper/distil-large-v3.5"
-          },
-          {
-            "text": "Long-form OOD WER is 11.39%, against 10.25% for Whisper large-v3-turbo.",
-            "url": "https://huggingface.co/distil-whisper/distil-large-v3.5"
-          },
-          {
-            "text": "WER is 2.37% on LibriSpeech clean and 5.04% on LibriSpeech other.",
-            "url": "https://huggingface.co/distil-whisper/distil-large-v3.5"
-          }
-        ],
-        "training_data": "It was distilled on over 98,000 hours of public English data, including Common Voice, LibriSpeech, VoxPopuli, TED-LIUM, People's Speech, GigaSpeech, AMI and YODAS.",
-        "languages": "It covers English only.",
-        "input_limits": "It processes audio in 30 s windows, and longer files use the sequential or chunked long-form algorithms.",
-        "output": "It outputs English text with optional segment-level timestamps.",
-        "sources": [
-          "https://huggingface.co/distil-whisper/distil-large-v3.5",
-          "https://arxiv.org/abs/2311.00430"
-        ]
-      }
-    },
-    {
-      "id": "nvidia-canary-180m-flash",
-      "name": "NVIDIA Canary 180M Flash",
-      "role": "speech to words",
-      "hf_id": "nvidia/canary-180m-flash",
-      "params": 183743120,
-      "params_basis": "weights-file tensor count",
-      "params_source": "https://huggingface.co/nvidia/canary-180m-flash/resolve/main/canary-180m-flash.nemo",
-      "feature_dim": null,
-      "inputs": "audio",
-      "released": "2025-03-11",
-      "released_source": "https://huggingface.co/api/models/nvidia/canary-180m-flash",
-      "paper_title": "Training and Inference Efficiency of Encoder-Decoder Speech Models",
-      "paper_url": "https://arxiv.org/abs/2503.05931",
-      "license": "CC-BY-4.0",
-      "note": "The card says 182M, and the count stores the tied output layer once (189,117,072 if counted twice).",
-      "architecture": "encoder + decoder",
-      "details": {
-        "maker": "NVIDIA",
-        "summary": "Canary 180M Flash is a 182M-parameter multitask attention encoder-decoder with a 17-layer FastConformer encoder and a 4-layer Transformer decoder, steered by task tokens for language, task, timestamps and punctuation. It does ASR in four languages and translation to and from English.",
-        "meld_slot": "It would transcribe each finished line into words in either track, with punctuation switched on by a task token.",
-        "meld_good": "It is small for its accuracy, with 1.87% WER on LibriSpeech test-clean and RTFx 1,233, and it can emit experimental word-level and segment-level timestamps.",
-        "meld_weak": "Audio over 40 s needs chunked inference, its autoregressive decoder makes latency grow with output length, and its AMI meeting WER is 14.86%.",
-        "scores": [
-          {
-            "text": "WER is 1.87% on LibriSpeech test-clean and 3.83% on test-other.",
-            "url": "https://huggingface.co/nvidia/canary-180m-flash"
-          },
-          {
-            "text": "WER is 14.86% on AMI and 10.51% on GigaSpeech.",
-            "url": "https://huggingface.co/nvidia/canary-180m-flash"
-          },
-          {
-            "text": "RTFx is 1,233 on the Open ASR Leaderboard sets.",
-            "url": "https://huggingface.co/nvidia/canary-180m-flash"
-          }
-        ],
-        "training_data": "It was trained on 85K hours: 31K hours of public data such as LibriSpeech and Common Voice, 20K hours collected by Suno, and 34K hours of in-house data.",
-        "languages": "It covers English, German, French and Spanish for ASR, plus translation between English and each of the other three.",
-        "input_limits": "It takes 16 kHz mono WAV or FLAC audio shorter than 40 s, and longer audio goes through NeMo's chunked inference script.",
-        "output": "It outputs text with optional punctuation and capitalization, plus experimental word-level and segment-level timestamps.",
-        "sources": [
-          "https://huggingface.co/nvidia/canary-180m-flash",
-          "https://arxiv.org/abs/2503.05931"
-        ]
-      }
-    },
-    {
-      "id": "moonshine-base",
-      "name": "Moonshine base",
-      "role": "speech to words",
-      "hf_id": "moonshine-ai/moonshine-base",
-      "params": 61513920,
-      "params_basis": "safetensors",
-      "params_source": "https://huggingface.co/api/models/moonshine-ai/moonshine-base",
-      "feature_dim": null,
-      "inputs": "audio",
-      "released": "2024-10-21",
-      "released_source": "https://arxiv.org/abs/2410.15608",
-      "paper_title": "Moonshine: Speech Recognition for Live Transcription and Voice Commands",
-      "paper_url": "https://arxiv.org/abs/2410.15608",
-      "license": "MIT",
-      "note": "The repo moved from UsefulSensors to the moonshine-ai organization.",
-      "architecture": "encoder + decoder",
-      "details": {
-        "maker": "Useful Sensors",
-        "summary": "Moonshine Base is a 61.5M-parameter English encoder-decoder Transformer with 8 encoder and 8 decoder layers, width 416, and rotary position embeddings. It is trained on variable-length segments without zero-padding, so encoder compute scales with the actual audio length.",
-        "meld_slot": "It would transcribe each finished English line on CPU in either track as a lighter replacement for Whisper base.",
-        "meld_good": "Encoder cost follows clip length instead of a fixed 30 s window, and the Moonshine v2 paper measures 44 ms response latency on an Apple M3.",
-        "meld_weak": "Its card warns of hallucination, repetition, and worse accuracy on short segments or cut-off words, which describes many MELD lines.",
-        "scores": [
-          {
-            "text": "WER is 3.23% on LibriSpeech clean and 8.18% on LibriSpeech other.",
-            "url": "https://arxiv.org/html/2410.15608"
-          },
-          {
-            "text": "Average WER is 10.07% across eight Open ASR benchmarks, against 10.32% for Whisper base.en.",
-            "url": "https://arxiv.org/html/2410.15608"
-          },
-          {
-            "text": "Response latency is 44 ms on an Apple M3, against 553 ms for Whisper Base.",
-            "url": "https://arxiv.org/html/2602.12241"
-          }
-        ],
-        "training_data": "It was trained on about 200K hours: 90K hours from open ASR datasets and over 100K hours of internally prepared data.",
-        "languages": "It covers English only.",
-        "input_limits": "It takes 16 kHz audio of variable length, was trained on 4 to 30 s segments, and the card caps generation at 6.5 tokens per second of audio.",
-        "output": "It outputs English text tokens decoded autoregressively.",
-        "sources": [
-          "https://huggingface.co/moonshine-ai/moonshine-base",
-          "https://arxiv.org/abs/2410.15608",
-          "https://arxiv.org/html/2410.15608",
-          "https://arxiv.org/html/2602.12241"
-        ]
-      }
-    },
     {
       "id": "whisper-large-v3-turbo",
       "name": "Whisper large-v3-turbo",
@@ -386,105 +54,6 @@
       }
     },
     {
-      "id": "sensevoice-small",
-      "name": "SenseVoice Small",
-      "role": "speech to words",
-      "hf_id": "FunAudioLLM/SenseVoiceSmall",
-      "params": 233999167,
-      "params_basis": "weights-file tensor count",
-      "params_source": "https://huggingface.co/FunAudioLLM/SenseVoiceSmall/resolve/main/model.pt",
-      "feature_dim": null,
-      "inputs": "audio",
-      "released": "2024-07",
-      "released_source": "https://huggingface.co/FunAudioLLM/SenseVoiceSmall",
-      "paper_title": "FunAudioLLM: Voice Understanding and Generation Foundation Models for Natural Interaction Between Humans and LLMs",
-      "paper_url": "https://arxiv.org/abs/2407.04051",
-      "license": "FunASR model license (other)",
-      "note": "It also emits emotion and audio-event tags alongside the transcript.",
-      "architecture": "encoder",
-      "details": {
-        "maker": "FunAudioLLM (FunASR)",
-        "summary": "SenseVoice Small is a 234M-parameter non-autoregressive encoder-only model built on a SAN-M memory-equipped self-attention encoder. It is trained with CTC for ASR and cross-entropy for language ID, speech emotion and audio-event task tokens prepended to the input.",
-        "meld_slot": "It would transcribe each line and also supply a zero-shot speech-emotion tag for the text plus audio track.",
-        "meld_good": "Its seven emotion tags line up with MELD's seven labels, it scores 57.7 WF1 on MELD without fine-tuning, and it processes 10 s of audio in 70 ms.",
-        "meld_weak": "Direct input is capped at 30 s, it is not streaming, ASR covers only five languages, and the weights use the FunASR model license rather than MIT.",
-        "scores": [
-          {
-            "text": "On MELD it scores WF1 57.7%, UA 50.8% and WA 57.8% without target-domain fine-tuning.",
-            "url": "https://arxiv.org/html/2407.04051"
-          },
-          {
-            "text": "On IEMOCAP it scores WF1 67.8% and UA 70.5% without target-domain fine-tuning.",
-            "url": "https://arxiv.org/html/2407.04051"
-          },
-          {
-            "text": "WER is 3.15% on LibriSpeech test_clean and 7.18% on test_other.",
-            "url": "https://arxiv.org/html/2407.04051"
-          }
-        ],
-        "training_data": "SenseVoice-Small was trained on about 300,000 hours of speech in Chinese, Cantonese, English, Japanese and Korean.",
-        "languages": "It covers Mandarin, Cantonese, English, Japanese and Korean.",
-        "input_limits": "It takes up to 30 s per direct call, computes 80-dim log-mel features stacked and downsampled 6x, and runs at RTF 0.007.",
-        "output": "It outputs text with language, emotion (HAPPY, SAD, ANGRY, NEUTRAL, FEARFUL, DISGUSTED, SURPRISED) and audio-event tags such as Laughter or BGM.",
-        "sources": [
-          "https://huggingface.co/FunAudioLLM/SenseVoiceSmall",
-          "https://github.com/FunAudioLLM/SenseVoice",
-          "https://arxiv.org/abs/2407.04051",
-          "https://arxiv.org/html/2407.04051"
-        ]
-      }
-    },
-    {
-      "id": "whisper-large-v3",
-      "name": "Whisper large-v3",
-      "role": "speech to words",
-      "hf_id": "openai/whisper-large-v3",
-      "params": 1543490560,
-      "params_basis": "safetensors",
-      "params_source": "https://huggingface.co/api/models/openai/whisper-large-v3",
-      "feature_dim": null,
-      "inputs": "audio",
-      "released": "2023-11-06",
-      "released_source": "https://github.com/openai/whisper/blob/main/CHANGELOG.md",
-      "paper_title": "Robust Speech Recognition via Large-Scale Weak Supervision",
-      "paper_url": "https://arxiv.org/abs/2212.04356",
-      "license": "MIT",
-      "note": "The encoder width is 1280, and the Hugging Face card tag says apache-2.0 while OpenAI's README says MIT.",
-      "architecture": "encoder + decoder",
-      "details": {
-        "maker": "OpenAI",
-        "summary": "Whisper large-v3 is a 1.55B-parameter encoder-decoder Transformer with 32 decoder layers, trained with weak supervision on multilingual, multitask transcription and translation targets. It differs from large-v2 by using 128 Mel bins instead of 80 and adding a Cantonese language token.",
-        "meld_slot": "It would transcribe each finished line in either track and serve as the accuracy reference for the Whisper family.",
-        "meld_good": "It has the lowest short-form OOD WER among the Whisper-family models compared here at 7.12%, and it supports word-level timestamps for offline transcript checks.",
-        "meld_weak": "Moonshine's benchmark measured 11.3 s response latency on an Apple M3, and the card documents hallucination and repeated text.",
-        "scores": [
-          {
-            "text": "WER is 2.01% on LibriSpeech clean and 3.91% on LibriSpeech other.",
-            "url": "https://huggingface.co/distil-whisper/distil-large-v3.5"
-          },
-          {
-            "text": "WER is 15.95% on AMI.",
-            "url": "https://huggingface.co/distil-whisper/distil-large-v3.5"
-          },
-          {
-            "text": "OpenAI reports a 10% to 20% reduction in errors compared with Whisper large-v2.",
-            "url": "https://huggingface.co/openai/whisper-large-v3"
-          }
-        ],
-        "training_data": "It was trained on 1 million hours of weakly labeled audio and 4 million hours of audio pseudo-labeled with Whisper large-v2.",
-        "languages": "Its card lists 99 languages, and OpenAI reports strong ASR results in about 10 of them.",
-        "input_limits": "It takes 128-bin log-Mel spectrograms over a 30 s receptive field, and longer audio needs chunked or sequential long-form decoding.",
-        "output": "It outputs text or an English translation, with sentence-level or word-level timestamps.",
-        "sources": [
-          "https://huggingface.co/openai/whisper-large-v3",
-          "https://huggingface.co/openai/whisper-large-v3-turbo",
-          "https://huggingface.co/distil-whisper/distil-large-v3.5",
-          "https://arxiv.org/html/2602.12241",
-          "https://arxiv.org/abs/2212.04356"
-        ]
-      }
-    },
-    {
       "id": "embeddinggemma-300m",
       "name": "EmbeddingGemma-300m",
       "role": "text encoder",
@@ -525,214 +94,6 @@
         "sources": [
           "https://huggingface.co/google/embeddinggemma-300m",
           "https://arxiv.org/abs/2509.20354"
-        ]
-      }
-    },
-    {
-      "id": "ettin-encoder-150m",
-      "name": "Ettin encoder 150M",
-      "role": "text encoder",
-      "hf_id": "jhu-clsp/ettin-encoder-150m",
-      "params": 149655232,
-      "params_basis": "safetensors",
-      "params_source": "https://huggingface.co/jhu-clsp/ettin-encoder-150m/discussions/4",
-      "feature_dim": 768,
-      "inputs": "text",
-      "released": "2025-07-15",
-      "released_source": "https://arxiv.org/abs/2507.11412",
-      "paper_title": "Seq vs Seq: An Open Suite of Paired Encoders and Decoders",
-      "paper_url": "https://arxiv.org/abs/2507.11412",
-      "license": "MIT",
-      "note": "It uses the ModernBERT-base architecture, so its total matches ModernBERT-base exactly.",
-      "architecture": "encoder",
-      "details": {
-        "maker": "Johns Hopkins University CLSP",
-        "summary": "A 150M-parameter, 22-layer encoder on the ModernBERT architecture with RoPE, GLU activations and pre-norm layers, pretrained with masked language modeling. It is part of the Ettin suite, in which paired encoders and decoders share one open-data training recipe.",
-        "meld_slot": "It would be the frozen or fine-tuned text encoder for either track.",
-        "meld_good": "It reports GLUE 88.9 against 88.4 for ModernBERT-base at the same size, and it reuses the ModernBERT tokenizer with a 50,368-token vocabulary.",
-        "meld_weak": "Its 8K-token context goes unused on short MELD utterances, and the card names no pooling method, so the head design must pick first-token or mean pooling.",
-        "scores": [
-          {
-            "text": "GLUE average 88.9",
-            "url": "https://huggingface.co/jhu-clsp/ettin-encoder-150m"
-          },
-          {
-            "text": "MTEB v2 English retrieval 45.7",
-            "url": "https://huggingface.co/jhu-clsp/ettin-encoder-150m"
-          }
-        ],
-        "training_data": "It learned from over 2T tokens of DCLM, Dolma v1.7, scientific papers, code and curated sources across pretraining, mid-training and decay phases.",
-        "languages": "English.",
-        "input_limits": "It accepts up to 8K tokens, and config.json sets max_position_embeddings to 7,999.",
-        "output": "It returns a 768-d hidden state per token from 22 layers, and the card specifies no pooling.",
-        "sources": [
-          "https://huggingface.co/jhu-clsp/ettin-encoder-150m",
-          "https://huggingface.co/jhu-clsp/ettin-encoder-150m/raw/main/config.json",
-          "https://arxiv.org/abs/2507.11412"
-        ]
-      }
-    },
-    {
-      "id": "neobert",
-      "name": "NeoBERT",
-      "role": "text encoder",
-      "hf_id": "chandar-lab/NeoBERT",
-      "params": 245136954,
-      "params_basis": "safetensors",
-      "params_source": "https://huggingface.co/api/models/chandar-lab/NeoBERT",
-      "feature_dim": 768,
-      "inputs": "text",
-      "released": "2025-02-26",
-      "released_source": "https://arxiv.org/abs/2502.19587",
-      "paper_title": "NeoBERT: A Next-Generation BERT",
-      "paper_url": "https://arxiv.org/abs/2502.19587",
-      "license": "MIT",
-      "note": "The total includes a 23,471,418-parameter language-model head, and the encoder alone is 221,665,536 parameters.",
-      "architecture": "encoder",
-      "details": {
-        "maker": "Chandar Research Lab",
-        "summary": "A 250M-parameter BERT-style encoder with 28 layers of width 768, RoPE, Pre-RMSNorm and SwiGLU, pretrained with a 20% masked-language-modeling rate on RefinedWeb. The paper positions it as a plug-and-play replacement for base-size encoders.",
-        "meld_slot": "It would be the frozen or fine-tuned text encoder for either track.",
-        "meld_good": "The paper reports GLUE 89.0 against 88.5 for ModernBERT-base, and the card's usage example pools the first token of last_hidden_state.",
-        "meld_weak": "Loading needs trust_remote_code=True and a pinned xformers==0.0.28.post3, an install risk on the target laptop, and it uses the google/bert tokenizer with 30,522 entries.",
-        "scores": [
-          {
-            "text": "GLUE dev 89.0",
-            "url": "https://arxiv.org/html/2502.19587"
-          },
-          {
-            "text": "MTEB average 51.3 after unified contrastive fine-tuning",
-            "url": "https://arxiv.org/html/2502.19587"
-          }
-        ],
-        "training_data": "It learned from RefinedWeb, a 600B-token (2.8 TB) web corpus, seeing about 2.1T tokens over two training stages.",
-        "languages": "English.",
-        "input_limits": "It accepts up to 4,096 tokens.",
-        "output": "It returns a 768-d hidden state per token, and the card's example takes the first token as the sentence vector.",
-        "sources": [
-          "https://huggingface.co/chandar-lab/NeoBERT",
-          "https://huggingface.co/chandar-lab/NeoBERT/raw/main/config.json",
-          "https://arxiv.org/abs/2502.19587",
-          "https://arxiv.org/html/2502.19587"
-        ]
-      }
-    },
-    {
-      "id": "modernbert-base",
-      "name": "ModernBERT-base",
-      "role": "text encoder",
-      "hf_id": "answerdotai/ModernBERT-base",
-      "params": 149655232,
-      "params_basis": "safetensors",
-      "params_source": "https://huggingface.co/api/models/answerdotai/ModernBERT-base",
-      "feature_dim": 768,
-      "inputs": "text",
-      "released": "2024-12-19",
-      "released_source": "https://huggingface.co/blog/modernbert",
-      "paper_title": "Smarter, Better, Faster, Longer: A Modern Bidirectional Encoder for Fast, Memory Efficient, and Long Context Finetuning and Inference",
-      "paper_url": "https://arxiv.org/abs/2412.13663",
-      "license": "Apache-2.0",
-      "note": "The total includes the masked-language-model head, and the encoder alone is 149,014,272 parameters.",
-      "architecture": "encoder",
-      "details": {
-        "maker": "Answer.AI and LightOn",
-        "summary": "A 149M-parameter, 22-layer encoder-only pre-norm Transformer with GeGLU, RoPE and alternating local-global attention, pretrained as a masked language model. Unpadding and Flash Attention make it fast and memory-efficient on long inputs.",
-        "meld_slot": "It would be the frozen or fine-tuned text encoder for either track.",
-        "meld_good": "It scores GLUE 88.4, it takes no token_type_ids, and the card says standard BERT fine-tuning recipes apply for classification.",
-        "meld_weak": "The card names no pooling method, and its top speed relies on Flash Attention 2 on a supported GPU, which a CPU-only laptop does not have.",
-        "scores": [
-          {
-            "text": "GLUE 88.4",
-            "url": "https://huggingface.co/answerdotai/ModernBERT-base"
-          }
-        ],
-        "training_data": "It learned from 2 trillion tokens of English text and code.",
-        "languages": "It is primarily English, and the card warns that performance may be lower for other languages.",
-        "input_limits": "It accepts up to 8,192 tokens natively.",
-        "output": "It returns a 768-d hidden state per token from 22 layers, and the card leaves pooling to the user.",
-        "sources": [
-          "https://huggingface.co/answerdotai/ModernBERT-base",
-          "https://huggingface.co/answerdotai/ModernBERT-base/raw/main/config.json",
-          "https://arxiv.org/abs/2412.13663"
-        ]
-      }
-    },
-    {
-      "id": "modernbert-large",
-      "name": "ModernBERT-large",
-      "role": "text encoder",
-      "hf_id": "answerdotai/ModernBERT-large",
-      "params": 395881664,
-      "params_basis": "safetensors",
-      "params_source": "https://huggingface.co/api/models/answerdotai/ModernBERT-large",
-      "feature_dim": 1024,
-      "inputs": "text",
-      "released": "2024-12-19",
-      "released_source": "https://huggingface.co/blog/modernbert",
-      "paper_title": "Smarter, Better, Faster, Longer: A Modern Bidirectional Encoder for Fast, Memory Efficient, and Long Context Finetuning and Inference",
-      "paper_url": "https://arxiv.org/abs/2412.13663",
-      "license": "Apache-2.0",
-      "note": "The total includes the masked-language-model head.",
-      "architecture": "encoder",
-      "details": {
-        "maker": "Answer.AI and LightOn",
-        "summary": "The 395M-parameter, 28-layer version of ModernBERT, an encoder-only pre-norm Transformer with GeGLU, RoPE and alternating local-global attention. It is pretrained as a masked language model on 2 trillion tokens with a native 8,192-token context.",
-        "meld_slot": "It would be the frozen or fine-tuned text encoder for either track.",
-        "meld_good": "It scores GLUE 90.4, two points above ModernBERT-base, and it takes no token_type_ids.",
-        "meld_weak": "At 395M parameters it has about 2.6 times the weights of ModernBERT-base to run per utterance, and the card names no pooling method.",
-        "scores": [
-          {
-            "text": "GLUE 90.4",
-            "url": "https://huggingface.co/answerdotai/ModernBERT-large"
-          }
-        ],
-        "training_data": "It learned from 2 trillion tokens of English text and code.",
-        "languages": "It is primarily English and code, and the card warns that performance may be lower for other languages.",
-        "input_limits": "It accepts up to 8,192 tokens natively.",
-        "output": "It returns a 1,024-d hidden state per token from 28 layers, and the card leaves pooling to the user.",
-        "sources": [
-          "https://huggingface.co/answerdotai/ModernBERT-large",
-          "https://huggingface.co/answerdotai/ModernBERT-large/raw/main/config.json",
-          "https://huggingface.co/answerdotai/ModernBERT-base",
-          "https://arxiv.org/abs/2412.13663"
-        ]
-      }
-    },
-    {
-      "id": "emoberta-base",
-      "name": "EmoBERTa-base",
-      "role": "text encoder",
-      "hf_id": "tae898/emoberta-base",
-      "params": 124651529,
-      "params_basis": "safetensors",
-      "params_source": "https://huggingface.co/tae898/emoberta-base/discussions/1",
-      "feature_dim": 768,
-      "inputs": "text",
-      "released": "2022-03-14",
-      "released_source": "https://huggingface.co/api/models/tae898/emoberta-base/commits/main",
-      "paper_title": "EmoBERTa: Speaker-Aware Emotion Recognition in Conversation with RoBERTa",
-      "paper_url": "https://arxiv.org/abs/2108.12009",
-      "license": "MIT",
-      "note": "It was trained on MELD and IEMOCAP, so its MELD test scores are inflated, and the date is the Hub repo's first commit.",
-      "architecture": "encoder",
-      "meld_trained": true,
-      "details": {
-        "maker": "Taewoon Kim and Piek Vossen",
-        "summary": "RoBERTa-base fine-tuned as a seven-class emotion classifier for emotion recognition in conversation. The paper's method prepends speaker names and joins context utterances with separator tokens, but the released model classifies one utterance with no speaker or context.",
-        "meld_slot": "It would replace both the text encoder and the head for either track, since it already outputs MELD's seven labels.",
-        "meld_good": "Its id2label matches MELD's seven classes exactly, so it gives a text-only baseline with no head training.",
-        "meld_weak": "It was fine-tuned on MELD and IEMOCAP, so MELD test scores are contaminated, and the paper's reported numbers come from RoBERTa-large with context, not this model.",
-        "scores": [],
-        "training_data": "It was fine-tuned from RoBERTa-base on both MELD and IEMOCAP.",
-        "languages": "English.",
-        "input_limits": "It accepts up to 512 tokens, since config.json sets max_position_embeddings to 514.",
-        "output": "It returns a softmax over neutral, joy, surprise, anger, sadness, disgust and fear from a sequence-classification head on a 768-d encoder.",
-        "sources": [
-          "https://huggingface.co/tae898/emoberta-base",
-          "https://huggingface.co/tae898/emoberta-base/raw/main/config.json",
-          "https://github.com/tae898/erc",
-          "https://arxiv.org/abs/2108.12009",
-          "https://ar5iv.labs.arxiv.org/html/2108.12009"
         ]
       }
     },
@@ -788,350 +149,6 @@
       }
     },
     {
-      "id": "deberta-v3-base",
-      "name": "DeBERTa-v3-base",
-      "role": "text encoder",
-      "hf_id": "microsoft/deberta-v3-base",
-      "params": 185537893,
-      "params_basis": "safetensors",
-      "params_source": "https://huggingface.co/microsoft/deberta-v3-base/discussions/14",
-      "feature_dim": 768,
-      "inputs": "text",
-      "released": "2021-11-16",
-      "released_source": "https://github.com/microsoft/DeBERTa",
-      "paper_title": "DeBERTaV3: Improving DeBERTa using ELECTRA-Style Pre-Training with Gradient-Disentangled Embedding Sharing",
-      "paper_url": "https://arxiv.org/abs/2111.09543",
-      "license": "MIT",
-      "note": "The encoder alone is 184,224,768 parameters, which matches the card's 86M backbone plus 98M embedding, and the rest is pretraining heads.",
-      "architecture": "encoder",
-      "details": {
-        "maker": "Microsoft",
-        "summary": "A 12-layer, 768-wide DeBERTa encoder with disentangled attention and an enhanced mask decoder, pretrained ELECTRA-style with replaced token detection and gradient-disentangled embedding sharing. It has 86M backbone parameters plus 98M in a 128K-token embedding layer.",
-        "meld_slot": "It would be the frozen or fine-tuned text encoder for either track.",
-        "meld_good": "It reports MNLI-m/mm 90.6/90.7 and SQuAD 2.0 88.4/85.4 at base size, which is strong for a 12-layer encoder.",
-        "meld_weak": "More than half its parameters sit in the 128K-vocabulary embedding table, so memory is high for its depth, and 512 positions cap any dialogue context window.",
-        "scores": [
-          {
-            "text": "MNLI-m/mm 90.6/90.7 (dev)",
-            "url": "https://huggingface.co/microsoft/deberta-v3-base"
-          },
-          {
-            "text": "SQuAD 2.0 F1/EM 88.4/85.4 (dev)",
-            "url": "https://huggingface.co/microsoft/deberta-v3-base"
-          }
-        ],
-        "training_data": "It learned from the same 160GB of data used for DeBERTa V2.",
-        "languages": "English.",
-        "input_limits": "config.json sets max_position_embeddings to 512, with relative attention over 256 position buckets.",
-        "output": "It returns a 768-d hidden state per token from 12 layers.",
-        "sources": [
-          "https://huggingface.co/microsoft/deberta-v3-base",
-          "https://huggingface.co/microsoft/deberta-v3-large",
-          "https://huggingface.co/microsoft/deberta-v3-base/raw/main/config.json",
-          "https://arxiv.org/abs/2111.09543"
-        ]
-      }
-    },
-    {
-      "id": "deberta-v3-large",
-      "name": "DeBERTa-v3-large",
-      "role": "text encoder",
-      "hf_id": "microsoft/deberta-v3-large",
-      "params": 436768869,
-      "params_basis": "safetensors",
-      "params_source": "https://huggingface.co/microsoft/deberta-v3-large/discussions/13",
-      "feature_dim": 1024,
-      "inputs": "text",
-      "released": "2021-11-16",
-      "released_source": "https://github.com/microsoft/DeBERTa",
-      "paper_title": "DeBERTaV3: Improving DeBERTa using ELECTRA-Style Pre-Training with Gradient-Disentangled Embedding Sharing",
-      "paper_url": "https://arxiv.org/abs/2111.09543",
-      "license": "MIT",
-      "note": "The encoder alone is 434,536,448 parameters, which matches the card's 304M backbone plus 131M embedding, and the rest is pretraining heads.",
-      "architecture": "encoder",
-      "details": {
-        "maker": "Microsoft",
-        "summary": "A 24-layer, 1,024-wide DeBERTa encoder with disentangled attention and an enhanced mask decoder, pretrained with replaced token detection and gradient-disentangled embedding sharing. It has 304M backbone parameters plus 131M in a 128K-token embedding layer.",
-        "meld_slot": "It would be the frozen or fine-tuned text encoder for either track.",
-        "meld_good": "The paper reports a 91.37 GLUE average for this size, and the card reports MNLI-m/mm 91.8/91.9, the strongest NLU numbers among these encoders.",
-        "meld_weak": "At about 435M parameters it is the heaviest text encoder in this list, which costs CPU latency per utterance, and 512 positions cap any dialogue context.",
-        "scores": [
-          {
-            "text": "GLUE average 91.37",
-            "url": "https://arxiv.org/abs/2111.09543"
-          },
-          {
-            "text": "MNLI-m/mm 91.8/91.9 (dev)",
-            "url": "https://huggingface.co/microsoft/deberta-v3-large"
-          },
-          {
-            "text": "SQuAD 2.0 F1/EM 91.5/89.0 (dev)",
-            "url": "https://huggingface.co/microsoft/deberta-v3-large"
-          }
-        ],
-        "training_data": "It learned from the same 160GB of data used for DeBERTa V2.",
-        "languages": "English.",
-        "input_limits": "config.json sets max_position_embeddings to 512, with relative attention over 256 position buckets.",
-        "output": "It returns a 1,024-d hidden state per token from 24 layers.",
-        "sources": [
-          "https://huggingface.co/microsoft/deberta-v3-large",
-          "https://huggingface.co/microsoft/deberta-v3-large/raw/main/config.json",
-          "https://arxiv.org/abs/2111.09543"
-        ]
-      }
-    },
-    {
-      "id": "all-mpnet-base-v2",
-      "name": "all-mpnet-base-v2",
-      "role": "text encoder",
-      "hf_id": "sentence-transformers/all-mpnet-base-v2",
-      "params": 109486978,
-      "params_basis": "safetensors",
-      "params_source": "https://huggingface.co/api/models/sentence-transformers/all-mpnet-base-v2",
-      "feature_dim": 768,
-      "inputs": "text",
-      "released": "2021-08-30",
-      "released_source": "https://huggingface.co/api/models/sentence-transformers/all-mpnet-base-v2/commits/main",
-      "paper_title": null,
-      "paper_url": null,
-      "license": "Apache-2.0",
-      "note": "It has no paper of its own because it fine-tunes microsoft/mpnet-base (MPNet, arXiv 2004.09297), and the date is the Hub repo's first commit.",
-      "architecture": "encoder",
-      "details": {
-        "maker": "Sentence Transformers (Hugging Face community week)",
-        "summary": "A sentence-embedding model made by fine-tuning microsoft/mpnet-base with a contrastive objective, cross-entropy over cosine similarities of in-batch sentence pairs. It was trained on over 1.17 billion pairs for 100k steps at batch size 1024.",
-        "meld_slot": "It would be the frozen text encoder for either track, giving one sentence vector per utterance.",
-        "meld_good": "It returns one normalized sentence vector per line with pooling built in, and sbert.net calls it the best-quality model among its all-* family.",
-        "meld_weak": "Its similarity objective does not target emotion, and training capped sequences at 128 tokens even though inference truncates at 384.",
-        "scores": [],
-        "training_data": "It learned from 1,170,060,424 sentence pairs, led by Reddit comments, S2ORC citations, WikiAnswers, PAQ and Stack Exchange.",
-        "languages": "English.",
-        "input_limits": "Inputs longer than 384 word pieces are truncated, and training used 128-token sequences.",
-        "output": "It returns one 768-d sentence vector from attention-masked mean pooling followed by L2 normalization.",
-        "sources": [
-          "https://huggingface.co/sentence-transformers/all-mpnet-base-v2",
-          "https://www.sbert.net/docs/sentence_transformer/pretrained_models.html"
-        ]
-      }
-    },
-    {
-      "id": "emotion-english-distilroberta-base",
-      "name": "Emotion English DistilRoBERTa-base",
-      "role": "text encoder",
-      "hf_id": "j-hartmann/emotion-english-distilroberta-base",
-      "params": 82124297,
-      "params_basis": "safetensors",
-      "params_source": "https://huggingface.co/j-hartmann/emotion-english-distilroberta-base/discussions/3017",
-      "feature_dim": 768,
-      "inputs": "text",
-      "released": "2021-06-15",
-      "released_source": "https://huggingface.co/api/models/j-hartmann/emotion-english-distilroberta-base/commits/main",
-      "paper_title": null,
-      "paper_url": null,
-      "license": null,
-      "note": "MELD is one of its six training datasets, so its MELD test scores are inflated, its card names no license or paper, and the date is the Hub repo's first commit.",
-      "architecture": "encoder",
-      "meld_trained": true,
-      "details": {
-        "maker": "Jochen Hartmann",
-        "summary": "DistilRoBERTa-base fine-tuned as a seven-class English emotion classifier covering Ekman's six basic emotions plus neutral. It was trained on a balanced subset of six emotion datasets, one of which is MELD.",
-        "meld_slot": "It would replace both the text encoder and the head for either track, since its seven labels match MELD's.",
-        "meld_good": "Its 6-layer, 82M-parameter backbone runs about twice as fast as RoBERTa-base, and return_all_scores gives a seven-way distribution usable as head features.",
-        "meld_weak": "MELD is one of its six training sets, so MELD test results are contaminated, and its card names no licence.",
-        "scores": [
-          {
-            "text": "66% accuracy on its own held-out 20% split, against 14% chance",
-            "url": "https://huggingface.co/j-hartmann/emotion-english-distilroberta-base"
-          }
-        ],
-        "training_data": "It learned from about 20k balanced examples, 2,811 per emotion, drawn from Crowdflower, Elvis et al., GoEmotions, ISEAR, MELD and SemEval-2018 EI-reg.",
-        "languages": "English.",
-        "input_limits": "It accepts up to 512 tokens, since config.json sets max_position_embeddings to 514.",
-        "output": "It returns scores for anger, disgust, fear, joy, neutral, sadness and surprise from a classification head on a 768-d, 6-layer encoder.",
-        "sources": [
-          "https://huggingface.co/j-hartmann/emotion-english-distilroberta-base",
-          "https://huggingface.co/j-hartmann/emotion-english-distilroberta-base/raw/main/config.json",
-          "https://huggingface.co/distilbert/distilroberta-base"
-        ]
-      }
-    },
-    {
-      "id": "distilroberta-base",
-      "name": "DistilRoBERTa-base",
-      "role": "text encoder",
-      "hf_id": "distilbert/distilroberta-base",
-      "params": 82760793,
-      "params_basis": "safetensors",
-      "params_source": "https://huggingface.co/api/models/distilbert/distilroberta-base",
-      "feature_dim": 768,
-      "inputs": "text",
-      "released": "2019-10-17",
-      "released_source": "https://huggingface.co/api/models/distilbert/distilroberta-base/commits/main",
-      "paper_title": "DistilBERT, a distilled version of BERT: smaller, faster, cheaper and lighter",
-      "paper_url": "https://arxiv.org/abs/1910.01108",
-      "license": "Apache-2.0",
-      "note": "The date is the Hub repo's first commit, and the total includes the masked-language-model head.",
-      "architecture": "encoder",
-      "details": {
-        "maker": "Hugging Face",
-        "summary": "A 6-layer, 768-wide, 12-head distillation of RoBERTa-base, trained with the same knowledge-distillation procedure as DistilBERT. It has 82M parameters against 125M for RoBERTa-base and runs about twice as fast.",
-        "meld_slot": "It would be the frozen or fine-tuned text encoder for either track.",
-        "meld_good": "It keeps RoBERTa's 50,265-entry vocabulary at half the depth and twice the speed, which suits a CPU latency budget.",
-        "meld_weak": "It trails its teacher on every GLUE task the cards list, for example MNLI 84.0 against 87.6, and its card documents gender-occupation bias.",
-        "scores": [
-          {
-            "text": "GLUE MNLI 84.0",
-            "url": "https://huggingface.co/distilbert/distilroberta-base"
-          },
-          {
-            "text": "GLUE SST-2 92.5",
-            "url": "https://huggingface.co/distilbert/distilroberta-base"
-          }
-        ],
-        "training_data": "It learned from OpenWebTextCorpus, about four times less data than its RoBERTa teacher.",
-        "languages": "English, case-sensitive.",
-        "input_limits": "It accepts up to 512 tokens, since config.json sets max_position_embeddings to 514.",
-        "output": "It returns a 768-d hidden state per token from 6 layers.",
-        "sources": [
-          "https://huggingface.co/distilbert/distilroberta-base",
-          "https://huggingface.co/distilbert/distilroberta-base/raw/main/config.json",
-          "https://huggingface.co/FacebookAI/roberta-base"
-        ]
-      }
-    },
-    {
-      "id": "roberta-base",
-      "name": "RoBERTa-base",
-      "role": "text encoder",
-      "hf_id": "FacebookAI/roberta-base",
-      "params": 124697947,
-      "params_basis": "safetensors",
-      "params_source": "https://huggingface.co/api/models/FacebookAI/roberta-base",
-      "feature_dim": 768,
-      "inputs": "text",
-      "released": "2019-07-26",
-      "released_source": "https://arxiv.org/abs/1907.11692",
-      "paper_title": "RoBERTa: A Robustly Optimized BERT Pretraining Approach",
-      "paper_url": "https://arxiv.org/abs/1907.11692",
-      "license": "MIT",
-      "note": "The total includes the masked-language-model head, and the encoder alone is 124,055,554 parameters.",
-      "architecture": "encoder",
-      "details": {
-        "maker": "Facebook AI",
-        "summary": "A 12-layer, 768-wide BERT-style encoder pretrained with masked language modeling under dynamic masking, which changes the mask every epoch. It uses a byte-level BPE vocabulary of 50,000 and trained for 500K steps at batch size 8K and sequence length 512.",
-        "meld_slot": "It would be the frozen or fine-tuned text encoder for either track, and it is the backbone of EmoBERTa-base.",
-        "meld_good": "EmoBERTa is built on this backbone, so its recipes transfer directly, and the card reports GLUE MNLI 87.6 and SST-2 94.8.",
-        "meld_weak": "It is case-sensitive, so ASR casing changes its tokens, and the card warns that unfiltered web training data can bias predictions.",
-        "scores": [
-          {
-            "text": "GLUE MNLI 87.6",
-            "url": "https://huggingface.co/FacebookAI/roberta-base"
-          },
-          {
-            "text": "GLUE SST-2 94.8",
-            "url": "https://huggingface.co/FacebookAI/roberta-base"
-          },
-          {
-            "text": "GLUE CoLA 63.6",
-            "url": "https://huggingface.co/FacebookAI/roberta-base"
-          }
-        ],
-        "training_data": "It learned from 160GB of BookCorpus, English Wikipedia, CC-News, OpenWebText and Stories.",
-        "languages": "English, case-sensitive.",
-        "input_limits": "It accepts up to 512 tokens.",
-        "output": "It returns a 768-d hidden state per token from 12 layers.",
-        "sources": [
-          "https://huggingface.co/FacebookAI/roberta-base",
-          "https://huggingface.co/FacebookAI/roberta-base/raw/main/config.json",
-          "https://arxiv.org/abs/1907.11692"
-        ]
-      }
-    },
-    {
-      "id": "roberta-large",
-      "name": "RoBERTa-large",
-      "role": "text encoder",
-      "hf_id": "FacebookAI/roberta-large",
-      "params": 355412571,
-      "params_basis": "safetensors",
-      "params_source": "https://huggingface.co/api/models/FacebookAI/roberta-large",
-      "feature_dim": 1024,
-      "inputs": "text",
-      "released": "2019-07-26",
-      "released_source": "https://arxiv.org/abs/1907.11692",
-      "paper_title": "RoBERTa: A Robustly Optimized BERT Pretraining Approach",
-      "paper_url": "https://arxiv.org/abs/1907.11692",
-      "license": "MIT",
-      "note": "The total includes the masked-language-model head, which a classifier built on the encoder would not load.",
-      "architecture": "encoder",
-      "details": {
-        "maker": "Facebook AI",
-        "summary": "A 24-layer, 1,024-wide BERT-style encoder pretrained with dynamically masked language modeling on 160GB of English text. It uses a 50,000-token BPE vocabulary and trained on 1024 V100 GPUs for 500K steps at sequence length 512.",
-        "meld_slot": "It would be the frozen or fine-tuned text encoder for either track, and it is the backbone of EmoBERTa-large.",
-        "meld_good": "The EmoBERTa paper fine-tuned this backbone to MELD wF1 65.61 with dialogue context, and the card reports GLUE MNLI 90.2 and SST-2 96.4.",
-        "meld_weak": "At 355M parameters it has nearly three times RoBERTa-base's weights to run per utterance, and the card warns that unfiltered web training data can bias predictions.",
-        "scores": [
-          {
-            "text": "GLUE MNLI 90.2",
-            "url": "https://huggingface.co/FacebookAI/roberta-large"
-          },
-          {
-            "text": "GLUE SST-2 96.4",
-            "url": "https://huggingface.co/FacebookAI/roberta-large"
-          },
-          {
-            "text": "GLUE CoLA 68.0",
-            "url": "https://huggingface.co/FacebookAI/roberta-large"
-          }
-        ],
-        "training_data": "It learned from 160GB of BookCorpus, English Wikipedia, CC-News, OpenWebText and Stories.",
-        "languages": "English, case-sensitive.",
-        "input_limits": "It accepts up to 512 tokens.",
-        "output": "It returns a 1,024-d hidden state per token from 24 layers.",
-        "sources": [
-          "https://huggingface.co/FacebookAI/roberta-large",
-          "https://huggingface.co/FacebookAI/roberta-large/raw/main/config.json",
-          "https://arxiv.org/abs/1907.11692",
-          "https://ar5iv.labs.arxiv.org/html/2108.12009"
-        ]
-      }
-    },
-    {
-      "id": "emotion2vec-plus-base",
-      "name": "emotion2vec+ base",
-      "role": "voice encoder",
-      "hf_id": "emotion2vec/emotion2vec_plus_base",
-      "params": 93178133,
-      "params_basis": "weights-file tensor count",
-      "params_source": "https://huggingface.co/emotion2vec/emotion2vec_plus_base/resolve/main/model.pt",
-      "feature_dim": 768,
-      "inputs": "audio",
-      "released": "2024-05",
-      "released_source": "https://github.com/ddlBoJack/emotion2vec",
-      "paper_title": "emotion2vec: Self-Supervised Pre-Training for Speech Emotion Representation",
-      "paper_url": "https://arxiv.org/abs/2312.15185",
-      "license": "FunASR model license (other)",
-      "note": "The count excludes optimizer state stored in the same file and includes a 9-class emotion head.",
-      "architecture": "encoder",
-      "details": {
-        "maker": "emotion2vec team (Shanghai Jiao Tong University, Alibaba and partners)",
-        "summary": "emotion2vec+ base is a base-size (about 90M) emotion2vec+ model fine-tuned on 4,788 hours of filtered pseudo-labeled emotion speech; the README does not state its initialization. It outputs 9-class emotion scores and can also export frame-level or utterance-level embeddings.",
-        "meld_slot": "It fills the voice-encoder slot on the text and audio track, either as frozen embeddings for the head or as a direct 9-class emotion prior.",
-        "meld_good": "Its 9 classes include all seven MELD labels plus other and unknown, so its scores map onto MELD directly or can be fed to the head as features.",
-        "meld_weak": "The card reports no benchmark numbers, and its labels were bootstrapped from EmoBox academic corpora, so overlap with MELD or IEMOCAP cannot be ruled out.",
-        "scores": [],
-        "training_data": "It was fine-tuned on 4,788 hours of filtered pseudo-labeled emotion speech, iterated from a seed model trained on EmoBox academic emotion data.",
-        "languages": "The card claims language-robust recognition but does not list the languages of its training data.",
-        "input_limits": "It expects 16 kHz speech, and the card states no maximum length.",
-        "output": "It returns 9 class scores plus optional embeddings, either 50 Hz frames or one utterance vector, and the GitHub README lists 768-dimensional features.",
-        "sources": [
-          "https://huggingface.co/emotion2vec/emotion2vec_plus_base",
-          "https://github.com/ddlBoJack/emotion2vec",
-          "https://arxiv.org/abs/2312.15185"
-        ]
-      }
-    },
-    {
       "id": "emotion2vec-plus-large",
       "name": "emotion2vec+ large",
       "role": "voice encoder",
@@ -1163,251 +180,6 @@
           "https://huggingface.co/emotion2vec/emotion2vec_plus_large",
           "https://github.com/ddlBoJack/emotion2vec",
           "https://arxiv.org/abs/2312.15185"
-        ]
-      }
-    },
-    {
-      "id": "data2vec-audio-base",
-      "name": "data2vec-audio base",
-      "role": "voice encoder",
-      "hf_id": "facebook/data2vec-audio-base",
-      "params": 93164288,
-      "params_basis": "safetensors",
-      "params_source": "https://huggingface.co/facebook/data2vec-audio-base/resolve/refs%2Fpr%2F1/model.safetensors",
-      "feature_dim": 768,
-      "inputs": "audio",
-      "released": "2022-02-07",
-      "released_source": "https://arxiv.org/abs/2202.03555",
-      "paper_title": "data2vec: A General Framework for Self-supervised Learning in Speech, Vision and Language",
-      "paper_url": "https://arxiv.org/abs/2202.03555",
-      "license": "apache-2.0",
-      "note": null,
-      "architecture": "encoder",
-      "details": {
-        "maker": "Meta AI",
-        "summary": "data2vec-audio base is a 12-block, 768-dimensional Transformer over a wav2vec 2.0-style 7-layer CNN, trained by self-distillation: the student sees masked audio and regresses the teacher's contextualized latent representations of the full input. This checkpoint is pretrain-only.",
-        "meld_slot": "It fills the voice-encoder slot on the text and audio track as a frozen feature extractor under the small trained head.",
-        "meld_good": "In the emotion2vec paper's frozen tests it beats WavLM base on MELD (weighted F1 43.59 versus 35.16), and its LS-960 pretraining has no MELD exposure.",
-        "meld_weak": "It saw only read English audiobook speech and has no emotion supervision, while the emotion2vec paper describes MELD as a noisy dataset.",
-        "scores": [
-          {
-            "text": "MELD weighted F1 43.59 (WA 45.75, UA 24.98), frozen encoder with linear layers, as reported in the emotion2vec paper",
-            "url": "https://arxiv.org/html/2312.15185"
-          },
-          {
-            "text": "IEMOCAP WA 67.38, frozen encoder with linear layers, as reported in the emotion2vec paper",
-            "url": "https://arxiv.org/html/2312.15185"
-          },
-          {
-            "text": "LibriSpeech test-other WER 5.5 after fine-tuning on 960 labeled hours with a 4-gram LM",
-            "url": "https://ar5iv.labs.arxiv.org/html/2202.03555"
-          }
-        ],
-        "training_data": "It was pre-trained on 960 hours of unlabeled LibriSpeech (LS-960) English audiobook speech.",
-        "languages": "English only.",
-        "input_limits": "It takes a 16 kHz waveform, and neither the card nor the paper states a maximum length.",
-        "output": "It gives 768-dimensional states from 12 blocks at 50 Hz (20 ms stride, 25 ms receptive field), and SUPERB-style probes learn a weighted sum of layers.",
-        "sources": [
-          "https://huggingface.co/facebook/data2vec-audio-base",
-          "https://arxiv.org/abs/2202.03555",
-          "https://ar5iv.labs.arxiv.org/html/2202.03555",
-          "https://arxiv.org/html/2312.15185",
-          "https://ar5iv.labs.arxiv.org/html/2105.01051"
-        ]
-      }
-    },
-    {
-      "id": "wavlm-large",
-      "name": "WavLM large",
-      "role": "voice encoder",
-      "hf_id": "microsoft/wavlm-large",
-      "params": 315453120,
-      "params_basis": "safetensors",
-      "params_source": "https://huggingface.co/microsoft/wavlm-large/resolve/refs%2Fpr%2F2/model.safetensors",
-      "feature_dim": 1024,
-      "inputs": "audio",
-      "released": "2021-12",
-      "released_source": "https://github.com/microsoft/unilm/tree/master/wavlm",
-      "paper_title": "WavLM: Large-Scale Self-Supervised Pre-Training for Full Stack Speech Processing",
-      "paper_url": "https://arxiv.org/abs/2110.13900",
-      "license": "CC-BY-SA-3.0",
-      "note": "The card links the UniSpeech license, which is CC BY-SA 3.0 and therefore share-alike.",
-      "architecture": "encoder",
-      "details": {
-        "maker": "Microsoft",
-        "summary": "WavLM Large is a 24-layer, 1024-dimensional HuBERT-style Transformer with gated relative position bias. It is pre-trained on 94k hours by masked prediction of k-means pseudo-labels plus utterance-mixing denoising, where noisy or overlapped inputs must predict the clean speech's labels.",
-        "meld_slot": "It fills the voice-encoder slot on the text and audio track as a frozen feature extractor under the small trained head.",
-        "meld_good": "It scores SUPERB ER 70.62, above HuBERT Large at 67.62, and its paper finds speaker cues in bottom layers and content in top layers for the Base models.",
-        "meld_weak": "It is 316.62M parameters and pretrain-only English, three times WavLM Base+, and the Qwen2.5-Omni card puts it at only 0.542 on MELD.",
-        "scores": [
-          {
-            "text": "SUPERB ER (IEMOCAP 4-class accuracy, frozen, weighted sum of layers) 70.62",
-            "url": "https://ar5iv.labs.arxiv.org/html/2110.13900"
-          },
-          {
-            "text": "MELD SER 0.542, as reported in the Qwen2.5-Omni-3B card's comparison table",
-            "url": "https://huggingface.co/Qwen/Qwen2.5-Omni-3B"
-          },
-          {
-            "text": "SUPERB ASR WER 3.44",
-            "url": "https://ar5iv.labs.arxiv.org/html/2110.13900"
-          }
-        ],
-        "training_data": "It was pre-trained on 94k unlabeled English hours: 60k Libri-Light, 10k GigaSpeech and 24k VoxPopuli.",
-        "languages": "English only.",
-        "input_limits": "It expects 16 kHz audio, and the card states no maximum length.",
-        "output": "It gives 1024-dimensional states from 24 layers at a 20 ms stride, and SUPERB pools a learned weighted sum of all layers.",
-        "sources": [
-          "https://huggingface.co/microsoft/wavlm-large",
-          "https://arxiv.org/abs/2110.13900",
-          "https://ar5iv.labs.arxiv.org/html/2110.13900",
-          "https://github.com/microsoft/unilm/tree/master/wavlm",
-          "https://ar5iv.labs.arxiv.org/html/2105.01051",
-          "https://huggingface.co/Qwen/Qwen2.5-Omni-3B"
-        ]
-      }
-    },
-    {
-      "id": "wavlm-base-plus",
-      "name": "WavLM base+",
-      "role": "voice encoder",
-      "hf_id": "microsoft/wavlm-base-plus",
-      "params": 94381936,
-      "params_basis": "safetensors",
-      "params_source": "https://huggingface.co/microsoft/wavlm-base-plus/resolve/refs%2Fpr%2F1/model.safetensors",
-      "feature_dim": 768,
-      "inputs": "audio",
-      "released": "2021-11",
-      "released_source": "https://github.com/microsoft/unilm/tree/master/wavlm",
-      "paper_title": "WavLM: Large-Scale Self-Supervised Pre-Training for Full Stack Speech Processing",
-      "paper_url": "https://arxiv.org/abs/2110.13900",
-      "license": "CC-BY-SA-3.0",
-      "note": "The card links the UniSpeech license, which is CC BY-SA 3.0 and therefore share-alike.",
-      "architecture": "encoder",
-      "details": {
-        "maker": "Microsoft",
-        "summary": "WavLM Base+ is a 12-layer, 768-dimensional HuBERT-style Transformer with gated relative position bias. It is pre-trained on 94k hours by masked prediction of k-means pseudo-labels plus utterance-mixing denoising on simulated noisy or overlapped speech.",
-        "meld_slot": "It fills the voice-encoder slot on the text and audio track as a frozen feature extractor under the small trained head.",
-        "meld_good": "It reaches SUPERB ER 68.65 at 94.70M parameters, close to WavLM Large's 70.62 at about a third of the size.",
-        "meld_weak": "It is pretrain-only English with no emotion supervision, so MELD results depend entirely on the trained head and the layer weighting.",
-        "scores": [
-          {
-            "text": "SUPERB ER (IEMOCAP 4-class accuracy, frozen, weighted sum of layers) 68.65",
-            "url": "https://ar5iv.labs.arxiv.org/html/2110.13900"
-          },
-          {
-            "text": "SUPERB SID accuracy 89.42",
-            "url": "https://ar5iv.labs.arxiv.org/html/2110.13900"
-          },
-          {
-            "text": "SUPERB ASR WER 5.59",
-            "url": "https://ar5iv.labs.arxiv.org/html/2110.13900"
-          }
-        ],
-        "training_data": "It was pre-trained on 94k unlabeled English hours: 60k Libri-Light, 10k GigaSpeech and 24k VoxPopuli.",
-        "languages": "English only.",
-        "input_limits": "It expects 16 kHz audio, and the card states no maximum length.",
-        "output": "It gives 768-dimensional states from 12 layers at a 20 ms stride, and SUPERB pools a learned weighted sum of all layers.",
-        "sources": [
-          "https://huggingface.co/microsoft/wavlm-base-plus",
-          "https://arxiv.org/abs/2110.13900",
-          "https://ar5iv.labs.arxiv.org/html/2110.13900",
-          "https://github.com/microsoft/unilm/tree/master/wavlm",
-          "https://ar5iv.labs.arxiv.org/html/2105.01051"
-        ]
-      }
-    },
-    {
-      "id": "superb-emotion-recognition-wav2vec-2.0-base",
-      "name": "SUPERB emotion recognition (wav2vec 2.0 base)",
-      "role": "voice encoder",
-      "hf_id": "superb/wav2vec2-base-superb-er",
-      "params": 94569617,
-      "params_basis": "safetensors",
-      "params_source": "https://huggingface.co/superb/wav2vec2-base-superb-er/resolve/refs%2Fpr%2F2/model.safetensors",
-      "feature_dim": 768,
-      "inputs": "audio",
-      "released": "2021-08-27",
-      "released_source": "https://huggingface.co/api/models/superb/wav2vec2-base-superb-er/commits/main",
-      "paper_title": "SUPERB: Speech processing Universal PERformance Benchmark",
-      "paper_url": "https://arxiv.org/abs/2105.01051",
-      "license": "apache-2.0",
-      "note": "This is a 4-class IEMOCAP emotion classifier on a wav2vec 2.0 base encoder.",
-      "architecture": "encoder",
-      "details": {
-        "maker": "SUPERB benchmark team, on Meta's wav2vec 2.0 base",
-        "summary": "This is S3PRL's SUPERB emotion-recognition model ported to Transformers. A frozen wav2vec 2.0 base encoder feeds a learned weighted sum of its hidden layers into a lightweight head trained on IEMOCAP's four balanced classes.",
-        "meld_slot": "It could fill the voice slot on the text and audio track as a ready classifier, or its encoder could feed the trained head.",
-        "meld_good": "It is a ready classifier that outputs class scores rather than generated text, so it needs no parsing.",
-        "meld_weak": "It predicts only neutral, happy, sad and angry, so it cannot output MELD's disgust, fear or surprise, and it was trained on IEMOCAP alone.",
-        "scores": [
-          {
-            "text": "IEMOCAP session 1 accuracy 0.6258 in Transformers and 0.6343 in s3prl",
-            "url": "https://huggingface.co/superb/wav2vec2-base-superb-er"
-          },
-          {
-            "text": "SUPERB ER (IEMOCAP 4-class, 5-fold) 63.43 for wav2vec 2.0 Base",
-            "url": "https://ar5iv.labs.arxiv.org/html/2105.01051"
-          }
-        ],
-        "training_data": "Its head was trained on IEMOCAP reduced to four balanced classes, over a wav2vec 2.0 base pre-trained on 960 hours of LibriSpeech.",
-        "languages": "English only.",
-        "input_limits": "It expects 16 kHz audio, and the card states no maximum length.",
-        "output": "It gives scores over neutral, happy, sad and angry, computed from the encoder's 768-dimensional states at a 20 ms stride.",
-        "sources": [
-          "https://huggingface.co/superb/wav2vec2-base-superb-er",
-          "https://arxiv.org/abs/2105.01051",
-          "https://ar5iv.labs.arxiv.org/html/2105.01051",
-          "https://ar5iv.labs.arxiv.org/html/2006.11477"
-        ]
-      }
-    },
-    {
-      "id": "hubert-base",
-      "name": "HuBERT base",
-      "role": "voice encoder",
-      "hf_id": "facebook/hubert-base-ls960",
-      "params": 94371712,
-      "params_basis": "safetensors",
-      "params_source": "https://huggingface.co/facebook/hubert-base-ls960/resolve/refs%2Fpr%2F2/model.safetensors",
-      "feature_dim": 768,
-      "inputs": "audio",
-      "released": "2021-06-14",
-      "released_source": "https://arxiv.org/abs/2106.07447",
-      "paper_title": "HuBERT: Self-Supervised Speech Representation Learning by Masked Prediction of Hidden Units",
-      "paper_url": "https://arxiv.org/abs/2106.07447",
-      "license": "apache-2.0",
-      "note": null,
-      "architecture": "encoder",
-      "details": {
-        "maker": "Meta AI",
-        "summary": "HuBERT Base is a 12-layer, 768-dimensional Transformer over a CNN waveform encoder, trained by BERT-style masked prediction of offline k-means cluster units. The loss applies only to masked frames, and targets come from two clustering iterations starting with a 100-cluster k-means teacher.",
-        "meld_slot": "It fills the voice-encoder slot on the text and audio track as a frozen feature extractor under the small trained head.",
-        "meld_good": "It is a well-studied frozen baseline with SUPERB ER 64.92, and its LibriSpeech-only pretraining has no MELD or IEMOCAP exposure.",
-        "meld_weak": "It trails WavLM Base+ on SUPERB ER (64.92 versus 68.65) at the same size, so it serves mainly as a comparison baseline.",
-        "scores": [
-          {
-            "text": "SUPERB ER (IEMOCAP 4-class accuracy, frozen, weighted sum of layers) 64.92",
-            "url": "https://ar5iv.labs.arxiv.org/html/2105.01051"
-          },
-          {
-            "text": "SUPERB ASR WER 6.42",
-            "url": "https://ar5iv.labs.arxiv.org/html/2105.01051"
-          },
-          {
-            "text": "SUPERB SID accuracy 81.42",
-            "url": "https://ar5iv.labs.arxiv.org/html/2105.01051"
-          }
-        ],
-        "training_data": "It was pre-trained on 960 hours of unlabeled LibriSpeech English audiobook speech.",
-        "languages": "English only.",
-        "input_limits": "It expects 16 kHz audio, and the card states no maximum length.",
-        "output": "It gives 768-dimensional states from 12 layers at a 20 ms frame rate, and SUPERB pools a learned weighted sum of layers.",
-        "sources": [
-          "https://huggingface.co/facebook/hubert-base-ls960",
-          "https://arxiv.org/abs/2106.07447",
-          "https://ar5iv.labs.arxiv.org/html/2106.07447",
-          "https://ar5iv.labs.arxiv.org/html/2105.01051"
         ]
       }
     },
@@ -1456,92 +228,6 @@
           "https://huggingface.co/facebook/hubert-large-ll60k",
           "https://arxiv.org/abs/2106.07447",
           "https://ar5iv.labs.arxiv.org/html/2106.07447",
-          "https://ar5iv.labs.arxiv.org/html/2105.01051"
-        ]
-      }
-    },
-    {
-      "id": "wav2vec-2.0-base",
-      "name": "wav2vec 2.0 base",
-      "role": "voice encoder",
-      "hf_id": "facebook/wav2vec2-base",
-      "params": 94371712,
-      "params_basis": "safetensors",
-      "params_source": "https://huggingface.co/facebook/wav2vec2-base/resolve/refs%2Fpr%2F2/model.safetensors",
-      "feature_dim": 768,
-      "inputs": "audio",
-      "released": "2020-06-20",
-      "released_source": "https://arxiv.org/abs/2006.11477",
-      "paper_title": "wav2vec 2.0: A Framework for Self-Supervised Learning of Speech Representations",
-      "paper_url": "https://arxiv.org/abs/2006.11477",
-      "license": "apache-2.0",
-      "note": "The count is the encoder alone, and the full pretraining checkpoint with quantizer and projection heads is 95,044,608.",
-      "architecture": "encoder",
-      "details": {
-        "maker": "Meta AI",
-        "summary": "wav2vec 2.0 Base is a 7-block CNN feature encoder plus a 12-block, 768-dimensional Transformer. It masks latent speech features and solves a contrastive task against jointly learned quantized latents, and this checkpoint is pretrain-only on LibriSpeech.",
-        "meld_slot": "It fills the voice-encoder slot on the text and audio track as a frozen feature extractor under the small trained head.",
-        "meld_good": "Its SUPERB ER of 63.43 gives a reference point, and a ready IEMOCAP head on it exists as superb/wav2vec2-base-superb-er.",
-        "meld_weak": "It has the lowest SUPERB ER of the base encoders here, 63.43 versus 64.92 for HuBERT Base and 68.65 for WavLM Base+.",
-        "scores": [
-          {
-            "text": "SUPERB ER (IEMOCAP 4-class accuracy, frozen, weighted sum of layers) 63.43",
-            "url": "https://ar5iv.labs.arxiv.org/html/2105.01051"
-          },
-          {
-            "text": "SUPERB ASR WER 6.43",
-            "url": "https://ar5iv.labs.arxiv.org/html/2105.01051"
-          },
-          {
-            "text": "SUPERB SID accuracy 75.18",
-            "url": "https://ar5iv.labs.arxiv.org/html/2105.01051"
-          }
-        ],
-        "training_data": "It was pre-trained on 960 hours of unlabeled LibriSpeech (LS-960) English audiobook speech.",
-        "languages": "English only.",
-        "input_limits": "It expects 16 kHz audio, and the card states no maximum length.",
-        "output": "It gives 768-dimensional states from 12 blocks at about 49 Hz (20 ms stride, 25 ms receptive field), and SUPERB pools a weighted sum of layers.",
-        "sources": [
-          "https://huggingface.co/facebook/wav2vec2-base",
-          "https://arxiv.org/abs/2006.11477",
-          "https://ar5iv.labs.arxiv.org/html/2006.11477",
-          "https://ar5iv.labs.arxiv.org/html/2105.01051",
-          "https://huggingface.co/superb/wav2vec2-base-superb-er"
-        ]
-      }
-    },
-    {
-      "id": "wav2vec-2.0-large",
-      "name": "wav2vec 2.0 large",
-      "role": "voice encoder",
-      "hf_id": "facebook/wav2vec2-large",
-      "params": 315428992,
-      "params_basis": "safetensors",
-      "params_source": "https://huggingface.co/facebook/wav2vec2-large/resolve/refs%2Fpr%2F2/model.safetensors",
-      "feature_dim": 1024,
-      "inputs": "audio",
-      "released": "2020-06-20",
-      "released_source": "https://arxiv.org/abs/2006.11477",
-      "paper_title": "wav2vec 2.0: A Framework for Self-Supervised Learning of Speech Representations",
-      "paper_url": "https://arxiv.org/abs/2006.11477",
-      "license": "apache-2.0",
-      "note": "The count is the encoder alone, and the full pretraining checkpoint with quantizer and projection heads is 317,380,864.",
-      "architecture": "encoder",
-      "details": {
-        "maker": "Meta AI",
-        "summary": "wav2vec 2.0 Large is a 24-block, 1024-dimensional Transformer over the same 7-block CNN encoder, trained by contrastive prediction of quantized latents at masked positions. This checkpoint's card names LibriSpeech as its pretraining data.",
-        "meld_slot": "It fills the voice-encoder slot on the text and audio track as a frozen feature extractor under the small trained head.",
-        "meld_good": "It gives 1024-dimensional features at the same 20 ms stride as the base model, so the pooling and head code carry over unchanged.",
-        "meld_weak": "SUPERB's ER 65.64 for wav2vec 2.0 Large uses the 60k-hour Libri-Light checkpoint, so no emotion score was found for this LibriSpeech checkpoint.",
-        "scores": [],
-        "training_data": "Its card names unlabeled LibriSpeech, and the paper trains Large on either LS-960 or the 53.2k-hour LV-60k corpus.",
-        "languages": "English only.",
-        "input_limits": "It expects 16 kHz audio, and the card states no maximum length.",
-        "output": "It gives 1024-dimensional states from 24 blocks at about 49 Hz (20 ms stride), and SUPERB-style probes pool a weighted sum of layers.",
-        "sources": [
-          "https://huggingface.co/facebook/wav2vec2-large",
-          "https://arxiv.org/abs/2006.11477",
-          "https://ar5iv.labs.arxiv.org/html/2006.11477",
           "https://ar5iv.labs.arxiv.org/html/2105.01051"
         ]
       }
@@ -3874,6 +2560,1439 @@
       "name": "MiniCPM-o 2.6",
       "released": "2025-01",
       "replaced_by": "minicpm-o-4.5"
+    }
+  ],
+  "not_chosen": [
+    {
+      "id": "nvidia-nemotron-speech-streaming-en-0.6b",
+      "name": "NVIDIA Nemotron Speech Streaming EN 0.6B",
+      "role": "speech to words",
+      "hf_id": "nvidia/nemotron-speech-streaming-en-0.6b",
+      "params": 618084865,
+      "params_basis": "safetensors",
+      "params_source": "https://huggingface.co/api/models/nvidia/nemotron-speech-streaming-en-0.6b",
+      "feature_dim": null,
+      "inputs": "audio",
+      "released": "2026-03-13",
+      "released_source": "https://huggingface.co/nvidia/nemotron-speech-streaming-en-0.6b",
+      "paper_title": "Stateful Conformer with Cache-based Inference for Streaming Automatic Speech Recognition",
+      "paper_url": "https://arxiv.org/abs/2312.17279",
+      "license": "NVIDIA Open Model License",
+      "note": "The date is for the current checkpoint, and an older January 2026 checkpoint sits on a separate branch.",
+      "architecture": "encoder + decoder",
+      "details": {
+        "maker": "NVIDIA",
+        "summary": "Nemotron Speech Streaming is a 600M-parameter English streaming ASR model with a cache-aware FastConformer encoder of 24 layers and an RNN-T decoder. It caches encoder self-attention and convolution states, so each audio chunk is processed once with no overlapping computation.",
+        "meld_slot": "It would turn each spoken line into punctuated words in either track while the speaker is still talking.",
+        "meld_good": "Chunk size is chosen at runtime among 80, 160, 560 and 1120 ms without retraining, and the output already carries punctuation and capitalization for the text encoder.",
+        "meld_weak": "It is optimized for NVIDIA GPUs with input length bounded by GPU memory, CPU speed is undocumented, and AMI meeting WER rises to 14.71% at 160 ms chunks.",
+        "scores": [
+          {
+            "text": "WER is 2.32% on LibriSpeech test-clean and 4.84% on test-other with 1.12 s chunks.",
+            "url": "https://huggingface.co/nvidia/nemotron-speech-streaming-en-0.6b"
+          },
+          {
+            "text": "WER is 2.56% on LibriSpeech test-clean with 0.16 s chunks, and the Open ASR Leaderboard average is 7.67% at that chunk size.",
+            "url": "https://huggingface.co/nvidia/nemotron-speech-streaming-en-0.6b"
+          },
+          {
+            "text": "WER is 11.73% on AMI with 1.12 s chunks.",
+            "url": "https://huggingface.co/nvidia/nemotron-speech-streaming-en-0.6b"
+          }
+        ],
+        "training_data": "It was trained on about 530k hours of English, mainly NVIDIA's 250k-hour Riva ASR set plus the English part of Granary (YouTube-Commons, YODAS2, LibriLight).",
+        "languages": "It covers English (en-US) only.",
+        "input_limits": "It takes mono WAV audio streamed in 80, 160, 560 or 1120 ms chunks built from 80 ms frames with 70 frames of left context.",
+        "output": "It emits English text with punctuation and capitalization incrementally as each chunk is processed.",
+        "sources": [
+          "https://huggingface.co/nvidia/nemotron-speech-streaming-en-0.6b",
+          "https://arxiv.org/abs/2312.17279"
+        ]
+      },
+      "not_chosen": {
+        "chosen_instead": "whisper-large-v3-turbo",
+        "date": "2026-10-15"
+      }
+    },
+    {
+      "id": "moonshine-streaming-tiny",
+      "name": "Moonshine Streaming tiny",
+      "role": "speech to words",
+      "hf_id": "moonshine-ai/moonshine-streaming-tiny",
+      "params": 44054720,
+      "params_basis": "safetensors",
+      "params_source": "https://huggingface.co/api/models/moonshine-ai/moonshine-streaming-tiny",
+      "feature_dim": null,
+      "inputs": "audio",
+      "released": "2026-02-12",
+      "released_source": "https://arxiv.org/abs/2602.12241",
+      "paper_title": "Moonshine v2: Ergodic Streaming Encoder ASR for Latency-Critical Speech Applications",
+      "paper_url": "https://arxiv.org/abs/2602.12241",
+      "license": "MIT",
+      "note": "The card lists 34M parameters, but the safetensors file holds 44.05M.",
+      "architecture": "encoder + decoder",
+      "details": {
+        "maker": "Useful Sensors",
+        "summary": "Moonshine Streaming Tiny is a 34M-parameter streaming ASR model with a sliding-window Transformer encoder that uses no positional embeddings, an adapter, and an autoregressive Transformer decoder. Bounded local attention keeps encoder cost per frame fixed as the utterance grows.",
+        "meld_slot": "It would turn each spoken line into words on CPU in either track and could produce partial transcripts while the speaker talks.",
+        "meld_good": "It uses 50 Hz features with 80 ms of lookahead, the Moonshine v2 paper measures 50 ms response latency on an Apple M3, and it is MIT licensed.",
+        "meld_weak": "Full-output latency grows with transcript length because the decoder is autoregressive, the Transformers port is not fully streaming, and it can hallucinate words.",
+        "scores": [
+          {
+            "text": "WER is 4.49% on LibriSpeech clean and 12.09% on LibriSpeech other.",
+            "url": "https://huggingface.co/moonshine-ai/moonshine-streaming-tiny"
+          },
+          {
+            "text": "Average WER is 12.01% across eight Open ASR benchmarks, with 19.03% on AMI.",
+            "url": "https://huggingface.co/moonshine-ai/moonshine-streaming-tiny"
+          },
+          {
+            "text": "Response latency is 50 ms on an Apple M3 in a live transcription test.",
+            "url": "https://arxiv.org/html/2602.12241"
+          }
+        ],
+        "training_data": "It was trained on roughly 300K hours of speech: about 200K hours of public web data and open datasets plus 100K hours prepared in-house.",
+        "languages": "It covers English only.",
+        "input_limits": "It takes 16 kHz audio framed at 50 Hz (20 ms), and attention windows span 16 past frames and up to 4 future frames, giving 80 ms lookahead.",
+        "output": "It outputs English text tokens decoded autoregressively from the streamed encoder states.",
+        "sources": [
+          "https://huggingface.co/moonshine-ai/moonshine-streaming-tiny",
+          "https://arxiv.org/abs/2602.12241",
+          "https://arxiv.org/html/2602.12241"
+        ]
+      },
+      "not_chosen": {
+        "chosen_instead": "whisper-large-v3-turbo",
+        "date": "2026-10-15"
+      }
+    },
+    {
+      "id": "nvidia-parakeet-realtime-eou-120m-v1",
+      "name": "NVIDIA Parakeet Realtime EOU 120M v1",
+      "role": "speech to words",
+      "hf_id": "nvidia/parakeet_realtime_eou_120m-v1",
+      "params": 114892307,
+      "params_basis": "weights-file tensor count",
+      "params_source": "https://huggingface.co/nvidia/parakeet_realtime_eou_120m-v1/resolve/main/parakeet_realtime_eou_120m-v1.nemo",
+      "feature_dim": null,
+      "inputs": "audio",
+      "released": "2025-10-14",
+      "released_source": "https://huggingface.co/api/models/nvidia/parakeet_realtime_eou_120m-v1/commits/main",
+      "paper_title": "Stateful Conformer with Cache-based Inference for Streaming Automatic Speech Recognition",
+      "paper_url": "https://arxiv.org/abs/2312.17279",
+      "license": "NVIDIA Open Model License",
+      "note": "This English streaming recognizer emits an end-of-utterance token, so it can also serve as the turn detector.",
+      "architecture": "encoder + decoder",
+      "details": {
+        "maker": "NVIDIA",
+        "summary": "Parakeet Realtime EOU is a 120M-parameter English streaming ASR model with a FastConformer encoder of 17 layers, attention context [70,1], and an RNN-T decoder. It also emits an <EOU> token when it judges that the utterance has ended.",
+        "meld_slot": "It would transcribe each line in either track and could replace the separate turn detector through its end-of-utterance token.",
+        "meld_good": "It streams at 80 to 160 ms latency and flags end of utterance with a 160 ms median delay, so one model covers both ASR and endpointing.",
+        "meld_weak": "It outputs lowercase text without punctuation, which removes cues for the text encoder, and its EOU latencies were measured on TTS audio rather than noisy TV speech.",
+        "scores": [
+          {
+            "text": "Average WER is 9.30% on the Open ASR Leaderboard sets in the 160 ms streaming setting.",
+            "url": "https://huggingface.co/nvidia/parakeet_realtime_eou_120m-v1"
+          },
+          {
+            "text": "WER is 3.61% on LibriSpeech test-clean and 7.79% on test-other at 160 ms streaming.",
+            "url": "https://huggingface.co/nvidia/parakeet_realtime_eou_120m-v1"
+          },
+          {
+            "text": "End-of-utterance latency is 160 ms at p50, 280 ms at p90 and 320 ms at p95 on TTS-generated DialogStudio audio.",
+            "url": "https://huggingface.co/nvidia/parakeet_realtime_eou_120m-v1"
+          }
+        ],
+        "training_data": "It was trained on NeMo ASR Set 3.0 (10,000 human-transcribed hours) plus AMI, DialogStudio, Granary, Speech Commands and LibriTTS, mixing human and TTS audio.",
+        "languages": "It covers English only.",
+        "input_limits": "It takes single-channel 16 kHz audio, needs at least 160 ms of input, and runs in streaming mode with 80 to 160 ms latency.",
+        "output": "It outputs lowercase English text without punctuation, with an <EOU> token appended at each detected utterance end.",
+        "sources": [
+          "https://huggingface.co/nvidia/parakeet_realtime_eou_120m-v1",
+          "https://arxiv.org/abs/2312.17279"
+        ]
+      },
+      "not_chosen": {
+        "chosen_instead": "whisper-large-v3-turbo",
+        "date": "2026-10-15"
+      }
+    },
+    {
+      "id": "nvidia-parakeet-tdt-0.6b-v3",
+      "name": "NVIDIA Parakeet TDT 0.6B v3",
+      "role": "speech to words",
+      "hf_id": "nvidia/parakeet-tdt-0.6b-v3",
+      "params": 627057286,
+      "params_basis": "safetensors",
+      "params_source": "https://huggingface.co/api/models/nvidia/parakeet-tdt-0.6b-v3",
+      "feature_dim": null,
+      "inputs": "audio",
+      "released": "2025-08-14",
+      "released_source": "https://huggingface.co/nvidia/parakeet-tdt-0.6b-v3",
+      "paper_title": "Canary-1B-v2 & Parakeet-TDT-0.6B-v3: Efficient and High-Performance Models for Multilingual ASR and AST",
+      "paper_url": "https://arxiv.org/abs/2509.14128",
+      "license": "CC-BY-4.0",
+      "note": "This version covers 25 European languages, and the card rounds it to 600 million.",
+      "architecture": "encoder + decoder",
+      "details": {
+        "maker": "NVIDIA",
+        "summary": "Parakeet TDT 0.6B v3 is a 600M-parameter multilingual ASR model with a FastConformer encoder and a Token-and-Duration Transducer decoder, which predicts each token and the number of frames it covers. Skipping frames by predicted duration makes decoding faster than a standard transducer.",
+        "meld_slot": "It would transcribe each finished line into punctuated words in either track, working offline on the whole segment rather than streaming.",
+        "meld_good": "It outputs punctuation, capitalization and word-level timestamps, detects the spoken language automatically, and reaches 1.93% WER on LibriSpeech test-clean.",
+        "meld_weak": "It is a full-attention offline model optimized for NVIDIA GPUs, so it adds per-line latency on CPU, and its English WER is slightly worse than v2.",
+        "scores": [
+          {
+            "text": "Average WER is 6.34% on the Hugging Face Open ASR Leaderboard.",
+            "url": "https://huggingface.co/nvidia/parakeet-tdt-0.6b-v3"
+          },
+          {
+            "text": "WER is 1.93% on LibriSpeech test-clean and 3.59% on test-other.",
+            "url": "https://huggingface.co/nvidia/parakeet-tdt-0.6b-v3"
+          },
+          {
+            "text": "Average WER is 11.97% on FLEURS across its 25 languages.",
+            "url": "https://huggingface.co/nvidia/parakeet-tdt-0.6b-v3"
+          }
+        ],
+        "training_data": "It was trained on 10,000 hours of human-transcribed NeMo ASR Set 3.0 plus 660,000 hours of pseudo-labeled Granary data.",
+        "languages": "It covers 25 European languages, including English, German, French, Spanish, Italian, Russian and Ukrainian.",
+        "input_limits": "It takes 16 kHz mono WAV or FLAC audio, up to 24 minutes with full attention on an A100 80GB or 3 hours with local attention.",
+        "output": "It outputs text with punctuation and capitalization plus word-level and segment-level timestamps.",
+        "sources": [
+          "https://huggingface.co/nvidia/parakeet-tdt-0.6b-v3",
+          "https://arxiv.org/abs/2509.14128",
+          "https://arxiv.org/abs/2304.06795"
+        ]
+      },
+      "not_chosen": {
+        "chosen_instead": "whisper-large-v3-turbo",
+        "date": "2026-10-15"
+      }
+    },
+    {
+      "id": "distil-whisper-distil-large-v3.5",
+      "name": "Distil-Whisper distil-large-v3.5",
+      "role": "speech to words",
+      "hf_id": "distil-whisper/distil-large-v3.5",
+      "params": 756405760,
+      "params_basis": "safetensors",
+      "params_source": "https://huggingface.co/api/models/distil-whisper/distil-large-v3.5",
+      "feature_dim": null,
+      "inputs": "audio",
+      "released": "2025-03-19",
+      "released_source": "https://huggingface.co/api/models/distil-whisper/distil-large-v3.5/commits/main",
+      "paper_title": "Distil-Whisper: Robust Knowledge Distillation via Large-Scale Pseudo Labelling",
+      "paper_url": "https://arxiv.org/abs/2311.00430",
+      "license": "MIT",
+      "note": "The date is when the model card was added, although the repo was created on 2024-12-05.",
+      "architecture": "encoder + decoder",
+      "details": {
+        "maker": "Hugging Face (Distil-Whisper team)",
+        "summary": "Distil-Large-v3.5 is a 756M-parameter English encoder-decoder Transformer distilled from Whisper large-v3, keeping the frozen teacher encoder and a two-layer decoder. It was distilled with a patient-teacher schedule and SpecAugment on 98k hours of public data.",
+        "meld_slot": "It would transcribe each finished English line in either track as a faster drop-in for Whisper large-v3.",
+        "meld_good": "It is about 1.5x faster than large-v3-turbo with slightly better short-form OOD WER, returns segment timestamps, and has documented whisper.cpp and Faster-Whisper paths.",
+        "meld_weak": "It is built around 30 s input windows, and its long-form OOD WER of 11.39% trails large-v3-turbo at 10.25%.",
+        "scores": [
+          {
+            "text": "Short-form OOD WER is 7.08%, against 7.30% for Whisper large-v3-turbo.",
+            "url": "https://huggingface.co/distil-whisper/distil-large-v3.5"
+          },
+          {
+            "text": "Long-form OOD WER is 11.39%, against 10.25% for Whisper large-v3-turbo.",
+            "url": "https://huggingface.co/distil-whisper/distil-large-v3.5"
+          },
+          {
+            "text": "WER is 2.37% on LibriSpeech clean and 5.04% on LibriSpeech other.",
+            "url": "https://huggingface.co/distil-whisper/distil-large-v3.5"
+          }
+        ],
+        "training_data": "It was distilled on over 98,000 hours of public English data, including Common Voice, LibriSpeech, VoxPopuli, TED-LIUM, People's Speech, GigaSpeech, AMI and YODAS.",
+        "languages": "It covers English only.",
+        "input_limits": "It processes audio in 30 s windows, and longer files use the sequential or chunked long-form algorithms.",
+        "output": "It outputs English text with optional segment-level timestamps.",
+        "sources": [
+          "https://huggingface.co/distil-whisper/distil-large-v3.5",
+          "https://arxiv.org/abs/2311.00430"
+        ]
+      },
+      "not_chosen": {
+        "chosen_instead": "whisper-large-v3-turbo",
+        "date": "2026-10-15"
+      }
+    },
+    {
+      "id": "nvidia-canary-180m-flash",
+      "name": "NVIDIA Canary 180M Flash",
+      "role": "speech to words",
+      "hf_id": "nvidia/canary-180m-flash",
+      "params": 183743120,
+      "params_basis": "weights-file tensor count",
+      "params_source": "https://huggingface.co/nvidia/canary-180m-flash/resolve/main/canary-180m-flash.nemo",
+      "feature_dim": null,
+      "inputs": "audio",
+      "released": "2025-03-11",
+      "released_source": "https://huggingface.co/api/models/nvidia/canary-180m-flash",
+      "paper_title": "Training and Inference Efficiency of Encoder-Decoder Speech Models",
+      "paper_url": "https://arxiv.org/abs/2503.05931",
+      "license": "CC-BY-4.0",
+      "note": "The card says 182M, and the count stores the tied output layer once (189,117,072 if counted twice).",
+      "architecture": "encoder + decoder",
+      "details": {
+        "maker": "NVIDIA",
+        "summary": "Canary 180M Flash is a 182M-parameter multitask attention encoder-decoder with a 17-layer FastConformer encoder and a 4-layer Transformer decoder, steered by task tokens for language, task, timestamps and punctuation. It does ASR in four languages and translation to and from English.",
+        "meld_slot": "It would transcribe each finished line into words in either track, with punctuation switched on by a task token.",
+        "meld_good": "It is small for its accuracy, with 1.87% WER on LibriSpeech test-clean and RTFx 1,233, and it can emit experimental word-level and segment-level timestamps.",
+        "meld_weak": "Audio over 40 s needs chunked inference, its autoregressive decoder makes latency grow with output length, and its AMI meeting WER is 14.86%.",
+        "scores": [
+          {
+            "text": "WER is 1.87% on LibriSpeech test-clean and 3.83% on test-other.",
+            "url": "https://huggingface.co/nvidia/canary-180m-flash"
+          },
+          {
+            "text": "WER is 14.86% on AMI and 10.51% on GigaSpeech.",
+            "url": "https://huggingface.co/nvidia/canary-180m-flash"
+          },
+          {
+            "text": "RTFx is 1,233 on the Open ASR Leaderboard sets.",
+            "url": "https://huggingface.co/nvidia/canary-180m-flash"
+          }
+        ],
+        "training_data": "It was trained on 85K hours: 31K hours of public data such as LibriSpeech and Common Voice, 20K hours collected by Suno, and 34K hours of in-house data.",
+        "languages": "It covers English, German, French and Spanish for ASR, plus translation between English and each of the other three.",
+        "input_limits": "It takes 16 kHz mono WAV or FLAC audio shorter than 40 s, and longer audio goes through NeMo's chunked inference script.",
+        "output": "It outputs text with optional punctuation and capitalization, plus experimental word-level and segment-level timestamps.",
+        "sources": [
+          "https://huggingface.co/nvidia/canary-180m-flash",
+          "https://arxiv.org/abs/2503.05931"
+        ]
+      },
+      "not_chosen": {
+        "chosen_instead": "whisper-large-v3-turbo",
+        "date": "2026-10-15"
+      }
+    },
+    {
+      "id": "moonshine-base",
+      "name": "Moonshine base",
+      "role": "speech to words",
+      "hf_id": "moonshine-ai/moonshine-base",
+      "params": 61513920,
+      "params_basis": "safetensors",
+      "params_source": "https://huggingface.co/api/models/moonshine-ai/moonshine-base",
+      "feature_dim": null,
+      "inputs": "audio",
+      "released": "2024-10-21",
+      "released_source": "https://arxiv.org/abs/2410.15608",
+      "paper_title": "Moonshine: Speech Recognition for Live Transcription and Voice Commands",
+      "paper_url": "https://arxiv.org/abs/2410.15608",
+      "license": "MIT",
+      "note": "The repo moved from UsefulSensors to the moonshine-ai organization.",
+      "architecture": "encoder + decoder",
+      "details": {
+        "maker": "Useful Sensors",
+        "summary": "Moonshine Base is a 61.5M-parameter English encoder-decoder Transformer with 8 encoder and 8 decoder layers, width 416, and rotary position embeddings. It is trained on variable-length segments without zero-padding, so encoder compute scales with the actual audio length.",
+        "meld_slot": "It would transcribe each finished English line on CPU in either track as a lighter replacement for Whisper base.",
+        "meld_good": "Encoder cost follows clip length instead of a fixed 30 s window, and the Moonshine v2 paper measures 44 ms response latency on an Apple M3.",
+        "meld_weak": "Its card warns of hallucination, repetition, and worse accuracy on short segments or cut-off words, which describes many MELD lines.",
+        "scores": [
+          {
+            "text": "WER is 3.23% on LibriSpeech clean and 8.18% on LibriSpeech other.",
+            "url": "https://arxiv.org/html/2410.15608"
+          },
+          {
+            "text": "Average WER is 10.07% across eight Open ASR benchmarks, against 10.32% for Whisper base.en.",
+            "url": "https://arxiv.org/html/2410.15608"
+          },
+          {
+            "text": "Response latency is 44 ms on an Apple M3, against 553 ms for Whisper Base.",
+            "url": "https://arxiv.org/html/2602.12241"
+          }
+        ],
+        "training_data": "It was trained on about 200K hours: 90K hours from open ASR datasets and over 100K hours of internally prepared data.",
+        "languages": "It covers English only.",
+        "input_limits": "It takes 16 kHz audio of variable length, was trained on 4 to 30 s segments, and the card caps generation at 6.5 tokens per second of audio.",
+        "output": "It outputs English text tokens decoded autoregressively.",
+        "sources": [
+          "https://huggingface.co/moonshine-ai/moonshine-base",
+          "https://arxiv.org/abs/2410.15608",
+          "https://arxiv.org/html/2410.15608",
+          "https://arxiv.org/html/2602.12241"
+        ]
+      },
+      "not_chosen": {
+        "chosen_instead": "whisper-large-v3-turbo",
+        "date": "2026-10-15"
+      }
+    },
+    {
+      "id": "sensevoice-small",
+      "name": "SenseVoice Small",
+      "role": "speech to words",
+      "hf_id": "FunAudioLLM/SenseVoiceSmall",
+      "params": 233999167,
+      "params_basis": "weights-file tensor count",
+      "params_source": "https://huggingface.co/FunAudioLLM/SenseVoiceSmall/resolve/main/model.pt",
+      "feature_dim": null,
+      "inputs": "audio",
+      "released": "2024-07",
+      "released_source": "https://huggingface.co/FunAudioLLM/SenseVoiceSmall",
+      "paper_title": "FunAudioLLM: Voice Understanding and Generation Foundation Models for Natural Interaction Between Humans and LLMs",
+      "paper_url": "https://arxiv.org/abs/2407.04051",
+      "license": "FunASR model license (other)",
+      "note": "It also emits emotion and audio-event tags alongside the transcript.",
+      "architecture": "encoder",
+      "details": {
+        "maker": "FunAudioLLM (FunASR)",
+        "summary": "SenseVoice Small is a 234M-parameter non-autoregressive encoder-only model built on a SAN-M memory-equipped self-attention encoder. It is trained with CTC for ASR and cross-entropy for language ID, speech emotion and audio-event task tokens prepended to the input.",
+        "meld_slot": "It would transcribe each line and also supply a zero-shot speech-emotion tag for the text plus audio track.",
+        "meld_good": "Its seven emotion tags line up with MELD's seven labels, it scores 57.7 WF1 on MELD without fine-tuning, and it processes 10 s of audio in 70 ms.",
+        "meld_weak": "Direct input is capped at 30 s, it is not streaming, ASR covers only five languages, and the weights use the FunASR model license rather than MIT.",
+        "scores": [
+          {
+            "text": "On MELD it scores WF1 57.7%, UA 50.8% and WA 57.8% without target-domain fine-tuning.",
+            "url": "https://arxiv.org/html/2407.04051"
+          },
+          {
+            "text": "On IEMOCAP it scores WF1 67.8% and UA 70.5% without target-domain fine-tuning.",
+            "url": "https://arxiv.org/html/2407.04051"
+          },
+          {
+            "text": "WER is 3.15% on LibriSpeech test_clean and 7.18% on test_other.",
+            "url": "https://arxiv.org/html/2407.04051"
+          }
+        ],
+        "training_data": "SenseVoice-Small was trained on about 300,000 hours of speech in Chinese, Cantonese, English, Japanese and Korean.",
+        "languages": "It covers Mandarin, Cantonese, English, Japanese and Korean.",
+        "input_limits": "It takes up to 30 s per direct call, computes 80-dim log-mel features stacked and downsampled 6x, and runs at RTF 0.007.",
+        "output": "It outputs text with language, emotion (HAPPY, SAD, ANGRY, NEUTRAL, FEARFUL, DISGUSTED, SURPRISED) and audio-event tags such as Laughter or BGM.",
+        "sources": [
+          "https://huggingface.co/FunAudioLLM/SenseVoiceSmall",
+          "https://github.com/FunAudioLLM/SenseVoice",
+          "https://arxiv.org/abs/2407.04051",
+          "https://arxiv.org/html/2407.04051"
+        ]
+      },
+      "not_chosen": {
+        "chosen_instead": "whisper-large-v3-turbo",
+        "date": "2026-10-15"
+      }
+    },
+    {
+      "id": "whisper-large-v3",
+      "name": "Whisper large-v3",
+      "role": "speech to words",
+      "hf_id": "openai/whisper-large-v3",
+      "params": 1543490560,
+      "params_basis": "safetensors",
+      "params_source": "https://huggingface.co/api/models/openai/whisper-large-v3",
+      "feature_dim": null,
+      "inputs": "audio",
+      "released": "2023-11-06",
+      "released_source": "https://github.com/openai/whisper/blob/main/CHANGELOG.md",
+      "paper_title": "Robust Speech Recognition via Large-Scale Weak Supervision",
+      "paper_url": "https://arxiv.org/abs/2212.04356",
+      "license": "MIT",
+      "note": "The encoder width is 1280, and the Hugging Face card tag says apache-2.0 while OpenAI's README says MIT.",
+      "architecture": "encoder + decoder",
+      "details": {
+        "maker": "OpenAI",
+        "summary": "Whisper large-v3 is a 1.55B-parameter encoder-decoder Transformer with 32 decoder layers, trained with weak supervision on multilingual, multitask transcription and translation targets. It differs from large-v2 by using 128 Mel bins instead of 80 and adding a Cantonese language token.",
+        "meld_slot": "It would transcribe each finished line in either track and serve as the accuracy reference for the Whisper family.",
+        "meld_good": "It has the lowest short-form OOD WER among the Whisper-family models compared here at 7.12%, and it supports word-level timestamps for offline transcript checks.",
+        "meld_weak": "Moonshine's benchmark measured 11.3 s response latency on an Apple M3, and the card documents hallucination and repeated text.",
+        "scores": [
+          {
+            "text": "WER is 2.01% on LibriSpeech clean and 3.91% on LibriSpeech other.",
+            "url": "https://huggingface.co/distil-whisper/distil-large-v3.5"
+          },
+          {
+            "text": "WER is 15.95% on AMI.",
+            "url": "https://huggingface.co/distil-whisper/distil-large-v3.5"
+          },
+          {
+            "text": "OpenAI reports a 10% to 20% reduction in errors compared with Whisper large-v2.",
+            "url": "https://huggingface.co/openai/whisper-large-v3"
+          }
+        ],
+        "training_data": "It was trained on 1 million hours of weakly labeled audio and 4 million hours of audio pseudo-labeled with Whisper large-v2.",
+        "languages": "Its card lists 99 languages, and OpenAI reports strong ASR results in about 10 of them.",
+        "input_limits": "It takes 128-bin log-Mel spectrograms over a 30 s receptive field, and longer audio needs chunked or sequential long-form decoding.",
+        "output": "It outputs text or an English translation, with sentence-level or word-level timestamps.",
+        "sources": [
+          "https://huggingface.co/openai/whisper-large-v3",
+          "https://huggingface.co/openai/whisper-large-v3-turbo",
+          "https://huggingface.co/distil-whisper/distil-large-v3.5",
+          "https://arxiv.org/html/2602.12241",
+          "https://arxiv.org/abs/2212.04356"
+        ]
+      },
+      "not_chosen": {
+        "chosen_instead": "whisper-large-v3-turbo",
+        "date": "2026-10-15"
+      }
+    },
+    {
+      "id": "ettin-encoder-150m",
+      "name": "Ettin encoder 150M",
+      "role": "text encoder",
+      "hf_id": "jhu-clsp/ettin-encoder-150m",
+      "params": 149655232,
+      "params_basis": "safetensors",
+      "params_source": "https://huggingface.co/jhu-clsp/ettin-encoder-150m/discussions/4",
+      "feature_dim": 768,
+      "inputs": "text",
+      "released": "2025-07-15",
+      "released_source": "https://arxiv.org/abs/2507.11412",
+      "paper_title": "Seq vs Seq: An Open Suite of Paired Encoders and Decoders",
+      "paper_url": "https://arxiv.org/abs/2507.11412",
+      "license": "MIT",
+      "note": "It uses the ModernBERT-base architecture, so its total matches ModernBERT-base exactly.",
+      "architecture": "encoder",
+      "details": {
+        "maker": "Johns Hopkins University CLSP",
+        "summary": "A 150M-parameter, 22-layer encoder on the ModernBERT architecture with RoPE, GLU activations and pre-norm layers, pretrained with masked language modeling. It is part of the Ettin suite, in which paired encoders and decoders share one open-data training recipe.",
+        "meld_slot": "It would be the frozen or fine-tuned text encoder for either track.",
+        "meld_good": "It reports GLUE 88.9 against 88.4 for ModernBERT-base at the same size, and it reuses the ModernBERT tokenizer with a 50,368-token vocabulary.",
+        "meld_weak": "Its 8K-token context goes unused on short MELD utterances, and the card names no pooling method, so the head design must pick first-token or mean pooling.",
+        "scores": [
+          {
+            "text": "GLUE average 88.9",
+            "url": "https://huggingface.co/jhu-clsp/ettin-encoder-150m"
+          },
+          {
+            "text": "MTEB v2 English retrieval 45.7",
+            "url": "https://huggingface.co/jhu-clsp/ettin-encoder-150m"
+          }
+        ],
+        "training_data": "It learned from over 2T tokens of DCLM, Dolma v1.7, scientific papers, code and curated sources across pretraining, mid-training and decay phases.",
+        "languages": "English.",
+        "input_limits": "It accepts up to 8K tokens, and config.json sets max_position_embeddings to 7,999.",
+        "output": "It returns a 768-d hidden state per token from 22 layers, and the card specifies no pooling.",
+        "sources": [
+          "https://huggingface.co/jhu-clsp/ettin-encoder-150m",
+          "https://huggingface.co/jhu-clsp/ettin-encoder-150m/raw/main/config.json",
+          "https://arxiv.org/abs/2507.11412"
+        ]
+      },
+      "not_chosen": {
+        "chosen_instead": "embeddinggemma-300m",
+        "date": "2026-10-16"
+      }
+    },
+    {
+      "id": "neobert",
+      "name": "NeoBERT",
+      "role": "text encoder",
+      "hf_id": "chandar-lab/NeoBERT",
+      "params": 245136954,
+      "params_basis": "safetensors",
+      "params_source": "https://huggingface.co/api/models/chandar-lab/NeoBERT",
+      "feature_dim": 768,
+      "inputs": "text",
+      "released": "2025-02-26",
+      "released_source": "https://arxiv.org/abs/2502.19587",
+      "paper_title": "NeoBERT: A Next-Generation BERT",
+      "paper_url": "https://arxiv.org/abs/2502.19587",
+      "license": "MIT",
+      "note": "The total includes a 23,471,418-parameter language-model head, and the encoder alone is 221,665,536 parameters.",
+      "architecture": "encoder",
+      "details": {
+        "maker": "Chandar Research Lab",
+        "summary": "A 250M-parameter BERT-style encoder with 28 layers of width 768, RoPE, Pre-RMSNorm and SwiGLU, pretrained with a 20% masked-language-modeling rate on RefinedWeb. The paper positions it as a plug-and-play replacement for base-size encoders.",
+        "meld_slot": "It would be the frozen or fine-tuned text encoder for either track.",
+        "meld_good": "The paper reports GLUE 89.0 against 88.5 for ModernBERT-base, and the card's usage example pools the first token of last_hidden_state.",
+        "meld_weak": "Loading needs trust_remote_code=True and a pinned xformers==0.0.28.post3, an install risk on the target laptop, and it uses the google/bert tokenizer with 30,522 entries.",
+        "scores": [
+          {
+            "text": "GLUE dev 89.0",
+            "url": "https://arxiv.org/html/2502.19587"
+          },
+          {
+            "text": "MTEB average 51.3 after unified contrastive fine-tuning",
+            "url": "https://arxiv.org/html/2502.19587"
+          }
+        ],
+        "training_data": "It learned from RefinedWeb, a 600B-token (2.8 TB) web corpus, seeing about 2.1T tokens over two training stages.",
+        "languages": "English.",
+        "input_limits": "It accepts up to 4,096 tokens.",
+        "output": "It returns a 768-d hidden state per token, and the card's example takes the first token as the sentence vector.",
+        "sources": [
+          "https://huggingface.co/chandar-lab/NeoBERT",
+          "https://huggingface.co/chandar-lab/NeoBERT/raw/main/config.json",
+          "https://arxiv.org/abs/2502.19587",
+          "https://arxiv.org/html/2502.19587"
+        ]
+      },
+      "not_chosen": {
+        "chosen_instead": "embeddinggemma-300m",
+        "date": "2026-10-16"
+      }
+    },
+    {
+      "id": "modernbert-base",
+      "name": "ModernBERT-base",
+      "role": "text encoder",
+      "hf_id": "answerdotai/ModernBERT-base",
+      "params": 149655232,
+      "params_basis": "safetensors",
+      "params_source": "https://huggingface.co/api/models/answerdotai/ModernBERT-base",
+      "feature_dim": 768,
+      "inputs": "text",
+      "released": "2024-12-19",
+      "released_source": "https://huggingface.co/blog/modernbert",
+      "paper_title": "Smarter, Better, Faster, Longer: A Modern Bidirectional Encoder for Fast, Memory Efficient, and Long Context Finetuning and Inference",
+      "paper_url": "https://arxiv.org/abs/2412.13663",
+      "license": "Apache-2.0",
+      "note": "The total includes the masked-language-model head, and the encoder alone is 149,014,272 parameters.",
+      "architecture": "encoder",
+      "details": {
+        "maker": "Answer.AI and LightOn",
+        "summary": "A 149M-parameter, 22-layer encoder-only pre-norm Transformer with GeGLU, RoPE and alternating local-global attention, pretrained as a masked language model. Unpadding and Flash Attention make it fast and memory-efficient on long inputs.",
+        "meld_slot": "It would be the frozen or fine-tuned text encoder for either track.",
+        "meld_good": "It scores GLUE 88.4, it takes no token_type_ids, and the card says standard BERT fine-tuning recipes apply for classification.",
+        "meld_weak": "The card names no pooling method, and its top speed relies on Flash Attention 2 on a supported GPU, which a CPU-only laptop does not have.",
+        "scores": [
+          {
+            "text": "GLUE 88.4",
+            "url": "https://huggingface.co/answerdotai/ModernBERT-base"
+          }
+        ],
+        "training_data": "It learned from 2 trillion tokens of English text and code.",
+        "languages": "It is primarily English, and the card warns that performance may be lower for other languages.",
+        "input_limits": "It accepts up to 8,192 tokens natively.",
+        "output": "It returns a 768-d hidden state per token from 22 layers, and the card leaves pooling to the user.",
+        "sources": [
+          "https://huggingface.co/answerdotai/ModernBERT-base",
+          "https://huggingface.co/answerdotai/ModernBERT-base/raw/main/config.json",
+          "https://arxiv.org/abs/2412.13663"
+        ]
+      },
+      "not_chosen": {
+        "chosen_instead": "embeddinggemma-300m",
+        "date": "2026-10-16"
+      }
+    },
+    {
+      "id": "modernbert-large",
+      "name": "ModernBERT-large",
+      "role": "text encoder",
+      "hf_id": "answerdotai/ModernBERT-large",
+      "params": 395881664,
+      "params_basis": "safetensors",
+      "params_source": "https://huggingface.co/api/models/answerdotai/ModernBERT-large",
+      "feature_dim": 1024,
+      "inputs": "text",
+      "released": "2024-12-19",
+      "released_source": "https://huggingface.co/blog/modernbert",
+      "paper_title": "Smarter, Better, Faster, Longer: A Modern Bidirectional Encoder for Fast, Memory Efficient, and Long Context Finetuning and Inference",
+      "paper_url": "https://arxiv.org/abs/2412.13663",
+      "license": "Apache-2.0",
+      "note": "The total includes the masked-language-model head.",
+      "architecture": "encoder",
+      "details": {
+        "maker": "Answer.AI and LightOn",
+        "summary": "The 395M-parameter, 28-layer version of ModernBERT, an encoder-only pre-norm Transformer with GeGLU, RoPE and alternating local-global attention. It is pretrained as a masked language model on 2 trillion tokens with a native 8,192-token context.",
+        "meld_slot": "It would be the frozen or fine-tuned text encoder for either track.",
+        "meld_good": "It scores GLUE 90.4, two points above ModernBERT-base, and it takes no token_type_ids.",
+        "meld_weak": "At 395M parameters it has about 2.6 times the weights of ModernBERT-base to run per utterance, and the card names no pooling method.",
+        "scores": [
+          {
+            "text": "GLUE 90.4",
+            "url": "https://huggingface.co/answerdotai/ModernBERT-large"
+          }
+        ],
+        "training_data": "It learned from 2 trillion tokens of English text and code.",
+        "languages": "It is primarily English and code, and the card warns that performance may be lower for other languages.",
+        "input_limits": "It accepts up to 8,192 tokens natively.",
+        "output": "It returns a 1,024-d hidden state per token from 28 layers, and the card leaves pooling to the user.",
+        "sources": [
+          "https://huggingface.co/answerdotai/ModernBERT-large",
+          "https://huggingface.co/answerdotai/ModernBERT-large/raw/main/config.json",
+          "https://huggingface.co/answerdotai/ModernBERT-base",
+          "https://arxiv.org/abs/2412.13663"
+        ]
+      },
+      "not_chosen": {
+        "chosen_instead": "embeddinggemma-300m",
+        "date": "2026-10-16"
+      }
+    },
+    {
+      "id": "emoberta-base",
+      "name": "EmoBERTa-base",
+      "role": "text encoder",
+      "hf_id": "tae898/emoberta-base",
+      "params": 124651529,
+      "params_basis": "safetensors",
+      "params_source": "https://huggingface.co/tae898/emoberta-base/discussions/1",
+      "feature_dim": 768,
+      "inputs": "text",
+      "released": "2022-03-14",
+      "released_source": "https://huggingface.co/api/models/tae898/emoberta-base/commits/main",
+      "paper_title": "EmoBERTa: Speaker-Aware Emotion Recognition in Conversation with RoBERTa",
+      "paper_url": "https://arxiv.org/abs/2108.12009",
+      "license": "MIT",
+      "note": "It was trained on MELD and IEMOCAP, so its MELD test scores are inflated, and the date is the Hub repo's first commit.",
+      "architecture": "encoder",
+      "meld_trained": true,
+      "details": {
+        "maker": "Taewoon Kim and Piek Vossen",
+        "summary": "RoBERTa-base fine-tuned as a seven-class emotion classifier for emotion recognition in conversation. The paper's method prepends speaker names and joins context utterances with separator tokens, but the released model classifies one utterance with no speaker or context.",
+        "meld_slot": "It would replace both the text encoder and the head for either track, since it already outputs MELD's seven labels.",
+        "meld_good": "Its id2label matches MELD's seven classes exactly, so it gives a text-only baseline with no head training.",
+        "meld_weak": "It was fine-tuned on MELD and IEMOCAP, so MELD test scores are contaminated, and the paper's reported numbers come from RoBERTa-large with context, not this model.",
+        "scores": [],
+        "training_data": "It was fine-tuned from RoBERTa-base on both MELD and IEMOCAP.",
+        "languages": "English.",
+        "input_limits": "It accepts up to 512 tokens, since config.json sets max_position_embeddings to 514.",
+        "output": "It returns a softmax over neutral, joy, surprise, anger, sadness, disgust and fear from a sequence-classification head on a 768-d encoder.",
+        "sources": [
+          "https://huggingface.co/tae898/emoberta-base",
+          "https://huggingface.co/tae898/emoberta-base/raw/main/config.json",
+          "https://github.com/tae898/erc",
+          "https://arxiv.org/abs/2108.12009",
+          "https://ar5iv.labs.arxiv.org/html/2108.12009"
+        ]
+      },
+      "not_chosen": {
+        "chosen_instead": "embeddinggemma-300m",
+        "date": "2026-10-16"
+      }
+    },
+    {
+      "id": "deberta-v3-base",
+      "name": "DeBERTa-v3-base",
+      "role": "text encoder",
+      "hf_id": "microsoft/deberta-v3-base",
+      "params": 185537893,
+      "params_basis": "safetensors",
+      "params_source": "https://huggingface.co/microsoft/deberta-v3-base/discussions/14",
+      "feature_dim": 768,
+      "inputs": "text",
+      "released": "2021-11-16",
+      "released_source": "https://github.com/microsoft/DeBERTa",
+      "paper_title": "DeBERTaV3: Improving DeBERTa using ELECTRA-Style Pre-Training with Gradient-Disentangled Embedding Sharing",
+      "paper_url": "https://arxiv.org/abs/2111.09543",
+      "license": "MIT",
+      "note": "The encoder alone is 184,224,768 parameters, which matches the card's 86M backbone plus 98M embedding, and the rest is pretraining heads.",
+      "architecture": "encoder",
+      "details": {
+        "maker": "Microsoft",
+        "summary": "A 12-layer, 768-wide DeBERTa encoder with disentangled attention and an enhanced mask decoder, pretrained ELECTRA-style with replaced token detection and gradient-disentangled embedding sharing. It has 86M backbone parameters plus 98M in a 128K-token embedding layer.",
+        "meld_slot": "It would be the frozen or fine-tuned text encoder for either track.",
+        "meld_good": "It reports MNLI-m/mm 90.6/90.7 and SQuAD 2.0 88.4/85.4 at base size, which is strong for a 12-layer encoder.",
+        "meld_weak": "More than half its parameters sit in the 128K-vocabulary embedding table, so memory is high for its depth, and 512 positions cap any dialogue context window.",
+        "scores": [
+          {
+            "text": "MNLI-m/mm 90.6/90.7 (dev)",
+            "url": "https://huggingface.co/microsoft/deberta-v3-base"
+          },
+          {
+            "text": "SQuAD 2.0 F1/EM 88.4/85.4 (dev)",
+            "url": "https://huggingface.co/microsoft/deberta-v3-base"
+          }
+        ],
+        "training_data": "It learned from the same 160GB of data used for DeBERTa V2.",
+        "languages": "English.",
+        "input_limits": "config.json sets max_position_embeddings to 512, with relative attention over 256 position buckets.",
+        "output": "It returns a 768-d hidden state per token from 12 layers.",
+        "sources": [
+          "https://huggingface.co/microsoft/deberta-v3-base",
+          "https://huggingface.co/microsoft/deberta-v3-large",
+          "https://huggingface.co/microsoft/deberta-v3-base/raw/main/config.json",
+          "https://arxiv.org/abs/2111.09543"
+        ]
+      },
+      "not_chosen": {
+        "chosen_instead": "embeddinggemma-300m",
+        "date": "2026-10-16"
+      }
+    },
+    {
+      "id": "deberta-v3-large",
+      "name": "DeBERTa-v3-large",
+      "role": "text encoder",
+      "hf_id": "microsoft/deberta-v3-large",
+      "params": 436768869,
+      "params_basis": "safetensors",
+      "params_source": "https://huggingface.co/microsoft/deberta-v3-large/discussions/13",
+      "feature_dim": 1024,
+      "inputs": "text",
+      "released": "2021-11-16",
+      "released_source": "https://github.com/microsoft/DeBERTa",
+      "paper_title": "DeBERTaV3: Improving DeBERTa using ELECTRA-Style Pre-Training with Gradient-Disentangled Embedding Sharing",
+      "paper_url": "https://arxiv.org/abs/2111.09543",
+      "license": "MIT",
+      "note": "The encoder alone is 434,536,448 parameters, which matches the card's 304M backbone plus 131M embedding, and the rest is pretraining heads.",
+      "architecture": "encoder",
+      "details": {
+        "maker": "Microsoft",
+        "summary": "A 24-layer, 1,024-wide DeBERTa encoder with disentangled attention and an enhanced mask decoder, pretrained with replaced token detection and gradient-disentangled embedding sharing. It has 304M backbone parameters plus 131M in a 128K-token embedding layer.",
+        "meld_slot": "It would be the frozen or fine-tuned text encoder for either track.",
+        "meld_good": "The paper reports a 91.37 GLUE average for this size, and the card reports MNLI-m/mm 91.8/91.9, the strongest NLU numbers among these encoders.",
+        "meld_weak": "At about 435M parameters it is the heaviest text encoder in this list, which costs CPU latency per utterance, and 512 positions cap any dialogue context.",
+        "scores": [
+          {
+            "text": "GLUE average 91.37",
+            "url": "https://arxiv.org/abs/2111.09543"
+          },
+          {
+            "text": "MNLI-m/mm 91.8/91.9 (dev)",
+            "url": "https://huggingface.co/microsoft/deberta-v3-large"
+          },
+          {
+            "text": "SQuAD 2.0 F1/EM 91.5/89.0 (dev)",
+            "url": "https://huggingface.co/microsoft/deberta-v3-large"
+          }
+        ],
+        "training_data": "It learned from the same 160GB of data used for DeBERTa V2.",
+        "languages": "English.",
+        "input_limits": "config.json sets max_position_embeddings to 512, with relative attention over 256 position buckets.",
+        "output": "It returns a 1,024-d hidden state per token from 24 layers.",
+        "sources": [
+          "https://huggingface.co/microsoft/deberta-v3-large",
+          "https://huggingface.co/microsoft/deberta-v3-large/raw/main/config.json",
+          "https://arxiv.org/abs/2111.09543"
+        ]
+      },
+      "not_chosen": {
+        "chosen_instead": "embeddinggemma-300m",
+        "date": "2026-10-16"
+      }
+    },
+    {
+      "id": "all-mpnet-base-v2",
+      "name": "all-mpnet-base-v2",
+      "role": "text encoder",
+      "hf_id": "sentence-transformers/all-mpnet-base-v2",
+      "params": 109486978,
+      "params_basis": "safetensors",
+      "params_source": "https://huggingface.co/api/models/sentence-transformers/all-mpnet-base-v2",
+      "feature_dim": 768,
+      "inputs": "text",
+      "released": "2021-08-30",
+      "released_source": "https://huggingface.co/api/models/sentence-transformers/all-mpnet-base-v2/commits/main",
+      "paper_title": null,
+      "paper_url": null,
+      "license": "Apache-2.0",
+      "note": "It has no paper of its own because it fine-tunes microsoft/mpnet-base (MPNet, arXiv 2004.09297), and the date is the Hub repo's first commit.",
+      "architecture": "encoder",
+      "details": {
+        "maker": "Sentence Transformers (Hugging Face community week)",
+        "summary": "A sentence-embedding model made by fine-tuning microsoft/mpnet-base with a contrastive objective, cross-entropy over cosine similarities of in-batch sentence pairs. It was trained on over 1.17 billion pairs for 100k steps at batch size 1024.",
+        "meld_slot": "It would be the frozen text encoder for either track, giving one sentence vector per utterance.",
+        "meld_good": "It returns one normalized sentence vector per line with pooling built in, and sbert.net calls it the best-quality model among its all-* family.",
+        "meld_weak": "Its similarity objective does not target emotion, and training capped sequences at 128 tokens even though inference truncates at 384.",
+        "scores": [],
+        "training_data": "It learned from 1,170,060,424 sentence pairs, led by Reddit comments, S2ORC citations, WikiAnswers, PAQ and Stack Exchange.",
+        "languages": "English.",
+        "input_limits": "Inputs longer than 384 word pieces are truncated, and training used 128-token sequences.",
+        "output": "It returns one 768-d sentence vector from attention-masked mean pooling followed by L2 normalization.",
+        "sources": [
+          "https://huggingface.co/sentence-transformers/all-mpnet-base-v2",
+          "https://www.sbert.net/docs/sentence_transformer/pretrained_models.html"
+        ]
+      },
+      "not_chosen": {
+        "chosen_instead": "embeddinggemma-300m",
+        "date": "2026-10-16"
+      }
+    },
+    {
+      "id": "emotion-english-distilroberta-base",
+      "name": "Emotion English DistilRoBERTa-base",
+      "role": "text encoder",
+      "hf_id": "j-hartmann/emotion-english-distilroberta-base",
+      "params": 82124297,
+      "params_basis": "safetensors",
+      "params_source": "https://huggingface.co/j-hartmann/emotion-english-distilroberta-base/discussions/3017",
+      "feature_dim": 768,
+      "inputs": "text",
+      "released": "2021-06-15",
+      "released_source": "https://huggingface.co/api/models/j-hartmann/emotion-english-distilroberta-base/commits/main",
+      "paper_title": null,
+      "paper_url": null,
+      "license": null,
+      "note": "MELD is one of its six training datasets, so its MELD test scores are inflated, its card names no license or paper, and the date is the Hub repo's first commit.",
+      "architecture": "encoder",
+      "meld_trained": true,
+      "details": {
+        "maker": "Jochen Hartmann",
+        "summary": "DistilRoBERTa-base fine-tuned as a seven-class English emotion classifier covering Ekman's six basic emotions plus neutral. It was trained on a balanced subset of six emotion datasets, one of which is MELD.",
+        "meld_slot": "It would replace both the text encoder and the head for either track, since its seven labels match MELD's.",
+        "meld_good": "Its 6-layer, 82M-parameter backbone runs about twice as fast as RoBERTa-base, and return_all_scores gives a seven-way distribution usable as head features.",
+        "meld_weak": "MELD is one of its six training sets, so MELD test results are contaminated, and its card names no licence.",
+        "scores": [
+          {
+            "text": "66% accuracy on its own held-out 20% split, against 14% chance",
+            "url": "https://huggingface.co/j-hartmann/emotion-english-distilroberta-base"
+          }
+        ],
+        "training_data": "It learned from about 20k balanced examples, 2,811 per emotion, drawn from Crowdflower, Elvis et al., GoEmotions, ISEAR, MELD and SemEval-2018 EI-reg.",
+        "languages": "English.",
+        "input_limits": "It accepts up to 512 tokens, since config.json sets max_position_embeddings to 514.",
+        "output": "It returns scores for anger, disgust, fear, joy, neutral, sadness and surprise from a classification head on a 768-d, 6-layer encoder.",
+        "sources": [
+          "https://huggingface.co/j-hartmann/emotion-english-distilroberta-base",
+          "https://huggingface.co/j-hartmann/emotion-english-distilroberta-base/raw/main/config.json",
+          "https://huggingface.co/distilbert/distilroberta-base"
+        ]
+      },
+      "not_chosen": {
+        "chosen_instead": "embeddinggemma-300m",
+        "date": "2026-10-16"
+      }
+    },
+    {
+      "id": "distilroberta-base",
+      "name": "DistilRoBERTa-base",
+      "role": "text encoder",
+      "hf_id": "distilbert/distilroberta-base",
+      "params": 82760793,
+      "params_basis": "safetensors",
+      "params_source": "https://huggingface.co/api/models/distilbert/distilroberta-base",
+      "feature_dim": 768,
+      "inputs": "text",
+      "released": "2019-10-17",
+      "released_source": "https://huggingface.co/api/models/distilbert/distilroberta-base/commits/main",
+      "paper_title": "DistilBERT, a distilled version of BERT: smaller, faster, cheaper and lighter",
+      "paper_url": "https://arxiv.org/abs/1910.01108",
+      "license": "Apache-2.0",
+      "note": "The date is the Hub repo's first commit, and the total includes the masked-language-model head.",
+      "architecture": "encoder",
+      "details": {
+        "maker": "Hugging Face",
+        "summary": "A 6-layer, 768-wide, 12-head distillation of RoBERTa-base, trained with the same knowledge-distillation procedure as DistilBERT. It has 82M parameters against 125M for RoBERTa-base and runs about twice as fast.",
+        "meld_slot": "It would be the frozen or fine-tuned text encoder for either track.",
+        "meld_good": "It keeps RoBERTa's 50,265-entry vocabulary at half the depth and twice the speed, which suits a CPU latency budget.",
+        "meld_weak": "It trails its teacher on every GLUE task the cards list, for example MNLI 84.0 against 87.6, and its card documents gender-occupation bias.",
+        "scores": [
+          {
+            "text": "GLUE MNLI 84.0",
+            "url": "https://huggingface.co/distilbert/distilroberta-base"
+          },
+          {
+            "text": "GLUE SST-2 92.5",
+            "url": "https://huggingface.co/distilbert/distilroberta-base"
+          }
+        ],
+        "training_data": "It learned from OpenWebTextCorpus, about four times less data than its RoBERTa teacher.",
+        "languages": "English, case-sensitive.",
+        "input_limits": "It accepts up to 512 tokens, since config.json sets max_position_embeddings to 514.",
+        "output": "It returns a 768-d hidden state per token from 6 layers.",
+        "sources": [
+          "https://huggingface.co/distilbert/distilroberta-base",
+          "https://huggingface.co/distilbert/distilroberta-base/raw/main/config.json",
+          "https://huggingface.co/FacebookAI/roberta-base"
+        ]
+      },
+      "not_chosen": {
+        "chosen_instead": "embeddinggemma-300m",
+        "date": "2026-10-16"
+      }
+    },
+    {
+      "id": "roberta-base",
+      "name": "RoBERTa-base",
+      "role": "text encoder",
+      "hf_id": "FacebookAI/roberta-base",
+      "params": 124697947,
+      "params_basis": "safetensors",
+      "params_source": "https://huggingface.co/api/models/FacebookAI/roberta-base",
+      "feature_dim": 768,
+      "inputs": "text",
+      "released": "2019-07-26",
+      "released_source": "https://arxiv.org/abs/1907.11692",
+      "paper_title": "RoBERTa: A Robustly Optimized BERT Pretraining Approach",
+      "paper_url": "https://arxiv.org/abs/1907.11692",
+      "license": "MIT",
+      "note": "The total includes the masked-language-model head, and the encoder alone is 124,055,554 parameters.",
+      "architecture": "encoder",
+      "details": {
+        "maker": "Facebook AI",
+        "summary": "A 12-layer, 768-wide BERT-style encoder pretrained with masked language modeling under dynamic masking, which changes the mask every epoch. It uses a byte-level BPE vocabulary of 50,000 and trained for 500K steps at batch size 8K and sequence length 512.",
+        "meld_slot": "It would be the frozen or fine-tuned text encoder for either track, and it is the backbone of EmoBERTa-base.",
+        "meld_good": "EmoBERTa is built on this backbone, so its recipes transfer directly, and the card reports GLUE MNLI 87.6 and SST-2 94.8.",
+        "meld_weak": "It is case-sensitive, so ASR casing changes its tokens, and the card warns that unfiltered web training data can bias predictions.",
+        "scores": [
+          {
+            "text": "GLUE MNLI 87.6",
+            "url": "https://huggingface.co/FacebookAI/roberta-base"
+          },
+          {
+            "text": "GLUE SST-2 94.8",
+            "url": "https://huggingface.co/FacebookAI/roberta-base"
+          },
+          {
+            "text": "GLUE CoLA 63.6",
+            "url": "https://huggingface.co/FacebookAI/roberta-base"
+          }
+        ],
+        "training_data": "It learned from 160GB of BookCorpus, English Wikipedia, CC-News, OpenWebText and Stories.",
+        "languages": "English, case-sensitive.",
+        "input_limits": "It accepts up to 512 tokens.",
+        "output": "It returns a 768-d hidden state per token from 12 layers.",
+        "sources": [
+          "https://huggingface.co/FacebookAI/roberta-base",
+          "https://huggingface.co/FacebookAI/roberta-base/raw/main/config.json",
+          "https://arxiv.org/abs/1907.11692"
+        ]
+      },
+      "not_chosen": {
+        "chosen_instead": "embeddinggemma-300m",
+        "date": "2026-10-16"
+      }
+    },
+    {
+      "id": "roberta-large",
+      "name": "RoBERTa-large",
+      "role": "text encoder",
+      "hf_id": "FacebookAI/roberta-large",
+      "params": 355412571,
+      "params_basis": "safetensors",
+      "params_source": "https://huggingface.co/api/models/FacebookAI/roberta-large",
+      "feature_dim": 1024,
+      "inputs": "text",
+      "released": "2019-07-26",
+      "released_source": "https://arxiv.org/abs/1907.11692",
+      "paper_title": "RoBERTa: A Robustly Optimized BERT Pretraining Approach",
+      "paper_url": "https://arxiv.org/abs/1907.11692",
+      "license": "MIT",
+      "note": "The total includes the masked-language-model head, which a classifier built on the encoder would not load.",
+      "architecture": "encoder",
+      "details": {
+        "maker": "Facebook AI",
+        "summary": "A 24-layer, 1,024-wide BERT-style encoder pretrained with dynamically masked language modeling on 160GB of English text. It uses a 50,000-token BPE vocabulary and trained on 1024 V100 GPUs for 500K steps at sequence length 512.",
+        "meld_slot": "It would be the frozen or fine-tuned text encoder for either track, and it is the backbone of EmoBERTa-large.",
+        "meld_good": "The EmoBERTa paper fine-tuned this backbone to MELD wF1 65.61 with dialogue context, and the card reports GLUE MNLI 90.2 and SST-2 96.4.",
+        "meld_weak": "At 355M parameters it has nearly three times RoBERTa-base's weights to run per utterance, and the card warns that unfiltered web training data can bias predictions.",
+        "scores": [
+          {
+            "text": "GLUE MNLI 90.2",
+            "url": "https://huggingface.co/FacebookAI/roberta-large"
+          },
+          {
+            "text": "GLUE SST-2 96.4",
+            "url": "https://huggingface.co/FacebookAI/roberta-large"
+          },
+          {
+            "text": "GLUE CoLA 68.0",
+            "url": "https://huggingface.co/FacebookAI/roberta-large"
+          }
+        ],
+        "training_data": "It learned from 160GB of BookCorpus, English Wikipedia, CC-News, OpenWebText and Stories.",
+        "languages": "English, case-sensitive.",
+        "input_limits": "It accepts up to 512 tokens.",
+        "output": "It returns a 1,024-d hidden state per token from 24 layers.",
+        "sources": [
+          "https://huggingface.co/FacebookAI/roberta-large",
+          "https://huggingface.co/FacebookAI/roberta-large/raw/main/config.json",
+          "https://arxiv.org/abs/1907.11692",
+          "https://ar5iv.labs.arxiv.org/html/2108.12009"
+        ]
+      },
+      "not_chosen": {
+        "chosen_instead": "embeddinggemma-300m",
+        "date": "2026-10-16"
+      }
+    },
+    {
+      "id": "emotion2vec-plus-base",
+      "name": "emotion2vec+ base",
+      "role": "voice encoder",
+      "hf_id": "emotion2vec/emotion2vec_plus_base",
+      "params": 93178133,
+      "params_basis": "weights-file tensor count",
+      "params_source": "https://huggingface.co/emotion2vec/emotion2vec_plus_base/resolve/main/model.pt",
+      "feature_dim": 768,
+      "inputs": "audio",
+      "released": "2024-05",
+      "released_source": "https://github.com/ddlBoJack/emotion2vec",
+      "paper_title": "emotion2vec: Self-Supervised Pre-Training for Speech Emotion Representation",
+      "paper_url": "https://arxiv.org/abs/2312.15185",
+      "license": "FunASR model license (other)",
+      "note": "The count excludes optimizer state stored in the same file and includes a 9-class emotion head.",
+      "architecture": "encoder",
+      "details": {
+        "maker": "emotion2vec team (Shanghai Jiao Tong University, Alibaba and partners)",
+        "summary": "emotion2vec+ base is a base-size (about 90M) emotion2vec+ model fine-tuned on 4,788 hours of filtered pseudo-labeled emotion speech; the README does not state its initialization. It outputs 9-class emotion scores and can also export frame-level or utterance-level embeddings.",
+        "meld_slot": "It fills the voice-encoder slot on the text and audio track, either as frozen embeddings for the head or as a direct 9-class emotion prior.",
+        "meld_good": "Its 9 classes include all seven MELD labels plus other and unknown, so its scores map onto MELD directly or can be fed to the head as features.",
+        "meld_weak": "The card reports no benchmark numbers, and its labels were bootstrapped from EmoBox academic corpora, so overlap with MELD or IEMOCAP cannot be ruled out.",
+        "scores": [],
+        "training_data": "It was fine-tuned on 4,788 hours of filtered pseudo-labeled emotion speech, iterated from a seed model trained on EmoBox academic emotion data.",
+        "languages": "The card claims language-robust recognition but does not list the languages of its training data.",
+        "input_limits": "It expects 16 kHz speech, and the card states no maximum length.",
+        "output": "It returns 9 class scores plus optional embeddings, either 50 Hz frames or one utterance vector, and the GitHub README lists 768-dimensional features.",
+        "sources": [
+          "https://huggingface.co/emotion2vec/emotion2vec_plus_base",
+          "https://github.com/ddlBoJack/emotion2vec",
+          "https://arxiv.org/abs/2312.15185"
+        ]
+      },
+      "not_chosen": {
+        "chosen_instead": "hubert-large",
+        "date": "2026-10-16"
+      }
+    },
+    {
+      "id": "data2vec-audio-base",
+      "name": "data2vec-audio base",
+      "role": "voice encoder",
+      "hf_id": "facebook/data2vec-audio-base",
+      "params": 93164288,
+      "params_basis": "safetensors",
+      "params_source": "https://huggingface.co/facebook/data2vec-audio-base/resolve/refs%2Fpr%2F1/model.safetensors",
+      "feature_dim": 768,
+      "inputs": "audio",
+      "released": "2022-02-07",
+      "released_source": "https://arxiv.org/abs/2202.03555",
+      "paper_title": "data2vec: A General Framework for Self-supervised Learning in Speech, Vision and Language",
+      "paper_url": "https://arxiv.org/abs/2202.03555",
+      "license": "apache-2.0",
+      "note": null,
+      "architecture": "encoder",
+      "details": {
+        "maker": "Meta AI",
+        "summary": "data2vec-audio base is a 12-block, 768-dimensional Transformer over a wav2vec 2.0-style 7-layer CNN, trained by self-distillation: the student sees masked audio and regresses the teacher's contextualized latent representations of the full input. This checkpoint is pretrain-only.",
+        "meld_slot": "It fills the voice-encoder slot on the text and audio track as a frozen feature extractor under the small trained head.",
+        "meld_good": "In the emotion2vec paper's frozen tests it beats WavLM base on MELD (weighted F1 43.59 versus 35.16), and its LS-960 pretraining has no MELD exposure.",
+        "meld_weak": "It saw only read English audiobook speech and has no emotion supervision, while the emotion2vec paper describes MELD as a noisy dataset.",
+        "scores": [
+          {
+            "text": "MELD weighted F1 43.59 (WA 45.75, UA 24.98), frozen encoder with linear layers, as reported in the emotion2vec paper",
+            "url": "https://arxiv.org/html/2312.15185"
+          },
+          {
+            "text": "IEMOCAP WA 67.38, frozen encoder with linear layers, as reported in the emotion2vec paper",
+            "url": "https://arxiv.org/html/2312.15185"
+          },
+          {
+            "text": "LibriSpeech test-other WER 5.5 after fine-tuning on 960 labeled hours with a 4-gram LM",
+            "url": "https://ar5iv.labs.arxiv.org/html/2202.03555"
+          }
+        ],
+        "training_data": "It was pre-trained on 960 hours of unlabeled LibriSpeech (LS-960) English audiobook speech.",
+        "languages": "English only.",
+        "input_limits": "It takes a 16 kHz waveform, and neither the card nor the paper states a maximum length.",
+        "output": "It gives 768-dimensional states from 12 blocks at 50 Hz (20 ms stride, 25 ms receptive field), and SUPERB-style probes learn a weighted sum of layers.",
+        "sources": [
+          "https://huggingface.co/facebook/data2vec-audio-base",
+          "https://arxiv.org/abs/2202.03555",
+          "https://ar5iv.labs.arxiv.org/html/2202.03555",
+          "https://arxiv.org/html/2312.15185",
+          "https://ar5iv.labs.arxiv.org/html/2105.01051"
+        ]
+      },
+      "not_chosen": {
+        "chosen_instead": "hubert-large",
+        "date": "2026-10-16"
+      }
+    },
+    {
+      "id": "wavlm-large",
+      "name": "WavLM large",
+      "role": "voice encoder",
+      "hf_id": "microsoft/wavlm-large",
+      "params": 315453120,
+      "params_basis": "safetensors",
+      "params_source": "https://huggingface.co/microsoft/wavlm-large/resolve/refs%2Fpr%2F2/model.safetensors",
+      "feature_dim": 1024,
+      "inputs": "audio",
+      "released": "2021-12",
+      "released_source": "https://github.com/microsoft/unilm/tree/master/wavlm",
+      "paper_title": "WavLM: Large-Scale Self-Supervised Pre-Training for Full Stack Speech Processing",
+      "paper_url": "https://arxiv.org/abs/2110.13900",
+      "license": "CC-BY-SA-3.0",
+      "note": "The card links the UniSpeech license, which is CC BY-SA 3.0 and therefore share-alike.",
+      "architecture": "encoder",
+      "details": {
+        "maker": "Microsoft",
+        "summary": "WavLM Large is a 24-layer, 1024-dimensional HuBERT-style Transformer with gated relative position bias. It is pre-trained on 94k hours by masked prediction of k-means pseudo-labels plus utterance-mixing denoising, where noisy or overlapped inputs must predict the clean speech's labels.",
+        "meld_slot": "It fills the voice-encoder slot on the text and audio track as a frozen feature extractor under the small trained head.",
+        "meld_good": "It scores SUPERB ER 70.62, above HuBERT Large at 67.62, and its paper finds speaker cues in bottom layers and content in top layers for the Base models.",
+        "meld_weak": "It is 316.62M parameters and pretrain-only English, three times WavLM Base+, and the Qwen2.5-Omni card puts it at only 0.542 on MELD.",
+        "scores": [
+          {
+            "text": "SUPERB ER (IEMOCAP 4-class accuracy, frozen, weighted sum of layers) 70.62",
+            "url": "https://ar5iv.labs.arxiv.org/html/2110.13900"
+          },
+          {
+            "text": "MELD SER 0.542, as reported in the Qwen2.5-Omni-3B card's comparison table",
+            "url": "https://huggingface.co/Qwen/Qwen2.5-Omni-3B"
+          },
+          {
+            "text": "SUPERB ASR WER 3.44",
+            "url": "https://ar5iv.labs.arxiv.org/html/2110.13900"
+          }
+        ],
+        "training_data": "It was pre-trained on 94k unlabeled English hours: 60k Libri-Light, 10k GigaSpeech and 24k VoxPopuli.",
+        "languages": "English only.",
+        "input_limits": "It expects 16 kHz audio, and the card states no maximum length.",
+        "output": "It gives 1024-dimensional states from 24 layers at a 20 ms stride, and SUPERB pools a learned weighted sum of all layers.",
+        "sources": [
+          "https://huggingface.co/microsoft/wavlm-large",
+          "https://arxiv.org/abs/2110.13900",
+          "https://ar5iv.labs.arxiv.org/html/2110.13900",
+          "https://github.com/microsoft/unilm/tree/master/wavlm",
+          "https://ar5iv.labs.arxiv.org/html/2105.01051",
+          "https://huggingface.co/Qwen/Qwen2.5-Omni-3B"
+        ]
+      },
+      "not_chosen": {
+        "chosen_instead": "hubert-large",
+        "date": "2026-10-16"
+      }
+    },
+    {
+      "id": "wavlm-base-plus",
+      "name": "WavLM base+",
+      "role": "voice encoder",
+      "hf_id": "microsoft/wavlm-base-plus",
+      "params": 94381936,
+      "params_basis": "safetensors",
+      "params_source": "https://huggingface.co/microsoft/wavlm-base-plus/resolve/refs%2Fpr%2F1/model.safetensors",
+      "feature_dim": 768,
+      "inputs": "audio",
+      "released": "2021-11",
+      "released_source": "https://github.com/microsoft/unilm/tree/master/wavlm",
+      "paper_title": "WavLM: Large-Scale Self-Supervised Pre-Training for Full Stack Speech Processing",
+      "paper_url": "https://arxiv.org/abs/2110.13900",
+      "license": "CC-BY-SA-3.0",
+      "note": "The card links the UniSpeech license, which is CC BY-SA 3.0 and therefore share-alike.",
+      "architecture": "encoder",
+      "details": {
+        "maker": "Microsoft",
+        "summary": "WavLM Base+ is a 12-layer, 768-dimensional HuBERT-style Transformer with gated relative position bias. It is pre-trained on 94k hours by masked prediction of k-means pseudo-labels plus utterance-mixing denoising on simulated noisy or overlapped speech.",
+        "meld_slot": "It fills the voice-encoder slot on the text and audio track as a frozen feature extractor under the small trained head.",
+        "meld_good": "It reaches SUPERB ER 68.65 at 94.70M parameters, close to WavLM Large's 70.62 at about a third of the size.",
+        "meld_weak": "It is pretrain-only English with no emotion supervision, so MELD results depend entirely on the trained head and the layer weighting.",
+        "scores": [
+          {
+            "text": "SUPERB ER (IEMOCAP 4-class accuracy, frozen, weighted sum of layers) 68.65",
+            "url": "https://ar5iv.labs.arxiv.org/html/2110.13900"
+          },
+          {
+            "text": "SUPERB SID accuracy 89.42",
+            "url": "https://ar5iv.labs.arxiv.org/html/2110.13900"
+          },
+          {
+            "text": "SUPERB ASR WER 5.59",
+            "url": "https://ar5iv.labs.arxiv.org/html/2110.13900"
+          }
+        ],
+        "training_data": "It was pre-trained on 94k unlabeled English hours: 60k Libri-Light, 10k GigaSpeech and 24k VoxPopuli.",
+        "languages": "English only.",
+        "input_limits": "It expects 16 kHz audio, and the card states no maximum length.",
+        "output": "It gives 768-dimensional states from 12 layers at a 20 ms stride, and SUPERB pools a learned weighted sum of all layers.",
+        "sources": [
+          "https://huggingface.co/microsoft/wavlm-base-plus",
+          "https://arxiv.org/abs/2110.13900",
+          "https://ar5iv.labs.arxiv.org/html/2110.13900",
+          "https://github.com/microsoft/unilm/tree/master/wavlm",
+          "https://ar5iv.labs.arxiv.org/html/2105.01051"
+        ]
+      },
+      "not_chosen": {
+        "chosen_instead": "hubert-large",
+        "date": "2026-10-16"
+      }
+    },
+    {
+      "id": "superb-emotion-recognition-wav2vec-2.0-base",
+      "name": "SUPERB emotion recognition (wav2vec 2.0 base)",
+      "role": "voice encoder",
+      "hf_id": "superb/wav2vec2-base-superb-er",
+      "params": 94569617,
+      "params_basis": "safetensors",
+      "params_source": "https://huggingface.co/superb/wav2vec2-base-superb-er/resolve/refs%2Fpr%2F2/model.safetensors",
+      "feature_dim": 768,
+      "inputs": "audio",
+      "released": "2021-08-27",
+      "released_source": "https://huggingface.co/api/models/superb/wav2vec2-base-superb-er/commits/main",
+      "paper_title": "SUPERB: Speech processing Universal PERformance Benchmark",
+      "paper_url": "https://arxiv.org/abs/2105.01051",
+      "license": "apache-2.0",
+      "note": "This is a 4-class IEMOCAP emotion classifier on a wav2vec 2.0 base encoder.",
+      "architecture": "encoder",
+      "details": {
+        "maker": "SUPERB benchmark team, on Meta's wav2vec 2.0 base",
+        "summary": "This is S3PRL's SUPERB emotion-recognition model ported to Transformers. A frozen wav2vec 2.0 base encoder feeds a learned weighted sum of its hidden layers into a lightweight head trained on IEMOCAP's four balanced classes.",
+        "meld_slot": "It could fill the voice slot on the text and audio track as a ready classifier, or its encoder could feed the trained head.",
+        "meld_good": "It is a ready classifier that outputs class scores rather than generated text, so it needs no parsing.",
+        "meld_weak": "It predicts only neutral, happy, sad and angry, so it cannot output MELD's disgust, fear or surprise, and it was trained on IEMOCAP alone.",
+        "scores": [
+          {
+            "text": "IEMOCAP session 1 accuracy 0.6258 in Transformers and 0.6343 in s3prl",
+            "url": "https://huggingface.co/superb/wav2vec2-base-superb-er"
+          },
+          {
+            "text": "SUPERB ER (IEMOCAP 4-class, 5-fold) 63.43 for wav2vec 2.0 Base",
+            "url": "https://ar5iv.labs.arxiv.org/html/2105.01051"
+          }
+        ],
+        "training_data": "Its head was trained on IEMOCAP reduced to four balanced classes, over a wav2vec 2.0 base pre-trained on 960 hours of LibriSpeech.",
+        "languages": "English only.",
+        "input_limits": "It expects 16 kHz audio, and the card states no maximum length.",
+        "output": "It gives scores over neutral, happy, sad and angry, computed from the encoder's 768-dimensional states at a 20 ms stride.",
+        "sources": [
+          "https://huggingface.co/superb/wav2vec2-base-superb-er",
+          "https://arxiv.org/abs/2105.01051",
+          "https://ar5iv.labs.arxiv.org/html/2105.01051",
+          "https://ar5iv.labs.arxiv.org/html/2006.11477"
+        ]
+      },
+      "not_chosen": {
+        "chosen_instead": "hubert-large",
+        "date": "2026-10-16"
+      }
+    },
+    {
+      "id": "hubert-base",
+      "name": "HuBERT base",
+      "role": "voice encoder",
+      "hf_id": "facebook/hubert-base-ls960",
+      "params": 94371712,
+      "params_basis": "safetensors",
+      "params_source": "https://huggingface.co/facebook/hubert-base-ls960/resolve/refs%2Fpr%2F2/model.safetensors",
+      "feature_dim": 768,
+      "inputs": "audio",
+      "released": "2021-06-14",
+      "released_source": "https://arxiv.org/abs/2106.07447",
+      "paper_title": "HuBERT: Self-Supervised Speech Representation Learning by Masked Prediction of Hidden Units",
+      "paper_url": "https://arxiv.org/abs/2106.07447",
+      "license": "apache-2.0",
+      "note": null,
+      "architecture": "encoder",
+      "details": {
+        "maker": "Meta AI",
+        "summary": "HuBERT Base is a 12-layer, 768-dimensional Transformer over a CNN waveform encoder, trained by BERT-style masked prediction of offline k-means cluster units. The loss applies only to masked frames, and targets come from two clustering iterations starting with a 100-cluster k-means teacher.",
+        "meld_slot": "It fills the voice-encoder slot on the text and audio track as a frozen feature extractor under the small trained head.",
+        "meld_good": "It is a well-studied frozen baseline with SUPERB ER 64.92, and its LibriSpeech-only pretraining has no MELD or IEMOCAP exposure.",
+        "meld_weak": "It trails WavLM Base+ on SUPERB ER (64.92 versus 68.65) at the same size, so it serves mainly as a comparison baseline.",
+        "scores": [
+          {
+            "text": "SUPERB ER (IEMOCAP 4-class accuracy, frozen, weighted sum of layers) 64.92",
+            "url": "https://ar5iv.labs.arxiv.org/html/2105.01051"
+          },
+          {
+            "text": "SUPERB ASR WER 6.42",
+            "url": "https://ar5iv.labs.arxiv.org/html/2105.01051"
+          },
+          {
+            "text": "SUPERB SID accuracy 81.42",
+            "url": "https://ar5iv.labs.arxiv.org/html/2105.01051"
+          }
+        ],
+        "training_data": "It was pre-trained on 960 hours of unlabeled LibriSpeech English audiobook speech.",
+        "languages": "English only.",
+        "input_limits": "It expects 16 kHz audio, and the card states no maximum length.",
+        "output": "It gives 768-dimensional states from 12 layers at a 20 ms frame rate, and SUPERB pools a learned weighted sum of layers.",
+        "sources": [
+          "https://huggingface.co/facebook/hubert-base-ls960",
+          "https://arxiv.org/abs/2106.07447",
+          "https://ar5iv.labs.arxiv.org/html/2106.07447",
+          "https://ar5iv.labs.arxiv.org/html/2105.01051"
+        ]
+      },
+      "not_chosen": {
+        "chosen_instead": "hubert-large",
+        "date": "2026-10-16"
+      }
+    },
+    {
+      "id": "wav2vec-2.0-base",
+      "name": "wav2vec 2.0 base",
+      "role": "voice encoder",
+      "hf_id": "facebook/wav2vec2-base",
+      "params": 94371712,
+      "params_basis": "safetensors",
+      "params_source": "https://huggingface.co/facebook/wav2vec2-base/resolve/refs%2Fpr%2F2/model.safetensors",
+      "feature_dim": 768,
+      "inputs": "audio",
+      "released": "2020-06-20",
+      "released_source": "https://arxiv.org/abs/2006.11477",
+      "paper_title": "wav2vec 2.0: A Framework for Self-Supervised Learning of Speech Representations",
+      "paper_url": "https://arxiv.org/abs/2006.11477",
+      "license": "apache-2.0",
+      "note": "The count is the encoder alone, and the full pretraining checkpoint with quantizer and projection heads is 95,044,608.",
+      "architecture": "encoder",
+      "details": {
+        "maker": "Meta AI",
+        "summary": "wav2vec 2.0 Base is a 7-block CNN feature encoder plus a 12-block, 768-dimensional Transformer. It masks latent speech features and solves a contrastive task against jointly learned quantized latents, and this checkpoint is pretrain-only on LibriSpeech.",
+        "meld_slot": "It fills the voice-encoder slot on the text and audio track as a frozen feature extractor under the small trained head.",
+        "meld_good": "Its SUPERB ER of 63.43 gives a reference point, and a ready IEMOCAP head on it exists as superb/wav2vec2-base-superb-er.",
+        "meld_weak": "It has the lowest SUPERB ER of the base encoders here, 63.43 versus 64.92 for HuBERT Base and 68.65 for WavLM Base+.",
+        "scores": [
+          {
+            "text": "SUPERB ER (IEMOCAP 4-class accuracy, frozen, weighted sum of layers) 63.43",
+            "url": "https://ar5iv.labs.arxiv.org/html/2105.01051"
+          },
+          {
+            "text": "SUPERB ASR WER 6.43",
+            "url": "https://ar5iv.labs.arxiv.org/html/2105.01051"
+          },
+          {
+            "text": "SUPERB SID accuracy 75.18",
+            "url": "https://ar5iv.labs.arxiv.org/html/2105.01051"
+          }
+        ],
+        "training_data": "It was pre-trained on 960 hours of unlabeled LibriSpeech (LS-960) English audiobook speech.",
+        "languages": "English only.",
+        "input_limits": "It expects 16 kHz audio, and the card states no maximum length.",
+        "output": "It gives 768-dimensional states from 12 blocks at about 49 Hz (20 ms stride, 25 ms receptive field), and SUPERB pools a weighted sum of layers.",
+        "sources": [
+          "https://huggingface.co/facebook/wav2vec2-base",
+          "https://arxiv.org/abs/2006.11477",
+          "https://ar5iv.labs.arxiv.org/html/2006.11477",
+          "https://ar5iv.labs.arxiv.org/html/2105.01051",
+          "https://huggingface.co/superb/wav2vec2-base-superb-er"
+        ]
+      },
+      "not_chosen": {
+        "chosen_instead": "hubert-large",
+        "date": "2026-10-16"
+      }
+    },
+    {
+      "id": "wav2vec-2.0-large",
+      "name": "wav2vec 2.0 large",
+      "role": "voice encoder",
+      "hf_id": "facebook/wav2vec2-large",
+      "params": 315428992,
+      "params_basis": "safetensors",
+      "params_source": "https://huggingface.co/facebook/wav2vec2-large/resolve/refs%2Fpr%2F2/model.safetensors",
+      "feature_dim": 1024,
+      "inputs": "audio",
+      "released": "2020-06-20",
+      "released_source": "https://arxiv.org/abs/2006.11477",
+      "paper_title": "wav2vec 2.0: A Framework for Self-Supervised Learning of Speech Representations",
+      "paper_url": "https://arxiv.org/abs/2006.11477",
+      "license": "apache-2.0",
+      "note": "The count is the encoder alone, and the full pretraining checkpoint with quantizer and projection heads is 317,380,864.",
+      "architecture": "encoder",
+      "details": {
+        "maker": "Meta AI",
+        "summary": "wav2vec 2.0 Large is a 24-block, 1024-dimensional Transformer over the same 7-block CNN encoder, trained by contrastive prediction of quantized latents at masked positions. This checkpoint's card names LibriSpeech as its pretraining data.",
+        "meld_slot": "It fills the voice-encoder slot on the text and audio track as a frozen feature extractor under the small trained head.",
+        "meld_good": "It gives 1024-dimensional features at the same 20 ms stride as the base model, so the pooling and head code carry over unchanged.",
+        "meld_weak": "SUPERB's ER 65.64 for wav2vec 2.0 Large uses the 60k-hour Libri-Light checkpoint, so no emotion score was found for this LibriSpeech checkpoint.",
+        "scores": [],
+        "training_data": "Its card names unlabeled LibriSpeech, and the paper trains Large on either LS-960 or the 53.2k-hour LV-60k corpus.",
+        "languages": "English only.",
+        "input_limits": "It expects 16 kHz audio, and the card states no maximum length.",
+        "output": "It gives 1024-dimensional states from 24 blocks at about 49 Hz (20 ms stride), and SUPERB-style probes pool a weighted sum of layers.",
+        "sources": [
+          "https://huggingface.co/facebook/wav2vec2-large",
+          "https://arxiv.org/abs/2006.11477",
+          "https://ar5iv.labs.arxiv.org/html/2006.11477",
+          "https://ar5iv.labs.arxiv.org/html/2105.01051"
+        ]
+      },
+      "not_chosen": {
+        "chosen_instead": "hubert-large",
+        "date": "2026-10-16"
+      }
     }
   ]
 }

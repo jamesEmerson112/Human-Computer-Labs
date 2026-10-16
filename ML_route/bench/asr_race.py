@@ -1,8 +1,7 @@
-"""Times speech-to-text models one clip at a time on MELD's test split and scores their word error rate.
+"""Times the chosen speech-to-text model one clip at a time on MELD's test split and scores its word error rate.
 
 Contents:
 - load_whisper: loads faster-whisper and returns a transcribe function
-- load_nemo: loads a NeMo model (Nemotron Streaming or Parakeet) and returns a transcribe function
 - MODELS: the model variants this script can run
 - main: transcribes every decodable test clip with one model variant and writes its results
 """
@@ -33,41 +32,11 @@ def load_whisper(compute):
     return run
 
 
-def load_nemo(name, context=None):
-    """
-    Description: Loads a NeMo speech model on the GPU.
-    Inputs:
-    - name: the Hugging Face repo id.
-    - context: an optional [left, right] attention context in 80 ms frames, for cache-aware
-      streaming models; [70, 13] is the 1.12 s setting and [70, 1] the 160 ms one.
-    Outputs: a function from samples to text.
-    Constraints: transcribes the whole clip in one offline call; NVIDIA's docs say a cache-aware
-    model gives the same output this way as when streamed with the same context.
-    """
-    import torch
-    import nemo.collections.asr as nemo_asr
-    model = nemo_asr.models.ASRModel.from_pretrained(model_name=name).cuda().eval()
-    if context is not None:
-        model.encoder.set_default_att_context_size(context)
-
-    def run(audio):
-        with torch.inference_mode():
-            out = model.transcribe([audio], batch_size=1, verbose=False)
-        if isinstance(out, tuple):
-            out = out[0]
-        first = out[0]
-        return (first.text if hasattr(first, "text") else str(first)).strip()
-    return run
-
-
 MODELS = {
-    "whisper-turbo-fp16": lambda: load_whisper("float16"),
     "whisper-turbo-int8": lambda: load_whisper("int8"),
-    "nemotron-1120ms": lambda: load_nemo("nvidia/nemotron-speech-streaming-en-0.6b", [70, 13]),
-    "nemotron-160ms": lambda: load_nemo("nvidia/nemotron-speech-streaming-en-0.6b", [70, 1]),
-    "parakeet-tdt-v3": lambda: load_nemo("nvidia/parakeet-tdt-0.6b-v3"),
 }
-"""Description: The model variants, each a function that loads the model and returns its transcriber."""
+"""Description: The model variants, each a function that loads the model and returns its transcriber. Only the
+chosen Whisper large-v3-turbo int8 remains; the other variants' 2026-10-15 results stay in results/."""
 
 
 def sync():
