@@ -1,7 +1,7 @@
 """Reads the emotion of a MELD line with the frozen encoders and the trained Rust head, for serve.py to forward to.
 
 Contents:
-- Handler: answers /api/status and /api/emotion on port 8769
+- Handler: answers /api/status, /api/emotion and /api/predictions on port 8769
 - DecodeError: a clip whose audio ffmpeg cannot decode
 - load_head: reads the head's JSON file into numpy arrays
 - head_logits: runs the head's forward pass on one or more feature rows
@@ -14,6 +14,8 @@ Contents:
 - prepare_audio: cuts, pads and rounds a clip's samples the way the training audio was
 - clip_features: the 3,840 joined features of one clip, with each encoder's time
 - read_emotion: decodes a clip, reads its features and runs the head
+- score_split: runs the head on one split's saved features and scores it
+- split_predictions: the head's emotion for every saved line of one split, computed once and cached
 - run_check: scores the head on the saved test features, with no encoders loaded
 - run_parity: compares live features with the saved test features for the first clips
 - main: parses the command line, then checks, compares or serves
@@ -72,6 +74,10 @@ encoders   = None
 fp32       = False
 model_lock = threading.Lock()
 """Description: Held while the encoders run, so two requests never share the GPU at once."""
+predictions      = {}
+"""Description: The /api/predictions answer for each split already scored, keyed by split."""
+predictions_lock = threading.Lock()
+"""Description: Held while a split is scored, so two requests never score the same split twice."""
 
 
 class DecodeError(Exception):
@@ -381,6 +387,56 @@ def read_emotion(split, clip, text):
     }
 
 
+def score_split(split):
+    """
+    Description: Runs the head on one split's saved features and scores it against the saved labels.
+    Inputs:
+    - split: "train", "dev" or "test".
+    Outputs: a dict with clips (the clip names in row order), pred and truth (class indices),
+    weighted_f1 (times 100) and accuracy (times 100).
+    Constraints: raises FileNotFoundError when x_<split>.npy, y_<split>.npy or clips_<split>.txt is
+    missing, and ValueError when their lengths differ.
+    """
+    x     = np.load(FUSION / f"x_{split}.npy")
+    y     = np.load(FUSION / f"y_{split}.npy")
+    clips = (FUSION / f"clips_{split}.txt").read_text(encoding="utf-8").split()
+    if not len(x) == len(y) == len(clips):
+        raise ValueError(f"{split}: {len(x)} feature rows, {len(y)} labels and {len(clips)} clip names")
+
+    pred = head_logits(head, x).argmax(1)
+    return {
+        "clips": clips,
+        "pred": pred,
+        "truth": y,
+        "weighted_f1": weighted_f1(y, pred, head["num_classes"]),
+        "accuracy": 100 * np.mean(pred == y),
+    }
+
+
+def split_predictions(split):
+    """
+    Description: The /api/predictions answer for one split: the head's emotion for every line in the
+    split's saved features, with its weighted F1, computed on the first request and cached.
+    Inputs:
+    - split: "train", "dev" or "test".
+    Outputs: a dict with split, predictions ({clip: emotion}), weighted_f1 and accuracy (times 100,
+    rounded to 4 places) and lines.
+    Constraints: raises as score_split does. Train and dev scores are inflated, since the head trained
+    on train and was picked by its dev score.
+    """
+    with predictions_lock:
+        if split not in predictions:
+            scored = score_split(split)
+            predictions[split] = {
+                "split": split,
+                "predictions": {c: EMOTIONS[int(p)] for c, p in zip(scored["clips"], scored["pred"])},
+                "weighted_f1": round(float(scored["weighted_f1"]), 4),
+                "accuracy": round(float(scored["accuracy"]), 4),
+                "lines": len(scored["clips"]),
+            }
+        return predictions[split]
+
+
 def run_check():
     """
     Description: Runs the head on the saved test features and prints its weighted F1, which must
@@ -388,14 +444,12 @@ def run_check():
     Inputs: none
     Outputs: none
     """
-    stat  = HEAD_PATH.stat()
-    x     = np.load(FUSION / "x_test.npy")
-    y     = np.load(FUSION / "y_test.npy")
-    pred  = head_logits(head, x).argmax(1)
-    score = weighted_f1(y, pred, head["num_classes"])
-    saved = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(stat.st_mtime))
+    stat   = HEAD_PATH.stat()
+    scored = score_split("test")
+    saved  = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(stat.st_mtime))
     print(f"head {HEAD_PATH.name} ({stat.st_size} bytes, saved {saved}): "
-          f"test weighted F1 {score:.2f} on {len(y)} lines, accuracy {100 * np.mean(pred == y):.2f}")
+          f"test weighted F1 {scored['weighted_f1']:.2f} on {len(scored['truth'])} lines, "
+          f"accuracy {scored['accuracy']:.2f}")
 
 
 def run_parity(count):
@@ -426,9 +480,9 @@ def run_parity(count):
 
 class Handler(BaseHTTPRequestHandler):
     """
-    Description: Answers the two API paths.
+    Description: Answers the three API paths.
     Methods:
-    - do_GET: routes /api/status and /api/emotion.
+    - do_GET: routes /api/status, /api/emotion and /api/predictions.
     - send_json: writes one JSON response.
     - log_message: keeps the console quiet.
     """
@@ -450,6 +504,7 @@ class Handler(BaseHTTPRequestHandler):
                 "dtypes": {n: str(e["dtype"]).replace("torch.", "") for n, e in (encoders or {}).items()},
                 "devices": {n: e["device"] for n, e in (encoders or {}).items()},
                 "head": str(HEAD_PATH),
+                "predictions": True,
                 "ready": encoders is not None and head is not None,
             })
             return
@@ -472,6 +527,20 @@ class Handler(BaseHTTPRequestHandler):
                 # Without this, a failure such as running out of GPU memory drops the connection,
                 # and serve.py reports the server as not answering.
                 print(f"{split} {clip}: {type(err).__name__}: {err}", file=sys.stderr, flush=True)
+                self.send_json(500, {"error": f"{type(err).__name__}: {err}"})
+            return
+
+        if url.path == "/api/predictions":
+            split = parse_qs(url.query).get("split", [""])[0]
+            if split not in CLIP_DIRS:
+                self.send_json(400, {"error": "unknown split"})
+                return
+            try:
+                self.send_json(200, split_predictions(split))
+            except FileNotFoundError as err:
+                self.send_json(404, {"error": f"no saved features for {split}: {err}"})
+            except Exception as err:
+                print(f"predictions {split}: {type(err).__name__}: {err}", file=sys.stderr, flush=True)
                 self.send_json(500, {"error": f"{type(err).__name__}: {err}"})
             return
 

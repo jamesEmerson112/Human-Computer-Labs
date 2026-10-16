@@ -1,4 +1,4 @@
-//! Holds the file paths and dialogue lists that `main.rs` uses.
+//! Holds the file paths and dialogue lists that `main.rs` and the demo binary use.
 //!
 //! APIs:
 //! - `TRAIN_CSV`: path to the MELD training label file
@@ -11,8 +11,10 @@
 //! - `DEFAULT_DIALOGUES`: the dialogues written when none are given
 //! - `TEST_DIALOGUES`: five randomly picked dialogues to test with
 //! - `CLIPS_DIR`: folder holding the MELD training clips
+//! - `TEST_CLIPS_DIR`: folder holding the MELD test clips
+//! - `DEMO_DIALOGUE`: the test dialogue the demo binary plays when none is given
 //! - `EMOTIONS`: MELD's seven emotion names in a fixed order
-//! - `REPLIES`: three placeholder replies for each emotion
+//! - `REPLIES`: three placeholder replies for each emotion, used when the reply model is off
 
 /**
  * Description: Path to the fixed MELD training label file in MELD.Completed,
@@ -70,6 +72,16 @@ pub const TEST_DIALOGUES: [u32; 5] = [557, 631, 700, 960, 963];
 pub const CLIPS_DIR: &str = "../data/MELD.Raw/train_splits";
 
 /**
+ * Description: Folder holding the MELD test clips, relative to this crate's folder.
+ */
+pub const TEST_CLIPS_DIR: &str = "../data/MELD.Raw/output_repeated_splits_test";
+
+/**
+ * Description: The test Dialogue_ID that the demo binary plays when it is given no dialogue.
+ */
+pub const DEMO_DIALOGUE: u32 = 149;
+
+/**
  * Description: MELD's seven emotion names. An emotion's class index is its
  * position in this list.
  */
@@ -79,7 +91,8 @@ pub const EMOTIONS: [&str; 7] = [
 
 /**
  * Description: Hardcoded replies that stand in for the reply model. Row `i`
- * holds the three replies for `EMOTIONS[i]`.
+ * holds the three replies for `EMOTIONS[i]`. The demo binary and the MELD
+ * player fall back to them only when the reply server is not answering.
  */
 // ML_route/player/player.html holds a copy of this list, so change both.
 pub const REPLIES: [[&str; 3]; 7] = [

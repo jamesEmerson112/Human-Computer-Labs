@@ -152,6 +152,7 @@ td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
   font-weight: 400; color: var(--muted); margin-left: 6px;
   font-variant-numeric: tabular-nums;
 }
+.source { font-weight: 400; color: var(--muted); margin-left: 6px; }
 .note { color: var(--warn); font-size: 13px; }
 .fix { color: var(--accent); font-size: 12px; }
 .gap {
@@ -284,22 +285,22 @@ kbd {
         <button id="none">Select none</button>
       </div>
     </div>
-    <p class="hint">Each line gets a random emotion and a random reply for that
-    emotion when its clip ends. The grey
-    tag is MELD's own label, and the guess turns green when the two agree. The
-    time beside the guess is how long the emotion took after the clip ended.
-    With <code>serve.py</code> running, live speech-to-text transcribes each
-    clip's audio on the GPU when the clip ends and shows how long that took.
-    Whisper runs the speech-to-text. With <code>serve_emotion.py</code> up, Live
-    emotion replaces the random guess with the trained head's emotion. The head
+    <p class="hint">With <code>serve.py</code>, <code>serve_emotion.py</code> and
+    <code>serve_reply.py</code> running, every line gets three model outputs when
+    its clip ends. Whisper transcribes the clip's audio. The trained emotion head
     reads the clip's sound with HuBERT and its words with EmbeddingGemma and
     EmoBERTa. The words are the live Whisper transcript when live speech-to-text
-    is on, and the saved Whisper transcript otherwise. With <code>serve_reply.py</code>
-    up, LFM2.5 also writes a live reply to each line. The reply answers the head's
-    emotion and words when Live emotion is on, and MELD's own label and text when
-    it is off. By default the reply also sees the dialogue's earlier lines as a
-    transcript, and the menu beside Live reply switches it to the line alone. The
-    models take turns on the GPU, so later ones wait.</p>
+    is on, and the saved Whisper transcript otherwise. LFM2.5 then writes a reply
+    that answers the head's emotion and words. By default the reply also sees the
+    dialogue's earlier lines, and the menu beside Live reply switches it to the
+    line alone. The grey tag is MELD's own label, and the head's emotion turns
+    green when the two agree. The time beside it is how long the emotion took
+    after the clip ended. The models take turns on the one GPU, so later ones
+    wait. A random emotion, marked random, appears only when Live emotion is off
+    or its server is down, and the reply then answers MELD's own label. A canned
+    reply, marked Placeholder reply, appears only when Live reply is off or its
+    server is down. The head trained on the train split and was picked by its
+    dev score, so the page is meant for the test split.</p>
     <div class="lines" id="lines"></div>
   </section>
 </main>
@@ -311,7 +312,7 @@ const FOLDERS = {
   test: "MELD.Raw/output_repeated_splits_test",
 };
 const EMOTIONS = ["neutral", "joy", "surprise", "anger", "sadness", "disgust", "fear"];
-// Placeholder replies for the reply model. REPLIES in
+// Canned placeholder replies, shown only when Live reply is off or LFM2.5 is down. REPLIES in
 // ML_route/hello_world/src/constants.rs holds the same list, so change both.
 const REPLIES = {
   neutral: ["Got it. Tell me more.", "Okay, I'm following you.", "I see. What happens next?"],
@@ -376,6 +377,13 @@ function renderSplits() {
   ).join("");
 }
 
+/**
+ * Description: Draws the current dialogue's lines with MELD's label, the emotion shown for each played line
+ * (the head's, or a random guess marked random), the live transcript, emotion and reply, and the canned
+ * placeholder reply only while live replies are off.
+ * Inputs: none; reads state, guesses and the live results.
+ * Outputs: none
+ */
 function renderLines() {
   $("listtitle").textContent =
     `Dialogue ${dialogueId()} in ${state.split}, ${lines().length} lines`;
@@ -393,6 +401,7 @@ function renderLines() {
       : guess.pending ? `<div class="guess" title="Waiting for the emotion head">&hellip;</div>`
       : `<div class="guess ${guess.guess === emotion ? "hit" : ""}"` +
         ` title="${guess.source === "head" ? "The trained head's emotion" : "A random guess"}">${guess.guess}` +
+        `${guess.source === "random" ? `<span class="source">random</span>` : ""}` +
         `<span class="latency" title="Time from the end of the clip to the emotion">` +
         `${formatLatency(guess.latency)}</span></div>`;
     const note = missing.has(key(utt)) ? `<div class="note">no clip</div>` : "";
@@ -403,8 +412,8 @@ function renderLines() {
         ${selected.has(utt) ? "checked" : ""}>
       <button class="play" title="Play this line only" aria-label="Play line ${utt}">&#9654;</button>
       <div class="text" title="Click to play this line"><span class="utt">${utt}</span><span class="who">${esc(speaker)}</span>:
-        ${esc(textOf(line))}${guess && !guess.pending
-          ? `<div class="reply"><span>Reply:</span> ${esc(guess.reply)}</div>` : ""}${liveHtml(utt)}${emotionHtml(utt)}${replyHtml(utt)}</div>
+        ${esc(textOf(line))}${guess && !guess.pending && guess.reply && !liveReplyOn()
+          ? `<div class="reply"><span>Placeholder reply:</span> ${esc(guess.reply)}</div>` : ""}${liveHtml(utt)}${emotionHtml(utt)}${replyHtml(utt)}</div>
       <div class="tags"><div class="label">${emotion}</div>${guessHtml}${note}${fixed}</div>
     </div>`;
   }).join("");
@@ -423,13 +432,31 @@ function gapNote(previous, utt) {
   return `<div class="gap">MELD's label file has no ${which}.</div>`;
 }
 
+/**
+ * Description: Writes one output record as a line of the Text log: the clip, the line, the emotion and the
+ * reply, marking a random emotion "(random)" and a canned reply "(placeholder)".
+ * Inputs:
+ * - o: the record.
+ * Outputs: the text line.
+ */
+function textRecord(o) {
+  if (o.missing) return `${o.clip}  missing clip, skipped`;
+  const emotion = o.emotion == null ? "(reading the emotion…)"
+    : o.emotion_source === "random" ? `${o.emotion} (random)` : o.emotion;
+  const error = o[`live_reply_${o.reply_mode}_error`];
+  const reply = o.reply != null ? `"${o.reply}"${o.reply_source === "placeholder" ? " (placeholder)" : ""}`
+    : error ? `(no reply: ${shortError(error)})`
+    : o.reply_source === "lfm2.5" ? "(writing the reply…)" : "";
+  return `${o.clip}  ${o.speaker}: "${o.text}"  ->  ${emotion}  ${reply}`;
+}
+
+/**
+ * Description: Writes the output records to the log, one per line, as JSON or as text.
+ * Inputs: none; reads output and state.format.
+ * Outputs: none
+ */
 function renderLog() {
-  const text = output.map((o) => state.format === "json"
-    ? JSON.stringify(o)
-    : o.missing
-      ? `${o.clip}  missing clip, skipped`
-      : `${o.clip}  ${o.speaker}: "${o.text}"  ->  ${o.emotion}  "${o.reply}"`
-  ).join("\n");
+  const text = output.map((o) => state.format === "json" ? JSON.stringify(o) : textRecord(o)).join("\n");
   $("log").textContent = text;
   $("log").scrollTop = $("log").scrollHeight;
 }
@@ -489,6 +516,12 @@ function scoreOf(pairs) {
 
 let splitScores = null;
 
+/**
+ * Description: Fills the Score tab: the emotion head and the random guesses on the lines played so far,
+ * then the whole-split rows from Score whole split, with the head's row marked inflated on train and dev.
+ * Inputs: none; reads guesses and splitScores.
+ * Outputs: none
+ */
 function renderScore() {
   const done = Object.values(guesses).filter((g) => !g.pending);
   const pairs = (source) => done.filter((g) => g.source === source).map((g) => [g.label, g.guess]);
@@ -496,10 +529,15 @@ function renderScore() {
   const head = scoreOf(pairs("head"));
   if (head) rows.push(["Emotion head, lines played so far", head]);
   const random = scoreOf(pairs("random"));
-  if (random || !head) rows.push(["Random, lines played so far", random]);
+  if (random || !head) rows.push(["Random guesses (reference), lines played so far", random]);
   if (splitScores) {
-    rows.push([`Random, all of ${splitScores.split}`, splitScores.random]);
-    rows.push([`Always neutral, all of ${splitScores.split}`, splitScores.neutral]);
+    const { split } = splitScores;
+    if (splitScores.head) {
+      const inflated = INFLATED[split] ? ` <span class="small">(inflated: ${INFLATED[split]})</span>` : "";
+      rows.push([`Emotion head, all of ${split}${inflated}`, splitScores.head]);
+    }
+    rows.push([`Random guesses (reference), all of ${split}`, splitScores.random]);
+    rows.push([`Always neutral (reference), all of ${split}`, splitScores.neutral]);
   }
   $("scorebody").innerHTML = rows.map(([name, s]) => s
     ? `<tr><td>${name}</td><td>${s.n.toLocaleString()}</td>` +
@@ -510,33 +548,101 @@ function renderScore() {
   $("breakdown").innerHTML = splitScores ? breakdownTable(splitScores) : "";
 }
 
+/**
+ * Description: Builds the per-emotion table for a whole split: each emotion's lines and share, and the F1 of
+ * the head (when it was scored), random guesses and always neutral.
+ * Inputs:
+ * - scores: splitScores, with split, random, neutral and head (null when the head was not scored).
+ * Outputs: the table's HTML and its note.
+ */
 function breakdownTable(scores) {
-  const { random, neutral } = scores;
+  const { random, neutral, head } = scores;
   const rows = EMOTIONS.map((e) =>
     `<tr><td>${e}</td><td class="num">${random.support[e].toLocaleString()}</td>` +
     `<td class="num">${(100 * random.support[e] / random.n).toFixed(1)}%</td>` +
+    (head ? `<td class="num">${(100 * (head.perClass[e] ?? 0)).toFixed(2)}</td>` : "") +
     `<td class="num">${(100 * (random.perClass[e] ?? 0)).toFixed(2)}</td>` +
     `<td class="num">${(100 * (neutral.perClass[e] ?? 0)).toFixed(2)}</td></tr>`
   ).join("");
   return `<table><thead><tr><th>Emotion in ${scores.split}</th><th class="num">Lines</th>` +
-    `<th class="num">Share</th><th class="num">F1 random</th>` +
+    `<th class="num">Share</th>${head ? `<th class="num">F1 head</th>` : ""}<th class="num">F1 random</th>` +
     `<th class="num">F1 always neutral</th></tr></thead><tbody>${rows}</tbody></table>` +
     `<p class="small">Neutral is the most common label, so always guessing it
     scores well on neutral lines and zero on every other emotion. A useful
     model has to beat both rows on the rarer emotions.</p>`;
 }
 
-function scoreWholeSplit() {
-  const pairs = [], neutral = [];
-  for (const dia of IDS[state.split]) {
-    for (const line of DATA[state.split][dia]) {
+// Why the head's score on a split other than test overstates it.
+const INFLATED = {
+  train: "the head trained on these lines",
+  dev: "the head was picked by its score on these lines",
+};
+
+/**
+ * Description: Asks serve.py for the emotion head's prediction on every saved line of one split.
+ * Inputs:
+ * - split: "train", "dev" or "test".
+ * Outputs: a promise for { predictions, error }: predictions is {clip: emotion} or null, and error says
+ * why it is null.
+ * Constraints: a serve.py started before /api/predictions existed answers with its HTML 404 page, which
+ * is reported as needing a restart rather than thrown.
+ */
+async function fetchPredictions(split) {
+  try {
+    const res = await fetch(`api/predictions?split=${split}`, { cache: "no-store" });
+    const body = res.headers.get("Content-Type")?.includes("json") ? await res.json() : null;
+    if (!body) return { predictions: null, error: "restart serve.py and serve_emotion.py to load /api/predictions" };
+    if (!res.ok) return { predictions: null, error: body.error || `HTTP ${res.status}` };
+    return { predictions: body.predictions, error: null };
+  } catch (err) {
+    return { predictions: null, error: String(err) };
+  }
+}
+
+/**
+ * Description: Scores the whole split: the emotion head from its saved features when serve_emotion.py is
+ * ready, plus random guesses and always neutral as reference rows, then shows them in the Score tab.
+ * Inputs: none; reads state.split.
+ * Outputs: a promise that resolves once the scores are shown.
+ * Constraints: the head row counts only the lines the head has saved features for, and the note says how
+ * many lines that leaves out. Head scores on train and dev are marked inflated.
+ */
+async function scoreWholeSplit() {
+  const split = state.split;
+  const pairs = [], neutral = [], labels = {};
+  for (const dia of IDS[split]) {
+    for (const line of DATA[split][dia]) {
       const label = line[2];
+      labels[`dia${dia}_utt${line[0]}`] = label;
       pairs.push([label, EMOTIONS[Math.floor(Math.random() * EMOTIONS.length)]]);
       neutral.push([label, "neutral"]);
     }
   }
-  splitScores = { split: state.split, random: scoreOf(pairs), neutral: scoreOf(neutral) };
-  $("scorenote").textContent = "The random row changes a little on every press.";
+  const notes = [];
+  let head = null;
+  if (emotionReady && !predictionsReady) {
+    notes.push("The emotion head row is missing: restart serve.py and serve_emotion.py so they answer api/predictions.");
+  } else if (emotionReady) {
+    $("scoresplit").disabled = true;
+    $("scorenote").textContent = "Fetching the emotion head's predictions…";
+    const result = await fetchPredictions(split);
+    $("scoresplit").disabled = false;
+    if (result.predictions) {
+      const scored = Object.entries(result.predictions).filter(([clip]) => clip in labels);
+      head = scoreOf(scored.map(([clip, emotion]) => [labels[clip], emotion]));
+      const left = Object.keys(labels).length - scored.length;
+      notes.push(`The emotion head row is the trained model, run on its saved features for ${scored.length.toLocaleString()} lines` +
+        (left ? `, leaving out ${left.toLocaleString()} ${left === 1 ? "line" : "lines"} it has no features for.` : "."));
+      if (INFLATED[split]) notes.push(`Its ${split} score is inflated, because ${INFLATED[split]}; only test is a fair check.`);
+    } else {
+      notes.push(`The emotion head row is missing: ${result.error}.`);
+    }
+  } else {
+    notes.push("The emotion server is off, so only the reference rows are scored.");
+  }
+  notes.push("Random guesses and always neutral are reference rows, and the random row changes a little on every press.");
+  splitScores = { split, head, random: scoreOf(pairs), neutral: scoreOf(neutral) };
+  $("scorenote").textContent = notes.join(" ");
   renderScore();
 }
 
@@ -643,18 +749,29 @@ let replyReady = false;
 const emotions = {};
 const emotionTimes = [];
 let emotionReady = false;
+// True when serve.py and serve_emotion.py are new enough to answer api/predictions for Score whole split.
+let predictionsReady = false;
 const live = {};
 const liveTimes = {};
 LIVE_MODELS.forEach((m) => { live[m.id] = {}; liveTimes[m.id] = []; });
 
 function seconds(ms) { return `${(ms / 1000).toFixed(2)} s`; }
 
+/**
+ * Description: Asks serve.py which models are ready, shows their status, and turns each Live box on or off.
+ * Inputs: none
+ * Outputs: a promise that resolves once the status is shown.
+ * Constraints: predictionsReady is true only when serve.py and serve_emotion.py both say they answer
+ * api/predictions, so a server started before that route existed is asked to restart instead.
+ */
 async function checkLive() {
   let models = {};
+  let forwards = false;
   try {
     const res = await fetch("api/status", { cache: "no-store" });
     const status = await res.json();
     models = status.models || { whisper: status };
+    forwards = Boolean(status.predictions);
   } catch (e) {
     models = {};
   }
@@ -677,6 +794,7 @@ async function checkLive() {
   $("livereply").checked = replyReady && recall("livereply") !== "0";
   const h = models.emotion;
   emotionReady = Boolean(h && h.ready);
+  predictionsReady = forwards && Boolean(h && h.predictions);
   $("emotionstatus").textContent = emotionReady
     ? `head ready (EmbeddingGemma, EmoBERTa, HuBERT, ${h.dtype}, ${h.device})`
     : h && h.error ? `off (${h.error})` : h ? "still loading" : "off";
@@ -690,6 +808,18 @@ function historyBefore(split, dia, utt) {
     .map((line) => ({ speaker: line[1], text: textOf(line) }));
 }
 
+/**
+ * Description: Fetches LFM2.5's reply to one line from serve.py and stores it for the line, the output
+ * record and, while the line is still the one shown, the tag over the video.
+ * Inputs:
+ * - mode: "context" sends the dialogue's earlier lines too, "single" sends the line alone.
+ * - split, dia, utt: the line's split, dialogue and utterance.
+ * - text, emotion, speaker: what the reply answers.
+ * - record: the line's output record, which gets reply, reply_source (null on an error) and the
+ *   live_reply fields.
+ * - sent: when the reply's time starts, from performance.now().
+ * Outputs: a promise that resolves once the reply or its error is shown.
+ */
 function requestReply(mode, split, dia, utt, text, emotion, speaker, record, sent) {
   const lineKey = `${split}-${dia}-${utt}`;
   const params = { text, emotion, speaker };
@@ -701,22 +831,74 @@ function requestReply(mode, split, dia, utt, text, emotion, speaker, record, sen
       if (!res.ok) {
         replies[mode][lineKey] = { error: body.error || `HTTP ${res.status}` };
         record[`live_reply_${mode}_error`] = replies[mode][lineKey].error;
+        record.reply_source = null;
         return;
       }
       replies[mode][lineKey] = { ...body, total_ms: total };
       replyTimes[mode].push(total);
+      Object.assign(record, { reply: body.reply, reply_source: "lfm2.5" });
       record[`live_reply_${mode}_text`] = body.reply;
       record[`live_reply_${mode}_ms`] = Math.round(total);
+      const guess = guesses[lineKey];
+      if (guess && !guess.pending && $("tag").dataset.key === lineKey) {
+        $("tag").innerHTML = tagHtml(record.clip, guess.guess, body.reply,
+                                     { live: true, random: guess.source === "random" });
+      }
     })
     .catch((err) => {
       replies[mode][lineKey] = { error: String(err) };
       record[`live_reply_${mode}_error`] = replies[mode][lineKey].error;
+      record.reply_source = null;
     })
     .finally(() => {
       renderLines();
       renderLog();
       renderLiveAverage();
     });
+}
+
+/**
+ * Description: Says whether live replies are on and their server is ready, in which case the canned
+ * placeholder replies are hidden.
+ * Inputs: none
+ * Outputs: true when LFM2.5 writes the replies.
+ */
+function liveReplyOn() {
+  return $("livereply").checked && replyReady;
+}
+
+/**
+ * Description: Builds the caption shown over the video for a line: the clip and its emotion, then
+ * LFM2.5's live reply once it arrives, or the canned placeholder reply only when live replies are off.
+ * Inputs:
+ * - clip: the clip name.
+ * - emotion: the emotion shown.
+ * - reply: the reply to show, or null for none.
+ * - live: true when reply is LFM2.5's, false when it is the canned placeholder.
+ * - random: true when emotion is a random guess rather than the head's.
+ * Outputs: the caption's HTML.
+ */
+function tagHtml(clip, emotion, reply, { live = false, random = false } = {}) {
+  const mark = random ? " (random)" : "";
+  const said = !reply ? ""
+    : live ? `: &ldquo;${esc(reply)}&rdquo;`
+    : liveReplyOn() ? "" : `: &ldquo;${esc(reply)}&rdquo; (placeholder)`;
+  return `${esc(clip)} &rarr; <b>${esc(emotion)}</b>${mark}${said}`;
+}
+
+/**
+ * Description: Picks a canned reply for an emotion and stores it as the line's placeholder, for when live
+ * replies are off.
+ * Inputs:
+ * - guess: the line's entry in guesses, which gets the reply.
+ * - record: the line's output record, which gets reply and reply_source "placeholder".
+ * - emotion: the emotion the canned reply answers.
+ * Outputs: none
+ */
+function usePlaceholder(guess, record, emotion) {
+  const canned = REPLIES[emotion];
+  guess.reply = canned[Math.floor(Math.random() * canned.length)];
+  Object.assign(record, { reply: guess.reply, reply_source: "placeholder" });
 }
 
 /**
@@ -728,17 +910,18 @@ function requestReply(mode, split, dia, utt, text, emotion, speaker, record, sen
  * - speaker: the speaker's name.
  * - record: the line's output record, which gets the reply fields.
  * - ended: when the clip ended, from performance.now(), so the reply's time counts from there. It defaults to now.
- * Outputs: none
+ * Outputs: true when the reply was asked for, false when live replies are off and the caller should use
+ * a placeholder.
  */
 function startReply(split, dia, utt, text, emotion, speaker, record, ended) {
-  if (!$("livereply").checked || !replyReady) return;
+  if (!liveReplyOn()) return false;
   const lineKey = `${split}-${dia}-${utt}`;
   const sent = ended ?? performance.now();
   const mode = $("replymode").value;
-  record.reply_emotion = emotion;
-  record.reply_mode = mode;
+  Object.assign(record, { reply: null, reply_source: "lfm2.5", reply_emotion: emotion, reply_mode: mode });
   replies[mode][lineKey] = { pending: true };
   requestReply(mode, split, dia, utt, text, emotion, speaker, record, sent);
+  return true;
 }
 
 function replyCell(mode, utt) {
@@ -839,7 +1022,8 @@ function cutWords(text) {
  * Constraints: the words are the live Whisper text, else the saved Whisper transcript, else empty,
  * because training encoded a line Whisper heard nothing in as empty too. Words that are empty send
  * the reply MELD.Completed's text instead, since serve_reply.py refuses an empty line. On an error
- * the random guess stays and the reply answers MELD's label.
+ * the random guess stays, marked random, and the reply answers MELD's label. A canned reply is
+ * picked only when live replies are off.
  */
 async function startEmotion(split, dia, utt, line, saved, record, ended, heard) {
   const lineKey = `${split}-${dia}-${utt}`;
@@ -861,13 +1045,9 @@ async function startEmotion(split, dia, utt, line, saved, record, ended, heard) 
     emotion = body.emotion;
     emotions[lineKey] = { ...body, total_ms: total };
     emotionTimes.push(total);
-    const canned = REPLIES[emotion];
-    Object.assign(guess, {
-      guess: emotion, source: "head", latency: total,
-      reply: canned[Math.floor(Math.random() * canned.length)],
-    });
+    Object.assign(guess, { guess: emotion, source: "head", latency: total });
     Object.assign(record, {
-      emotion, reply: guess.reply, latency_ms: Math.round(total),
+      emotion, emotion_source: "head", latency_ms: Math.round(total),
       live_emotion: emotion,
       live_emotion_confidence: confidence,
       live_emotion_probs: body.probs,
@@ -876,17 +1056,19 @@ async function startEmotion(split, dia, utt, line, saved, record, ended, heard) 
     });
   } catch (err) {
     emotions[lineKey] = { error: err.message || String(err) };
-    record.live_emotion_error = emotions[lineKey].error;
+    Object.assign(record, { emotion: guess.guess, emotion_source: "random", live_emotion_error: emotions[lineKey].error });
   }
   delete guess.pending;
+  const asked = emotion
+    ? startReply(split, dia, utt, words.trim() ? words : line[3], emotion, line[1], record, ended)
+    : startReply(split, dia, utt, cutWords(saved), line[2], line[1], record, ended);
+  if (!asked) usePlaceholder(guess, record, guess.guess);
   if ($("tag").dataset.key === lineKey) {
-    $("tag").innerHTML = `${esc(params.clip)} &rarr; <b>${guess.guess}</b>: &ldquo;${esc(guess.reply)}&rdquo;`;
+    $("tag").innerHTML = tagHtml(params.clip, guess.guess, guess.reply, { random: guess.source === "random" });
   }
   renderLines();
   renderLog();
   renderLiveAverage();
-  if (emotion) startReply(split, dia, utt, words.trim() ? words : line[3], emotion, line[1], record, ended);
-  else startReply(split, dia, utt, cutWords(saved), line[2], line[1], record, ended);
 }
 
 /**
@@ -995,31 +1177,31 @@ for (const video of players) {
     const started = performance.now();
     endedAt = queue.length ? started : null;
     const line = lineOf(playing);
+    // The random guess is the fallback: it shows only when the emotion head is off or fails.
     const guess = EMOTIONS[Math.floor(Math.random() * EMOTIONS.length)];
-    const canned = REPLIES[guess];
-    const reply = canned[Math.floor(Math.random() * canned.length)];
     const latency = performance.now() - started;
     const head = $("liveemotion").checked && emotionReady;
     const lineKey = key(playing);
-    guesses[lineKey] = { guess, reply, label: line[2], latency, source: "random" };
+    guesses[lineKey] = { guess, reply: null, label: line[2], latency, source: "random" };
     if (head) guesses[lineKey].pending = true;
     const record = {
-      clip: clipName(playing), split: state.split, speaker: line[1],
-      text: textOf(line), emotion: guess, reply, meld_label: line[2],
+      clip: clipName(playing), split: state.split, speaker: line[1], text: textOf(line),
+      emotion: head ? null : guess, emotion_source: head ? "head" : "random",
+      reply: null, reply_source: null, meld_label: line[2],
       latency_ms: Number(latency.toFixed(3)),
     };
     output.push(record);
+    $("tag").dataset.key = lineKey;
     const heard = startLive(state.split, dialogueId(), playing, record);
     if (head) {
       startEmotion(state.split, dialogueId(), playing, line, textOf(line), record, started, heard);
-    } else {
-      // Without the emotion head, replies answer MELD's own label and text.
-      startReply(state.split, dialogueId(), playing, textOf(line), line[2], line[1], record);
+    // Without the emotion head, live replies answer MELD's own label and text.
+    } else if (!startReply(state.split, dialogueId(), playing, textOf(line), line[2], line[1], record)) {
+      usePlaceholder(guesses[lineKey], record, guess);
     }
-    $("tag").dataset.key = lineKey;
     $("tag").innerHTML = head
       ? `${esc(clipName(playing))} &rarr; reading the emotion&hellip;`
-      : `${esc(clipName(playing))} &rarr; <b>${guess}</b>: &ldquo;${esc(reply)}&rdquo;`;
+      : tagHtml(clipName(playing), guess, guesses[lineKey].reply, { random: true });
     renderLog();
     playNext();
   });
@@ -1287,7 +1469,18 @@ applyTheme(recall("theme") || "auto");
   if (speed) $("speed").value = speed;
   $("continue").checked = recall("continue") === "1";
   $("live").addEventListener("change", () => store("live", $("live").checked ? "1" : "0"));
-  $("livereply").addEventListener("change", () => store("livereply", $("livereply").checked ? "1" : "0"));
+  $("livereply").addEventListener("change", () => {
+    store("livereply", $("livereply").checked ? "1" : "0");
+    // The placeholder replies show only while live replies are off, in the list and over the video.
+    renderLines();
+    const shown = $("tag").dataset.key;
+    const guess = shown && guesses[shown];
+    if (guess && !guess.pending && guess.reply) {
+      const [, dia, utt] = shown.split("-");
+      $("tag").innerHTML = tagHtml(`dia${dia}_utt${utt}`, guess.guess, guess.reply,
+                                   { random: guess.source === "random" });
+    }
+  });
   $("liveemotion").addEventListener("change", () => store("liveemotion", $("liveemotion").checked ? "1" : "0"));
   $("replymode").value = recall("replymode") === "single" ? "single" : "context";
   $("replymode").addEventListener("change", () => store("replymode", $("replymode").value));

@@ -1,11 +1,12 @@
 """Serves the MELD player, transcribes its clips live with Whisper, reads emotions when serve_emotion.py runs, and writes replies with LFM2.5 when serve_reply.py runs.
 
 Contents:
-- Handler: serves ML_route/data plus the /api/status, /api/transcribe, /api/emotion and /api/reply endpoints
+- Handler: serves ML_route/data plus the /api/status, /api/transcribe, /api/emotion, /api/predictions and /api/reply endpoints
 - transcribe_clip: decodes one clip and runs Whisper on it, with timings
 - helper_status: asks a helper server whether its model is loaded
 - forward: passes one request to a helper server, taking a turn on the GPU
 - forward_emotion: passes one clip and its words to serve_emotion.py, taking a turn on the GPU
+- forward_predictions: asks serve_emotion.py for the head's emotion on every saved line of one split
 - forward_reply: passes one line to serve_reply.py, taking a turn on the GPU
 - main: loads Whisper, warms it up and starts the server
 """
@@ -141,6 +142,19 @@ def forward_emotion(split, clip, text):
     return forward(EMOTION_URL, "serve_emotion.py", "/api/emotion", params)
 
 
+def forward_predictions(split):
+    """
+    Description: Asks serve_emotion.py for the head's emotion on every line of one split's saved
+    features, which the page's Score whole split button scores.
+    Inputs:
+    - split: "train", "dev" or "test".
+    Outputs: (HTTP status, response dict), with wait_ms set to the time spent waiting for the turn.
+    Constraints: the head runs on the CPU, but the call still takes a GPU turn, like /api/emotion.
+    The first call for a split takes under a second; serve_emotion.py caches the answer after that.
+    """
+    return forward(EMOTION_URL, "serve_emotion.py", "/api/predictions", {"split": split})
+
+
 def forward_reply(text, emotion, speaker, history):
     """
     Description: Passes one line to serve_reply.py while holding the GPU turn.
@@ -159,7 +173,7 @@ class Handler(SimpleHTTPRequestHandler):
     """
     Description: Serves the files in ML_route/data and answers the API paths.
     Methods:
-    - do_GET: routes /api/status, /api/transcribe, /api/emotion and /api/reply, and serves files otherwise.
+    - do_GET: routes /api/status, /api/transcribe, /api/emotion, /api/predictions and /api/reply, and serves files otherwise.
     - send_json: writes one JSON response.
     - log_message: logs API requests only, so video requests stay quiet.
     """
@@ -177,7 +191,8 @@ class Handler(SimpleHTTPRequestHandler):
         if url.path == "/api/status":
             whisper = {"model": MODEL_NAME, "device": DEVICE, "compute": COMPUTE,
                        "ready": model is not None}
-            self.send_json(200, {**whisper, "models": {
+            # "predictions" tells the page this serve.py forwards /api/predictions.
+            self.send_json(200, {**whisper, "predictions": True, "models": {
                 "whisper": whisper,
                 "emotion": helper_status(EMOTION_URL, "serve_emotion.py"),
                 "reply": helper_status(REPLY_URL, "serve_reply.py"),
@@ -191,6 +206,13 @@ class Handler(SimpleHTTPRequestHandler):
                 self.send_json(400, {"error": "unknown split or clip name"})
                 return
             self.send_json(*forward_emotion(split, clip, query.get("text", [""])[0]))
+            return
+        if url.path == "/api/predictions":
+            split = parse_qs(url.query).get("split", [""])[0]
+            if split not in CLIP_DIRS:
+                self.send_json(400, {"error": "unknown split"})
+                return
+            self.send_json(*forward_predictions(split))
             return
         if url.path == "/api/reply":
             query = parse_qs(url.query)
