@@ -22,6 +22,7 @@ venv/
 # Downloaded datasets: hymenoptera for example.py, MELD for the ML route
 /data/
 ML_route/data/
+# ML_route/data/meld-player.html is tracked on purpose (added with git add -f) so testers can open it
 /wav/
 MELD.Raw/
 MELD.Raw.tar.gz

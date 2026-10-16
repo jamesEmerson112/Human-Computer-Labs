@@ -17,6 +17,16 @@ The trained head scores 61.96 weighted F1 on MELD's test split (62.5 ± 0.8 acro
 
 The SWE route in `SWE_route/` is a separate challenge and is not part of this submission.
 
+## Quick test
+
+The player page is committed ready-built at `ML_route/data/meld-player.html`, so you can test it without building anything.
+
+1. **Get MELD.** Download and unpack it as in [step 1](#1-download-meld), so that `ML_route/data/MELD.Raw/output_repeated_splits_test/` exists. The page plays its clips from that folder.
+2. **Open the page.** Double-click `ML_route/data/meld-player.html` to open it in a browser. Every dialogue, MELD's labels and Whisper's saved transcripts are built into the page, so you can play any test dialogue. Without the servers the models are off, so each line shows a random emotion marked "random" and a placeholder reply.
+3. **Turn on the models.** Create the two Python environments as in [step 2](#2-create-the-two-python-environments), and log in with `hf auth login` after accepting EmbeddingGemma's terms on Hugging Face. Then start the three servers as in [step 8](#8-run-the-live-player) and open http://127.0.0.1:8765/meld-player.html#test-149. Tick **Live speech-to-text**, **Live emotion** and **Live reply**, and play the dialogue. The committed head at `ML_route/heads/meld-head.json` is used, so no training is needed.
+
+The Score tab's "Emotion head, all of test" row needs the joined features from steps 5 and 6, and shows only the reference rows without them. Training the head yourself takes steps 3 to 7.
+
 ## What you need
 
 **Hardware:**
@@ -134,10 +144,11 @@ cargo run --release
 
 ### 8. Run the live player
 
+The page `ML_route/data/meld-player.html` is committed and ready to use. Rebuild it with `text_fixes/.venv/Scripts/python.exe player/build_player.py` only after changing `player/player.html` or the labels. The build reads `MELD.Completed` and `MELD.Whisper` from steps 3 and 4.
+
 Run each server in its own terminal, from the `ML_route` folder:
 
 ```
-text_fixes/.venv/Scripts/python.exe player/build_player.py
 text_fixes/.venv/Scripts/python.exe player/serve.py          # page, Whisper speech to text (port 8765)
 player/.venv/Scripts/python.exe player/serve_reply.py         # LFM2.5 reply writer (port 8768)
 player/.venv/Scripts/python.exe player/serve_emotion.py       # encoders and emotion head (port 8769)
@@ -152,6 +163,7 @@ Then:
 For each clip, Whisper writes the words, the head picks the emotion, and LFM2.5 writes a reply to it. Each step shows its time. The Score tab compares the head's emotions with MELD's labels.
 
 - **Use test dialogues only.** The head trained on the train dialogues, so it would look too good there. The page opens on test by default.
+- **Terminal version:** with the servers running, `cargo run --bin demo` from `ML_route/hello_world` plays test dialogue 149 and prints Whisper's words, the head's emotion and LFM2.5's reply for each line. Add `--no-play` to skip playback, or a Dialogue_ID to pick another test dialogue.
 - **Check the head:** `player/.venv/Scripts/python.exe player/serve_emotion.py --check` scores the saved head on the test features. It should match the Rust run's test score.
 
 ## Results and evidence
