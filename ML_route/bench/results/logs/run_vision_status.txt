@@ -1,0 +1,18 @@
+2026-10-15T23:21:06Z frames started early by hand
+2026-10-16T02:03:12Z hand-started frames finished; launching run_vision.sh
+2026-10-16T02:03:12Z RUN_START
+2026-10-16T02:03:12Z start frames
+2026-10-16T02:03:20Z end frames rc=0 8s
+2026-10-16T02:03:20Z skip nemotron_text: the user chose Whisper for speech to text; heads pair vision with Whisper text
+2026-10-16T02:03:20Z skip features_nemotron: Whisper-text features from the earlier run are used
+2026-10-16T02:03:20Z start vision_features
+2026-10-16T02:23:05Z end vision_features rc=0 1185s
+2026-10-16T02:23:05Z start vlm_qwen3.5-4b
+2026-10-16T04:46:18Z end vlm_qwen3.5-4b rc=0 8593s
+2026-10-16T04:46:18Z start vlm_oneemo
+2026-10-16T07:09:23Z end vlm_oneemo rc=0 8585s
+2026-10-16T07:09:23Z start heads_vision
+2026-10-16T08:02:08Z end heads_vision rc=0 3165s
+2026-10-16T08:02:08Z start report
+2026-10-16T08:02:08Z end report rc=0 0s
+2026-10-16T08:02:08Z ALL_DONE

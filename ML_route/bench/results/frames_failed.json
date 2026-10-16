@@ -1,0 +1,9 @@
+{
+ "train": {
+  "dia125_utt3": "no duration: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x61a0b81a37c0] moov atom not found\n/workspace/data/MELD.Raw/train_splits/dia125_utt3.mp4: Invalid data found when processing input"
+ },
+ "dev": {
+  "dia110_utt7": "clip file missing"
+ },
+ "test": {}
+}

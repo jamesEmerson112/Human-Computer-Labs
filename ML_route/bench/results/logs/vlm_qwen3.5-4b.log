@@ -1,0 +1,35 @@
+Loading weights:   0%|          | 0/723 [00:00<?, ?it/s]Loading weights:   8%|▊         | 58/723 [00:00<00:01, 473.66it/s]Loading weights:  15%|█▍        | 106/723 [00:00<00:01, 367.91it/s]Loading weights:  24%|██▍       | 175/723 [00:00<00:01, 464.83it/s]Loading weights:  37%|███▋      | 268/723 [00:00<00:00, 601.93it/s]Loading weights:  46%|████▌     | 331/723 [00:00<00:00, 554.41it/s]Loading weights:  54%|█████▍    | 389/723 [00:00<00:00, 480.74it/s]Loading weights:  61%|██████    | 440/723 [00:00<00:00, 435.14it/s]Loading weights:  71%|███████   | 510/723 [00:01<00:00, 497.83it/s]Loading weights:  83%|████████▎ | 600/723 [00:01<00:00, 602.94it/s]Loading weights:  92%|█████████▏| 666/723 [00:01<00:00, 618.05it/s]Loading weights: 100%|██████████| 723/723 [00:01<00:00, 562.15it/s]
+qwen3.5-4b train: 9988 clips with frames, 1 without; resuming with {'tower': 0, 'reader': 0}
+[transformers] `causal_conv1d_fn` is falling back to its reference PyTorch implementation because `causal_conv1d` is not installed. This is correct but much slower; install `causal_conv1d` for the optimized kernel.
+[transformers] `chunk_gated_delta_rule` is falling back to its reference PyTorch implementation because `flash-linear-attention` is not installed. This is correct but much slower; install `flash-linear-attention` for the optimized kernel.
+qwen3.5-4b train: 500 of 9988 clips this run, 0 clips with a failed pass, 314 s, checkpoint saved
+qwen3.5-4b train: 1000 of 9988 clips this run, 0 clips with a failed pass, 627 s, checkpoint saved
+qwen3.5-4b train: 1500 of 9988 clips this run, 0 clips with a failed pass, 942 s, checkpoint saved
+qwen3.5-4b train: 2000 of 9988 clips this run, 0 clips with a failed pass, 1256 s, checkpoint saved
+qwen3.5-4b train: 2500 of 9988 clips this run, 0 clips with a failed pass, 1571 s, checkpoint saved
+qwen3.5-4b train: 3000 of 9988 clips this run, 0 clips with a failed pass, 1885 s, checkpoint saved
+qwen3.5-4b train: 3500 of 9988 clips this run, 0 clips with a failed pass, 2197 s, checkpoint saved
+qwen3.5-4b train: 4000 of 9988 clips this run, 0 clips with a failed pass, 2513 s, checkpoint saved
+qwen3.5-4b train: 4500 of 9988 clips this run, 0 clips with a failed pass, 2822 s, checkpoint saved
+qwen3.5-4b train: 5000 of 9988 clips this run, 0 clips with a failed pass, 3133 s, checkpoint saved
+qwen3.5-4b train: 5500 of 9988 clips this run, 0 clips with a failed pass, 3444 s, checkpoint saved
+qwen3.5-4b train: 6000 of 9988 clips this run, 0 clips with a failed pass, 3756 s, checkpoint saved
+qwen3.5-4b train: 6500 of 9988 clips this run, 0 clips with a failed pass, 4069 s, checkpoint saved
+qwen3.5-4b train: 7000 of 9988 clips this run, 0 clips with a failed pass, 4378 s, checkpoint saved
+qwen3.5-4b train: 7500 of 9988 clips this run, 0 clips with a failed pass, 4691 s, checkpoint saved
+qwen3.5-4b train: 8000 of 9988 clips this run, 0 clips with a failed pass, 5003 s, checkpoint saved
+qwen3.5-4b train: 8500 of 9988 clips this run, 0 clips with a failed pass, 5315 s, checkpoint saved
+qwen3.5-4b train: 9000 of 9988 clips this run, 0 clips with a failed pass, 5622 s, checkpoint saved
+qwen3.5-4b train: 9500 of 9988 clips this run, 0 clips with a failed pass, 5934 s, checkpoint saved
+qwen3.5-4b train: finished ['tower', 'reader'], stopped by time limit False, 0 clips with a failed pass, 6240 s
+qwen3.5-4b dev: 1108 clips with frames, 1 without; resuming with {'tower': 0, 'reader': 0}
+qwen3.5-4b dev: 500 of 1108 clips this run, 0 clips with a failed pass, 311 s, checkpoint saved
+qwen3.5-4b dev: 1000 of 1108 clips this run, 0 clips with a failed pass, 618 s, checkpoint saved
+qwen3.5-4b dev: finished ['tower', 'reader'], stopped by time limit False, 0 clips with a failed pass, 685 s
+qwen3.5-4b test: 2610 clips with frames, 0 without; resuming with {'tower': 0, 'reader': 0}
+qwen3.5-4b test: 500 of 2610 clips this run, 0 clips with a failed pass, 307 s, checkpoint saved
+qwen3.5-4b test: 1000 of 2610 clips this run, 0 clips with a failed pass, 617 s, checkpoint saved
+qwen3.5-4b test: 1500 of 2610 clips this run, 0 clips with a failed pass, 927 s, checkpoint saved
+qwen3.5-4b test: 2000 of 2610 clips this run, 0 clips with a failed pass, 1237 s, checkpoint saved
+qwen3.5-4b test: 2500 of 2610 clips this run, 0 clips with a failed pass, 1547 s, checkpoint saved
+qwen3.5-4b test: finished ['tower', 'reader'], stopped by time limit False, 0 clips with a failed pass, 1618 s

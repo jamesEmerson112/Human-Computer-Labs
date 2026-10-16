@@ -1,0 +1,118 @@
+[ WARN:0@0.498] global net_impl_backend.cpp:345 setPreferableTarget Targets are not supported by the new graph engine for now
+[ WARN:1@0.498] global net_impl_backend.cpp:345 setPreferableTarget Targets are not supported by the new graph engine for now
+[ WARN:2@0.498] global net_impl_backend.cpp:345 setPreferableTarget Targets are not supported by the new graph engine for now
+[ WARN:3@0.498] global net_impl_backend.cpp:345 setPreferableTarget Targets are not supported by the new graph engine for now
+[ WARN:4@0.498] global net_impl_backend.cpp:345 setPreferableTarget Targets are not supported by the new graph engine for now
+[ WARN:5@0.499] global net_impl_backend.cpp:345 setPreferableTarget Targets are not supported by the new graph engine for now
+[ WARN:6@0.499] global net_impl_backend.cpp:345 setPreferableTarget Targets are not supported by the new graph engine for now
+[ WARN:7@0.500] global net_impl_backend.cpp:345 setPreferableTarget Targets are not supported by the new graph engine for now
+faces train: 1000 of 9988 clips, 18 s
+faces train: 2000 of 9988 clips, 36 s
+faces train: 3000 of 9988 clips, 53 s
+faces train: 4000 of 9988 clips, 71 s
+faces train: 5000 of 9988 clips, 89 s
+faces train: 6000 of 9988 clips, 107 s
+faces train: 7000 of 9988 clips, 124 s
+faces train: 8000 of 9988 clips, 142 s
+faces train: 9000 of 9988 clips, 160 s
+faces train: 9988 of 9988 clips, 177 s
+train: {'clips': 9988, 'clips_without_frames': 1, 'clips_with_no_face': 37, 'frames': 79904, 'frames_with_face': 78788, 'frames_with_several_faces': 49832, 'frames_unreadable': 0, 'frames_detector_error': 0, 'median_face_score': 0.919}
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[ WARN:8@178.354] global net_impl_backend.cpp:345 setPreferableTarget Targets are not supported by the new graph engine for now
+[ WARN:9@178.354] global net_impl_backend.cpp:345 setPreferableTarget Targets are not supported by the new graph engine for now
+[ WARN:10@178.355] global net_impl_backend.cpp:345 setPreferableTarget Targets are not supported by the new graph engine for now
+[ WARN:11@178.355] global net_impl_backend.cpp:345 setPreferableTarget Targets are not supported by the new graph engine for now
+[ WARN:12@178.355] global net_impl_backend.cpp:345 setPreferableTarget Targets are not supported by the new graph engine for now
+[ WARN:13@178.356] global net_impl_backend.cpp:345 setPreferableTarget Targets are not supported by the new graph engine for now
+[ WARN:14@178.356] global net_impl_backend.cpp:345 setPreferableTarget Targets are not supported by the new graph engine for now
+[ WARN:15@178.356] global net_impl_backend.cpp:345 setPreferableTarget Targets are not supported by the new graph engine for now
+faces dev: 1000 of 1108 clips, 18 s
+faces dev: 1108 of 1108 clips, 20 s
+dev: {'clips': 1108, 'clips_without_frames': 1, 'clips_with_no_face': 3, 'frames': 8864, 'frames_with_face': 8713, 'frames_with_several_faces': 5204, 'frames_unreadable': 0, 'frames_detector_error': 0, 'median_face_score': 0.919}
+[ WARN:16@198.935] global net_impl_backend.cpp:345 setPreferableTarget Targets are not supported by the new graph engine for now
+[ WARN:17@198.935] global net_impl_backend.cpp:345 setPreferableTarget Targets are not supported by the new graph engine for now
+[ WARN:18@198.935] global net_impl_backend.cpp:345 setPreferableTarget Targets are not supported by the new graph engine for now
+[ WARN:19@198.935] global net_impl_backend.cpp:345 setPreferableTarget Targets are not supported by the new graph engine for now
+[ WARN:20@198.935] global net_impl_backend.cpp:345 setPreferableTarget Targets are not supported by the new graph engine for now
+[ WARN:21@198.936] global net_impl_backend.cpp:345 setPreferableTarget Targets are not supported by the new graph engine for now
+[ WARN:22@198.936] global net_impl_backend.cpp:345 setPreferableTarget Targets are not supported by the new graph engine for now
+[ WARN:23@198.936] global net_impl_backend.cpp:345 setPreferableTarget Targets are not supported by the new graph engine for now
+faces test: 1000 of 2610 clips, 19 s
+faces test: 2000 of 2610 clips, 37 s
+faces test: 2610 of 2610 clips, 47 s
+test: {'clips': 2610, 'clips_without_frames': 0, 'clips_with_no_face': 13, 'frames': 20880, 'frames_with_face': 20505, 'frames_with_several_faces': 12611, 'frames_unreadable': 0, 'frames_detector_error': 0, 'median_face_score': 0.919}
+[transformers] Model config: bos_token_id must be `None` or an integer within the vocabulary (between 0 and 31999), got 49406. This may result in unexpected behavior.
+[transformers] Model config: eos_token_id must be `None` or an integer within the vocabulary (between 0 and 31999), got 49407. This may result in unexpected behavior.
+Loading weights:   0%|          | 0/408 [00:00<?, ?it/s]Loading weights:   1%|          | 4/408 [00:01<02:30,  2.68it/s]Loading weights:  32%|███▏      | 130/408 [00:01<00:02, 110.86it/s]Loading weights:  48%|████▊     | 195/408 [00:02<00:01, 128.91it/s]Loading weights:  58%|█████▊    | 238/408 [00:02<00:01, 145.72it/s]Loading weights:  67%|██████▋   | 273/408 [00:02<00:00, 141.41it/s]Loading weights:  74%|███████▎  | 300/408 [00:02<00:00, 145.47it/s]Loading weights:  79%|███████▉  | 324/408 [00:02<00:00, 150.02it/s]Loading weights:  85%|████████▍ | 346/408 [00:02<00:00, 145.08it/s]Loading weights:  89%|████████▉ | 365/408 [00:03<00:00, 149.29it/s]Loading weights:  94%|█████████▍| 383/408 [00:03<00:00, 152.93it/s]Loading weights:  98%|█████████▊| 401/408 [00:03<00:00, 153.98it/s]Loading weights: 100%|██████████| 408/408 [00:03<00:00, 122.64it/s]
+  frame train: 2000 of 9988 clips, 25 s
+  frame train: 4000 of 9988 clips, 45 s
+  frame train: 6000 of 9988 clips, 70 s
+  frame train: 8000 of 9988 clips, 98 s
+  frame train: 9988 of 9988 clips, 121 s
+siglip2-base frame train: (9988, 768)
+  frame dev: 1108 of 1108 clips, 17 s
+siglip2-base frame dev: (1108, 768)
+  frame test: 2000 of 2610 clips, 30 s
+  frame test: 2610 of 2610 clips, 37 s
+siglip2-base frame test: (2610, 768)
+  face train: 2000 of 9988 clips, 15 s
+  face train: 4000 of 9988 clips, 31 s
+  face train: 6000 of 9988 clips, 45 s
+  face train: 8000 of 9988 clips, 60 s
+  face train: 9988 of 9988 clips, 74 s
+siglip2-base face train: (9988, 769)
+  face dev: 1108 of 1108 clips, 8 s
+siglip2-base face dev: (1108, 769)
+  face test: 2000 of 2610 clips, 14 s
+  face test: 2610 of 2610 clips, 17 s
+siglip2-base face test: (2610, 769)
+{'encoder': 'siglip2-base', 'repo': 'google/siglip2-base-patch16-224', 'dtype': 'bfloat16', 'load_s': 8.8, 'files': [{'view': 'frame', 'split': 'train', 'shape': [9988, 768], 'clips_without_frames': 1}, {'view': 'frame', 'split': 'dev', 'shape': [1108, 768], 'clips_without_frames': 1}, {'view': 'frame', 'split': 'test', 'shape': [2610, 768], 'clips_without_frames': 0}, {'view': 'face', 'split': 'train', 'shape': [9988, 769], 'clips_without_frames': 1}, {'view': 'face', 'split': 'dev', 'shape': [1108, 769], 'clips_without_frames': 1}, {'view': 'face', 'split': 'test', 'shape': [2610, 769], 'clips_without_frames': 0}], 'seconds': 285, 'gpu_mib_allocated_peak': 1359}
+Loading weights:   0%|          | 0/587 [00:00<?, ?it/s]Loading weights:   2%|▏         | 10/587 [00:00<00:11, 48.44it/s]Loading weights:   4%|▍         | 26/587 [00:00<00:06, 88.31it/s]Loading weights:   7%|▋         | 40/587 [00:00<00:07, 73.75it/s]Loading weights:  10%|▉         | 58/587 [00:00<00:07, 74.88it/s]Loading weights:  13%|█▎        | 76/587 [00:00<00:05, 95.74it/s]Loading weights:  15%|█▍        | 88/587 [00:01<00:05, 93.64it/s]Loading weights:  18%|█▊        | 104/587 [00:01<00:05, 80.61it/s]Loading weights:  20%|██        | 118/587 [00:01<00:06, 77.73it/s]Loading weights:  22%|██▏       | 127/587 [00:01<00:07, 62.28it/s]Loading weights:  23%|██▎       | 136/587 [00:01<00:06, 65.85it/s]Loading weights:  26%|██▌       | 152/587 [00:01<00:05, 82.00it/s]Loading weights:  28%|██▊       | 162/587 [00:02<00:04, 85.46it/s]Loading weights:  29%|██▉       | 172/587 [00:02<00:04, 86.43it/s]Loading weights:  31%|███       | 182/587 [00:02<00:05, 70.38it/s]Loading weights:  32%|███▏      | 190/587 [00:02<00:05, 71.56it/s]Loading weights:  36%|███▌      | 211/587 [00:02<00:03, 102.85it/s]Loading weights:  38%|███▊      | 223/587 [00:02<00:04, 77.65it/s] Loading weights:  40%|███▉      | 234/587 [00:02<00:04, 80.36it/s]Loading weights:  42%|████▏     | 244/587 [00:03<00:04, 71.37it/s]Loading weights:  43%|████▎     | 254/587 [00:03<00:04, 73.75it/s]Loading weights:  46%|████▌     | 268/587 [00:03<00:04, 64.57it/s]Loading weights:  48%|████▊     | 280/587 [00:03<00:04, 69.96it/s]Loading weights:  50%|█████     | 296/587 [00:03<00:03, 79.96it/s]Loading weights:  54%|█████▍    | 316/587 [00:03<00:02, 95.45it/s]Loading weights:  56%|█████▌    | 328/587 [00:04<00:02, 97.34it/s]Loading weights:  59%|█████▊    | 344/587 [00:04<00:02, 104.20it/s]Loading weights:  60%|██████    | 355/587 [00:04<00:02, 86.61it/s] Loading weights:  63%|██████▎   | 372/587 [00:04<00:02, 88.33it/s]Loading weights:  71%|███████▏  | 419/587 [00:04<00:01, 161.91it/s]Loading weights:  76%|███████▋  | 449/587 [00:04<00:00, 190.67it/s]Loading weights:  87%|████████▋ | 511/587 [00:04<00:00, 280.25it/s]Loading weights:  96%|█████████▌| 561/587 [00:05<00:00, 319.22it/s]Loading weights: 100%|██████████| 587/587 [00:05<00:00, 115.26it/s]
+  frame train: 2000 of 9988 clips, 51 s
+  frame train: 4000 of 9988 clips, 100 s
+  frame train: 6000 of 9988 clips, 148 s
+  frame train: 8000 of 9988 clips, 196 s
+  frame train: 9988 of 9988 clips, 244 s
+vjepa2-vitl frame train: (9988, 1024)
+  frame dev: 1108 of 1108 clips, 31 s
+vjepa2-vitl frame dev: (1108, 1024)
+  frame test: 2000 of 2610 clips, 51 s
+  frame test: 2610 of 2610 clips, 66 s
+vjepa2-vitl frame test: (2610, 1024)
+{'encoder': 'vjepa2-vitl', 'repo': 'facebook/vjepa2-vitl-fpc64-256', 'dtype': 'bfloat16', 'load_s': 6.5, 'files': [{'view': 'frame', 'split': 'train', 'shape': [9988, 1024], 'clips_without_frames': 1}, {'view': 'frame', 'split': 'dev', 'shape': [1108, 1024], 'clips_without_frames': 1}, {'view': 'frame', 'split': 'test', 'shape': [2610, 1024], 'clips_without_frames': 0}], 'seconds': 348, 'gpu_mib_allocated_peak': 1361}
+Loading weights:   0%|          | 0/198 [00:00<?, ?it/s]Loading weights:   7%|▋         | 14/198 [00:00<00:02, 87.01it/s]Loading weights:  29%|██▉       | 58/198 [00:00<00:00, 233.83it/s]Loading weights:  42%|████▏     | 84/198 [00:00<00:00, 173.69it/s]Loading weights:  53%|█████▎    | 104/198 [00:00<00:00, 125.15it/s]Loading weights:  67%|██████▋   | 132/198 [00:00<00:00, 141.29it/s]Loading weights:  75%|███████▌  | 149/198 [00:01<00:00, 139.52it/s]Loading weights:  85%|████████▍ | 168/198 [00:01<00:00, 149.77it/s]Loading weights: 100%|██████████| 198/198 [00:01<00:00, 161.75it/s]
+[transformers] [1mViTModel LOAD REPORT[0m from: trpakov/vit-face-expression
+Key                 | Status     | 
+--------------------+------------+-
+classifier.bias     | UNEXPECTED | 
+classifier.weight   | UNEXPECTED | 
+pooler.dense.weight | MISSING    | 
+pooler.dense.bias   | MISSING    | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+- MISSING:	those params were newly initialized because missing from the checkpoint. Consider training on your downstream task.
+  face train: 2000 of 9988 clips, 14 s
+  face train: 4000 of 9988 clips, 27 s
+  face train: 6000 of 9988 clips, 40 s
+  face train: 8000 of 9988 clips, 54 s
+  face train: 9988 of 9988 clips, 66 s
+vit-face-expression face train: (9988, 769)
+  face dev: 1108 of 1108 clips, 7 s
+vit-face-expression face dev: (1108, 769)
+  face test: 2000 of 2610 clips, 13 s
+  face test: 2610 of 2610 clips, 17 s
+vit-face-expression face test: (2610, 769)
+{'encoder': 'vit-face-expression', 'repo': 'trpakov/vit-face-expression', 'dtype': 'bfloat16', 'load_s': 2.2, 'files': [{'view': 'face', 'split': 'train', 'shape': [9988, 769], 'clips_without_frames': 1}, {'view': 'face', 'split': 'dev', 'shape': [1108, 769], 'clips_without_frames': 1}, {'view': 'face', 'split': 'test', 'shape': [2610, 769], 'clips_without_frames': 0}], 'seconds': 92, 'gpu_mib_allocated_peak': 659}
+  face train: 2000 of 9988 clips, 32 s
+  face train: 4000 of 9988 clips, 56 s
+  face train: 6000 of 9988 clips, 94 s
+  face train: 8000 of 9988 clips, 125 s
+  face train: 9988 of 9988 clips, 158 s
+hsemotion-enet-b2-8 face train: (9988, 1409)
+  face dev: 1108 of 1108 clips, 15 s
+hsemotion-enet-b2-8 face dev: (1108, 1409)
+  face test: 2000 of 2610 clips, 27 s
+  face test: 2610 of 2610 clips, 32 s
+hsemotion-enet-b2-8 face test: (2610, 1409)
+{'encoder': 'hsemotion-enet-b2-8', 'repo': 'HSE-asavchenko/face-emotion-recognition enet_b2_8', 'dtype': 'bfloat16', 'load_s': 2.6, 'files': [{'view': 'face', 'split': 'train', 'shape': [9988, 1409], 'clips_without_frames': 1}, {'view': 'face', 'split': 'dev', 'shape': [1108, 1409], 'clips_without_frames': 1}, {'view': 'face', 'split': 'test', 'shape': [2610, 1409], 'clips_without_frames': 0}], 'seconds': 208, 'gpu_mib_allocated_peak': 1269}

@@ -1,0 +1,41 @@
+{
+ "speaker_rule": "In each frame the largest YuNet face (by box area, score at least 0.6) is taken as the speaker. The crop is a square centred on that box whose side is 1.25 times the box's longer side, clamped to the frame, so a face at the frame's edge gives a crop that is no longer square. This is a guess at the speaker: in two-shots and over-the-shoulder shots the largest face is often the listener.",
+ "detector": {
+  "repo": "opencv/face_detection_yunet",
+  "file": "face_detection_yunet_2023mar.onnx",
+  "score_threshold": 0.6
+ },
+ "train": {
+  "clips": 9988,
+  "clips_without_frames": 1,
+  "clips_with_no_face": 37,
+  "frames": 79904,
+  "frames_with_face": 78788,
+  "frames_with_several_faces": 49832,
+  "frames_unreadable": 0,
+  "frames_detector_error": 0,
+  "median_face_score": 0.919
+ },
+ "dev": {
+  "clips": 1108,
+  "clips_without_frames": 1,
+  "clips_with_no_face": 3,
+  "frames": 8864,
+  "frames_with_face": 8713,
+  "frames_with_several_faces": 5204,
+  "frames_unreadable": 0,
+  "frames_detector_error": 0,
+  "median_face_score": 0.919
+ },
+ "test": {
+  "clips": 2610,
+  "clips_without_frames": 0,
+  "clips_with_no_face": 13,
+  "frames": 20880,
+  "frames_with_face": 20505,
+  "frames_with_several_faces": 12611,
+  "frames_unreadable": 0,
+  "frames_detector_error": 0,
+  "median_face_score": 0.919
+ }
+}

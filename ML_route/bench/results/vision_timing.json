@@ -1,0 +1,105 @@
+{
+ "yunet/face-finding": {
+  "ms_median": 138.1,
+  "ms_p95": 164.15,
+  "clips": 13706,
+  "device": "cpu",
+  "frames_per_clip": 8,
+  "threads": 8,
+  "clips_per_s": 55.95,
+  "note": "per-clip time inside one of the parallel threads"
+ },
+ "siglip2-base/frame": {
+  "ms_median": 18.7,
+  "ms_p95": 34.7,
+  "clips": 13706,
+  "device": "NVIDIA A40 bfloat16",
+  "batch_clips": 16,
+  "note": "amortised batch time per clip (preprocessing plus forward), image decoding and cropping excluded",
+  "splits": [
+   "train",
+   "dev",
+   "test"
+  ]
+ },
+ "siglip2-base/face": {
+  "ms_median": 7.23,
+  "ms_p95": 10.66,
+  "clips": 13706,
+  "device": "NVIDIA A40 bfloat16",
+  "batch_clips": 16,
+  "note": "amortised batch time per clip (preprocessing plus forward), image decoding and cropping excluded",
+  "splits": [
+   "train",
+   "dev",
+   "test"
+  ]
+ },
+ "vjepa2-vitl/frame": {
+  "ms_median": 29.98,
+  "ms_p95": 51.71,
+  "clips": 13706,
+  "device": "NVIDIA A40 bfloat16",
+  "batch_clips": 16,
+  "note": "amortised batch time per clip (preprocessing plus forward), image decoding and cropping excluded",
+  "splits": [
+   "train",
+   "dev",
+   "test"
+  ]
+ },
+ "vit-face-expression/face": {
+  "ms_median": 6.68,
+  "ms_p95": 8.6,
+  "clips": 13706,
+  "device": "NVIDIA A40 bfloat16",
+  "batch_clips": 16,
+  "note": "amortised batch time per clip (preprocessing plus forward), image decoding and cropping excluded",
+  "splits": [
+   "train",
+   "dev",
+   "test"
+  ]
+ },
+ "hsemotion-enet-b2-8/face": {
+  "ms_median": 37.68,
+  "ms_p95": 57.22,
+  "clips": 13706,
+  "device": "NVIDIA A40 bfloat16",
+  "batch_clips": 16,
+  "note": "amortised batch time per clip (preprocessing plus forward), image decoding and cropping excluded",
+  "splits": [
+   "train",
+   "dev",
+   "test"
+  ]
+ },
+ "qwen3.5-4b/tower": {
+  "ms_median": 195.9,
+  "ms_p95": 330.0,
+  "clips": 13706,
+  "device": "NVIDIA A40 bfloat16",
+  "note": "vision module only, timed by forward hooks with a CUDA sync, one clip of eight frames per call; the first clip of each run includes warm-up"
+ },
+ "qwen3.5-4b/reader": {
+  "ms_median": 591.3,
+  "ms_p95": 750.0,
+  "clips": 13706,
+  "device": "NVIDIA A40 bfloat16",
+  "note": "whole frames-only forward pass, vision plus language model, one clip per call; the first clip of each run includes warm-up"
+ },
+ "oneemo/tower": {
+  "ms_median": 196.3,
+  "ms_p95": 289.3,
+  "clips": 13706,
+  "device": "NVIDIA A40 bfloat16",
+  "note": "vision module only, timed by forward hooks with a CUDA sync, one clip of eight frames per call; the first clip of each run includes warm-up"
+ },
+ "oneemo/reader": {
+  "ms_median": 591.7,
+  "ms_p95": 692.8,
+  "clips": 13706,
+  "device": "NVIDIA A40 bfloat16",
+  "note": "whole frames-only forward pass, vision plus language model, one clip per call; the first clip of each run includes warm-up"
+ }
+}
