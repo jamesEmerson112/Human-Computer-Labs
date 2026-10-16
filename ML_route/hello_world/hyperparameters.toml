@@ -12,7 +12,7 @@ dev_csv   = "../data/MELD.Completed/dev_sent_emo.csv"     # label file to valida
 test_csv  = "../data/MELD.Completed/test_sent_emo.csv"    # label file to test on, MELD's published words
 
 features_dir = "../data/fusion"                  # joined features from prepare_features.py
-head_path    = "../data/heads/meld-head.json"    # where the trained head is saved
+head_path    = "../heads/meld-head.json"         # where the trained head is saved (committed)
 
 # Run
 run_id = "meld-head"   # name used for the log and the saved head
@@ -37,9 +37,11 @@ hidden_dim  = 256    # width of the head's hidden layer
 num_classes = 7      # number of emotions in MELD
 leaky_slope = 0.01   # Leaky ReLU slope for negative inputs; 0.0 gives a plain ReLU
 
-# Techniques from parameter_golf (off by default until measured)
-square_activation = false   # LeakyReLU²: square the Leaky ReLU output
-logit_softcap     = 0.0     # cap scores with c * tanh(z / c); parameter_golf used 30
-standardize       = false   # scale each feature column to mean 0 and spread 1, fitted on train
-ema_decay         = 0.0     # score a slow average of the weights; parameter_golf used 0.9965
-grad_clip_norm    = 0.0     # cap the batch-mean gradient's size; parameter_golf used 0.3
+# Techniques from parameter_golf, each measured alone on top of the settings above with seeds 1337,
+# 1 and 2 on 2026-10-16 (mean best-dev / test weighted F1; plain setup: 61.89 / 62.58).
+# Only gradient clipping raised dev by more than its seed spread, so it is the only one switched on.
+square_activation = false   # LeakyReLU²: 60.91 / 61.50, worse and unstable (first loss about 1,700)
+logit_softcap     = 0.0     # softcap 30: 25.18 / 31.27, collapsed; raw scores saturate tanh, so no gradient
+standardize       = false   # 58.46 / 58.55, worse: voice columns weigh as much as the words once scaled
+ema_decay         = 0.0     # EMA 0.9965: 61.31 / 62.48, no gain
+grad_clip_norm    = 0.3     # clip 0.3: 62.45 / 62.53, a small dev gain

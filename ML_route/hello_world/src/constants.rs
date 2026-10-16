@@ -41,7 +41,7 @@ pub const FEATURES_DIR: &str = "../data/fusion";
 /**
  * Description: Where the trained head is saved, relative to this crate's folder.
  */
-pub const HEAD_JSON: &str = "../data/heads/meld-head.json";
+pub const HEAD_JSON: &str = "../heads/meld-head.json";
 
 /**
  * Description: Path of the text file the dialogues are written to, relative to this crate's folder.
