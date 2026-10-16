@@ -2,11 +2,15 @@
 
 Contents:
 - Handler: answers /api/status and /api/reply on port 8768
-- write_reply: builds the prompt for one line and generates the reply, with timings
+- parse_history: reads and checks the optional list of the dialogue's earlier lines
+- clean_reply: strips copied example layout from the model's output
+- scene_transcript: writes those earlier lines as a plain transcript
+- write_reply: builds the prompt for one line, alone or after its dialogue so far, and generates the reply
 - main: loads LFM2.5, warms it up and starts the server
 """
 
 import json
+import re
 import sys
 import time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -30,13 +34,21 @@ FEELS    = {
     "fear": "scared",
 }
 """Description: MELD's seven labels, the only emotions a request may name, each with the adjective the prompt uses."""
-MAX_NEW_TOKENS = 40
-"""Description: The longest reply in tokens, the same cap the A40 reply benchmark used."""
+MAX_NEW_TOKENS = 30
+"""Description: The longest reply in tokens, enough for one sentence of about 20 words."""
 MAX_TEXT = 600
 """Description: The longest line in characters the server accepts."""
-SYSTEM = ("You are a warm, caring friend in a conversation. Speak directly to the person, addressing them as "
-          "'you', in one short sentence of at most 20 words. Respond to how they feel, and never describe them "
-          "or explain yourself.")
+MAX_HISTORY = 40
+"""Description: The most earlier lines one request may carry; MELD's longest dialogue has 24 lines."""
+SYSTEM = (
+    "You are a warm, funny friend in the room with these people, like a friend in a sitcom, not a counsellor. "
+    "Reply only to the last speaker, in one short sentence of at most 20 words. Answer what they actually said, "
+    "in a tone that fits how they feel. Never tell them how they feel, never start with 'It sounds like' or "
+    "'You're feeling', and never explain yourself.\n"
+    "Examples:\n"
+    'Monica (happy): "I got the job!" -> "No way! Drinks are on you tonight!"\n'
+    'Joey (angry): "You ate my sandwich? Again?" -> "Okay, okay, I\'ll buy you two tomorrow, I promise."'
+)
 """Description: The system prompt for every reply."""
 
 model     = None
@@ -53,23 +65,76 @@ def ms(seconds):
     return round(seconds * 1000)
 
 
-def write_reply(text, emotion, speaker):
+def parse_history(raw):
+    """
+    Description: Reads the optional history query value and checks its shape.
+    Inputs:
+    - raw: a JSON list of {"speaker", "text"} objects, or an empty string.
+    Outputs: the list (empty when raw is empty), or None when the value is malformed or too long.
+    """
+    if not raw:
+        return []
+    try:
+        history = json.loads(raw)
+    except ValueError:
+        return None
+    if not isinstance(history, list) or len(history) > MAX_HISTORY:
+        return None
+    for line in history:
+        if not isinstance(line, dict) or not isinstance(line.get("text"), str) or len(line["text"]) > MAX_TEXT:
+            return None
+        line["speaker"] = str(line.get("speaker") or "")[:60]
+    return history
+
+
+def clean_reply(raw):
+    """
+    Description: Strips layout the model copies from the prompt's examples, so only the spoken reply is left.
+    Inputs:
+    - raw: the decoded model output.
+    Outputs: the last non-empty line, without a leading "Name:" or "->" label and without wrapping quotes.
+    """
+    lines = [line.strip() for line in raw.splitlines() if line.strip()]
+    reply = lines[-1] if lines else ""
+    reply = re.sub(r"^(->\s*|[A-Z][A-Za-z .']{0,30}:\s+)", "", reply)
+    # A quoted echo of the speaker's line can come before the real reply.
+    reply = re.sub(r'^"[^"]*"\s+(?=\S)', "", reply)
+    return reply.strip().strip('"').strip()
+
+
+def scene_transcript(history):
+    """
+    Description: Writes the earlier lines of a dialogue as a plain transcript, so a reply can see the scene
+    without taking part in it.
+    Inputs:
+    - history: a list of dicts with "speaker" and "text", oldest first.
+    Outputs: one "Speaker: line" row per earlier line, joined by line breaks.
+    """
+    return "\n".join(f'{line["speaker"] or "Someone"}: {line["text"]}' for line in history)
+
+
+def write_reply(text, emotion, speaker, history=None):
     """
     Description: Generates a one-sentence reply to a line, given the emotion it was heard with.
     Inputs:
     - text: the spoken line.
     - emotion: one of the keys of FEELS.
     - speaker: the speaker's name, or an empty string.
-    Outputs: a dict with the reply, the tokens generated, and the time spent in the model.
+    - history: the dialogue's earlier lines for scene_transcript, or None to reply to this line alone.
+    Outputs: a dict with the reply, the tokens generated, the prompt length in tokens, the number of earlier
+    lines seen, and the time spent in the model.
     Constraints: greedy decoding, so the same input always gives the same reply. serve.py makes calls take
     turns with the speech models, so this server runs one call at a time.
     """
     import torch
 
+    history      = history or []
     who          = speaker or "Your friend"
+    scene        = f"The conversation so far:\n{scene_transcript(history)}\n\n" if history else ""
     user_message = (
-        f'{who} says to you: "{text}"\n'
-        f"{who} sounds {FEELS[emotion]}. Write what you say back."
+        f"{scene}"
+        f'{who} now says: "{text}"\n'
+        f"{who} sounds {FEELS[emotion]}. Write what you say back to {who}."
     )
     messages     = [
         {"role": "system", "content": SYSTEM},
@@ -94,10 +159,12 @@ def write_reply(text, emotion, speaker):
 
     prompt_length = inputs["input_ids"].shape[1]
     new_tokens    = out[0, prompt_length:]
-    reply         = tokenizer.decode(new_tokens, skip_special_tokens=True).strip()
+    reply         = clean_reply(tokenizer.decode(new_tokens, skip_special_tokens=True))
     return {
         "reply": reply,
         "tokens": int(new_tokens.shape[0]),
+        "prompt_tokens": int(prompt_length),
+        "history_lines": len(history),
         "model_ms": ms(done - started),
         "server_ms": ms(done - started),
     }
@@ -135,13 +202,14 @@ class Handler(BaseHTTPRequestHandler):
             text    = query.get("text", [""])[0].strip()
             emotion = query.get("emotion", [""])[0]
             speaker = query.get("speaker", [""])[0].strip()[:60]
+            history = parse_history(query.get("history", [""])[0])
 
-            bad_request = emotion not in FEELS or not text or len(text) > MAX_TEXT
+            bad_request = emotion not in FEELS or not text or len(text) > MAX_TEXT or history is None
             if bad_request:
-                self.send_json(400, {"error": "unknown emotion, or the line is empty or too long"})
+                self.send_json(400, {"error": "unknown emotion, bad history, or the line is empty or too long"})
                 return
 
-            self.send_json(200, write_reply(text, emotion, speaker))
+            self.send_json(200, write_reply(text, emotion, speaker, history))
             return
 
         self.send_json(404, {"error": "not found"})

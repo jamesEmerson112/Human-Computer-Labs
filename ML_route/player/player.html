@@ -126,6 +126,11 @@ main {
 .logbar label, .logbar .small { white-space: nowrap; }
 .logbar .spacer { flex: 1; }
 table { border-collapse: collapse; width: 100%; font-size: 14px; }
+.wide { grid-column: 1 / -1; }
+.tablewrap { overflow-x: auto; }
+table.replies { min-width: 760px; }
+table.replies td { vertical-align: top; }
+table.replies th:nth-child(4), table.replies th:nth-child(5) { width: 30%; }
 th, td { text-align: left; padding: 5px 6px; border-bottom: 1px solid var(--line); }
 td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
 .small { color: var(--muted); font-size: 13px; }
@@ -284,11 +289,26 @@ kbd {
     time beside the guess is how long the emotion took after the clip ended.
     With <code>serve.py</code> running, live speech-to-text transcribes each
     clip's audio on the GPU when the clip ends and shows how long that took.
-    Whisper always runs, and Nemotron runs too when <code>serve_nemotron.py</code>
-    is up. With <code>serve_reply.py</code> up, LFM2.5 also writes a live reply
-    to each line for its guessed emotion. The models take turns on the GPU, so
+    Whisper runs the speech-to-text. With <code>serve_reply.py</code> up, LFM2.5 also writes two live
+    replies to each line for MELD's own emotion label, one from the line alone and
+    one from the dialogue so far, compared in the table below. The models take turns on the GPU, so
     later ones wait.</p>
     <div class="lines" id="lines"></div>
+  </section>
+  <section class="panel wide">
+    <h2>Replies compared</h2>
+    <p class="hint">LFM2.5 writes two replies to each line of this dialogue. The
+    first sees only that line. The second also sees every earlier line of the
+    dialogue as a plain transcript, without its own earlier replies. Both answer
+    MELD's own emotion label for the line, not the random guess, so the replies
+    can be judged on their own.</p>
+    <div class="tablewrap">
+      <table class="replies">
+        <thead><tr><th>#</th><th>Line</th><th>Emotion</th><th>This line only</th>
+          <th>With the dialogue so far</th></tr></thead>
+        <tbody id="replybody"></tbody>
+      </table>
+    </div>
   </section>
 </main>
 <script>
@@ -395,6 +415,7 @@ function renderLines() {
     </div>`;
   }).join("");
   renderScore();
+  renderReplyTable();
 }
 
 function formatLatency(ms) {
@@ -607,15 +628,19 @@ function renderSwitch() {
   $("switch").textContent = `Clip switch ${Math.round(mean)} ms on average`;
 }
 
-/* ---------- live speech-to-text (needs serve.py; Nemotron also needs serve_nemotron.py) ---------- */
+/* ---------- live speech-to-text (needs serve.py) ---------- */
 
 const LIVE_MODELS = [
   { id: "whisper", label: "Whisper" },
-  { id: "nemotron", label: "Nemotron" },
 ];
 const liveReady = {};
-const replies = {};
-const replyTimes = [];
+// The two reply versions: "single" sees only the line, "context" also sees the dialogue's earlier lines.
+const REPLY_MODES = [
+  { id: "single", label: "this line only" },
+  { id: "context", label: "with the dialogue so far" },
+];
+const replies = { single: {}, context: {} };
+const replyTimes = { single: [], context: [] };
 let replyReady = false;
 const live = {};
 const liveTimes = {};
@@ -651,29 +676,33 @@ async function checkLive() {
   $("livereply").checked = replyReady && recall("livereply") !== "0";
 }
 
-function startReply(split, dia, utt, text, emotion, speaker, record) {
-  if (!$("livereply").checked || !replyReady) return;
+function historyBefore(split, dia, utt) {
+  return DATA[split][dia]
+    .filter((line) => line[0] < utt)
+    .map((line) => ({ speaker: line[1], text: textOf(line) }));
+}
+
+function requestReply(mode, split, dia, utt, text, emotion, speaker, record, sent) {
   const lineKey = `${split}-${dia}-${utt}`;
-  const sent = performance.now();
-  replies[lineKey] = { pending: true };
-  const query = new URLSearchParams({ text, emotion, speaker });
-  fetch(`api/reply?${query}`, { cache: "no-store" })
+  const params = { text, emotion, speaker };
+  if (mode === "context") params.history = JSON.stringify(historyBefore(split, dia, utt));
+  return fetch(`api/reply?${new URLSearchParams(params)}`, { cache: "no-store" })
     .then(async (res) => {
       const body = await res.json();
       const total = performance.now() - sent;
       if (!res.ok) {
-        replies[lineKey] = { error: body.error || `HTTP ${res.status}` };
-        record.live_reply_error = replies[lineKey].error;
+        replies[mode][lineKey] = { error: body.error || `HTTP ${res.status}` };
+        record[`live_reply_${mode}_error`] = replies[mode][lineKey].error;
         return;
       }
-      replies[lineKey] = { ...body, total_ms: total };
-      replyTimes.push(total);
-      record.live_reply_text = body.reply;
-      record.live_reply_ms = Math.round(total);
+      replies[mode][lineKey] = { ...body, total_ms: total };
+      replyTimes[mode].push(total);
+      record[`live_reply_${mode}_text`] = body.reply;
+      record[`live_reply_${mode}_ms`] = Math.round(total);
     })
     .catch((err) => {
-      replies[lineKey] = { error: String(err) };
-      record.live_reply_error = replies[lineKey].error;
+      replies[mode][lineKey] = { error: String(err) };
+      record[`live_reply_${mode}_error`] = replies[mode][lineKey].error;
     })
     .finally(() => {
       renderLines();
@@ -682,19 +711,47 @@ function startReply(split, dia, utt, text, emotion, speaker, record) {
     });
 }
 
-function replyHtml(utt) {
-  const result = replies[key(utt)];
+function startReply(split, dia, utt, text, emotion, speaker, record) {
+  if (!$("livereply").checked || !replyReady) return;
+  const lineKey = `${split}-${dia}-${utt}`;
+  const sent = performance.now();
+  record.reply_emotion = emotion;
+  for (const m of REPLY_MODES) {
+    replies[m.id][lineKey] = { pending: true };
+    requestReply(m.id, split, dia, utt, text, emotion, speaker, record, sent);
+  }
+}
+
+function replyCell(mode, utt) {
+  const result = replies[mode][key(utt)];
   if (!result) return "";
-  const label = `<span class="livelabel">Live reply (LFM2.5):</span>`;
-  if (result.pending) return `<div class="live">${label} writing&hellip;</div>`;
+  if (result.pending) return "writing&hellip;";
   if (result.error) {
-    return `<div class="live">${label} could not reply ` +
-      `<span class="small" title="${esc(result.error)}">(${esc(shortError(result.error))})</span></div>`;
+    return `could not reply <span class="small" title="${esc(result.error)}">(${esc(shortError(result.error))})</span>`;
   }
   const queued = result.wait_ms > 20 ? `, waiting for the GPU ${seconds(result.wait_ms)}` : "";
-  return `<div class="live">${label} ${esc(result.reply)}` +
-    `<div class="livetime">${seconds(result.total_ms)} after the clip ended ` +
-    `(LFM2.5 ${seconds(result.model_ms)} for ${result.tokens} tokens${queued})</div></div>`;
+  const seen = mode === "context" ? `, after ${result.history_lines} earlier lines (${result.prompt_tokens} prompt tokens)` : "";
+  return `${esc(result.reply)}<div class="livetime">${seconds(result.total_ms)} after the clip ended ` +
+    `(LFM2.5 ${seconds(result.model_ms)} for ${result.tokens} tokens${queued}${seen})</div>`;
+}
+
+function replyHtml(utt) {
+  return REPLY_MODES.map((m) => {
+    const cell = replyCell(m.id, utt);
+    if (!cell) return "";
+    return `<div class="live"><span class="livelabel">Live reply, ${m.label}:</span> ${cell}</div>`;
+  }).join("");
+}
+
+function renderReplyTable() {
+  const rows = lines().filter((line) => REPLY_MODES.some((m) => replies[m.id][key(line[0])]));
+  $("replybody").innerHTML = rows.length ? rows.map((line) => {
+    const [utt, speaker, label] = line;
+    const guess = guesses[key(utt)];
+    return `<tr><td>${utt}</td><td><b>${esc(speaker)}</b>: ${esc(textOf(line))}</td>` +
+      `<td>${label}<div class="small">${guess ? `random guess: ${guess.guess}` : ""}</div></td>` +
+      REPLY_MODES.map((m) => `<td>${replyCell(m.id, utt)}</td>`).join("") + "</tr>";
+  }).join("") : `<tr><td colspan="5" class="small">Play lines with Live reply on to fill this table.</td></tr>`;
 }
 
 function startLive(split, dia, utt, record) {
@@ -757,11 +814,13 @@ function renderLiveAverage() {
     const t = liveTimes[m.id];
     return `${m.label} ${seconds(t.reduce((a, b) => a + b, 0) / t.length)}`;
   });
-  if (replyTimes.length) {
-    parts.push(`LFM2.5 reply ${seconds(replyTimes.reduce((a, b) => a + b, 0) / replyTimes.length)}`);
+  for (const m of REPLY_MODES) {
+    const t = replyTimes[m.id];
+    if (t.length) parts.push(`LFM2.5 reply, ${m.label}, ${seconds(t.reduce((a, b) => a + b, 0) / t.length)}`);
   }
   if (!parts.length) return;
-  const lines = Math.max(replyTimes.length, ...LIVE_MODELS.map((m) => liveTimes[m.id].length));
+  const lines = Math.max(...REPLY_MODES.map((m) => replyTimes[m.id].length),
+                         ...LIVE_MODELS.map((m) => liveTimes[m.id].length));
   $("liveavg").textContent = `Live models on average over ${lines} lines: ${parts.join(", ")}`;
 }
 
@@ -819,7 +878,8 @@ for (const video of players) {
     };
     output.push(record);
     startLive(state.split, dialogueId(), playing, record);
-    startReply(state.split, dialogueId(), playing, textOf(line), guess, line[1], record);
+    // Replies answer MELD's own label until a real classifier replaces the random guess.
+    startReply(state.split, dialogueId(), playing, textOf(line), line[2], line[1], record);
     $("tag").innerHTML = `${esc(clipName(playing))} &rarr; <b>${guess}</b>: ` +
       `&ldquo;${esc(reply)}&rdquo;`;
     renderLog();

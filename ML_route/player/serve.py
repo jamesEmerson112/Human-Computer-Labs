@@ -1,11 +1,10 @@
-"""Serves the MELD player and transcribes its clips live with Whisper, with Nemotron when serve_nemotron.py runs,
-and writes replies with LFM2.5 when serve_reply.py runs.
+"""Serves the MELD player, transcribes its clips live with Whisper, and writes replies with LFM2.5 when serve_reply.py runs.
 
 Contents:
 - Handler: serves ML_route/data plus the /api/status, /api/transcribe and /api/reply endpoints
 - transcribe_clip: decodes one clip and runs Whisper on it, with timings
-- nemotron_status: asks serve_nemotron.py whether Nemotron is loaded
-- forward_nemotron: passes one clip to serve_nemotron.py, taking a turn on the GPU
+- helper_status: asks a helper server whether its model is loaded
+- forward: passes one request to a helper server, taking a turn on the GPU
 - forward_reply: passes one line to serve_reply.py, taking a turn on the GPU
 - main: loads Whisper, warms it up and starts the server
 """
@@ -35,14 +34,12 @@ DEVICE = "cuda"
 COMPUTE = "int8"
 CLIP_NAME = re.compile(r"^dia\d+_utt\d+$")
 """Description: The only clip names the server accepts, so no other file can be requested."""
-NEMOTRON_URL = "http://127.0.0.1:8766"
-"""Description: Where serve_nemotron.py listens."""
 REPLY_URL = "http://127.0.0.1:8768"
 """Description: Where serve_reply.py listens."""
 
 model = None
 gpu_lock = threading.Lock()
-"""Description: Held while any model runs, so Whisper, Nemotron and LFM2.5 take turns on the one GPU."""
+"""Description: Held while any model runs, so Whisper and LFM2.5 take turns on the one GPU."""
 
 
 def ms(seconds):
@@ -104,15 +101,6 @@ def helper_status(base, script):
         return {"ready": False, "error": f"start {script}"}
 
 
-def nemotron_status():
-    """
-    Description: Asks serve_nemotron.py for its status.
-    Inputs: none
-    Outputs: its status dict, or {"ready": False, "error": ...} when it is not running.
-    """
-    return helper_status(NEMOTRON_URL, "serve_nemotron.py")
-
-
 def forward(base, script, path, params):
     """
     Description: Passes one request to a helper server while holding the GPU turn.
@@ -137,26 +125,18 @@ def forward(base, script, path, params):
     return status, body
 
 
-def forward_nemotron(split, clip):
-    """
-    Description: Passes one clip to serve_nemotron.py while holding the GPU turn.
-    Inputs:
-    - split, clip: which clip to transcribe.
-    Outputs: (HTTP status, response dict), with wait_ms set to the time spent waiting for the turn.
-    """
-    return forward(NEMOTRON_URL, "serve_nemotron.py", "/api/transcribe", {"split": split, "clip": clip})
-
-
-def forward_reply(text, emotion, speaker):
+def forward_reply(text, emotion, speaker, history):
     """
     Description: Passes one line to serve_reply.py while holding the GPU turn.
     Inputs:
     - text: the spoken line.
     - emotion: the emotion the reply should answer.
     - speaker: the speaker's name.
+    - history: the dialogue's earlier lines as a JSON string, or an empty string for this line alone.
     Outputs: (HTTP status, response dict), with wait_ms set to the time spent waiting for the turn.
     """
-    return forward(REPLY_URL, "serve_reply.py", "/api/reply", {"text": text, "emotion": emotion, "speaker": speaker})
+    params = {"text": text, "emotion": emotion, "speaker": speaker, "history": history}
+    return forward(REPLY_URL, "serve_reply.py", "/api/reply", params)
 
 
 class Handler(SimpleHTTPRequestHandler):
@@ -181,24 +161,21 @@ class Handler(SimpleHTTPRequestHandler):
         if url.path == "/api/status":
             whisper = {"model": MODEL_NAME, "device": DEVICE, "compute": COMPUTE,
                        "ready": model is not None}
-            self.send_json(200, {**whisper, "models": {"whisper": whisper, "nemotron": nemotron_status(),
+            self.send_json(200, {**whisper, "models": {"whisper": whisper,
                                                        "reply": helper_status(REPLY_URL, "serve_reply.py")}})
             return
         if url.path == "/api/reply":
             query = parse_qs(url.query)
             self.send_json(*forward_reply(query.get("text", [""])[0], query.get("emotion", [""])[0],
-                                          query.get("speaker", [""])[0]))
+                                          query.get("speaker", [""])[0], query.get("history", [""])[0]))
             return
         if url.path == "/api/transcribe":
             query = parse_qs(url.query)
             split = query.get("split", [""])[0]
             clip = query.get("clip", [""])[0]
             which = query.get("model", ["whisper"])[0]
-            if split not in CLIP_DIRS or not CLIP_NAME.match(clip) or which not in ("whisper", "nemotron"):
+            if split not in CLIP_DIRS or not CLIP_NAME.match(clip) or which != "whisper":
                 self.send_json(400, {"error": "unknown model, split or clip name"})
-                return
-            if which == "nemotron":
-                self.send_json(*forward_nemotron(split, clip))
                 return
             try:
                 self.send_json(200, transcribe_clip(split, clip))
