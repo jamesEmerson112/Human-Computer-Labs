@@ -5,6 +5,7 @@ Contents:
 - parse_history: reads and checks the optional list of the dialogue's earlier lines
 - clean_reply: strips copied example layout from the model's output
 - scene_transcript: writes those earlier lines as a plain transcript
+- reply_length: picks the reply's word target, matched to the line or now and then a long turn
 - write_reply: builds the prompt for one line, alone or after its dialogue so far, and generates the reply
 - main: loads LFM2.5, warms it up and starts the server
 """
@@ -13,6 +14,7 @@ import json
 import re
 import sys
 import time
+import zlib
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse
@@ -36,15 +38,23 @@ FEELS    = {
 """Description: MELD's seven labels, the only emotions a request may name, each with the adjective the prompt uses."""
 MAX_NEW_TOKENS = 30
 """Description: The longest reply in tokens, enough for one sentence of about 20 words."""
+LONG_WORDS = 20
+"""Description: The word limit of a long turn, the default reply length."""
+MIN_WORDS = 2
+"""Description: The shortest word target, so a one-word line still gets a real answer."""
+LONG_EVERY = 4
+"""Description: About one line in this many gets a long turn instead of a reply matched to its length."""
 MAX_TEXT = 600
 """Description: The longest line in characters the server accepts."""
 MAX_HISTORY = 40
 """Description: The most earlier lines one request may carry; MELD's longest dialogue has 24 lines."""
 SYSTEM = (
     "You are a warm, funny friend in the room with these people, like a friend in a sitcom, not a counsellor. "
-    "Reply only to the last speaker, in one short sentence of at most 20 words. Answer what they actually said, "
+    "Reply only to the last speaker, in one short sentence, keeping to the length you are asked for. "
+    "Answer what they actually said, "
     "in a tone that fits how they feel. Never tell them how they feel, never start with 'It sounds like' or "
-    "'You're feeling', and never explain yourself.\n"
+    "'You're feeling', and never explain yourself. Don't open with 'Hey' and their name: in a one-on-one "
+    "conversation, calling someone by name makes it sound slightly serious, even hostile.\n"
     "Examples:\n"
     'Monica (happy): "I got the job!" -> "No way! Drinks are on you tonight!"\n'
     'Joey (angry): "You ate my sandwich? Again?" -> "Okay, okay, I\'ll buy you two tomorrow, I promise."'
@@ -113,6 +123,24 @@ def scene_transcript(history):
     return "\n".join(f'{line["speaker"] or "Someone"}: {line["text"]}' for line in history)
 
 
+def reply_length(text):
+    """
+    Description: Picks how long the reply to a line should be: about as long as the line, or now and then a
+    long turn at the default length.
+    Inputs:
+    - text: the spoken line.
+    Outputs: (word target, whether this is a long turn, the token cap for generation).
+    Constraints: the long-turn choice comes from a checksum of the text, so the same line always gets the same
+    length and greedy decoding stays repeatable.
+    """
+    line_words = len(text.split())
+    long_turn  = zlib.crc32(text.encode("utf-8")) % LONG_EVERY == 0
+    target     = LONG_WORDS if long_turn else max(MIN_WORDS, min(LONG_WORDS, line_words))
+    # About 1.5 tokens per word plus room to finish the sentence, never above the overall cap.
+    max_tokens = MAX_NEW_TOKENS if long_turn else min(MAX_NEW_TOKENS, round(target * 1.5) + 6)
+    return target, long_turn, max_tokens
+
+
 def write_reply(text, emotion, speaker, history=None):
     """
     Description: Generates a one-sentence reply to a line, given the emotion it was heard with.
@@ -128,13 +156,17 @@ def write_reply(text, emotion, speaker, history=None):
     """
     import torch
 
+    target, long_turn, max_tokens = reply_length(text)
+
     history      = history or []
     who          = speaker or "Your friend"
     scene        = f"The conversation so far:\n{scene_transcript(history)}\n\n" if history else ""
+    length       = (f"Use at most {target} words." if long_turn
+                    else f"Match their length: use about {target} words, never more than {target + 3}.")
     user_message = (
         f"{scene}"
         f'{who} now says: "{text}"\n'
-        f"{who} sounds {FEELS[emotion]}. Write what you say back to {who}."
+        f"{who} sounds {FEELS[emotion]}. Write what you say back to {who}. {length}"
     )
     messages     = [
         {"role": "system", "content": SYSTEM},
@@ -151,7 +183,7 @@ def write_reply(text, emotion, speaker, history=None):
     with torch.inference_mode():
         out = model.generate(
             **inputs,
-            max_new_tokens=MAX_NEW_TOKENS,
+            max_new_tokens=max_tokens,
             do_sample=False,
         )
     torch.cuda.synchronize()
@@ -165,6 +197,8 @@ def write_reply(text, emotion, speaker, history=None):
         "tokens": int(new_tokens.shape[0]),
         "prompt_tokens": int(prompt_length),
         "history_lines": len(history),
+        "target_words": target,
+        "long_turn": long_turn,
         "model_ms": ms(done - started),
         "server_ms": ms(done - started),
     }

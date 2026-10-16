@@ -126,11 +126,6 @@ main {
 .logbar label, .logbar .small { white-space: nowrap; }
 .logbar .spacer { flex: 1; }
 table { border-collapse: collapse; width: 100%; font-size: 14px; }
-.wide { grid-column: 1 / -1; }
-.tablewrap { overflow-x: auto; }
-table.replies { min-width: 760px; }
-table.replies td { vertical-align: top; }
-table.replies th:nth-child(4), table.replies th:nth-child(5) { width: 30%; }
 th, td { text-align: left; padding: 5px 6px; border-bottom: 1px solid var(--line); }
 td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
 .small { color: var(--muted); font-size: 13px; }
@@ -233,6 +228,10 @@ kbd {
       <label><input type="checkbox" id="live"> Live speech-to-text</label>
       <span class="small" id="livestatus">checking…</span>
       <label><input type="checkbox" id="livereply"> Live reply</label>
+      <select id="replymode" aria-label="What the live reply sees">
+        <option value="context">with the dialogue so far</option>
+        <option value="single">this line only</option>
+      </select>
       <span class="small" id="replystatus"></span>
     </div>
     <div class="tabs" role="tablist">
@@ -289,26 +288,11 @@ kbd {
     time beside the guess is how long the emotion took after the clip ended.
     With <code>serve.py</code> running, live speech-to-text transcribes each
     clip's audio on the GPU when the clip ends and shows how long that took.
-    Whisper runs the speech-to-text. With <code>serve_reply.py</code> up, LFM2.5 also writes two live
-    replies to each line for MELD's own emotion label, one from the line alone and
-    one from the dialogue so far, compared in the table below. The models take turns on the GPU, so
-    later ones wait.</p>
+    Whisper runs the speech-to-text. With <code>serve_reply.py</code> up, LFM2.5 also writes a live
+    reply to each line for MELD's own emotion label. By default the reply also sees
+    the dialogue's earlier lines as a transcript; the menu beside Live reply switches
+    it to the line alone. The models take turns on the GPU, so later ones wait.</p>
     <div class="lines" id="lines"></div>
-  </section>
-  <section class="panel wide">
-    <h2>Replies compared</h2>
-    <p class="hint">LFM2.5 writes two replies to each line of this dialogue. The
-    first sees only that line. The second also sees every earlier line of the
-    dialogue as a plain transcript, without its own earlier replies. Both answer
-    MELD's own emotion label for the line, not the random guess, so the replies
-    can be judged on their own.</p>
-    <div class="tablewrap">
-      <table class="replies">
-        <thead><tr><th>#</th><th>Line</th><th>Emotion</th><th>This line only</th>
-          <th>With the dialogue so far</th></tr></thead>
-        <tbody id="replybody"></tbody>
-      </table>
-    </div>
   </section>
 </main>
 <script>
@@ -415,7 +399,6 @@ function renderLines() {
     </div>`;
   }).join("");
   renderScore();
-  renderReplyTable();
 }
 
 function formatLatency(ms) {
@@ -634,7 +617,8 @@ const LIVE_MODELS = [
   { id: "whisper", label: "Whisper" },
 ];
 const liveReady = {};
-// The two reply versions: "single" sees only the line, "context" also sees the dialogue's earlier lines.
+// The reply modes, picked in the #replymode menu: "context" (the default) also sees the dialogue's earlier
+// lines, and "single" sees only the line.
 const REPLY_MODES = [
   { id: "single", label: "this line only" },
   { id: "context", label: "with the dialogue so far" },
@@ -715,11 +699,11 @@ function startReply(split, dia, utt, text, emotion, speaker, record) {
   if (!$("livereply").checked || !replyReady) return;
   const lineKey = `${split}-${dia}-${utt}`;
   const sent = performance.now();
+  const mode = $("replymode").value;
   record.reply_emotion = emotion;
-  for (const m of REPLY_MODES) {
-    replies[m.id][lineKey] = { pending: true };
-    requestReply(m.id, split, dia, utt, text, emotion, speaker, record, sent);
-  }
+  record.reply_mode = mode;
+  replies[mode][lineKey] = { pending: true };
+  requestReply(mode, split, dia, utt, text, emotion, speaker, record, sent);
 }
 
 function replyCell(mode, utt) {
@@ -731,8 +715,9 @@ function replyCell(mode, utt) {
   }
   const queued = result.wait_ms > 20 ? `, waiting for the GPU ${seconds(result.wait_ms)}` : "";
   const seen = mode === "context" ? `, after ${result.history_lines} earlier lines (${result.prompt_tokens} prompt tokens)` : "";
+  const aim = result.long_turn ? ", long turn" : result.target_words ? `, aimed at ${result.target_words} words` : "";
   return `${esc(result.reply)}<div class="livetime">${seconds(result.total_ms)} after the clip ended ` +
-    `(LFM2.5 ${seconds(result.model_ms)} for ${result.tokens} tokens${queued}${seen})</div>`;
+    `(LFM2.5 ${seconds(result.model_ms)} for ${result.tokens} tokens${aim}${queued}${seen})</div>`;
 }
 
 function replyHtml(utt) {
@@ -741,17 +726,6 @@ function replyHtml(utt) {
     if (!cell) return "";
     return `<div class="live"><span class="livelabel">Live reply, ${m.label}:</span> ${cell}</div>`;
   }).join("");
-}
-
-function renderReplyTable() {
-  const rows = lines().filter((line) => REPLY_MODES.some((m) => replies[m.id][key(line[0])]));
-  $("replybody").innerHTML = rows.length ? rows.map((line) => {
-    const [utt, speaker, label] = line;
-    const guess = guesses[key(utt)];
-    return `<tr><td>${utt}</td><td><b>${esc(speaker)}</b>: ${esc(textOf(line))}</td>` +
-      `<td>${label}<div class="small">${guess ? `random guess: ${guess.guess}` : ""}</div></td>` +
-      REPLY_MODES.map((m) => `<td>${replyCell(m.id, utt)}</td>`).join("") + "</tr>";
-  }).join("") : `<tr><td colspan="5" class="small">Play lines with Live reply on to fill this table.</td></tr>`;
 }
 
 function startLive(split, dia, utt, record) {
@@ -1150,6 +1124,8 @@ applyTheme(recall("theme") || "auto");
   $("continue").checked = recall("continue") === "1";
   $("live").addEventListener("change", () => store("live", $("live").checked ? "1" : "0"));
   $("livereply").addEventListener("change", () => store("livereply", $("livereply").checked ? "1" : "0"));
+  $("replymode").value = recall("replymode") === "single" ? "single" : "context";
+  $("replymode").addEventListener("change", () => store("replymode", $("replymode").value));
   checkLive();
   const captionMode = recall("caption-mode");
   if (["line", "words", "off"].includes(captionMode)) $("captions").value = captionMode;
