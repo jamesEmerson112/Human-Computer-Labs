@@ -188,6 +188,9 @@ def verify(args) -> None:
         assert set(gesture_names(page)) == expected_names and len(gesture_names(page)) == len(expected)
         verify_catalog(page.evaluate("lampVerification.hellos.at(-1).gestures"), expected)
         assert page.evaluate("document.querySelectorAll('#joints input').length") == 5
+        assert page.evaluate("Number(document.querySelector('#pace').max)") == 3
+        assert page.evaluate("Number(document.querySelector('#pace').value)") == 1
+        assert page.evaluate("lampVerification.latest.speed") == 1
         manifest["viewport"] = page.evaluate("({width:innerWidth,height:innerHeight,dpr:devicePixelRatio})")
         manifest["canvas"] = page.evaluate("({width:document.querySelector('canvas').width,height:document.querySelector('canvas').height})")
         checks.append(f"Loads all {len(expected)} local gestures, five joint controls, rendered scene, and fresh controller state")
@@ -219,11 +222,18 @@ def verify(args) -> None:
 
         change(page, "pace", "0.35")
         wait_for(page, "Math.abs(lampVerification.latest.speed - 0.35) < 1e-9")
-        change(page, "pace", "0.5")
+        change(page, "pace", "2")
+        wait_for(page, "lampVerification.latest.speed === 2 && document.querySelector('#pace-value').textContent === '2.00×'")
+        change(page, "pace", "3")
+        wait_for(page, "lampVerification.latest.speed === 3 && document.querySelector('#pace-value').textContent === '3.00×'")
+        page.evaluate("document.querySelector('#pace').scrollIntoView({block: 'center'})")
+        capture(page, output / "viewer-pace-3x.png")
         for joint, target in (("base_yaw_joint", 0.15), ("shoulder_pitch_joint", 0.1), ("elbow_pitch_joint", -0.1), ("neck_yaw_joint", 0.1), ("head_pitch_joint", 0.435)):
             change(page, joint, target)
             wait_for(page, "Math.abs(lampVerification.latest.requested[%s] - %s) < 0.001" % (json.dumps(joint), target))
-        checks.append("Pace and all five manual targets update the native controller")
+        checks.append("Pace defaults to 1x, accepts 2x and 3x, and all five manual targets update the native controller")
+        change(page, "pace", "1")
+        wait_for(page, "lampVerification.latest.speed === 1")
         change(page, "brightness", "7.5")
         wait_for(page, "lampVerification.latest.light.brightness === 7.5")
         click(page, "light-enabled")
@@ -274,7 +284,7 @@ def verify(args) -> None:
         server = launch_server("-restart")
         wait_for(page, "document.querySelector('#play') && !document.querySelector('#play').disabled", seconds=15)
         assert page.evaluate("lampVerification.commands.length") == before_offline
-        assert page.evaluate("lampVerification.latest.speed") == 0.5
+        assert page.evaluate("lampVerification.latest.speed") == 1
         assert page.evaluate("lampVerification.latest.activity") == "Ready"
         checks.append("Server loss disables commands; offline actions are not sent or replayed; restart receives fresh state")
 

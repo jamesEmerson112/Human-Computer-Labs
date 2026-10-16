@@ -130,7 +130,7 @@ def measure(args) -> None:
     try:
         started = time.perf_counter()
         with (output / "server.log").open("w", encoding="utf-8") as log:
-            server = subprocess.Popen([str(args.executable), "--root", str(PROJECT), "serve", "--port", str(port),
+            server = subprocess.Popen([str(args.executable), "--root", str(PROJECT), "--speed", "0.5", "serve", "--port", str(port),
                                        "--timing-log", str(output / "server-ticks.csv")],
                                       cwd=PROJECT, stdout=log, stderr=subprocess.STDOUT, **hidden)
         url = f"http://127.0.0.1:{port}"

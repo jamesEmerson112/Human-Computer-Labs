@@ -10,3 +10,5 @@ SWE_route/starter_pack/robot/** text=auto eol=lf
 SWE_route/simulation/gestures/archive/six-core-wheel/** -text
 # Audit reports pin the raw bytes of their measured JSON and trace evidence.
 SWE_route/simulation/benchmarks/2026-10-14-wheel-audit/** -text
+# Preserve raw hashes and recorded CRLF endings in the speaking-demo artifacts.
+SWE_route/simulation/benchmarks/2026-10-15-speaking-demo/** -text whitespace=cr-at-eol

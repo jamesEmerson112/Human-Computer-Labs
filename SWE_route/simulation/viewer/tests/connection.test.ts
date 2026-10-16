@@ -38,9 +38,10 @@ test('rejects offline commands, requires a fresh state, and never replays comman
     assert.equal(connection.ready, false);
     first.message({ v: 1, type: 'state' });
     assert.equal(connection.ready, true);
-    connection.send({ type: 'play', name: 'nod' });
+    const commandId = connection.send({ type: 'play', name: 'nod' });
     assert.equal(first.sent.length, 1);
     assert.equal(JSON.parse(first.sent[0]).type, 'play');
+    assert.equal(JSON.parse(first.sent[0]).id, commandId);
     now = 2500;
     intervals[0]();
     assert.equal(connection.ready, false);

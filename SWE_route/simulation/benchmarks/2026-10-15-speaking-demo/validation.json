@@ -1,0 +1,51 @@
+{
+  "purpose": "Hardcoded emotion and speech demonstration; functional validation, not human approval or a matched benchmark",
+  "python_tests_passed": 578,
+  "rust_tests_passed": 24,
+  "viewer_tests_passed": 32,
+  "performance_browser_groups": 12,
+  "existing_protocol_groups": 9,
+  "existing_viewer_groups": 9,
+  "existing_review_groups": 11,
+  "development_proxy_groups": 5,
+  "host": {
+    "os": "Windows 11, build 26200",
+    "cpu": "AMD Ryzen 5 2600X Six-Core Processor",
+    "browser": "Chrome/155.0.8059.41"
+  },
+  "sample": {
+    "complete_performances": 5,
+    "repeats_per_preset": 1,
+    "native_peak_sampled_rss_mib": 13.10546875,
+    "native_mean_cpu_cores": 0.026598524668500975,
+    "command_to_scheduled_audio_processing_ms": {
+      "count": 5,
+      "p50": 753.2287333273671,
+      "p95": 760.4308466541479
+    },
+    "server_audio_lead_ms": 800,
+    "max_tracking_error_deg": 2.69053050195097,
+    "max_actual_soft_limit_overshoot_deg": 0.0,
+    "max_contacts": 0
+  },
+  "limits": [
+    "Audio timestamps measure browser scheduling, not microphone-captured sound.",
+    "Intentional 800ms lead includes anticipation; audio preparation/download/decode is excluded from command-to-scheduled-audio figures.",
+    "Output timestamp compensation can schedule audio processing earlier than its expected speaker output.",
+    "Five functional-run samples with normal background applications; no renderer baseline, Ubuntu result, or subjective acting approval.",
+    "Performance evidence is the final bundle. Other regression artifacts retain their own tested bundle hashes."
+  ],
+  "executable_sha256": "c1f3f3fa9c7ea229e1dce4572dd775bf92f0f571c335f9f4531e274c2d6147bb",
+  "viewer_dist_sha256": {
+    "index.html": "4ecca7cfb5d7df8da168d1e889fa985df27ad5be45dfd311831aef3027cb0bd9",
+    "static/index-DlSg56JP.js": "cbab918984e0c062077386a759eabf2e51494e925e0c8415ef9a4af9e7af2bd5",
+    "static/index-OUF341Cz.css": "6bb634b63acc67eacc173e8820b5f1e145f08d1050222ae30341d0408e50ff09"
+  },
+  "artifact_sha256": {
+    "protocol.json": "d38e2c841c93c95023b9935f40a3158a41a997c595c18c4c53742bcbc9fb10b7",
+    "dev-proxy/result.json": "14b74e167ed1b3ed93151d0c3b7a534a5b113a4e9de946b409dac54f2bcdf421",
+    "performance/result.json": "527e22e7de0489e6a35ac9f0ff5f4992491746ffd2c90d7a11bdcad8814a80d8",
+    "review-regression/result.json": "4690e7ffb806761c8c2f49734756e1d2eb50e8cfb14979b61fcc3a1a0030df18",
+    "viewer-regression/result.json": "93a9666f1946660e5a4cd879475d72c7b95018134f5864e12e2811fcaeb12d3a"
+  }
+}

@@ -20,7 +20,7 @@ struct Cli {
     mujoco_library: Option<PathBuf>,
     #[arg(long, global = true, value_enum, default_value = "mujoco")]
     backend: Backend,
-    #[arg(long, global = true, default_value_t = 0.5)]
+    #[arg(long, global = true, default_value_t = 1.0)]
     speed: f64,
     #[command(subcommand)]
     command: Option<Command>,

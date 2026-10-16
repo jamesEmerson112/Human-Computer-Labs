@@ -76,7 +76,7 @@ def verify(output: Path) -> None:
         wait_json("http://127.0.0.1:5173/api/scene")
         for host in ("127.0.0.1:5173", "localhost:5173"):
             for origin in (None, f"http://{host}"):
-                for path in ("/api/scene", "/api/review-migration"):
+                for path in ("/api/scene", "/api/review-migration", "/performances/demo.json"):
                     status, body = http_request(path, host, origin)
                     assert status == 200, (host, origin, path, status)
                     assert json.loads(body)["schema_version"] == 1
@@ -84,9 +84,11 @@ def verify(output: Path) -> None:
                         assert json.loads(body) == migration, "Proxied review migration differs from the source file"
         status, body = http_request("/assets/lamp_shade.stl")
         assert status == 200 and len(body) > 100
-        checks.append("Both local hostnames proxy scene, exact review migration JSON and mesh requests, with or without matching HTTP Origin")
+        status, body = http_request("/performances/audio/greeting-1.wav")
+        assert status == 200 and body[:4] == b"RIFF"
+        checks.append("Both local hostnames proxy scene, review migration, performance fixtures, speech WAV and mesh requests")
         for host, origin in (("127.0.0.1:5173", "https://example.com"), ("127.0.0.1:5173", "http://localhost:5173"), ("attacker.example:5173", None)):
-            for path in ("/api/scene", "/api/review-migration"):
+            for path in ("/api/scene", "/api/review-migration", "/performances/demo.json", "/performances/audio/greeting-1.wav"):
                 status, _ = http_request(path, host, origin)
                 assert status in (403, 404), (host, origin, path, status)
         checks.append("HTTP proxy rejects foreign/mismatched Origin and foreign Host")

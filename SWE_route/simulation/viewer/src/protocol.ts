@@ -7,6 +7,11 @@ export interface Hello {
   v: 1; type: 'hello'; gestures: Gesture[]; limits: Record<string, Limit>;
   physics_hz: number; control_hz: number;
 }
+export interface PerformanceState {
+  id: string; scene: string; emotion: string; intensity: number; text: string;
+  start_at_s: number; audio_duration_s: number;
+  phase: 'anticipating' | 'speaking' | 'settling' | 'idle'; phrase_index: number | null;
+}
 export interface State {
   v: 1; type: 'state'; sequence: number; server_time_s: number;
   backend?: 'mujoco' | 'mujoco-source' | 'mujoco-kinematic';
@@ -16,8 +21,9 @@ export interface State {
   links: Record<string, Pose>;
   diagnostics: Record<string, unknown>;
   timing: Record<string, unknown>;
+  performance?: PerformanceState | null;
 }
-export interface Ack { v: 1; type: 'ack'; id: string; ok: boolean; error?: string; server_time_s: number }
+export interface Ack { v: 1; type: 'ack'; id: string; ok: boolean; error?: string; server_time_s: number; performance?: PerformanceState }
 export type Message = Hello | State | Ack;
 export type Command =
   | { type: 'play'; name: string }
@@ -25,6 +31,8 @@ export type Command =
   | { type: 'pace'; speed: number }
   | { type: 'mode'; mode: 'mujoco' | 'mujoco-source' | 'mujoco-kinematic' }
   | { type: 'stop' | 'reset' | 'reload' }
+  | { type: 'perform'; performance_id: string; scene: string; emotion: string; intensity: number }
+  | { type: 'cancel_performance'; performance_id: string }
   | { type: 'light'; enabled: boolean; brightness: number };
 export interface Visual extends Pose {
   link: string; type: 'cylinder' | 'sphere' | 'box' | 'mesh';

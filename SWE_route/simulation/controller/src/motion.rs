@@ -39,8 +39,10 @@ pub struct MotionController {
     start: Pose,
     elapsed: f64,
     duration: f64,
+    pace_limit: f64,
     waypoints: VecDeque<Segment>,
     speed: f64,
+    stream_velocity: Pose,
 }
 
 impl MotionController {
@@ -70,8 +72,10 @@ impl MotionController {
             activity: "Ready".into(),
             elapsed: 0.0,
             duration: 0.0,
+            pace_limit: f64::INFINITY,
             waypoints: VecDeque::new(),
             speed: 1.0,
+            stream_velocity: BTreeMap::new(),
         })
     }
 
@@ -79,9 +83,10 @@ impl MotionController {
         self.speed
     }
 
+    /// Requested pace up to 3x; each segment still respects its velocity envelope.
     pub fn set_speed(&mut self, speed: f64) -> Result<(), String> {
-        if !speed.is_finite() || !(0.0 < speed && speed <= 1.0) {
-            return Err("Playback speed must be greater than zero and at most one".into());
+        if !speed.is_finite() || !(0.0 < speed && speed <= 3.0) {
+            return Err("Playback speed must be greater than zero and at most three".into());
         }
         self.speed = speed;
         Ok(())
@@ -95,16 +100,18 @@ impl MotionController {
         self.start = self.positions.clone();
         self.targets = segment.targets;
         self.elapsed = 0.0;
+        let minimum_duration = self.limits.iter().fold(0.0_f64, |duration, (name, limit)| {
+            duration.max(1.5 * (self.targets[name] - self.positions[name]).abs() / limit.velocity)
+        });
         self.duration = if segment.hold {
             segment.seconds
         } else {
-            self.limits
-                .iter()
-                .fold(0.25_f64.max(segment.seconds), |duration, (name, limit)| {
-                    duration.max(
-                        1.5 * (self.targets[name] - self.positions[name]).abs() / limit.velocity,
-                    )
-                })
+            0.25_f64.max(segment.seconds).max(minimum_duration)
+        };
+        self.pace_limit = if minimum_duration > 0.0 {
+            self.duration / minimum_duration
+        } else {
+            f64::INFINITY
         };
     }
 
@@ -199,6 +206,7 @@ impl MotionController {
     }
 
     pub fn stop(&mut self) {
+        self.stream_velocity.clear();
         self.waypoints.clear();
         self.targets = self.positions.clone();
         self.start = self.positions.clone();
@@ -207,15 +215,79 @@ impl MotionController {
         self.activity = "Stopped".into();
     }
 
+    /// Follow a wall-clock cue without queuing historical segments. This path
+    /// deliberately ignores gesture pace: synchronized speech owns its timing.
+    /// Validation happens before mutation, and every physical tick limits both
+    /// requested velocity and its change. Actual MuJoCo tracking remains separate.
+    pub fn stream_targets(
+        &mut self,
+        targets: &Pose,
+        dt: f64,
+        velocity_scale: f64,
+    ) -> Result<Pose, String> {
+        if !dt.is_finite()
+            || dt <= 0.0
+            || !velocity_scale.is_finite()
+            || !(0.0 < velocity_scale && velocity_scale <= 1.0)
+        {
+            return Err(
+                "Streaming needs a positive finite step and velocity scale in (0, 1]".into(),
+            );
+        }
+        if targets.len() != self.limits.len() {
+            return Err("Streaming requires every joint".into());
+        }
+        let bounded = self
+            .limits
+            .iter()
+            .map(|(name, limit)| {
+                Ok((
+                    name.clone(),
+                    limit.clamp(
+                        *targets
+                            .get(name)
+                            .ok_or_else(|| format!("Missing joint: {name}"))?,
+                    )?,
+                ))
+            })
+            .collect::<Result<Pose, String>>()?;
+        for (name, limit) in &self.limits {
+            let cap = limit.velocity * velocity_scale;
+            let desired = ((bounded[name] - self.positions[name]) / 0.12).clamp(-cap, cap);
+            let previous = self.stream_velocity.get(name).copied().unwrap_or(0.0);
+            let velocity = desired.clamp(
+                previous - limit.velocity * 3.0 * dt,
+                previous + limit.velocity * 3.0 * dt,
+            );
+            let position = (self.positions[name] + velocity * dt).clamp(limit.lower, limit.upper);
+            self.stream_velocity
+                .insert(name.clone(), (position - self.positions[name]) / dt);
+            self.positions.insert(name.clone(), position);
+        }
+        self.waypoints.clear();
+        self.elapsed = 0.0;
+        self.duration = 0.0;
+        self.targets = bounded;
+        self.start = self.positions.clone();
+        Ok(self.positions.clone())
+    }
+
     pub fn step(&mut self, dt: f64) -> Result<Pose, String> {
         if !dt.is_finite() || dt < 0.0 {
             return Err("dt must be finite and nonnegative".into());
         }
-        let mut dt = dt * self.speed;
+        // Keep ordinary/slower playback arithmetic unchanged. Above 1x each
+        // segment consumes wall time at its own velocity-limited clock rate.
+        let mut dt = dt * self.speed.min(1.0);
         while dt > 0.0 && self.moving() {
-            let used = dt.min(self.duration - self.elapsed);
+            let scale = if self.speed > 1.0 {
+                self.speed.min(self.pace_limit)
+            } else {
+                1.0
+            };
+            let used = (dt * scale).min(self.duration - self.elapsed);
             self.elapsed += used;
-            dt -= used;
+            dt -= used / scale;
             let fraction = (self.elapsed / self.duration).min(1.0);
             let eased = fraction * fraction * (3.0 - 2.0 * fraction);
             self.positions = self

@@ -162,8 +162,8 @@ fn trial(
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args = Args::parse();
-    if args.repeats == 0 || !args.speed.is_finite() || !(0.0 < args.speed && args.speed <= 1.0) {
-        return Err("repeats must be positive and speed must be in (0,1]".into());
+    if args.repeats == 0 || !args.speed.is_finite() || !(0.0 < args.speed && args.speed <= 3.0) {
+        return Err("repeats must be positive and speed must be in (0,3]".into());
     }
     fs::create_dir(&args.output)?; // Never overwrite historical evidence.
     let started = Instant::now();

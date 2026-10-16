@@ -1,6 +1,7 @@
 use crate::{
     gestures::{Gesture, load_gestures},
     motion::{JointLimit, MotionController},
+    performance::{Performance, Scene as PerformanceScene, load_scenes},
     physics::{Backend, CONTROL_DT, CONTROL_HZ, PHYSICS_HZ, Physics, discover_library},
 };
 use axum::{
@@ -24,7 +25,7 @@ use std::{
     path::{Path, PathBuf},
     sync::{
         Arc,
-        atomic::{AtomicBool, Ordering},
+        atomic::{AtomicBool, AtomicU64, Ordering},
     },
     time::{Duration, Instant},
 };
@@ -83,6 +84,10 @@ pub struct Runtime {
     light_enabled: bool,
     brightness: f64,
     pub revision: u64,
+    pub performance: Option<Performance>,
+    scenes: BTreeMap<String, PerformanceScene>,
+    used_performance_ids: BTreeSet<String>,
+    performance_connection: Option<Arc<AtomicBool>>,
 }
 
 impl Runtime {
@@ -100,6 +105,7 @@ impl Runtime {
             config.backend,
             &limits,
         )?;
+        let scenes = load_scenes(&config.root)?;
         Ok(Self {
             controller,
             physics,
@@ -108,12 +114,62 @@ impl Runtime {
             light_enabled: true,
             brightness: 5.0,
             revision: 0,
+            performance: None,
+            scenes,
+            used_performance_ids: BTreeSet::new(),
+            performance_connection: None,
         })
     }
 
     pub fn step(&mut self, dt: f64) -> Result<(), String> {
-        let requested = self.controller.step(dt)?;
+        self.step_at(dt, self.physics.time() + dt)
+    }
+
+    pub fn step_at(&mut self, dt: f64, now: f64) -> Result<(), String> {
+        if !now.is_finite() || now < 0.0 {
+            return Err("Invalid performance clock".into());
+        }
+        self.cancel_disconnected()?;
+        let requested = if let Some(performance) = &self.performance {
+            let pose = performance.sample(now, &self.controller.limits);
+            self.controller.activity = format!(
+                "{} · {}",
+                performance.emotion,
+                performance.state(now)["phase"].as_str().unwrap()
+            );
+            self.controller
+                .stream_targets(&pose, dt, performance.velocity_scale())?
+        } else {
+            self.controller.step(dt)?
+        };
         self.physics.advance(&requested, dt)?;
+        Ok(())
+    }
+
+    pub fn performance_state(&self, now: f64) -> Value {
+        self.performance
+            .as_ref()
+            .map(|p| p.state(now))
+            .unwrap_or(Value::Null)
+    }
+
+    fn cancel_active(&mut self) -> Result<(), String> {
+        let mut controller = self.controller.clone();
+        controller.synchronize(&self.physics.positions().0)?;
+        self.controller = controller;
+        self.performance = None;
+        self.performance_connection = None;
+        Ok(())
+    }
+
+    fn cancel_disconnected(&mut self) -> Result<(), String> {
+        if self
+            .performance_connection
+            .as_ref()
+            .is_some_and(|alive| !alive.load(Ordering::Acquire))
+        {
+            self.cancel_active()?;
+        }
         Ok(())
     }
 
@@ -128,13 +184,67 @@ impl Runtime {
             "simulation_time_s":self.physics.time(),"backend":self.physics.backend,"requested":self.controller.positions,
             "actual":actual,"velocity":velocity,"activity":self.controller.activity,"speed":self.controller.speed(),
             "light":{"enabled":self.light_enabled,"brightness":self.brightness},"links":self.physics.links(),
-            "diagnostics":self.physics.diagnostics,"timing":timing})
+            "diagnostics":self.physics.diagnostics,"timing":timing,"performance":self.performance_state(server_time_s)})
     }
 
     pub fn command(&mut self, action: Action) -> Result<(), String> {
+        self.command_from(action, 0, self.physics.time())
+    }
+
+    /// Only the websocket owner can cancel by id; global Stop and valid manual
+    /// overrides remain available to any local client.
+    pub fn command_from(&mut self, action: Action, owner: u64, now: f64) -> Result<(), String> {
         // Build every prospective controller/model/catalog before committing it.
         // Rejected commands must leave current motion and physics untouched.
         match action {
+            Action::Perform {
+                performance_id,
+                scene,
+                emotion,
+                intensity,
+            } => {
+                if self.used_performance_ids.contains(&performance_id) {
+                    return Err("Performance id was already used; choose a fresh id".into());
+                }
+                if self.used_performance_ids.len() >= 16384 {
+                    return Err(
+                        "Performance session limit reached; restart the viewer server".into(),
+                    );
+                }
+                let scene = self
+                    .scenes
+                    .get(&scene)
+                    .ok_or("Unknown or unavailable prepared scene")?
+                    .clone();
+                let mut controller = self.controller.clone();
+                controller.synchronize(&self.physics.positions().0)?;
+                let performance = Performance::new(
+                    performance_id.clone(),
+                    owner,
+                    scene,
+                    emotion,
+                    intensity,
+                    now,
+                    controller.positions.clone(),
+                )?;
+                controller.activity = "Anticipating speech".into();
+                self.controller = controller;
+                self.performance = Some(performance);
+                self.performance_connection = None;
+                self.used_performance_ids.insert(performance_id);
+            }
+            Action::CancelPerformance { performance_id } => {
+                if performance_id.is_empty() || performance_id.len() > 128 {
+                    return Err("Performance id must contain 1 to 128 UTF-8 bytes".into());
+                }
+                if self
+                    .performance
+                    .as_ref()
+                    .is_some_and(|p| p.id == performance_id && p.owner == owner)
+                {
+                    self.cancel_active()?;
+                }
+            }
             Action::Light {
                 enabled,
                 brightness,
@@ -148,6 +258,9 @@ impl Runtime {
             Action::Reload => {
                 let names: BTreeSet<String> = self.controller.limits.keys().cloned().collect();
                 let gestures = load_gestures(&names, &self.config.root.join("gestures"))?;
+                if self.performance.is_some() {
+                    self.cancel_active()?;
+                }
                 self.gestures = gestures;
                 self.revision += 1;
             }
@@ -163,8 +276,17 @@ impl Runtime {
                 physics.reset(&controller.positions)?;
                 self.controller = controller;
                 self.physics = physics;
+                self.performance = None;
+                self.performance_connection = None;
             }
             action => {
+                if matches!(&action, Action::Pace { .. }) && self.performance.is_some() {
+                    return Err(
+                        "Pace cannot change while a performance or its attentive idle is active"
+                            .into(),
+                    );
+                }
+                let cancels_performance = !matches!(&action, Action::Pace { .. });
                 let mut controller = self.controller.clone();
                 if !matches!(&action, Action::Pace { .. }) {
                     controller.synchronize(&self.physics.positions().0)?;
@@ -182,6 +304,10 @@ impl Runtime {
                     _ => unreachable!(),
                 }
                 self.controller = controller;
+                if cancels_performance {
+                    self.performance = None;
+                    self.performance_connection = None;
+                }
             }
         }
         Ok(())
@@ -191,14 +317,34 @@ impl Runtime {
 #[derive(Debug, Deserialize)]
 #[serde(tag = "type", rename_all = "snake_case", deny_unknown_fields)]
 pub enum Action {
-    Play { name: String },
-    Targets { targets: BTreeMap<String, f64> },
-    Pace { speed: f64 },
+    Perform {
+        performance_id: String,
+        scene: String,
+        emotion: String,
+        intensity: f64,
+    },
+    CancelPerformance {
+        performance_id: String,
+    },
+    Play {
+        name: String,
+    },
+    Targets {
+        targets: BTreeMap<String, f64>,
+    },
+    Pace {
+        speed: f64,
+    },
     Stop,
     Reset,
     Reload,
-    Light { enabled: bool, brightness: f64 },
-    Mode { mode: Backend },
+    Light {
+        enabled: bool,
+        brightness: f64,
+    },
+    Mode {
+        mode: Backend,
+    },
 }
 
 #[derive(Debug, Deserialize)]
@@ -213,6 +359,16 @@ fn parse_command(text: &str) -> Result<Command, String> {
     let value = crate::gestures::parse_unique_json(text)?;
     let fields = value.as_object().ok_or("A command must be a JSON object")?;
     let allowed: &[&str] = match fields.get("type").and_then(Value::as_str) {
+        Some("perform") => &[
+            "v",
+            "id",
+            "type",
+            "performance_id",
+            "scene",
+            "emotion",
+            "intensity",
+        ],
+        Some("cancel_performance") => &["v", "id", "type", "performance_id"],
         Some("play") => &["v", "id", "type", "name"],
         Some("targets") => &["v", "id", "type", "targets"],
         Some("pace") => &["v", "id", "type", "speed"],
@@ -238,7 +394,17 @@ fn parse_command(text: &str) -> Result<Command, String> {
 struct Request {
     command: Command,
     response: oneshot::Sender<Value>,
+    owner: u64,
+    connected: Arc<AtomicBool>,
 }
+
+struct ConnectionLifetime(Arc<AtomicBool>);
+impl Drop for ConnectionLifetime {
+    fn drop(&mut self) {
+        self.0.store(false, Ordering::Release);
+    }
+}
+static NEXT_OWNER: AtomicU64 = AtomicU64::new(1);
 
 struct OwnerExit(Option<oneshot::Sender<()>>);
 impl Drop for OwnerExit {
@@ -486,6 +652,10 @@ async fn socket_send(sink: &mut SplitSink<WebSocket, Message>, message: Message)
 }
 
 async fn connection(socket: WebSocket, mut shared: Shared) {
+    let owner = NEXT_OWNER.fetch_add(1, Ordering::Relaxed);
+    let connected = Arc::new(AtomicBool::new(true));
+    // This flag bypasses the bounded command queue, including on send timeout.
+    let _lifetime = ConnectionLifetime(connected.clone());
     let (mut sink, mut stream) = socket.split();
     let initial = shared.snapshots.borrow_and_update().clone();
     if !socket_send(&mut sink, Message::Text(initial.hello.clone().into())).await
@@ -512,7 +682,7 @@ async fn connection(socket: WebSocket, mut shared: Shared) {
                         let reply = match parse_command(&text) {
                             Ok(command) => {
                                 let (response, receive) = oneshot::channel();
-                                match shared.commands.try_send(Request { command, response }) {
+                                match shared.commands.try_send(Request { command, response, owner, connected: connected.clone() }) {
                                     Ok(()) => match tokio::time::timeout(Duration::from_secs(2), receive).await {
                                         Ok(Ok(reply)) => reply,
                                         _ => json!({"v":1,"type":"ack","id":id,"ok":false,"error":"Controller did not acknowledge the command"}),
@@ -579,13 +749,17 @@ pub async fn serve(config: Config) -> Result<(), String> {
         let _ = ready_tx.send(Ok(()));
         while !owner_stop.load(Ordering::Relaxed) {
             let now = Instant::now(); let elapsed = (now-previous).as_secs_f64(); previous = now;
+            runtime.cancel_disconnected()?;
             for _ in 0..64 {
                 let Ok(request) = requests.try_recv() else { break; };
                 // A disconnected client or timed-out receiver cancels an unprocessed command.
-                if request.response.is_closed() { continue; }
-                let result = runtime.command(request.command.action);
+                if request.response.is_closed() || !request.connected.load(Ordering::Acquire) { continue; }
+                let is_perform = matches!(&request.command.action, Action::Perform { .. });
+                let accepted_at = start.elapsed().as_secs_f64();
+                let result = runtime.command_from(request.command.action, request.owner, accepted_at);
+                if result.is_ok() && is_perform { runtime.performance_connection = Some(request.connected); }
                 let _ = request.response.send(match result {
-                    Ok(()) => json!({"v":1,"type":"ack","id":request.command.id,"ok":true,"server_time_s":start.elapsed().as_secs_f64()}),
+                    Ok(()) => json!({"v":1,"type":"ack","id":request.command.id,"ok":true,"server_time_s":start.elapsed().as_secs_f64(),"performance":runtime.performance_state(start.elapsed().as_secs_f64())}),
                     Err(error) => json!({"v":1,"type":"ack","id":request.command.id,"ok":false,"error":error,"server_time_s":start.elapsed().as_secs_f64()}),
                 });
             }
@@ -593,8 +767,11 @@ pub async fn serve(config: Config) -> Result<(), String> {
             // overloaded process from freezing command handling indefinitely.
             let tick_start = Instant::now();
             let TickBudget { steps, lag_s: accumulator, dropped_time_s: dropped } = clock.advance(elapsed)?;
+            let performance_now = start.elapsed().as_secs_f64();
             for _ in 0..steps {
-                runtime.step(CONTROL_DT)?;
+                // Catch-up advances physics, but samples the same current cue;
+                // missed wall-clock accents are never rushed through.
+                runtime.step_at(CONTROL_DT, performance_now)?;
                 sequence += 1;
             }
             if steps > 0 {
@@ -623,6 +800,10 @@ pub async fn serve(config: Config) -> Result<(), String> {
     let app = Router::new()
         .route("/ws", get(upgrade))
         .route("/api/review-migration", get(review_migration))
+        .nest_service(
+            "/performances",
+            ServeDir::new(config.root.join("performances")),
+        )
         .nest_service("/assets", ServeDir::new(config.root.join("models/derived")))
         .route_service(
             "/api/scene",
@@ -670,6 +851,154 @@ pub async fn serve(config: Config) -> Result<(), String> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    fn performance_runtime() -> Runtime {
+        let root = Path::new(env!("CARGO_MANIFEST_DIR"))
+            .parent()
+            .unwrap()
+            .to_path_buf();
+        Runtime::new(Config::new(root, None, Backend::MujocoKinematic, 0.5, 8082).unwrap()).unwrap()
+    }
+
+    fn perform(id: &str) -> Action {
+        Action::Perform {
+            performance_id: id.into(),
+            scene: "greeting".into(),
+            emotion: "Happy".into(),
+            intensity: 0.8,
+        }
+    }
+
+    #[test]
+    fn performance_validation_is_atomic_and_light_is_independent() {
+        let mut runtime = performance_runtime();
+        runtime.command_from(perform("first"), 1, 10.0).unwrap();
+        runtime.step_at(CONTROL_DT, 10.3).unwrap();
+        let before = runtime.state(1, 10.3, Value::Null);
+        for invalid in [
+            perform("first"),
+            Action::Perform {
+                performance_id: "unknown".into(),
+                scene: "missing".into(),
+                emotion: "Happy".into(),
+                intensity: 0.8,
+            },
+            Action::Perform {
+                performance_id: "emotion".into(),
+                scene: "greeting".into(),
+                emotion: "Bad".into(),
+                intensity: 0.8,
+            },
+            Action::Perform {
+                performance_id: "intensity".into(),
+                scene: "greeting".into(),
+                emotion: "Happy".into(),
+                intensity: f64::NAN,
+            },
+            Action::Play {
+                name: "missing".into(),
+            },
+            Action::Targets {
+                targets: [("head_pitch_joint".into(), f64::NAN)].into(),
+            },
+            Action::Pace { speed: 0.8 },
+        ] {
+            assert!(runtime.command_from(invalid, 1, 10.3).is_err());
+            assert_eq!(runtime.state(1, 10.3, Value::Null), before);
+        }
+        runtime
+            .command(Action::Light {
+                enabled: false,
+                brightness: 1.0,
+            })
+            .unwrap();
+        assert_eq!(runtime.performance.as_ref().unwrap().id, "first");
+        runtime.step_at(CONTROL_DT, 50.0).unwrap();
+        assert_eq!(runtime.performance_state(50.0)["phase"], "idle");
+        assert!(runtime.command(Action::Pace { speed: 0.2 }).is_err());
+    }
+
+    #[test]
+    fn ownership_replacement_disconnect_and_stop_never_resurrect_old_performances() {
+        let mut runtime = performance_runtime();
+        runtime.command_from(perform("first"), 1, 0.0).unwrap();
+        runtime
+            .command_from(
+                Action::CancelPerformance {
+                    performance_id: "first".into(),
+                },
+                2,
+                0.1,
+            )
+            .unwrap();
+        assert_eq!(runtime.performance.as_ref().unwrap().id, "first");
+        runtime.command_from(perform("second"), 2, 0.2).unwrap();
+        runtime
+            .command_from(
+                Action::CancelPerformance {
+                    performance_id: "first".into(),
+                },
+                1,
+                0.3,
+            )
+            .unwrap();
+        assert_eq!(runtime.performance.as_ref().unwrap().id, "second");
+        runtime
+            .command_from(
+                Action::CancelPerformance {
+                    performance_id: "second".into(),
+                },
+                2,
+                0.4,
+            )
+            .unwrap();
+        assert!(runtime.performance.is_none());
+        assert!(runtime.command_from(perform("second"), 2, 0.5).is_err());
+
+        runtime.command_from(perform("disconnect"), 3, 1.0).unwrap();
+        let alive = Arc::new(AtomicBool::new(true));
+        runtime.performance_connection = Some(alive.clone());
+        let guard = ConnectionLifetime(alive);
+        drop(guard);
+        runtime.step_at(CONTROL_DT, 1.1).unwrap();
+        assert!(runtime.performance.is_none());
+        let held = runtime.controller.positions.clone();
+        for time in [2.0, 20.0, 100.0] {
+            runtime.step_at(CONTROL_DT, time).unwrap();
+            assert_eq!(runtime.controller.positions, held);
+            assert!(runtime.performance.is_none());
+        }
+        runtime.command_from(perform("stop"), 1, 101.0).unwrap();
+        runtime.command_from(Action::Stop, 2, 101.1).unwrap();
+        assert!(runtime.performance.is_none());
+        runtime.step_at(CONTROL_DT, 200.0).unwrap();
+        assert!(runtime.performance.is_none());
+    }
+
+    #[test]
+    fn valid_manual_overrides_cancel_active_performance_after_validation() {
+        let mut runtime = performance_runtime();
+        for (index, action) in [
+            Action::Targets {
+                targets: [("head_pitch_joint".into(), 0.15)].into(),
+            },
+            Action::Play { name: "nod".into() },
+            Action::Reset,
+            Action::Reload,
+            Action::Mode {
+                mode: Backend::MujocoKinematic,
+            },
+        ]
+        .into_iter()
+        .enumerate()
+        {
+            runtime
+                .command_from(perform(&format!("override-{index}")), 1, index as f64)
+                .unwrap();
+            runtime.command_from(action, 2, index as f64 + 0.1).unwrap();
+            assert!(runtime.performance.is_none());
+        }
+    }
 
     fn migration_fixture() -> (Value, Value) {
         let item = json!({"name":"nod","label":"Nod","group":"","revision":"a".repeat(64)});

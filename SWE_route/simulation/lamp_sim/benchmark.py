@@ -202,8 +202,8 @@ def main() -> None:
     parser.add_argument("--speed", type=float, default=0.5)
     parser.add_argument("--worker", choices=BACKENDS, help=argparse.SUPPRESS)
     args = parser.parse_args()
-    if args.repeats < 1 or not 0 < args.speed <= 1:
-        parser.error("repeats must be positive and speed must be in (0, 1]")
+    if args.repeats < 1 or not 0 < args.speed <= 3:
+        parser.error("repeats must be positive and speed must be in (0, 3]")
     if args.worker:
         worker(args.worker, args.output, args.repeats, args.speed)
         return

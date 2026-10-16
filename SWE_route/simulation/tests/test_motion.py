@@ -5,7 +5,7 @@ import pytest
 import yourdfpy
 
 from lamp_sim.motion import MotionController, ROBOT_PATH, load_limits
-from lamp_sim.gestures import load_gestures
+from lamp_sim.gestures import load_gestures, parse_gesture
 
 
 def play_gesture(motion, name):
@@ -139,11 +139,89 @@ def test_slow_playback_scales_time_and_changing_pace_does_not_jump(motion):
     assert motion.positions["base_yaw_joint"] == 1.0
 
 
-@pytest.mark.parametrize("speed", [0.0, -1.0, 1.1, math.inf, math.nan])
+@pytest.mark.parametrize("speed", [0.0, -1.0, 3.01, math.inf, math.nan])
 def test_invalid_playback_speed_is_rejected(motion, speed):
     with pytest.raises(ValueError):
         motion.set_speed(speed)
     assert motion.speed == 1.0
+
+
+def authored_gesture(motion, steps):
+    return parse_gesture({
+        "schema_version": 1, "name": "test", "label": "Test",
+        "units": "radians", "steps": steps,
+    }, motion.limits)
+
+
+@pytest.mark.parametrize("speed", [2.0, 3.0])
+def test_fast_pace_shortens_authored_motion_and_changes_without_a_pose_jump(motion, speed):
+    normal = MotionController(load_limits())
+    gesture = authored_gesture(motion, [
+        {"targets": {"base_yaw_joint": 0.1}, "duration_seconds": 1.0},
+    ])
+    normal.play(gesture)
+    motion.play(gesture)
+    assert motion.step(0.2) == normal.step(0.2)
+    held = motion.positions.copy()
+    motion.set_speed(speed)
+    assert motion.step(0) == held
+    assert motion.step(0.3 / speed) == normal.step(0.3)
+    motion.step(0.5 / speed)
+    assert not motion.moving
+    assert motion.positions["base_yaw_joint"] == 0.1
+    assert normal.moving
+
+
+@pytest.mark.parametrize("speed", [2.0, 3.0])
+def test_fast_pace_does_not_accelerate_a_velocity_limited_move(motion, speed):
+    normal = MotionController(load_limits())
+    for controller in (motion, normal):
+        controller.set_targets({"base_yaw_joint": 1.5})
+    motion.set_speed(speed)
+    for _ in range(240):
+        before = motion.positions.copy()
+        assert motion.step(1 / 120) == normal.step(1 / 120)
+        assert abs(motion.positions["base_yaw_joint"] - before["base_yaw_joint"]) <= 1.5 / 120 + 1e-12
+    assert not motion.moving
+
+
+@pytest.mark.parametrize("speed", [2.0, 3.0])
+def test_fast_pace_consumes_wall_time_across_holds_and_different_velocity_caps(motion, speed):
+    motion.play(authored_gesture(motion, [
+        {"targets": {"base_yaw_joint": 0.1}, "duration_seconds": 1.0},
+        {"hold_seconds": 0.4},
+        {"targets": {"base_yaw_joint": 1.3}, "duration_seconds": 0.25},
+    ]))
+    motion.set_speed(speed)
+    # Move and hold accelerate; the final capped move advances 0.3 seconds.
+    assert motion.step(1.4 / speed + 0.3)["base_yaw_joint"] == pytest.approx(0.2875)
+    motion.step(0.91)
+    assert not motion.moving
+    assert motion.positions["base_yaw_joint"] == 1.3
+
+
+@pytest.mark.parametrize("start", ["neutral", "lower", "upper"])
+@pytest.mark.parametrize("speed", [2.0, 3.0])
+def test_all_gestures_at_fast_pace_respect_limits_and_velocity(motion, start, speed):
+    origin = {
+        name: (limit.lower + 0.01 if start == "lower" else limit.upper - 0.01)
+        if start != "neutral" else 0.0
+        for name, limit in motion.limits.items()
+    }
+    motion.set_speed(speed)
+    for gesture in load_gestures(motion.limits).values():
+        motion.synchronize(origin)
+        motion.play(gesture)
+        for _ in range(6000):
+            before = motion.positions.copy()
+            motion.step(1 / 120)
+            for name, value in motion.positions.items():
+                limit = motion.limits[name]
+                assert limit.lower - 1e-12 <= value <= limit.upper + 1e-12, (gesture.name, name)
+                assert abs(value - before[name]) <= limit.velocity / 120 + 1e-12, (gesture.name, name)
+            if not motion.moving:
+                break
+        assert not motion.moving, gesture.name
 
 
 def test_urdf_mesh_loads_and_light_direction_follows_head():

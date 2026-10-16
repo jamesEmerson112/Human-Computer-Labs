@@ -1,0 +1,1770 @@
+{
+  "schema_version": 1,
+  "started_at_utc": "2026-10-15T10:57:56.172329+00:00",
+  "status": "passed",
+  "checks": [
+    "local HTML, bundled scripts/styles and mesh assets; HTTP Host/Origin and WebSocket Origin guards",
+    "Read-only review migration matches the live SHA-256 gesture revisions and has Host/Origin guards",
+    "hello catalog/limits/rates and ten finite live state snapshots with all link poses checked against URDF FK",
+    "Nod moves and Stop freezes requested pose while physics continues",
+    "All 6 current emotion families play and stop through the live protocol",
+    "manual target soft clamping, reset, pace, light on/off and brightness",
+    "all three MuJoCo modes and emitter neutral/down/up orientation including the URDF 180-degree head yaw",
+    "twelve rejected commands preserve active playback, pace, light and backend; duplicate keys are rejected recursively",
+    "reload publishes a complete catalog; reconnect sends full catalog and current authoritative state"
+  ],
+  "commands": [
+    {
+      "command": {
+        "v": 1,
+        "id": "verify-1",
+        "type": "pace",
+        "speed": 1.0
+      },
+      "ack": {
+        "id": "verify-1",
+        "ok": true,
+        "performance": null,
+        "server_time_s": 0.7741875,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 1.7322000057902187
+    },
+    {
+      "command": {
+        "v": 1,
+        "id": "verify-2",
+        "type": "play",
+        "name": "nod"
+      },
+      "ack": {
+        "id": "verify-2",
+        "ok": true,
+        "performance": null,
+        "server_time_s": 0.8043073,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 2.2158000065246597
+    },
+    {
+      "command": {
+        "v": 1,
+        "id": "verify-3",
+        "type": "stop"
+      },
+      "ack": {
+        "id": "verify-3",
+        "ok": true,
+        "performance": null,
+        "server_time_s": 0.8739625,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 1.97719999414403
+    },
+    {
+      "command": {
+        "v": 1,
+        "id": "verify-4",
+        "type": "play",
+        "name": "emotion_angry"
+      },
+      "ack": {
+        "id": "verify-4",
+        "ok": true,
+        "performance": null,
+        "server_time_s": 1.2365867,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 0.8372000011149794
+    },
+    {
+      "command": {
+        "v": 1,
+        "id": "verify-5",
+        "type": "stop"
+      },
+      "ack": {
+        "id": "verify-5",
+        "ok": true,
+        "performance": null,
+        "server_time_s": 1.2742295000000001,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 1.9939000048907474
+    },
+    {
+      "command": {
+        "v": 1,
+        "id": "verify-6",
+        "type": "play",
+        "name": "emotion_disgusted"
+      },
+      "ack": {
+        "id": "verify-6",
+        "ok": true,
+        "performance": null,
+        "server_time_s": 1.3036766,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 2.247299998998642
+    },
+    {
+      "command": {
+        "v": 1,
+        "id": "verify-7",
+        "type": "stop"
+      },
+      "ack": {
+        "id": "verify-7",
+        "ok": true,
+        "performance": null,
+        "server_time_s": 1.3397165,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 0.8709000103408471
+    },
+    {
+      "command": {
+        "v": 1,
+        "id": "verify-8",
+        "type": "play",
+        "name": "emotion_fearful"
+      },
+      "ack": {
+        "id": "verify-8",
+        "ok": true,
+        "performance": null,
+        "server_time_s": 1.3683155,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 0.39849999302532524
+    },
+    {
+      "command": {
+        "v": 1,
+        "id": "verify-9",
+        "type": "stop"
+      },
+      "ack": {
+        "id": "verify-9",
+        "ok": true,
+        "performance": null,
+        "server_time_s": 1.4056056,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 0.49760000547394156
+    },
+    {
+      "command": {
+        "v": 1,
+        "id": "verify-10",
+        "type": "play",
+        "name": "emotion_happy"
+      },
+      "ack": {
+        "id": "verify-10",
+        "ok": true,
+        "performance": null,
+        "server_time_s": 1.4374209,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 1.7631999944569543
+    },
+    {
+      "command": {
+        "v": 1,
+        "id": "verify-11",
+        "type": "stop"
+      },
+      "ack": {
+        "id": "verify-11",
+        "ok": true,
+        "performance": null,
+        "server_time_s": 1.4717647,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 0.7173999911174178
+    },
+    {
+      "command": {
+        "v": 1,
+        "id": "verify-12",
+        "type": "play",
+        "name": "emotion_sad"
+      },
+      "ack": {
+        "id": "verify-12",
+        "ok": true,
+        "performance": null,
+        "server_time_s": 1.5025916000000001,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 0.5175999976927415
+    },
+    {
+      "command": {
+        "v": 1,
+        "id": "verify-13",
+        "type": "stop"
+      },
+      "ack": {
+        "id": "verify-13",
+        "ok": true,
+        "performance": null,
+        "server_time_s": 1.5391994,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 0.5460999964270741
+    },
+    {
+      "command": {
+        "v": 1,
+        "id": "verify-14",
+        "type": "play",
+        "name": "emotion_surprised"
+      },
+      "ack": {
+        "id": "verify-14",
+        "ok": true,
+        "performance": null,
+        "server_time_s": 1.5714401,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 1.8676000036066398
+    },
+    {
+      "command": {
+        "v": 1,
+        "id": "verify-15",
+        "type": "stop"
+      },
+      "ack": {
+        "id": "verify-15",
+        "ok": true,
+        "performance": null,
+        "server_time_s": 1.6066806,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 0.5204000044614077
+    },
+    {
+      "command": {
+        "v": 1,
+        "id": "verify-16",
+        "type": "targets",
+        "targets": {
+          "base_yaw_joint": 99,
+          "head_pitch_joint": -99
+        }
+      },
+      "ack": {
+        "id": "verify-16",
+        "ok": true,
+        "performance": null,
+        "server_time_s": 1.6374212,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 1.763699998264201
+    },
+    {
+      "command": {
+        "v": 1,
+        "id": "verify-17",
+        "type": "reset"
+      },
+      "ack": {
+        "id": "verify-17",
+        "ok": true,
+        "performance": null,
+        "server_time_s": 4.1058989,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 0.6507999933091924
+    },
+    {
+      "command": {
+        "v": 1,
+        "id": "verify-18",
+        "type": "light",
+        "enabled": false,
+        "brightness": 3.5
+      },
+      "ack": {
+        "id": "verify-18",
+        "ok": true,
+        "performance": null,
+        "server_time_s": 6.5695702,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 1.7539999971631914
+    },
+    {
+      "command": {
+        "v": 1,
+        "id": "verify-19",
+        "type": "light",
+        "enabled": true,
+        "brightness": 3.5
+      },
+      "ack": {
+        "id": "verify-19",
+        "ok": true,
+        "performance": null,
+        "server_time_s": 6.6035095,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 1.4216999989002943
+    },
+    {
+      "command": {
+        "v": 1,
+        "id": "verify-20",
+        "type": "mode",
+        "mode": "mujoco-source"
+      },
+      "ack": {
+        "id": "verify-20",
+        "ok": true,
+        "performance": null,
+        "server_time_s": 6.6394117,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 3.5146999871358275
+    },
+    {
+      "command": {
+        "v": 1,
+        "id": "verify-21",
+        "type": "mode",
+        "mode": "mujoco"
+      },
+      "ack": {
+        "id": "verify-21",
+        "ok": true,
+        "performance": null,
+        "server_time_s": 6.6759198,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 4.872099991189316
+    },
+    {
+      "command": {
+        "v": 1,
+        "id": "verify-22",
+        "type": "mode",
+        "mode": "mujoco-kinematic"
+      },
+      "ack": {
+        "id": "verify-22",
+        "ok": true,
+        "performance": null,
+        "server_time_s": 6.7078913,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 4.203300006338395
+    },
+    {
+      "command": {
+        "v": 1,
+        "id": "verify-23",
+        "type": "reset"
+      },
+      "ack": {
+        "id": "verify-23",
+        "ok": true,
+        "performance": null,
+        "server_time_s": 6.738618,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 1.2344999995548278
+    },
+    {
+      "command": {
+        "v": 1,
+        "id": "verify-24",
+        "type": "targets",
+        "targets": {
+          "head_pitch_joint": 0.3
+        }
+      },
+      "ack": {
+        "id": "verify-24",
+        "ok": true,
+        "performance": null,
+        "server_time_s": 7.0050539,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 0.9033999958774075
+    },
+    {
+      "command": {
+        "v": 1,
+        "id": "verify-25",
+        "type": "targets",
+        "targets": {
+          "head_pitch_joint": -0.3
+        }
+      },
+      "ack": {
+        "id": "verify-25",
+        "ok": true,
+        "performance": null,
+        "server_time_s": 7.3395894,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 1.2996000004932284
+    },
+    {
+      "command": {
+        "v": 1,
+        "id": "verify-26",
+        "type": "pace",
+        "speed": 0.25
+      },
+      "ack": {
+        "id": "verify-26",
+        "ok": true,
+        "performance": null,
+        "server_time_s": 7.9760301,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 1.8791999900713563
+    },
+    {
+      "command": {
+        "v": 1,
+        "id": "verify-27",
+        "type": "play",
+        "name": "nod"
+      },
+      "ack": {
+        "id": "verify-27",
+        "ok": true,
+        "performance": null,
+        "server_time_s": 7.9775406,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 0.5317999894032255
+    },
+    {
+      "command": {
+        "v": 1,
+        "id": "verify-28",
+        "type": "targets",
+        "targets": {
+          "unknown_joint": 0.1
+        }
+      },
+      "ack": {
+        "error": "Unknown joint: unknown_joint",
+        "id": "verify-28",
+        "ok": false,
+        "server_time_s": 8.0016899,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 0.7552000024588779
+    },
+    {
+      "command": {
+        "v": 1,
+        "id": "verify-29",
+        "type": "pace",
+        "speed": 0
+      },
+      "ack": {
+        "error": "Playback speed must be greater than zero and at most one",
+        "id": "verify-29",
+        "ok": false,
+        "server_time_s": 8.0033764,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 0.982900004601106
+    },
+    {
+      "command": {
+        "v": 1,
+        "id": "verify-30",
+        "type": "pace",
+        "speed": 1.1
+      },
+      "ack": {
+        "error": "Playback speed must be greater than zero and at most one",
+        "id": "verify-30",
+        "ok": false,
+        "server_time_s": 8.004751,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 0.8559999987483025
+    },
+    {
+      "command": {
+        "v": 1,
+        "id": "verify-31",
+        "type": "light",
+        "enabled": false,
+        "brightness": 11
+      },
+      "ack": {
+        "error": "Brightness must be between zero and ten",
+        "id": "verify-31",
+        "ok": false,
+        "server_time_s": 8.006259,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 1.0173000046052039
+    },
+    {
+      "command": {
+        "v": 1,
+        "id": "verify-32",
+        "type": "light",
+        "enabled": "yes",
+        "brightness": 3
+      },
+      "ack": {
+        "error": "Invalid command: invalid type: string \"yes\", expected a boolean",
+        "id": "verify-32",
+        "ok": false,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 0.20899999071843922
+    },
+    {
+      "command": {
+        "v": 1,
+        "id": "verify-33",
+        "type": "mode",
+        "mode": "unknown"
+      },
+      "ack": {
+        "error": "Invalid command: unknown variant `unknown`, expected one of `mujoco`, `mujoco-source`, `mujoco-kinematic`",
+        "id": "verify-33",
+        "ok": false,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 0.1914000022225082
+    },
+    {
+      "command": {
+        "v": 1,
+        "id": "verify-34",
+        "type": "stop",
+        "extra": 1
+      },
+      "ack": {
+        "error": "Unexpected command field: extra",
+        "id": "verify-34",
+        "ok": false,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 0.17579999985173345
+    },
+    {
+      "command": "{\"v\":1,\"id\":\"verify-35\",\"type\":\"play\",\"name\":\"missing_gesture\"}",
+      "ack": {
+        "error": "Unknown gesture: missing_gesture",
+        "id": "verify-35",
+        "ok": false,
+        "server_time_s": 8.0093577,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 1.2181999918539077
+    },
+    {
+      "command": "{\"v\":1,\"id\":\"verify-36\",\"type\":\"targets\",\"targets\":{\"head_pitch_joint\":0.1,\"head_pitch_joint\":0.2}}",
+      "ack": {
+        "error": "duplicate JSON key: head_pitch_joint at line 1 column 93",
+        "id": "verify-36",
+        "ok": false,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 0.29939999512862414
+    },
+    {
+      "command": "{\"v\":1,\"id\":\"verify-37\",\"type\":\"stop\",\"type\":\"reset\"}",
+      "ack": {
+        "error": "duplicate JSON key: type at line 1 column 44",
+        "id": "verify-37",
+        "ok": false,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 0.17579999985173345
+    },
+    {
+      "command": "{\"v\":2,\"id\":\"verify-38\",\"type\":\"stop\"}",
+      "ack": {
+        "error": "Unsupported protocol version",
+        "id": "verify-38",
+        "ok": false,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 0.1728999923216179
+    },
+    {
+      "command": "{\"v\":1,\"id\":\"verify-39\",\"type\":\"targets\",\"targets\":{\"head_pitch_joint\":1e999}}",
+      "ack": {
+        "error": "number out of range at line 1 column 76",
+        "id": "",
+        "ok": false,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 0.16769999638199806
+    },
+    {
+      "command": {
+        "v": 1,
+        "id": "verify-40",
+        "type": "stop"
+      },
+      "ack": {
+        "id": "verify-40",
+        "ok": true,
+        "performance": null,
+        "server_time_s": 8.0351363,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 0.7851999980630353
+    },
+    {
+      "command": {
+        "v": 1,
+        "id": "verify-41",
+        "type": "reload"
+      },
+      "ack": {
+        "id": "verify-41",
+        "ok": true,
+        "performance": null,
+        "server_time_s": 8.0597238,
+        "type": "ack",
+        "v": 1
+      },
+      "round_trip_ms": 23.629999996046536
+    }
+  ],
+  "state_messages": 230,
+  "platform": "win32",
+  "sha256": {
+    "tools\\verify_native_protocol.py": "edd7b07b54a7e96bf17163e0314e2e04ff7b7664072e54f50f8151538c0860e9",
+    "tools\\verify_native_viewer.py": "c77401827845d08e1fe7e13b24f81a6c2d17a5ca2222e763ffef5b731e227900",
+    "catalogs\\emotion-wheel-migration.json": "3c15ca32e5364b918b4bf05c834dff03b60c9548adb080e7a53cfe8a3724afd5",
+    "protocol\\commands.schema.json": "57a8c48beae5be800c79d2ea44fde87ab3531a789fd4f7fbc3fba20eb7a4d300",
+    "models\\derived\\scene.json": "b5d3906adcf364f001b09cb53173647868a6260c7dbcaad793dd9ab7f9ccc3cf",
+    "E:\\GitHub\\Human Computer Labs\\SWE_route\\starter_pack\\robot\\dummy_lamp_5dof.urdf": "5f023d845b92e29a369a3b4fb9be8077e9c7ea4b132a4558afbefddb0765f4bb",
+    "controller\\target\\release\\lamp-controller.exe": "c1f3f3fa9c7ea229e1dce4572dd775bf92f0f571c335f9f4531e274c2d6147bb",
+    "controller\\src\\gestures.rs": "5ebf28374b4a92cd26efa99baecb09480d54858fb0e43646468514b3dd41e85c",
+    "controller\\src\\lib.rs": "4563b37fcd567f2e0c60ad58dc94235253e7d2f6277aded944a7134d66750b2a",
+    "controller\\src\\main.rs": "e3397272413b1141682f423b333c8a3ca3d7742a67d4725a544acd65a7e47f2f",
+    "controller\\src\\motion.rs": "a4842b367fb2f9b249375e11901e58f37c4d0db3a3e233504ecf198072afc5ac",
+    "controller\\src\\performance.rs": "7a1029850af76614de69af123aaef25f024c9571721761c5860ca683e884dd1c",
+    "controller\\src\\physics.rs": "d977c6b17597f40696f17557e48f77f2b1b0648d3db1247666c2553e10c2a9b9",
+    "controller\\src\\server.rs": "ab70ef918d68fc9b25dc6afc3e509d4fe41b583ee4cca4a9c9f3ba1589e22c62",
+    "controller\\native\\bridge.c": "830993ea39e754a625a24e6b2df73b962d9fecc6d57dc492d6c37b4b37e48601",
+    "models\\derived\\lamp-source.xml": "dc7759f72636f7756dc02af97a14b03f0b43c29d4c66baa93d224870ea45fd1c",
+    "models\\derived\\lamp.xml": "6781e95a9725f0d9db64a01048838ddbf8986f2e1fb39bf12546b143f68b8f01",
+    "models\\derived\\lamp_shade.stl": "421cfd67341fedd1c16cef6e758478f8a56a07f40845d5bdc488efe3cd77c2c5",
+    "models\\derived\\manifest.json": "bc3b331653d2cd4e0508eba9f10c176b0010fd461279812db5bfcdcc48bc50b8",
+    "gestures\\bow.json": "d546ae4ec599caef0f736163da567de245b9d412061809f60baa2ebb661bbc4c",
+    "gestures\\curious.json": "97dfdad2d972395a3bef9b49574d9e29e942a2146ffe34babeafd03cf87f5bb2",
+    "gestures\\emotion_angry.json": "7f4357cfc793d7a7cda4463683a03d27ae12a9eb506a2cd674ad9e0b441c0f26",
+    "gestures\\emotion_angry_aggressive.json": "38260f03fb0e8050db0530ea26f3c4184bbb6a725b502c5b0d6767b49ca84fc0",
+    "gestures\\emotion_angry_aggressive_hostile.json": "e62ead18f1092dfffdf9decf93bf82c4b2ffe8fa402122648aafa8d2d650e0a5",
+    "gestures\\emotion_angry_aggressive_provoked.json": "b36b128a9ce20098d5a7073f1ca1ca57abe34e9cfe769ca5c2a2e68908779ee4",
+    "gestures\\emotion_angry_bitter.json": "b68fe84b1d7d7676527aa5f64d348322fd92d55c48a9897c4e21531edb9f88ff",
+    "gestures\\emotion_angry_bitter_indignant.json": "d5caa702a806f0161266d8716ba8734ae4729877599f2ca82bf5eaf018cb82ed",
+    "gestures\\emotion_angry_bitter_violated.json": "38ef6e3359f88843cf9c07030c53c4dc4c56d13d8d174258633a7683a195a51d",
+    "gestures\\emotion_angry_critical.json": "be3db047b69054cf7594a116f27795773bb7de50fb0159f3d93d81882ab8ecc4",
+    "gestures\\emotion_angry_critical_dismissive.json": "de36856aec197bf05fcae6d5b16f8a7ab03ccd7d308285409c17244b34e86002",
+    "gestures\\emotion_angry_critical_skeptical.json": "829c00e315ddb84a29bd47042311198632a34a114860314c7364a5ab815ed620",
+    "gestures\\emotion_angry_distant.json": "d3055737fd470b76e7c4b4fb93c260cbe1fb0b2aee09957ca5c50e4a9a3b90a3",
+    "gestures\\emotion_angry_distant_numb.json": "1e8d45f8032dcd4390310b7f6323d5ff9aa8346a92f56082c2281c773b4a2525",
+    "gestures\\emotion_angry_distant_withdrawn.json": "1c6c8b9090da1bf24b2ed33abbef46500c572e7e604189b504cdff21d7478b8a",
+    "gestures\\emotion_angry_frustrated.json": "14e9565e8e52727dfbe730d7cfe17841d5c7fddd63cc1cfc870916e1767e3049",
+    "gestures\\emotion_angry_frustrated_annoyed.json": "60cca2a3bacc6b0b64f271d30d6f6c96a05f50be5cbd4258215f21207e68a177",
+    "gestures\\emotion_angry_frustrated_infuriated.json": "9f5a9cccf2f8f63105a6227202aa1248bbdcca4aec892751d398ab326784a973",
+    "gestures\\emotion_angry_humiliated.json": "d784d66d691f23634c13233cad0d17130162449386ded82ed6740de97197fc55",
+    "gestures\\emotion_angry_humiliated_disrespected.json": "5fc796f58c2edc8f06bf046bd6ba8afbfb4a25bbb30c62c52b132bb3f6ec33ea",
+    "gestures\\emotion_angry_humiliated_ridiculed.json": "46aa4aaa7c117bfeb1493edd7f89db1e1214e3b4901f003c6cb88a0d4ad6f30b",
+    "gestures\\emotion_angry_let_down.json": "513e47f76471824ff7263002da6bfa6ce49209f6b235d673a9e8815640f07265",
+    "gestures\\emotion_angry_let_down_betrayed.json": "93d1c6da2ff5e773fb9d70842850bd74d7a031eadba906b5eca998fe3aeb185f",
+    "gestures\\emotion_angry_let_down_resentful.json": "6316ea3c88f8fad675875615bffd14947b41da23e9fe1933a05b297bd998fe6c",
+    "gestures\\emotion_angry_mad.json": "3a50171c9e8837cb54b6db9751d96060a5b0009d911bf9f636104333c4b4df33",
+    "gestures\\emotion_angry_mad_furious.json": "43d395f852134ada2541cbfa8bad90fe2714af2f3366734e438cec1bc708d07c",
+    "gestures\\emotion_angry_mad_jealous.json": "5f48671f9a51ce4c3f24c8031fc9746988e59cb6eaa3fc6c870ff7b3913a0f65",
+    "gestures\\emotion_disgusted.json": "2d246b8fc1f188b67b894b76b2e5eb504b50ee01274ccdfef5fede9a1fac55b3",
+    "gestures\\emotion_disgusted_awful.json": "07c2dd805773f581cfbcb67c80a2c71c68d66e5584365c9a7c4c3817a751ba8f",
+    "gestures\\emotion_disgusted_awful_detestable.json": "20adeabbf17d22837232911bd0fb2337d34a90eb67831e7f7a7e6402e8847fcd",
+    "gestures\\emotion_disgusted_awful_nauseated.json": "88ff45fcb4ecb338361be907c7b090b3e7c5a5f9eef6aeb99eba6ca073ac9c67",
+    "gestures\\emotion_disgusted_disappointed.json": "fac44673112ac3ed612072a8b999f892750f5fef5fdcb999543cc42167d5b880",
+    "gestures\\emotion_disgusted_disappointed_appalled.json": "d8c3681274d488ce319d85a51f1feeff04f9cbcaa18a5e49fdf090de78e74d9c",
+    "gestures\\emotion_disgusted_disappointed_revolted.json": "cf519bc5542da05d3c46d96062307e903b7136916942107d1f6a6c176983e974",
+    "gestures\\emotion_disgusted_disapproving.json": "7635c700aafc9459d999d56ebe4d08a059b9634e98447b70b4dee39318bb1324",
+    "gestures\\emotion_disgusted_disapproving_embarrassed.json": "7b22b92363362b635cae9d3aec1e043285bf53362af8797c0cdb59079f7d5ca5",
+    "gestures\\emotion_disgusted_disapproving_judgmental.json": "e79e64944dddde8067b2572851782bb141d8cbfc58b9c258033cb4403050b83b",
+    "gestures\\emotion_disgusted_repelled.json": "b3b1b989ea0edc2502b9a3fb3dbf4fa20309de844d198319aba63c69cd5cf2d6",
+    "gestures\\emotion_disgusted_repelled_hesitant.json": "1074f9c51d4298bde8e1a401eac6a3b3bbe7389e08b1b91218ec67686adc1206",
+    "gestures\\emotion_disgusted_repelled_horrified.json": "56f35fb5598f2fb94da8854c2ef69d6dfd1cee2e6299536be451f7e68b2ebd55",
+    "gestures\\emotion_fearful.json": "03729e7bc400029e66ae22c78b05b3ff2624adc88675b07fd4e69570e4b50b2b",
+    "gestures\\emotion_fearful_anxious.json": "84026c2e336b3e8f8f727505b3e54301e8e394fc9dbad3b69946d99f534696ad",
+    "gestures\\emotion_fearful_anxious_overwhelmed.json": "363a192d6757cf864184e247bf0f01984ebc57fe3c722ea8295dbf984f2ef8ec",
+    "gestures\\emotion_fearful_anxious_worried.json": "12ef41f1dbb3d3e270ad597d648364d4238ba50474caed6a9fabf6e92d732450",
+    "gestures\\emotion_fearful_insecure.json": "feccf9aa3382fbe4724a7a706c59c4c6673a6dd7f0cd1d2744b209e3299db802",
+    "gestures\\emotion_fearful_insecure_inadequate.json": "d153fafedfb7432ad0b87640a9ce4abae3bcbb5ce0790240ce3ab739259694b0",
+    "gestures\\emotion_fearful_insecure_inferior.json": "91df119611fbc665d3ef3e69c1c75459cd8754310ba816ae28b1013e6216f79f",
+    "gestures\\emotion_fearful_rejected.json": "a5501ade2982a84ca73a089f9d5b2727d11645c6927fd89833998d8177e2a4a3",
+    "gestures\\emotion_fearful_rejected_excluded.json": "f20322086230b28e654abb237b9817ce54da699a7a7adca608ca4683ab3b9c9e",
+    "gestures\\emotion_fearful_rejected_persecuted.json": "25ef8d260c821e7c95d2a71d8e8a34f1f395b3b1080c06313f197555e92a6500",
+    "gestures\\emotion_fearful_scared.json": "5a2f4d692da4abfb3b7b00007b4e0834b9ad6be7e1d0ba61b3d34e4f2f4a0d4a",
+    "gestures\\emotion_fearful_scared_frightened.json": "04ace14a15988ecb6f357bd3ad11b09ef1f4fca0a54ac08b950ec10858bd67e2",
+    "gestures\\emotion_fearful_scared_helpless.json": "398dc67e575b6fe621f496c76ccd8f8ccb2eaeb5e1ab60f73ef069aad470b825",
+    "gestures\\emotion_fearful_threatened.json": "cf6b3c148e083b6672766aa7e4a3abe26f9f6c38e3145ad4269d2c6b36e5cc85",
+    "gestures\\emotion_fearful_threatened_exposed.json": "2c0a0b9b8bed183e00d3ce668bcaed2abba52f63116cf70acdcc76eff9c321f1",
+    "gestures\\emotion_fearful_threatened_nervous.json": "8efd5596ce99eb5f3a52764a705e96541c813e9268dbb5e59b3335df3b982fa9",
+    "gestures\\emotion_fearful_weak.json": "569c18c0ea6be6d84a6de474bbcef88e882ddc054e15a0a9bf7137fb064283d9",
+    "gestures\\emotion_fearful_weak_insignificant.json": "f6a3c4846fc0f688c642db96f7b9f640f5b2901c51aa7f3f8d802189f656301f",
+    "gestures\\emotion_fearful_weak_worthless.json": "5e73450771549554ef80cca70e2b0f2410920696a6f14fbb9a0c685f72081df3",
+    "gestures\\emotion_happy.json": "54cbd9ef239fab24aa9c360bdac296b2c7c3c57bf9bc0abeb9cd3761c73a1719",
+    "gestures\\emotion_happy_accepted.json": "cd0f7e54ff3d5b7b4214d69c4510b68e1dec87581631e23992d83bacaf332b68",
+    "gestures\\emotion_happy_accepted_respected.json": "557aafcef7d658fa405a0e58072e00e84cfe44c4dbc993b0c6f6ece8dd9fd529",
+    "gestures\\emotion_happy_accepted_valued.json": "5009cf18dba0221e8fb47ff09e0919ba47ef6eceab4c5e09bdb158fce1794d42",
+    "gestures\\emotion_happy_content.json": "fc2714b6f4644e653e177870605757620a0faf6c8da7cc0184f3960bb1b96ef4",
+    "gestures\\emotion_happy_content_free.json": "981e0fedf9db96e98e4bc79e4950137150d3b0bfc1372c637aa84d932ba90170",
+    "gestures\\emotion_happy_content_joyful.json": "abc699df8298823fa8e6cff5a4eadbc4297a28944c211cf56e7d6aa0a4b10cb5",
+    "gestures\\emotion_happy_interested.json": "25eb39124fab976dafc47760b7b914576cbfe453f8f1fefa1129215b913cf1aa",
+    "gestures\\emotion_happy_interested_curious.json": "3a0491cebb77ffb8dd5bed6847c9306daae8f943849ed493f6826e515c3d0d93",
+    "gestures\\emotion_happy_interested_inquisitive.json": "fc7f4d7cfbcbaff77be70f9522a678eb4987d1312da331030e4a4d2da9c00640",
+    "gestures\\emotion_happy_optimistic.json": "51615311a32a3130770f4404f5aacad019b6b1937a796f5d445d712c6c3fab06",
+    "gestures\\emotion_happy_optimistic_hopeful.json": "68ede1fd6752597f58a3148e9061fcc82c4bcc83089e961f2827b82c3e0c1b4b",
+    "gestures\\emotion_happy_optimistic_inspired.json": "64c0a50956f233e4bd065cb7bb21f7bb956e84a1a16ff3a9e2fdfac8f5fab5ce",
+    "gestures\\emotion_happy_peaceful.json": "88309fc48319ec510d7f9dcc2c0857530a460798eb5c742b164af2ff7a41a4b6",
+    "gestures\\emotion_happy_peaceful_loving.json": "3a3fad1d0d384e11901d7320aacb18d7219283bc01a9ce8d9658b120dab70ca7",
+    "gestures\\emotion_happy_peaceful_thankful.json": "5bf3e81ef5cd9084486f3b86d27e1e2632c28ea47c85267898dc0ec3335885b4",
+    "gestures\\emotion_happy_playful.json": "ddedc52a0fac94eb93a63460337eacce52db780c6b704825c5e74a76c37b1852",
+    "gestures\\emotion_happy_playful_aroused.json": "48d9f383c40527c32176a38be954e10fce8b725a74aa2c96cdefc1b189370d08",
+    "gestures\\emotion_happy_playful_cheeky.json": "8075f684cb624dc0392b0dc1f4ee54944ad5e9daa922989990a66cc2b00fafc6",
+    "gestures\\emotion_happy_powerful.json": "cd4a9a3030cf554d85617a8854c712db29e1d94cc54f499734685ef000502f78",
+    "gestures\\emotion_happy_powerful_courageous.json": "3e3ca0fe97cac8fc38e1c559844ca0cf9c8b920d42e14bfe5482497d26fd6fcc",
+    "gestures\\emotion_happy_powerful_creative.json": "8f6d8589cf145b2a6f6408bed14ff1b13285102eb2bdbb3f12fdfbe235129ab4",
+    "gestures\\emotion_happy_proud.json": "9d7a0ab83713d80ddaed2f6a2a9cb76fcf4aaf55e601d65606135d599f9c058c",
+    "gestures\\emotion_happy_proud_confident.json": "1536c651eb95fec8853fd3251f27de9ca3e386992a2682759a97f384cd3d6d8e",
+    "gestures\\emotion_happy_proud_successful.json": "e61a9c4fc9179afa287e8c3eaa2cecd88a1cd613316c0ed87dc5ea1466cd0b12",
+    "gestures\\emotion_happy_trusting.json": "199c4947ff11138698f41030c71236feb4dd193c4a43be07867a048390f7465e",
+    "gestures\\emotion_happy_trusting_intimate.json": "7975f5914585151624ef8290cf4e883231899db7bf7205047410239ff8abc0fc",
+    "gestures\\emotion_happy_trusting_sensitive.json": "3f97db66d8824f7d160650b9bb29a859c915f39e00179fb94c3951de8ff3d139",
+    "gestures\\emotion_sad.json": "dd9d523a6f1b998fb2dcf012969fcf76f871f46ce3e287346c7d7f293e9e5f14",
+    "gestures\\emotion_sad_depressed.json": "d3ffc980e7f649cf002ff1ac05994ac3ab9276fc25640bc26cfd7cd026900478",
+    "gestures\\emotion_sad_depressed_empty.json": "3796ed1640a70f2a6441193653835094afc69cf91cf15f0c782df0b0d3366d82",
+    "gestures\\emotion_sad_depressed_inferior.json": "4025751faa3505952df5eb44057c56850f8653f0ae79561dcfc7a76a296b8abb",
+    "gestures\\emotion_sad_despair.json": "fd0e3931f9c7c165b233cb9f3f2aeac40c0ccdc7741ea3b77860921f1f2858d6",
+    "gestures\\emotion_sad_despair_grief.json": "33ccab11fef49e1bbb172b2d92db459b8df7c3495f672f0ed581be8fbf3e51c9",
+    "gestures\\emotion_sad_despair_powerless.json": "93e6926337eb3f9ba7bb57bd2e639edf3cfcb940b701e37f7b2f6b93b5e7345c",
+    "gestures\\emotion_sad_guilty.json": "f2287db82198ef8792a47186dfcb2eab1f5efa72864bef479bd5b535cee809a6",
+    "gestures\\emotion_sad_guilty_ashamed.json": "06f866545045daa78caf39bad44475d327c61d171ab6b7f7f73f0fd4e5a0f931",
+    "gestures\\emotion_sad_guilty_remorseful.json": "7f3663d9b6d1902b7f1f67055ed465b35b426c321d4fb979a146fe9e37c9d2a9",
+    "gestures\\emotion_sad_hurt.json": "96920d41bc21bafb9c7c0b4b823e1e52e3f5c38e55a588849aa90beda0ea52cc",
+    "gestures\\emotion_sad_hurt_disappointed.json": "e4de4fbce4dedd09dcdb29614f59c904340b81beee9fe1b152eb7452eb580eea",
+    "gestures\\emotion_sad_hurt_embarrassed.json": "5e8ce29fa5f62d414726ea54eedad0c2c3247201fa19535cae821d7851f4f5e5",
+    "gestures\\emotion_sad_lonely.json": "b8996e29ea34f904296604e8fcf6d4facd9b09070c053274708f18907124ff27",
+    "gestures\\emotion_sad_lonely_abandoned.json": "925a981b163143fb1dc6d19dde27646cdb2edbf05229df653882db852f7923fb",
+    "gestures\\emotion_sad_lonely_isolated.json": "1054db68bee762a19b29e6512b8cc9e9c988447fcd61b07b3d863dfa0174fe6a",
+    "gestures\\emotion_sad_vulnerable.json": "81c648c792164ce1270b3edfb291eeec25fd7a3cbdbe8fa1912f6a25e5e88855",
+    "gestures\\emotion_sad_vulnerable_fragile.json": "07785752c9cbd6076c56c1594deb5e54a1f39849067aa12e65d812ab8f046c79",
+    "gestures\\emotion_sad_vulnerable_victimized.json": "52552bd7e5ca551b44b117935aca319e1d860ad177fa2dc28ec26e3cefc781e9",
+    "gestures\\emotion_surprised.json": "8c95f6dc5cf039850c375a725a77112281241b62f707d09f6be8e1ad8750032d",
+    "gestures\\emotion_surprised_amazed.json": "d2073b974aa28f4349b8ed276a69e7132966abc49cee60a98b0161f139bd6629",
+    "gestures\\emotion_surprised_amazed_astonished.json": "d6735bd62fda9c7f07250489c0bb7fbae4b236c744805b1f341cee9f172726b8",
+    "gestures\\emotion_surprised_amazed_awe.json": "e583b0cd37ce5e98d0106a68e4460b861da8d139136923826db59e9e362b4ae7",
+    "gestures\\emotion_surprised_confused.json": "1e079db9448ef9c489ad273eb365d1d4f433c64c418a9e3f4de8d23983660c2a",
+    "gestures\\emotion_surprised_confused_disillusioned.json": "e1dd4f7d15d251aafebbdd66364bafe19ac7e5bdbd14b1cb53978116c7ad84df",
+    "gestures\\emotion_surprised_confused_perplexed.json": "c748868e29c5d7a66cc96fea978590524b5beb99de1dbad1ef030c092f1b842b",
+    "gestures\\emotion_surprised_excited.json": "3cdb4701a2cbc765c2cf5ff12a9ac0ef98d1f8823dae9f7e83a3d213f7027553",
+    "gestures\\emotion_surprised_excited_eager.json": "d7c4822fcb60673f98d2d28ef864b02ebd414b7be3eadb54246e88766b6a78dc",
+    "gestures\\emotion_surprised_excited_energetic.json": "7b54be48ddc3002c9332ab6d5d9ee09f646845cef7078e6ab79766700c12e846",
+    "gestures\\emotion_surprised_startled.json": "89f5b91aa2564d09242b7ce90fcb4398214ddb0b2737f4847a9dc233c777498a",
+    "gestures\\emotion_surprised_startled_dismayed.json": "e69b22de6b206abc7a0598632d8c06f5d0f0863fd50ed459273ef5320c41a846",
+    "gestures\\emotion_surprised_startled_shocked.json": "a025bf87e45dc9645fdf6fac5ad902400e987ff340378c143b02a5da6157dacc",
+    "gestures\\excited.json": "aca91187257b5c21187871ebb044804a4a4267c8f1057afe9839f19517e7864e",
+    "gestures\\idle_hold.json": "8d2dfae1e6474bbb1cdba70022c6e2fb14931c21df365a7550594bde5ad390d3",
+    "gestures\\limit_sweep.json": "ae40cbc60e62c3f374519771a1d2103bd2df1d018896fbb5651841e5f356f34a",
+    "gestures\\nod.json": "cca99497029e43e2032301601da4257f0cf29b34fa16b1c69a84bbc9d2a999c3",
+    "gestures\\reach_hold.json": "d9c15e6e825270c485ce083af01631b10872face2a0594773a6f9f118fe7c62c",
+    "gestures\\scan.json": "d6e46112184c86082681edeb7733910ecc0ca8183fb1f243811414c3d1599aee",
+    "gestures\\shake.json": "4d6932e6e779b5e7cfaac34111237835bec260986f646c7f007259f7122574c3"
+  },
+  "expected_catalog": [
+    {
+      "name": "bow",
+      "label": "Bow",
+      "description": "A slow coordinated bow for comparing motion under gravity.",
+      "group": "",
+      "revision": "d546ae4ec599caef0f736163da567de245b9d412061809f60baa2ebb661bbc4c"
+    },
+    {
+      "name": "curious",
+      "label": "Curious lean",
+      "description": "Move the shoulder, elbow, and head together, pause, then return.",
+      "group": "",
+      "revision": "97dfdad2d972395a3bef9b49574d9e29e942a2146ffe34babeafd03cf87f5bb2"
+    },
+    {
+      "name": "emotion_angry",
+      "label": "Angry",
+      "description": "A squared stance with two firm downward accents.",
+      "group": "Angry",
+      "revision": "7f4357cfc793d7a7cda4463683a03d27ae12a9eb506a2cd674ad9e0b441c0f26"
+    },
+    {
+      "name": "emotion_angry_aggressive",
+      "label": "Angry / Aggressive",
+      "description": "Advance the arm in two deliberate pushes.",
+      "group": "Angry",
+      "revision": "38260f03fb0e8050db0530ea26f3c4184bbb6a725b502c5b0d6767b49ca84fc0"
+    },
+    {
+      "name": "emotion_angry_aggressive_hostile",
+      "label": "Angry / Aggressive / Hostile",
+      "description": "Present a forward stance and sustain a rigid sideways stare.",
+      "group": "Angry",
+      "revision": "e62ead18f1092dfffdf9decf93bf82c4b2ffe8fa402122648aafa8d2d650e0a5"
+    },
+    {
+      "name": "emotion_angry_aggressive_provoked",
+      "label": "Angry / Aggressive / Provoked",
+      "description": "Flinch back and answer with a sharp forward head accent.",
+      "group": "Angry",
+      "revision": "b36b128a9ce20098d5a7073f1ca1ca57abe34e9cfe769ca5c2a2e68908779ee4"
+    },
+    {
+      "name": "emotion_angry_bitter",
+      "label": "Angry / Bitter",
+      "description": "Angle away and give a deliberate refusing head sweep.",
+      "group": "Angry",
+      "revision": "b68fe84b1d7d7676527aa5f64d348322fd92d55c48a9897c4e21531edb9f88ff"
+    },
+    {
+      "name": "emotion_angry_bitter_indignant",
+      "label": "Angry / Bitter / Indignant",
+      "description": "Lift into a firm upright stance and give one measured refusing sweep.",
+      "group": "Angry",
+      "revision": "d5caa702a806f0161266d8716ba8734ae4729877599f2ca82bf5eaf018cb82ed"
+    },
+    {
+      "name": "emotion_angry_bitter_violated",
+      "label": "Angry / Bitter / Violated",
+      "description": "Pull the arm inward quickly and turn the shade away.",
+      "group": "Angry",
+      "revision": "38ef6e3359f88843cf9c07030c53c4dc4c56d13d8d174258633a7683a195a51d"
+    },
+    {
+      "name": "emotion_angry_critical",
+      "label": "Angry / Critical",
+      "description": "Lean in and inspect with a measured head sweep.",
+      "group": "Angry",
+      "revision": "be3db047b69054cf7594a116f27795773bb7de50fb0159f3d93d81882ab8ecc4"
+    },
+    {
+      "name": "emotion_angry_critical_dismissive",
+      "label": "Angry / Critical / Dismissive",
+      "description": "Give a short sideways head flick, turn the body away, and break the gaze.",
+      "group": "Angry",
+      "revision": "de36856aec197bf05fcae6d5b16f8a7ab03ccd7d308285409c17244b34e86002"
+    },
+    {
+      "name": "emotion_angry_critical_skeptical",
+      "label": "Angry / Critical / Skeptical",
+      "description": "Lift the shade, glance sideways, and give only a partial nod.",
+      "group": "Angry",
+      "revision": "829c00e315ddb84a29bd47042311198632a34a114860314c7364a5ab815ed620"
+    },
+    {
+      "name": "emotion_angry_distant",
+      "label": "Angry / Distant",
+      "description": "Turn the body away while slowly breaking the head's forward gaze.",
+      "group": "Angry",
+      "revision": "d3055737fd470b76e7c4b4fb93c260cbe1fb0b2aee09957ca5c50e4a9a3b90a3"
+    },
+    {
+      "name": "emotion_angry_distant_numb",
+      "label": "Angry / Distant / Numb",
+      "description": "Turn away slowly, let the shade settle, and remain still before recovering.",
+      "group": "Angry",
+      "revision": "1e8d45f8032dcd4390310b7f6323d5ff9aa8346a92f56082c2281c773b4a2525"
+    },
+    {
+      "name": "emotion_angry_distant_withdrawn",
+      "label": "Angry / Distant / Withdrawn",
+      "description": "Fold inward and let the head follow the body away.",
+      "group": "Angry",
+      "revision": "1c6c8b9090da1bf24b2ed33abbef46500c572e7e604189b504cdff21d7478b8a"
+    },
+    {
+      "name": "emotion_angry_frustrated",
+      "label": "Angry / Frustrated",
+      "description": "Shake the head, droop briefly, and recover.",
+      "group": "Angry",
+      "revision": "14e9565e8e52727dfbe730d7cfe17841d5c7fddd63cc1cfc870916e1767e3049"
+    },
+    {
+      "name": "emotion_angry_frustrated_annoyed",
+      "label": "Angry / Frustrated / Annoyed",
+      "description": "Give two small dismissive neck flicks.",
+      "group": "Angry",
+      "revision": "60cca2a3bacc6b0b64f271d30d6f6c96a05f50be5cbd4258215f21207e68a177"
+    },
+    {
+      "name": "emotion_angry_frustrated_infuriated",
+      "label": "Angry / Frustrated / Infuriated",
+      "description": "Alternate a tense head lift with repeated forceful dips.",
+      "group": "Angry",
+      "revision": "9f5a9cccf2f8f63105a6227202aa1248bbdcca4aec892751d398ab326784a973"
+    },
+    {
+      "name": "emotion_angry_humiliated",
+      "label": "Angry / Humiliated",
+      "description": "Fold low and turn the shade away.",
+      "group": "Angry",
+      "revision": "d784d66d691f23634c13233cad0d17130162449386ded82ed6740de97197fc55"
+    },
+    {
+      "name": "emotion_angry_humiliated_disrespected",
+      "label": "Angry / Humiliated / Disrespected",
+      "description": "Pull back from an attempted approach and lower the head.",
+      "group": "Angry",
+      "revision": "5fc796f58c2edc8f06bf046bd6ba8afbfb4a25bbb30c62c52b132bb3f6ec33ea"
+    },
+    {
+      "name": "emotion_angry_humiliated_ridiculed",
+      "label": "Angry / Humiliated / Ridiculed",
+      "description": "Flinch twice and tuck the shade aside.",
+      "group": "Angry",
+      "revision": "46aa4aaa7c117bfeb1493edd7f89db1e1214e3b4901f003c6cb88a0d4ad6f30b"
+    },
+    {
+      "name": "emotion_angry_let_down",
+      "label": "Angry / Let down",
+      "description": "Offer an expectant approach, stop, and withdraw into a disappointed sideways hold.",
+      "group": "Angry",
+      "revision": "513e47f76471824ff7263002da6bfa6ce49209f6b235d673a9e8815640f07265"
+    },
+    {
+      "name": "emotion_angry_let_down_betrayed",
+      "label": "Angry / Let down / Betrayed",
+      "description": "Begin an open approach, recoil, then look back with a rigid sideways stare.",
+      "group": "Angry",
+      "revision": "93d1c6da2ff5e773fb9d70842850bd74d7a031eadba906b5eca998fe3aeb185f"
+    },
+    {
+      "name": "emotion_angry_let_down_resentful",
+      "label": "Angry / Let down / Resentful",
+      "description": "Withdraw slowly and hold a low sideways look.",
+      "group": "Angry",
+      "revision": "6316ea3c88f8fad675875615bffd14947b41da23e9fe1933a05b297bd998fe6c"
+    },
+    {
+      "name": "emotion_angry_mad",
+      "label": "Angry / Mad",
+      "description": "Lean forward with two emphatic head dips.",
+      "group": "Angry",
+      "revision": "3a50171c9e8837cb54b6db9751d96060a5b0009d911bf9f636104333c4b4df33"
+    },
+    {
+      "name": "emotion_angry_mad_furious",
+      "label": "Angry / Mad / Furious",
+      "description": "Make a broad, brisk refusing sweep from a forward stance.",
+      "group": "Angry",
+      "revision": "43d395f852134ada2541cbfa8bad90fe2714af2f3366734e438cec1bc708d07c"
+    },
+    {
+      "name": "emotion_angry_mad_jealous",
+      "label": "Angry / Mad / Jealous",
+      "description": "Turn toward a rival while keeping the head in a fixed sideways watch.",
+      "group": "Angry",
+      "revision": "5f48671f9a51ce4c3f24c8031fc9746988e59cb6eaa3fc6c870ff7b3913a0f65"
+    },
+    {
+      "name": "emotion_disgusted",
+      "label": "Disgusted",
+      "description": "Recoil slightly and turn the shade away.",
+      "group": "Disgusted",
+      "revision": "2d246b8fc1f188b67b894b76b2e5eb504b50ee01274ccdfef5fede9a1fac55b3"
+    },
+    {
+      "name": "emotion_disgusted_awful",
+      "label": "Disgusted / Awful",
+      "description": "Fold into a low, uncomfortable posture in two stages.",
+      "group": "Disgusted",
+      "revision": "07c2dd805773f581cfbcb67c80a2c71c68d66e5584365c9a7c4c3817a751ba8f"
+    },
+    {
+      "name": "emotion_disgusted_awful_detestable",
+      "label": "Disgusted / Awful / Detestable",
+      "description": "Turn firmly aside and punctuate the refusal with a head dip.",
+      "group": "Disgusted",
+      "revision": "20adeabbf17d22837232911bd0fb2337d34a90eb67831e7f7a7e6402e8847fcd"
+    },
+    {
+      "name": "emotion_disgusted_awful_nauseated",
+      "label": "Disgusted / Awful / Nauseated",
+      "description": "Fold gradually, make a slow shallow head roll from side to side, and settle low.",
+      "group": "Disgusted",
+      "revision": "88ff45fcb4ecb338361be907c7b090b3e7c5a5f9eef6aeb99eba6ca073ac9c67"
+    },
+    {
+      "name": "emotion_disgusted_disappointed",
+      "label": "Disgusted / Disappointed",
+      "description": "Let an initially raised head settle into a slow droop.",
+      "group": "Disgusted",
+      "revision": "fac44673112ac3ed612072a8b999f892750f5fef5fdcb999543cc42167d5b880"
+    },
+    {
+      "name": "emotion_disgusted_disappointed_appalled",
+      "label": "Disgusted / Disappointed / Appalled",
+      "description": "Recoil with the head raised, freeze, then withdraw while turning aside.",
+      "group": "Disgusted",
+      "revision": "d8c3681274d488ce319d85a51f1feeff04f9cbcaa18a5e49fdf090de78e74d9c"
+    },
+    {
+      "name": "emotion_disgusted_disappointed_revolted",
+      "label": "Disgusted / Disappointed / Revolted",
+      "description": "Contract the arm, shudder twice, and avert the head.",
+      "group": "Disgusted",
+      "revision": "cf519bc5542da05d3c46d96062307e903b7136916942107d1f6a6c176983e974"
+    },
+    {
+      "name": "emotion_disgusted_disapproving",
+      "label": "Disgusted / Disapproving",
+      "description": "Make a measured refusal with the shade lowered.",
+      "group": "Disgusted",
+      "revision": "7635c700aafc9459d999d56ebe4d08a059b9634e98447b70b4dee39318bb1324"
+    },
+    {
+      "name": "emotion_disgusted_disapproving_embarrassed",
+      "label": "Disgusted / Disapproving / Embarrassed",
+      "description": "Avert a lowered shade, make a brief reluctant check, and turn away again.",
+      "group": "Disgusted",
+      "revision": "7b22b92363362b635cae9d3aec1e043285bf53362af8797c0cdb59079f7d5ca5"
+    },
+    {
+      "name": "emotion_disgusted_disapproving_judgmental",
+      "label": "Disgusted / Disapproving / Judgmental",
+      "description": "Inspect slowly, dip once, and maintain an angled stance.",
+      "group": "Disgusted",
+      "revision": "e79e64944dddde8067b2572851782bb141d8cbfc58b9c258033cb4403050b83b"
+    },
+    {
+      "name": "emotion_disgusted_repelled",
+      "label": "Disgusted / Repelled",
+      "description": "Rotate away and keep the shade averted through the pause.",
+      "group": "Disgusted",
+      "revision": "b3b1b989ea0edc2502b9a3fb3dbf4fa20309de844d198319aba63c69cd5cf2d6"
+    },
+    {
+      "name": "emotion_disgusted_repelled_hesitant",
+      "label": "Disgusted / Repelled / Hesitant",
+      "description": "Start an approach, pause halfway, and draw back.",
+      "group": "Disgusted",
+      "revision": "1074f9c51d4298bde8e1a401eac6a3b3bbe7389e08b1b91218ec67686adc1206"
+    },
+    {
+      "name": "emotion_disgusted_repelled_horrified",
+      "label": "Disgusted / Repelled / Horrified",
+      "description": "Retreat abruptly, hold a high watchful head, then avert the whole upper body.",
+      "group": "Disgusted",
+      "revision": "56f35fb5598f2fb94da8854c2ef69d6dfd1cee2e6299536be451f7e68b2ebd55"
+    },
+    {
+      "name": "emotion_fearful",
+      "label": "Fearful",
+      "description": "Draw the arm inward and check to each side.",
+      "group": "Fearful",
+      "revision": "03729e7bc400029e66ae22c78b05b3ff2624adc88675b07fd4e69570e4b50b2b"
+    },
+    {
+      "name": "emotion_fearful_anxious",
+      "label": "Fearful / Anxious",
+      "description": "Make several small checking turns from a withdrawn stance.",
+      "group": "Fearful",
+      "revision": "84026c2e336b3e8f8f727505b3e54301e8e394fc9dbad3b69946d99f534696ad"
+    },
+    {
+      "name": "emotion_fearful_anxious_overwhelmed",
+      "label": "Fearful / Anxious / Overwhelmed",
+      "description": "Make two tense tremors and fold the head down.",
+      "group": "Fearful",
+      "revision": "363a192d6757cf864184e247bf0f01984ebc57fe3c722ea8295dbf984f2ef8ec"
+    },
+    {
+      "name": "emotion_fearful_anxious_worried",
+      "label": "Fearful / Anxious / Worried",
+      "description": "Search side to side with long uncertain pauses.",
+      "group": "Fearful",
+      "revision": "12ef41f1dbb3d3e270ad597d648364d4238ba50474caed6a9fabf6e92d732450"
+    },
+    {
+      "name": "emotion_fearful_insecure",
+      "label": "Fearful / Insecure",
+      "description": "Alternate a tentative approach with a small retreat.",
+      "group": "Fearful",
+      "revision": "feccf9aa3382fbe4724a7a706c59c4c6673a6dd7f0cd1d2744b209e3299db802"
+    },
+    {
+      "name": "emotion_fearful_insecure_inadequate",
+      "label": "Fearful / Insecure / Inadequate",
+      "description": "Attempt two small lifts before returning to a guarded pose.",
+      "group": "Fearful",
+      "revision": "d153fafedfb7432ad0b87640a9ce4abae3bcbb5ce0790240ce3ab739259694b0"
+    },
+    {
+      "name": "emotion_fearful_insecure_inferior",
+      "label": "Fearful / Insecure / Inferior",
+      "description": "Bow cautiously while keeping the head turned partly aside.",
+      "group": "Fearful",
+      "revision": "91df119611fbc665d3ef3e69c1c75459cd8754310ba816ae28b1013e6216f79f"
+    },
+    {
+      "name": "emotion_fearful_rejected",
+      "label": "Fearful / Rejected",
+      "description": "Offer a cautious approach and withdraw into a lowered pose.",
+      "group": "Fearful",
+      "revision": "a5501ade2982a84ca73a089f9d5b2727d11645c6927fd89833998d8177e2a4a3"
+    },
+    {
+      "name": "emotion_fearful_rejected_excluded",
+      "label": "Fearful / Rejected / Excluded",
+      "description": "Rotate away and hold a withdrawn side-facing stance.",
+      "group": "Fearful",
+      "revision": "f20322086230b28e654abb237b9817ce54da699a7a7adca608ca4683ab3b9c9e"
+    },
+    {
+      "name": "emotion_fearful_rejected_persecuted",
+      "label": "Fearful / Rejected / Persecuted",
+      "description": "Check behind each side and withdraw while keeping the shade watchful.",
+      "group": "Fearful",
+      "revision": "25ef8d260c821e7c95d2a71d8e8a34f1f395b3b1080c06313f197555e92a6500"
+    },
+    {
+      "name": "emotion_fearful_scared",
+      "label": "Fearful / Scared",
+      "description": "Retreat promptly and hold a braced, watchful posture.",
+      "group": "Fearful",
+      "revision": "5a2f4d692da4abfb3b7b00007b4e0834b9ad6be7e1d0ba61b3d34e4f2f4a0d4a"
+    },
+    {
+      "name": "emotion_fearful_scared_frightened",
+      "label": "Fearful / Scared / Frightened",
+      "description": "Flinch back twice while keeping the head lifted to watch.",
+      "group": "Fearful",
+      "revision": "04ace14a15988ecb6f357bd3ad11b09ef1f4fca0a54ac08b950ec10858bd67e2"
+    },
+    {
+      "name": "emotion_fearful_scared_helpless",
+      "label": "Fearful / Scared / Helpless",
+      "description": "Try a small escape twice, then fold into a guarded pause.",
+      "group": "Fearful",
+      "revision": "398dc67e575b6fe621f496c76ccd8f8ccb2eaeb5e1ab60f73ef069aad470b825"
+    },
+    {
+      "name": "emotion_fearful_threatened",
+      "label": "Fearful / Threatened",
+      "description": "Draw back, brace, and check to one side.",
+      "group": "Fearful",
+      "revision": "cf6b3c148e083b6672766aa7e4a3abe26f9f6c38e3145ad4269d2c6b36e5cc85"
+    },
+    {
+      "name": "emotion_fearful_threatened_exposed",
+      "label": "Fearful / Threatened / Exposed",
+      "description": "Freeze with the shade raised, then tuck inward and turn partly away.",
+      "group": "Fearful",
+      "revision": "2c0a0b9b8bed183e00d3ce668bcaed2abba52f63116cf70acdcc76eff9c321f1"
+    },
+    {
+      "name": "emotion_fearful_threatened_nervous",
+      "label": "Fearful / Threatened / Nervous",
+      "description": "Make three small anticipatory checks, pausing before each change of gaze.",
+      "group": "Fearful",
+      "revision": "8efd5596ce99eb5f3a52764a705e96541c813e9268dbb5e59b3335df3b982fa9"
+    },
+    {
+      "name": "emotion_fearful_weak",
+      "label": "Fearful / Weak",
+      "description": "Lower the arm and head into a small sustained bow.",
+      "group": "Fearful",
+      "revision": "569c18c0ea6be6d84a6de474bbcef88e882ddc054e15a0a9bf7137fb064283d9"
+    },
+    {
+      "name": "emotion_fearful_weak_insignificant",
+      "label": "Fearful / Weak / Insignificant",
+      "description": "Contract the arm in two stages and keep the shade low.",
+      "group": "Fearful",
+      "revision": "f6a3c4846fc0f688c642db96f7b9f640f5b2901c51aa7f3f8d802189f656301f"
+    },
+    {
+      "name": "emotion_fearful_weak_worthless",
+      "label": "Fearful / Weak / Worthless",
+      "description": "Sink slowly into the smallest posture in this branch.",
+      "group": "Fearful",
+      "revision": "5e73450771549554ef80cca70e2b0f2410920696a6f14fbb9a0c685f72081df3"
+    },
+    {
+      "name": "emotion_happy",
+      "label": "Happy",
+      "description": "Lift the shade and make two welcoming bobs.",
+      "group": "Happy",
+      "revision": "54cbd9ef239fab24aa9c360bdac296b2c7c3c57bf9bc0abeb9cd3761c73a1719"
+    },
+    {
+      "name": "emotion_happy_accepted",
+      "label": "Happy / Accepted",
+      "description": "Settle into a gentle, relaxed side-to-side movement.",
+      "group": "Happy",
+      "revision": "cd0f7e54ff3d5b7b4214d69c4510b68e1dec87581631e23992d83bacaf332b68"
+    },
+    {
+      "name": "emotion_happy_accepted_respected",
+      "label": "Happy / Accepted / Respected",
+      "description": "Offer a measured acknowledgment and rise smoothly.",
+      "group": "Happy",
+      "revision": "557aafcef7d658fa405a0e58072e00e84cfe44c4dbc993b0c6f6ece8dd9fd529"
+    },
+    {
+      "name": "emotion_happy_accepted_valued",
+      "label": "Happy / Accepted / Valued",
+      "description": "Lift into a relaxed open pose and pause.",
+      "group": "Happy",
+      "revision": "5009cf18dba0221e8fb47ff09e0919ba47ef6eceab4c5e09bdb158fce1794d42"
+    },
+    {
+      "name": "emotion_happy_content",
+      "label": "Happy / Content",
+      "description": "Settle into a relaxed open pose, breathe through one shallow rise, and rest.",
+      "group": "Happy",
+      "revision": "fc2714b6f4644e653e177870605757620a0faf6c8da7cc0184f3960bb1b96ef4"
+    },
+    {
+      "name": "emotion_happy_content_free",
+      "label": "Happy / Content / Free",
+      "description": "Unfold and sweep outward into a broad raised pose.",
+      "group": "Happy",
+      "revision": "981e0fedf9db96e98e4bc79e4950137150d3b0bfc1372c637aa84d932ba90170"
+    },
+    {
+      "name": "emotion_happy_content_joyful",
+      "label": "Happy / Content / Joyful",
+      "description": "Bounce twice with an open, lifted head.",
+      "group": "Happy",
+      "revision": "abc699df8298823fa8e6cff5a4eadbc4297a28944c211cf56e7d6aa0a4b10cb5"
+    },
+    {
+      "name": "emotion_happy_interested",
+      "label": "Happy / Interested",
+      "description": "Lean toward the subject and examine it with a small head sweep.",
+      "group": "Happy",
+      "revision": "25eb39124fab976dafc47760b7b914576cbfe453f8f1fefa1129215b913cf1aa"
+    },
+    {
+      "name": "emotion_happy_interested_curious",
+      "label": "Happy / Interested / Curious",
+      "description": "Lean closer, tilt the gaze to one side, and approach again after a thoughtful pause.",
+      "group": "Happy",
+      "revision": "3a0491cebb77ffb8dd5bed6847c9306daae8f943849ed493f6826e515c3d0d93"
+    },
+    {
+      "name": "emotion_happy_interested_inquisitive",
+      "label": "Happy / Interested / Inquisitive",
+      "description": "Lean closer and check two viewing angles.",
+      "group": "Happy",
+      "revision": "fc7f4d7cfbcbaff77be70f9522a678eb4987d1312da331030e4a4d2da9c00640"
+    },
+    {
+      "name": "emotion_happy_optimistic",
+      "label": "Happy / Optimistic",
+      "description": "Lift into an alert raised pose with a small confirming nod.",
+      "group": "Happy",
+      "revision": "51615311a32a3130770f4404f5aacad019b6b1937a796f5d445d712c6c3fab06"
+    },
+    {
+      "name": "emotion_happy_optimistic_hopeful",
+      "label": "Happy / Optimistic / Hopeful",
+      "description": "Raise the shade gradually, as if looking toward a possibility.",
+      "group": "Happy",
+      "revision": "68ede1fd6752597f58a3148e9061fcc82c4bcc83089e961f2827b82c3e0c1b4b"
+    },
+    {
+      "name": "emotion_happy_optimistic_inspired",
+      "label": "Happy / Optimistic / Inspired",
+      "description": "Pause briefly, lift the shade, and follow with an upward accent.",
+      "group": "Happy",
+      "revision": "64c0a50956f233e4bd065cb7bb21f7bb956e84a1a16ff3a9e2fdfac8f5fab5ce"
+    },
+    {
+      "name": "emotion_happy_peaceful",
+      "label": "Happy / Peaceful",
+      "description": "Rise and settle through a slow, shallow breathing-like motion.",
+      "group": "Happy",
+      "revision": "88309fc48319ec510d7f9dcc2c0857530a460798eb5c742b164af2ff7a41a4b6"
+    },
+    {
+      "name": "emotion_happy_peaceful_loving",
+      "label": "Happy / Peaceful / Loving",
+      "description": "Lean close and make a gentle small head dip.",
+      "group": "Happy",
+      "revision": "3a3fad1d0d384e11901d7320aacb18d7219283bc01a9ce8d9658b120dab70ca7"
+    },
+    {
+      "name": "emotion_happy_peaceful_thankful",
+      "label": "Happy / Peaceful / Thankful",
+      "description": "Offer a slow appreciative bow, rise, and hold a gentle forward-facing pose.",
+      "group": "Happy",
+      "revision": "5bf3e81ef5cd9084486f3b86d27e1e2632c28ea47c85267898dc0ec3335885b4"
+    },
+    {
+      "name": "emotion_happy_playful",
+      "label": "Happy / Playful",
+      "description": "Hide to one side, peek back, and add a quick bob.",
+      "group": "Happy",
+      "revision": "ddedc52a0fac94eb93a63460337eacce52db780c6b704825c5e74a76c37b1852"
+    },
+    {
+      "name": "emotion_happy_playful_aroused",
+      "label": "Happy / Playful / Aroused",
+      "description": "Wake into an alert lifted pose, sweep toward a stimulus, and lean in with interest.",
+      "group": "Happy",
+      "revision": "48d9f383c40527c32176a38be954e10fce8b725a74aa2c96cdefc1b189370d08"
+    },
+    {
+      "name": "emotion_happy_playful_cheeky",
+      "label": "Happy / Playful / Cheeky",
+      "description": "Peek sideways, look back while the body stays turned, and add a quick teasing dip.",
+      "group": "Happy",
+      "revision": "8075f684cb624dc0392b0dc1f4ee54944ad5e9daa922989990a66cc2b00fafc6"
+    },
+    {
+      "name": "emotion_happy_powerful",
+      "label": "Happy / Powerful",
+      "description": "Expand forward in two controlled, deliberate movements.",
+      "group": "Happy",
+      "revision": "cd4a9a3030cf554d85617a8854c712db29e1d94cc54f499734685ef000502f78"
+    },
+    {
+      "name": "emotion_happy_powerful_courageous",
+      "label": "Happy / Powerful / Courageous",
+      "description": "Begin with a brief retreat, then move decisively forward.",
+      "group": "Happy",
+      "revision": "3e3ca0fe97cac8fc38e1c559844ca0cf9c8b920d42e14bfe5482497d26fd6fcc"
+    },
+    {
+      "name": "emotion_happy_powerful_creative",
+      "label": "Happy / Powerful / Creative",
+      "description": "Explore two contrasting viewing angles, pause, and rise into a decisive new direction.",
+      "group": "Happy",
+      "revision": "8f6d8589cf145b2a6f6408bed14ff1b13285102eb2bdbb3f12fdfbe235129ab4"
+    },
+    {
+      "name": "emotion_happy_proud",
+      "label": "Happy / Proud",
+      "description": "Raise the shade deliberately and hold a tall presentation.",
+      "group": "Happy",
+      "revision": "9d7a0ab83713d80ddaed2f6a2a9cb76fcf4aaf55e601d65606135d599f9c058c"
+    },
+    {
+      "name": "emotion_happy_proud_confident",
+      "label": "Happy / Proud / Confident",
+      "description": "Lean forward with one steady, decisive nod.",
+      "group": "Happy",
+      "revision": "1536c651eb95fec8853fd3251f27de9ca3e386992a2682759a97f384cd3d6d8e"
+    },
+    {
+      "name": "emotion_happy_proud_successful",
+      "label": "Happy / Proud / Successful",
+      "description": "Make a small effortful rise, settle tall, and punctuate it with one clear nod.",
+      "group": "Happy",
+      "revision": "e61a9c4fc9179afa287e8c3eaa2cecd88a1cd613316c0ed87dc5ea1466cd0b12"
+    },
+    {
+      "name": "emotion_happy_trusting",
+      "label": "Happy / Trusting",
+      "description": "Pause after a gentle approach, then move closer and offer one soft acknowledgment.",
+      "group": "Happy",
+      "revision": "199c4947ff11138698f41030c71236feb4dd193c4a43be07867a048390f7465e"
+    },
+    {
+      "name": "emotion_happy_trusting_intimate",
+      "label": "Happy / Trusting / Intimate",
+      "description": "Approach closely and linger with a small sideways nod.",
+      "group": "Happy",
+      "revision": "7975f5914585151624ef8290cf4e883231899db7bf7205047410239ff8abc0fc"
+    },
+    {
+      "name": "emotion_happy_trusting_sensitive",
+      "label": "Happy / Trusting / Sensitive",
+      "description": "Offer a small careful approach and a soft nod.",
+      "group": "Happy",
+      "revision": "3f97db66d8824f7d160650b9bb29a859c915f39e00179fb94c3951de8ff3d139"
+    },
+    {
+      "name": "emotion_sad",
+      "label": "Sad",
+      "description": "Lower the arm and shade gradually, then recover slowly.",
+      "group": "Sad",
+      "revision": "dd9d523a6f1b998fb2dcf012969fcf76f871f46ce3e287346c7d7f293e9e5f14"
+    },
+    {
+      "name": "emotion_sad_depressed",
+      "label": "Sad / Depressed",
+      "description": "Settle into a deep droop with a very slow recovery.",
+      "group": "Sad",
+      "revision": "d3ffc980e7f649cf002ff1ac05994ac3ab9276fc25640bc26cfd7cd026900478"
+    },
+    {
+      "name": "emotion_sad_depressed_empty",
+      "label": "Sad / Depressed / Empty",
+      "description": "Move into a subdued low pose and remain nearly still.",
+      "group": "Sad",
+      "revision": "3796ed1640a70f2a6441193653835094afc69cf91cf15f0c782df0b0d3366d82"
+    },
+    {
+      "name": "emotion_sad_depressed_inferior",
+      "label": "Sad / Depressed / Inferior",
+      "description": "Make a small, lowered bow while turning partly aside.",
+      "group": "Sad",
+      "revision": "4025751faa3505952df5eb44057c56850f8653f0ae79561dcfc7a76a296b8abb"
+    },
+    {
+      "name": "emotion_sad_despair",
+      "label": "Sad / Despair",
+      "description": "Fold down in two heavy stages with a long still pause.",
+      "group": "Sad",
+      "revision": "fd0e3931f9c7c165b233cb9f3f2aeac40c0ccdc7741ea3b77860921f1f2858d6"
+    },
+    {
+      "name": "emotion_sad_despair_grief",
+      "label": "Sad / Despair / Grief",
+      "description": "Fold down in two stages and linger low.",
+      "group": "Sad",
+      "revision": "33ccab11fef49e1bbb172b2d92db459b8df7c3495f672f0ed581be8fbf3e51c9"
+    },
+    {
+      "name": "emotion_sad_despair_powerless",
+      "label": "Sad / Despair / Powerless",
+      "description": "Attempt a small lift, then let the head and arm sink again.",
+      "group": "Sad",
+      "revision": "93e6926337eb3f9ba7bb57bd2e639edf3cfcb940b701e37f7b2f6b93b5e7345c"
+    },
+    {
+      "name": "emotion_sad_guilty",
+      "label": "Sad / Guilty",
+      "description": "Dip into a small apologetic bow and hold the lowered gaze.",
+      "group": "Sad",
+      "revision": "f2287db82198ef8792a47186dfcb2eab1f5efa72864bef479bd5b535cee809a6"
+    },
+    {
+      "name": "emotion_sad_guilty_ashamed",
+      "label": "Sad / Guilty / Ashamed",
+      "description": "Lower the shade and tuck it to one side.",
+      "group": "Sad",
+      "revision": "06f866545045daa78caf39bad44475d327c61d171ab6b7f7f73f0fd4e5a0f931"
+    },
+    {
+      "name": "emotion_sad_guilty_remorseful",
+      "label": "Sad / Guilty / Remorseful",
+      "description": "Make a deeper, slower bow with a long pause.",
+      "group": "Sad",
+      "revision": "7f3663d9b6d1902b7f1f67055ed465b35b426c321d4fb979a146fe9e37c9d2a9"
+    },
+    {
+      "name": "emotion_sad_hurt",
+      "label": "Sad / Hurt",
+      "description": "Pull back and lower the shade after a small flinch.",
+      "group": "Sad",
+      "revision": "96920d41bc21bafb9c7c0b4b823e1e52e3f5c38e55a588849aa90beda0ea52cc"
+    },
+    {
+      "name": "emotion_sad_hurt_disappointed",
+      "label": "Sad / Hurt / Disappointed",
+      "description": "Make a hopeful small lift, wait for a response, and slowly let the pose fall.",
+      "group": "Sad",
+      "revision": "e4de4fbce4dedd09dcdb29614f59c904340b81beee9fe1b152eb7452eb580eea"
+    },
+    {
+      "name": "emotion_sad_hurt_embarrassed",
+      "label": "Sad / Hurt / Embarrassed",
+      "description": "Dip the shade and turn aside with a small hesitant glance.",
+      "group": "Sad",
+      "revision": "5e8ce29fa5f62d414726ea54eedad0c2c3247201fa19535cae821d7851f4f5e5"
+    },
+    {
+      "name": "emotion_sad_lonely",
+      "label": "Sad / Lonely",
+      "description": "Search widely and slowly, then lower the shade.",
+      "group": "Sad",
+      "revision": "b8996e29ea34f904296604e8fcf6d4facd9b09070c053274708f18907124ff27"
+    },
+    {
+      "name": "emotion_sad_lonely_abandoned",
+      "label": "Sad / Lonely / Abandoned",
+      "description": "Reach toward one side, wait for a response, and withdraw.",
+      "group": "Sad",
+      "revision": "925a981b163143fb1dc6d19dde27646cdb2edbf05229df653882db852f7923fb"
+    },
+    {
+      "name": "emotion_sad_lonely_isolated",
+      "label": "Sad / Lonely / Isolated",
+      "description": "Turn outward slowly and linger with the head lowered.",
+      "group": "Sad",
+      "revision": "1054db68bee762a19b29e6512b8cc9e9c988447fcd61b07b3d863dfa0174fe6a"
+    },
+    {
+      "name": "emotion_sad_vulnerable",
+      "label": "Sad / Vulnerable",
+      "description": "Make a small retreat and a tentative side check.",
+      "group": "Sad",
+      "revision": "81c648c792164ce1270b3edfb291eeec25fd7a3cbdbe8fa1912f6a25e5e88855"
+    },
+    {
+      "name": "emotion_sad_vulnerable_fragile",
+      "label": "Sad / Vulnerable / Fragile",
+      "description": "Attempt a delicate lift, falter, and settle into a protected compact pose.",
+      "group": "Sad",
+      "revision": "07785752c9cbd6076c56c1594deb5e54a1f39849067aa12e65d812ab8f046c79"
+    },
+    {
+      "name": "emotion_sad_vulnerable_victimized",
+      "label": "Sad / Vulnerable / Victimized",
+      "description": "Draw inward and hold a protective, lowered posture.",
+      "group": "Sad",
+      "revision": "52552bd7e5ca551b44b117935aca319e1d860ad177fa2dc28ec26e3cefc781e9"
+    },
+    {
+      "name": "emotion_surprised",
+      "label": "Surprised",
+      "description": "Pull back and raise the shade, then freeze briefly.",
+      "group": "Surprised",
+      "revision": "8c95f6dc5cf039850c375a725a77112281241b62f707d09f6be8e1ad8750032d"
+    },
+    {
+      "name": "emotion_surprised_amazed",
+      "label": "Surprised / Amazed",
+      "description": "Lift the shade gradually and hold the upward gaze.",
+      "group": "Surprised",
+      "revision": "d2073b974aa28f4349b8ed276a69e7132966abc49cee60a98b0161f139bd6629"
+    },
+    {
+      "name": "emotion_surprised_amazed_astonished",
+      "label": "Surprised / Amazed / Astonished",
+      "description": "Recoil quickly into a high-headed frozen pose.",
+      "group": "Surprised",
+      "revision": "d6735bd62fda9c7f07250489c0bb7fbae4b236c744805b1f341cee9f172726b8"
+    },
+    {
+      "name": "emotion_surprised_amazed_awe",
+      "label": "Surprised / Amazed / Awe",
+      "description": "Unfold slowly with the shade raised and linger.",
+      "group": "Surprised",
+      "revision": "e583b0cd37ce5e98d0106a68e4460b861da8d139136923826db59e9e362b4ae7"
+    },
+    {
+      "name": "emotion_surprised_confused",
+      "label": "Surprised / Confused",
+      "description": "Alternate two uneven head turns with a questioning dip.",
+      "group": "Surprised",
+      "revision": "1e079db9448ef9c489ad273eb365d1d4f433c64c418a9e3f4de8d23983660c2a"
+    },
+    {
+      "name": "emotion_surprised_confused_disillusioned",
+      "label": "Surprised / Confused / Disillusioned",
+      "description": "Begin with a hopeful lift and settle into a droop.",
+      "group": "Surprised",
+      "revision": "e1dd4f7d15d251aafebbdd66364bafe19ac7e5bdbd14b1cb53978116c7ad84df"
+    },
+    {
+      "name": "emotion_surprised_confused_perplexed",
+      "label": "Surprised / Confused / Perplexed",
+      "description": "Check one side twice, then pause with the shade tilted upward.",
+      "group": "Surprised",
+      "revision": "c748868e29c5d7a66cc96fea978590524b5beb99de1dbad1ef030c092f1b842b"
+    },
+    {
+      "name": "emotion_surprised_excited",
+      "label": "Surprised / Excited",
+      "description": "Alternate brisk head and arm bobs with a raised gaze.",
+      "group": "Surprised",
+      "revision": "3cdb4701a2cbc765c2cf5ff12a9ac0ef98d1f8823dae9f7e83a3d213f7027553"
+    },
+    {
+      "name": "emotion_surprised_excited_eager",
+      "label": "Surprised / Excited / Eager",
+      "description": "Lean toward the subject with two expectant head accents.",
+      "group": "Surprised",
+      "revision": "d7c4822fcb60673f98d2d28ef864b02ebd414b7be3eadb54246e88766b6a78dc"
+    },
+    {
+      "name": "emotion_surprised_excited_energetic",
+      "label": "Surprised / Excited / Energetic",
+      "description": "Make three broad alternating bobs and a quick recovery.",
+      "group": "Surprised",
+      "revision": "7b54be48ddc3002c9332ab6d5d9ee09f646845cef7078e6ab79766700c12e846"
+    },
+    {
+      "name": "emotion_surprised_startled",
+      "label": "Surprised / Startled",
+      "description": "Make a compact quick retreat and freeze.",
+      "group": "Surprised",
+      "revision": "89f5b91aa2564d09242b7ce90fcb4398214ddb0b2737f4847a9dc233c777498a"
+    },
+    {
+      "name": "emotion_surprised_startled_dismayed",
+      "label": "Surprised / Startled / Dismayed",
+      "description": "Flinch backward and let the raised head fall.",
+      "group": "Surprised",
+      "revision": "e69b22de6b206abc7a0598632d8c06f5d0f0863fd50ed459273ef5320c41a846"
+    },
+    {
+      "name": "emotion_surprised_startled_shocked",
+      "label": "Surprised / Startled / Shocked",
+      "description": "Retreat farther with a raised head and a long still pause.",
+      "group": "Surprised",
+      "revision": "a025bf87e45dc9645fdf6fac5ad902400e987ff340378c143b02a5da6157dacc"
+    },
+    {
+      "name": "excited",
+      "label": "Excited",
+      "description": "Quick alternating head and neck motion to reveal lag and overshoot.",
+      "group": "",
+      "revision": "aca91187257b5c21187871ebb044804a4a4267c8f1057afe9839f19517e7864e"
+    },
+    {
+      "name": "idle_hold",
+      "label": "Hold still",
+      "description": "Hold the starting pose for two playback seconds; exposes gravity sag.",
+      "group": "",
+      "revision": "8d2dfae1e6474bbb1cdba70022c6e2fb14931c21df365a7550594bde5ad390d3"
+    },
+    {
+      "name": "limit_sweep",
+      "label": "Limit sweep (diagnostic)",
+      "description": "Exercise each joint near its soft limits. Contacts are expected; simulation diagnostic only.",
+      "group": "",
+      "revision": "ae40cbc60e62c3f374519771a1d2103bd2df1d018896fbb5651841e5f356f34a"
+    },
+    {
+      "name": "nod",
+      "label": "Nod",
+      "description": "Tilt the head, pause, then return. Reverse the tilt near a joint limit.",
+      "group": "",
+      "revision": "cca99497029e43e2032301601da4257f0cf29b34fa16b1c69a84bbc9d2a999c3"
+    },
+    {
+      "name": "reach_hold",
+      "label": "Reach and hold",
+      "description": "Hold an offset arm pose to measure steady tracking error and effort.",
+      "group": "",
+      "revision": "d9c15e6e825270c485ce083af01631b10872face2a0594773a6f9f118fe7c62c"
+    },
+    {
+      "name": "scan",
+      "label": "Look around",
+      "description": "Look left and right with the base and neck, then return.",
+      "group": "",
+      "revision": "d6e46112184c86082681edeb7733910ecc0ca8183fb1f243811414c3d1599aee"
+    },
+    {
+      "name": "shake",
+      "label": "Shake head",
+      "description": "Swivel the neck side to side while keeping the lower arm still.",
+      "group": "",
+      "revision": "4d6932e6e779b5e7cfaac34111237835bec260986f646c7f007259f7122574c3"
+    }
+  ],
+  "families": [
+    "Angry",
+    "Disgusted",
+    "Fearful",
+    "Happy",
+    "Sad",
+    "Surprised"
+  ],
+  "server_command": [
+    "E:\\GitHub\\Human Computer Labs\\SWE_route\\simulation\\controller\\target\\release\\lamp-controller.exe",
+    "--root",
+    "E:\\GitHub\\Human Computer Labs\\SWE_route\\simulation",
+    "serve",
+    "--port",
+    "57800"
+  ],
+  "url": "http://127.0.0.1:57800",
+  "server_pid": 33164,
+  "assets": [
+    {
+      "path": "/assets/lamp_shade.stl",
+      "bytes": 18084,
+      "content_type": "application/vnd.ms-pki.stl",
+      "sha256": "421cfd67341fedd1c16cef6e758478f8a56a07f40845d5bdc488efe3cd77c2c5"
+    },
+    {
+      "path": "/static/index-E5rkY_Ox.css",
+      "bytes": 10547,
+      "content_type": "text/css",
+      "sha256": "63473b8c130e149e699e85ddee74233112c1811f74cecff32bfe0a29ce110fee"
+    },
+    {
+      "path": "/static/index-SDYxok51.js",
+      "bytes": 614549,
+      "content_type": "text/javascript",
+      "sha256": "1369bd2531f634717124e0b8fa53437ad3043a5184571599e63b2d2492205989"
+    }
+  ],
+  "max_link_position_error_m": 8.520069990237272e-11,
+  "max_link_rotation_error": 8.179102704009011e-07,
+  "max_mujoco_link_position_error_m": 0.0,
+  "max_mujoco_link_rotation_error": 5.551115123125783e-16,
+  "fk_tolerances": {
+    "derived_mujoco": 1e-10,
+    "urdf_position_m": 1e-09,
+    "urdf_rotation_matrix": 1e-06,
+    "reason": "MuJoCo XML serialization rounds the fixed speaker quaternion to six decimals; compare the same derived model at higher precision as well."
+  },
+  "fk_states_checked": 24,
+  "catalog_count": 126,
+  "owned_server_exited": true,
+  "finished_at_utc": "2026-10-15T10:58:04.762324+00:00"
+}

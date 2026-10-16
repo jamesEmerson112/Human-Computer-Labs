@@ -40,11 +40,66 @@ can still settle. Light on/off and brightness affect rendering. **Manual pose**
 shows actual/requested angles; **Session details** includes contact diagnostics,
 timing, and a mode selector.
 
+**Pace** starts at **1.0×**, with a maximum of **3.0×**. Joint angle and velocity
+limits still apply: faster playback shortens holds and slower authored motions,
+but cannot accelerate a move already at its joint speed limit. Speech timing is fixed.
+
 The native modes are `mujoco`, `mujoco-source`, and `mujoco-kinematic`. The original
 yourdfpy `kinematic` mode and teaching controls remain in the Python viewer.
 Both viewers read the same gesture directory; **Reload gesture files** replaces the
 catalog only when every file is valid. Commands sent while disconnected are
 not replayed when a browser reconnects.
+
+### Hear the lamp perform a line
+
+The **A speaking moment** panel provides nine hardcoded performances. Compare
+"Oh! You're back. I missed you." across Happy, Sad, Angry, Fearful, Disgusted,
+Surprised, and Neutral, or try Happy with a question or reassurance. Select a
+preset and press **Perform**. The line is spoken exactly as shown, while the lamp
+anticipates, expresses the phrases, settles, and maintains a small attentive idle.
+Repeat a preset to compare it from another view; use Reset pose first for a
+consistent starting position.
+
+The two logical inputs are the supplied emotion and the lamp's speech text.
+For this first demo, a scene ID selects fixed text and prerecorded audio from
+[`performances/demo.json`](performances/demo.json), and intensity is fixed at
+0.7. All emotions share the same local voice recording so movement differences
+can be compared. The [speech fixture notes](performances/README.md) record the
+voice, measured phrase durations, file hashes, and regeneration command. Playback
+needs no speech service, downloaded model, microphone, or external connection.
+Arbitrary text synthesis, emotion mixtures, and word alignment are future work.
+
+The Rust performance coordinator samples a continuous emotional pose and short
+phrase accents against server wall time, then sends bounded requests through the
+existing controller and MuJoCo. The browser prepares the audio before requesting
+a performance and schedules it against the same announced start time. These are
+new performance profiles; existing gesture files and their review decisions stay
+independent. A source-clip approval does not approve the acting in this demo.
+
+Only the browser that starts a performance plays its audio. Other tabs observe
+the shared lamp. **Stop** cancels speech, future accents, and idle movement and
+requests a hold; physical motors can still settle. Manual joint changes, gesture
+playback, Reset pose, mode changes, and gesture reload cancel the performance.
+The pace control is disabled while a performance is active, including its idle
+phase, to preserve speech timing. A new prepared performance replaces the current
+one. Closing or disconnecting its owner cancels it; reconnecting never replays it.
+Light and camera controls remain available.
+
+Rebuild the frontend and Rust executable using the commands above after an
+update. The standalone application also needs the `performances/` directory.
+Verify with:
+
+```powershell
+uv run --locked pytest -q tests/test_performance_speech.py
+cargo test --locked --manifest-path controller/Cargo.toml
+npm --prefix viewer test
+uv run --locked python tools/verify_performance.py --output .verification/performance-demo
+```
+
+The browser check records actual Web Audio scheduling and cancellation, native
+motion states, screenshots, and a small resource sample in a fresh output folder.
+It uses its own browser profile. It does not record sound from the speakers or
+assign human approval; listen and judge the delivery in the viewer.
 
 ### Review the animations
 
@@ -120,7 +175,7 @@ On Ubuntu 24.04, use the same preparation/build commands and launch
 SDK, set `MUJOCO_DIR` to the MuJoCo 3.14.0 directory before building; it must contain
 the matching headers and shared library. `MUJOCO_LIBRARY` can override the runtime
 library path. Deploy the executable with `viewer/dist/`, `models/derived/`,
-`gestures/`, and that shared library, and pass `--root /path/to/simulation`.
+`gestures/`, `performances/`, and that shared library, and pass `--root /path/to/simulation`.
 The bridge rejects mismatched MuJoCo headers/libraries before accessing native
 structures. A small C bridge avoids duplicating MuJoCo's versioned struct layouts
 in Rust; motion, scheduling, validation, networking, and ownership are Rust.
@@ -230,9 +285,11 @@ Selecting a lesson changes the explanation; you perform the movements yourself.
 
 Expressive gestures request a return to their starting pose, unless interrupted;
 Hold still keeps its initial target. Physical tracking can have a small error.
-**Pace** affects all movement: Slow is 25%, Normal (the default) is 50%, and
-Full speed is 100% of the controller's allowed playback rate. Changing pace
+**Pace** defaults to **1.0×** and goes up to **3.0×** for gestures and manual
+movements. Each segment speeds up only as far as its joint velocity limits allow;
+holds and slower authored moves can reach the full 3.0× rate. Changing pace
 during a move keeps the requested trajectory continuous and within its speed limit.
+Speaking performances use their fixed audio timeline and disable this control.
 Actual physics can lag or overshoot that request.
 
 The sliders show **target angles in degrees**. During a gesture they show its

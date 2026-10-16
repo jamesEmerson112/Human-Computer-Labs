@@ -1,7 +1,8 @@
 import './style.css';
 import { Connection } from './connection';
 import { Stage } from './stage';
-import type { Gesture, Hello, SceneDescription, State } from './protocol';
+import { PerformancePlayer } from './performance';
+import type { Command, Gesture, Hello, SceneDescription, State } from './protocol';
 import { MAX_REVIEW_FILE_BYTES, REVIEW_STORAGE_KEY, admitCatalog, createReport, getReview, mergeHistory, parseMigration, parseReport, reconcileStorage, restoreReview, reviewRing, serializeReport, updateReview, type ParsedReviewReport, type ReviewHistory, type ReviewMigration, type Reviews } from './reviews';
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
@@ -23,6 +24,16 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
       </div>
     </section>
     <aside class="control-panel" aria-label="Lamp controls">
+      <section id="performance-panel" class="performance-section">
+        <div class="section-heading"><h2>A speaking moment</h2><span id="performance-phase" class="count" role="status">Ready</span></div>
+        <p class="section-note">The same words, a different feeling.</p>
+        <label class="sr-only" for="performance-preset">Speaking moment</label><select id="performance-preset"></select>
+        <blockquote id="performance-line">Loading the speaking moments…</blockquote>
+        <p id="performance-voice" class="fine-print">Fixed local demo voice</p>
+        <div class="performance-actions"><button id="performance-play" class="play-button" disabled>Perform this moment</button><button id="performance-stop" class="stop-button" data-command disabled>Stop</button></div>
+        <p id="performance-phrase" aria-live="polite"></p>
+        <p id="performance-message" class="fine-print" role="status">Choose a moment, then listen and watch.</p>
+      </section>
       <section class="library">
         <div class="section-heading"><h2>Gesture library</h2><span id="gesture-count" class="count">— clips</span></div>
         <p class="section-note">Check animations that pass. Every unchecked animation counts as failed.</p>
@@ -35,7 +46,7 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
         <details class="review-notes-section"><summary>Notes for this animation <span class="detail-hint">optional</span></summary><label id="review-notes-label" class="sr-only" for="review-notes">Review notes</label><textarea id="review-notes" rows="3" maxlength="2000" placeholder="What should change?" disabled></textarea></details>
         <div class="review-files"><button id="export-review" class="secondary" disabled>Export review</button><button id="import-review" class="secondary" disabled>Import review</button><input id="review-file" type="file" accept=".json,application/json" hidden></div>
         <p id="review-message" class="fine-print" role="status">Checks save in this browser. Export when you're done.</p>
-        <div class="pace-row"><label for="pace">Pace <output id="pace-value">0.50×</output></label><input id="pace" data-command disabled type="range" min="0.1" max="1" step="0.05" value="0.5"><div class="range-captions"><span>Gentle</span><span>Full speed</span></div></div>
+        <div class="pace-row"><label for="pace">Pace <output id="pace-value">1.00×</output></label><input id="pace" data-command disabled type="range" min="0.1" max="3" step="0.05" value="1"><div class="range-captions"><span>Gentle</span><span>3.0×</span></div><p class="section-note">Joint speed limits still apply.</p></div>
       </section>
       <section class="light-section">
         <div class="section-heading"><h2>Light</h2><label class="switch"><input id="light-enabled" data-command disabled type="checkbox" checked><span class="switch-track"></span><span class="sr-only">Lamp light enabled</span></label></div>
@@ -57,6 +68,7 @@ function showError(message: string): void {
 }
 
 let errorTimeout = 0;
+let performancePlayer: PerformancePlayer | undefined;
 let ready = false;
 let sceneReady = false;
 let gestures: Gesture[] = [];
@@ -101,6 +113,13 @@ function updateEnabled(): void {
   for (const input of document.querySelectorAll<HTMLButtonElement | HTMLInputElement | HTMLSelectElement>('[data-command]')) input.disabled = !ready || !sceneReady;
   element<HTMLButtonElement>('play').disabled = !ready || !sceneReady || !catalogReady || !selectedName;
   element<HTMLButtonElement>('import-review').disabled = !catalogReady || !gestures.length || importPending;
+  performancePlayer?.setConnected(ready && sceneReady);
+  pace.disabled = !ready || !sceneReady || Boolean(performancePlayer?.active);
+}
+
+function sendManual(command: Command): void {
+  performancePlayer?.cancel('Stopped by a manual control.');
+  connection.send(command);
 }
 
 function selectionChanged(): void {
@@ -153,7 +172,7 @@ function filterGestures(): void {
     button.dataset.gesture = gesture.name;
     button.textContent = gesture.label;
     button.addEventListener('click', () => { selectedName = gesture.name; selectionChanged(); });
-    button.addEventListener('dblclick', () => { if (ready && sceneReady && catalogReady) connection.send({ type: 'play', name: gesture.name }); });
+    button.addEventListener('dblclick', () => { if (ready && sceneReady && catalogReady) sendManual({ type: 'play', name: gesture.name }); });
     row.append(checkbox, button);
     return row;
   }));
@@ -279,7 +298,7 @@ function receiveHello(hello: Hello): void {
     input.min = String(limit.lower); input.max = String(limit.upper); input.step = '0.005'; input.value = '0';
     input.setAttribute('data-command', '');
     input.disabled = !ready;
-    input.addEventListener('change', () => connection.send({ type: 'targets', targets: { [name]: Number(input.value) } }));
+    input.addEventListener('change', () => sendManual({ type: 'targets', targets: { [name]: Number(input.value) } }));
     input.addEventListener('input', () => { output.textContent = `${(Number(input.value) * 180 / Math.PI).toFixed(1)}° target`; });
     jointInputs.set(name, input); jointOutputs.set(name, output);
     row.append(label, input); joints.append(row);
@@ -312,6 +331,7 @@ function updateDiagnostics(state: State): void {
 function receiveState(state: State, atMs: number): void {
   if (latestState && latestState.backend !== state.backend) stage.buffer.clear();
   latestState = state;
+  performancePlayer?.receiveState(state);
   stage.receive(state, atMs);
   stateCount += 1;
   if (atMs - stateRateStart > 1000) { stateRate = stateCount * 1000 / (atMs - stateRateStart); stateRateStart = atMs; stateCount = 0; }
@@ -346,15 +366,19 @@ try {
 const connection = new Connection({
   hello: receiveHello,
   state: receiveState,
-  reset: () => { stage.buffer.clear(); lastUiUpdate = -Infinity; },
+  reset: () => { stage.buffer.clear(); lastUiUpdate = -Infinity; performancePlayer?.cancel('Connection refreshed. Press Perform to start again.', false); },
   status: (status, isReady) => {
     if (ready !== isReady) { ready = isReady; updateEnabled(); }
     element('connection-status').textContent = status;
     element('connection-dot').classList.toggle('connected', isReady);
     if (isReady && sceneReady) element('error').hidden = true;
   },
-  ack: (_ack, latencyMs) => { ackMs = latencyMs; },
+  ack: (ack, latencyMs) => { ackMs = latencyMs; performancePlayer?.receiveAck(ack, latencyMs); },
   error: showError,
+});
+
+performancePlayer = new PerformancePlayer((command) => connection.send(command), () => {
+  pace.disabled = !ready || !sceneReady || Boolean(performancePlayer?.active);
 });
 
 groupFilter.addEventListener('change', filterGestures);
@@ -438,22 +462,23 @@ window.addEventListener('storage', (event) => {
     reviewMessage(`Review updated from another tab. ${describeReview(incoming)}`);
   } catch { reviewMessage('Could not load the review from another tab; this tab’s checks are unchanged.'); }
 });
-element('play').addEventListener('click', () => connection.send({ type: 'play', name: selectedName }));
-element('stop').addEventListener('click', () => connection.send({ type: 'stop' }));
-element('reset').addEventListener('click', () => connection.send({ type: 'reset' }));
-element('reload').addEventListener('click', () => connection.send({ type: 'reload' }));
+element('play').addEventListener('click', () => sendManual({ type: 'play', name: selectedName }));
+element('stop').addEventListener('click', () => sendManual({ type: 'stop' }));
+element('performance-stop').addEventListener('click', () => sendManual({ type: 'stop' }));
+element('reset').addEventListener('click', () => sendManual({ type: 'reset' }));
+element('reload').addEventListener('click', () => sendManual({ type: 'reload' }));
 pace.addEventListener('input', () => { element('pace-value').textContent = `${Number(pace.value).toFixed(2)}×`; });
-pace.addEventListener('change', () => connection.send({ type: 'pace', speed: Number(pace.value) }));
+pace.addEventListener('change', () => sendManual({ type: 'pace', speed: Number(pace.value) }));
 brightness.addEventListener('input', () => { element('brightness-value').textContent = `${Math.round(Number(brightness.value) * 20)}%`; });
 brightness.addEventListener('change', () => connection.send({ type: 'light', enabled: lightEnabled.checked, brightness: Number(brightness.value) }));
 lightEnabled.addEventListener('change', () => connection.send({ type: 'light', enabled: lightEnabled.checked, brightness: Number(brightness.value) }));
-element<HTMLSelectElement>('backend-mode').addEventListener('change', (event) => connection.send({ type: 'mode', mode: (event.target as HTMLSelectElement).value as NonNullable<State['backend']> }));
+element<HTMLSelectElement>('backend-mode').addEventListener('change', (event) => sendManual({ type: 'mode', mode: (event.target as HTMLSelectElement).value as NonNullable<State['backend']> }));
 element('axes').addEventListener('change', (event) => stage.setAxes((event.target as HTMLInputElement).checked));
 element('reset-view').addEventListener('click', () => stage.resetView());
 element('light-view').addEventListener('click', () => stage.lightView());
 element('diagnostics-list').closest('details')!.addEventListener('toggle', () => { if (latestState) updateDiagnostics(latestState); });
 window.addEventListener('keydown', (event) => {
-  if (event.key === 'Escape' && connection.ready) { event.preventDefault(); connection.send({ type: 'stop' }); }
+  if (event.key === 'Escape' && connection.ready) { event.preventDefault(); sendManual({ type: 'stop' }); }
 });
 
 fetch('/api/scene').then(async (response) => {

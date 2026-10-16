@@ -39,11 +39,12 @@ export class Connection {
 
   get ready(): boolean { return this.socket?.readyState === WebSocket.OPEN && this.receivedHello && this.freshState; }
 
-  send(command: Command): void {
+  send(command: Command): string | undefined {
     if (!this.ready) { this.callbacks.error('Waiting for a fresh connection. The command was not sent.'); return; }
     const id = `${this.generation}-${++this.counter}`;
     this.pending.set(id, performance.now());
     this.socket!.send(JSON.stringify({ v: 1, id, ...command }));
+    return id;
   }
 
   private connect(): void {

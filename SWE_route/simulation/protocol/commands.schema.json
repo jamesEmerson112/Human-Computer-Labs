@@ -12,6 +12,20 @@
   },
   "oneOf": [
     {
+      "properties": {
+        "type": {"const": "perform"},
+        "performance_id": {"$ref": "#/$defs/performance_id"},
+        "scene": {"enum": ["greeting", "question", "reassurance"]},
+        "emotion": {"enum": ["Happy", "Sad", "Angry", "Fearful", "Disgusted", "Surprised", "Neutral"]},
+        "intensity": {"type": "number", "minimum": 0, "maximum": 1}
+      },
+      "required": ["performance_id", "scene", "emotion", "intensity"]
+    },
+    {
+      "properties": {"type": {"const": "cancel_performance"}, "performance_id": {"$ref": "#/$defs/performance_id"}},
+      "required": ["performance_id"]
+    },
+    {
       "properties": {"type": {"const": "play"}, "name": {"type": "string", "description": "A name from the most recent hello gesture catalog."}},
       "required": ["name"]
     },
@@ -20,7 +34,7 @@
       "required": ["targets"]
     },
     {
-      "properties": {"type": {"const": "pace"}, "speed": {"type": "number", "exclusiveMinimum": 0, "maximum": 1}},
+      "properties": {"type": {"const": "pace"}, "speed": {"type": "number", "exclusiveMinimum": 0, "maximum": 3}},
       "required": ["speed"]
     },
     {"properties": {"type": {"const": "stop"}}},
@@ -37,6 +51,7 @@
   ],
   "unevaluatedProperties": false,
   "$defs": {
+    "performance_id": {"type": "string", "minLength": 1, "maxLength": 128, "x-maxUtf8Bytes": 128, "description": "Fresh id for one prepared performance; cannot be reused during this server run. Scoped cancellation requires the same websocket owner."},
     "targets": {
       "type": "object",
       "description": "Requested radians for the supplied five-DOF lamp, clamped to the soft limits advertised in hello. Unspecified joints retain the observed pose at command acceptance.",

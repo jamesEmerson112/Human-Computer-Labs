@@ -1,5 +1,13 @@
 # Simulation benchmarks and upgrade decision
 
+## Speaking performance demonstration
+
+The [October 15 speaking-demo checks](2026-10-15-speaking-demo/README.md) cover
+hardcoded speech plus emotion, scheduled browser audio, the Rust performance
+coordinator, Stop and replacement, and ownership across browser tabs. They include
+five complete performances and a small native resource sample. These functional
+observations do not replace the matched renderer or physics benchmarks below.
+
 ## Selected-wheel audit
 
 The [October 14 wheel audit](2026-10-14-wheel-audit/README.md) covers the current
@@ -11,6 +19,9 @@ from human approval. Earlier measurements below retain their original workloads.
 
 Build the native application using the [simulation instructions](../README.md#rust-controller-and-threejs-viewer),
 then run browser measurements sequentially from `simulation/` with new output directories:
+
+Both browser measurement scripts explicitly use **0.5×** pace to preserve the
+comparison workload; the interactive viewers default to **1.0×**.
 
 ```powershell
 uv run --locked python benchmarks/measure_viewer.py --output benchmarks/my-native/python-browser

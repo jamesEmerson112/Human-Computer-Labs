@@ -41,7 +41,7 @@ LESSONS = {
     "4. Aim the light": "Click **Light view**, then set **Head tilt** to **25°** from the reset pose. Watch the spot move down the wall. Toggle **Light on**, or enable **Show light direction** to see the red forward axis.",
     "5. Try expression": "Click **Reset pose**, choose **Slow** pace, then compare **Nod**, **Shake head**, and **Curious lean**. Each gesture returns to its starting pose. Try **Stop motion** halfway through.",
 }
-PLAYBACK_SPEEDS = {"Slow": 0.25, "Normal": 0.5, "Full speed": 1.0}
+PLAYBACK_SPEEDS = {"Slow": 0.25, "Half speed": 0.5, "Normal": 1.0, "Fast": 2.0, "Fastest": 3.0}
 BACKEND_LABELS = {
     "MuJoCo physics": "mujoco",
     "Direct playback (original)": "kinematic",
@@ -51,12 +51,15 @@ BACKEND_LABELS = {
 
 
 class LampViewer:
-    def __init__(self, port: int = 8080, backend: str = "mujoco", native_viewer: bool = False):
+    def __init__(
+        self, port: int = 8080, backend: str = "mujoco", native_viewer: bool = False,
+        *, speed: float = 1.0,
+    ):
         self.motion = MotionController(load_limits())
         self.backend = make_backend(backend)
         self.native_viewer = native_viewer
         self.actual_positions = self.backend.positions.copy()
-        self.motion.set_speed(PLAYBACK_SPEEDS["Normal"])
+        self.motion.set_speed(speed)
         self.gestures = load_gestures(self.motion.limits)
         self.commands: SimpleQueue[tuple[str, object]] = SimpleQueue()
         self.model = yourdfpy.URDF.load(str(ROBOT_PATH), mesh_dir=str(ROBOT_PATH.parent))
@@ -163,15 +166,21 @@ class LampViewer:
                         self.commands.put(("target", (joint_name, math.radians(event.target.value))))
 
         with gui.add_folder("Try a movement"):
+            playback_speeds = PLAYBACK_SPEEDS.copy()
+            pace_label = next(
+                (label for label, speed in playback_speeds.items() if speed == self.motion.speed),
+                f"{self.motion.speed:g}x",
+            )
+            playback_speeds[pace_label] = self.motion.speed
             pace = gui.add_dropdown(
-                "Pace", options=tuple(PLAYBACK_SPEEDS), initial_value="Normal",
-                hint="Slow: 25%, Normal: 50%, Full speed: 100% of the allowed playback rate.",
+                "Pace", options=tuple(playback_speeds), initial_value=pace_label,
+                hint="Slow: 0.25x, Half speed: 0.5x, Normal: 1.0x, Fast: 2.0x, Fastest: 3.0x. Joint speed limits still apply.",
             )
 
             @pace.on_update
             def on_pace(event):
                 if event.client is not None:
-                    self.commands.put(("speed", PLAYBACK_SPEEDS[event.target.value]))
+                    self.commands.put(("speed", playback_speeds[event.target.value]))
 
             self.gesture_folder = gui.add_folder("Gestures")
             self.gesture_buttons = []
@@ -336,8 +345,11 @@ class LampViewer:
                 self._last_status_time = now
 
 
-def run(port: int = 8080, backend: str = "mujoco", native_viewer: bool = False) -> None:
-    viewer = LampViewer(port, backend, native_viewer)
+def run(
+    port: int = 8080, backend: str = "mujoco", native_viewer: bool = False,
+    *, speed: float = 1.0,
+) -> None:
+    viewer = LampViewer(port, backend, native_viewer, speed=speed)
     native = None
     if native_viewer:
         import mujoco

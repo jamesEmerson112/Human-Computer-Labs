@@ -251,6 +251,10 @@ def verify(args, report):
 
             ack = client.command("pace", speed=1.0)
             client.state(lambda state: state["speed"] == 1.0, after=ack["server_time_s"])
+            ack = client.command("pace", speed=2.0)
+            client.state(lambda state: state["speed"] == 2.0, after=ack["server_time_s"])
+            ack = client.command("pace", speed=3.0)
+            client.state(lambda state: state["speed"] == 3.0, after=ack["server_time_s"])
             ack = client.command("play", name="nod")
             playing = client.state(lambda state: state["activity"] == "Playing Nod", after=ack["server_time_s"])
             start_head = playing["requested"]["head_pitch_joint"]
@@ -303,7 +307,7 @@ def verify(args, report):
             client.state(lambda state: state["activity"] == "Playing Nod", after=ack["server_time_s"])
             invalids = [
                 ("targets", {"targets": {"unknown_joint": 0.1}}),
-                ("pace", {"speed": 0}), ("pace", {"speed": 1.1}),
+                ("pace", {"speed": 0}), ("pace", {"speed": 3.01}),
                 ("light", {"enabled": False, "brightness": 11}),
                 ("light", {"enabled": "yes", "brightness": 3}),
                 ("mode", {"mode": "unknown"}), ("stop", {"extra": 1}),

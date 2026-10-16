@@ -81,6 +81,7 @@ fn check_snapshot(motion: &MotionController, expected: &Snapshot, context: &str)
 struct ReferenceCase {
     name: String,
     start: String,
+    speed: f64,
     origin: Pose,
     frames: Vec<Snapshot>,
     interrupted: Snapshot,
@@ -88,7 +89,7 @@ struct ReferenceCase {
 }
 
 /// Python remains the reference for every authored clip, every frame, three
-/// starting poses, and interruptions. LAMP_PYTHON supports CI virtualenv paths.
+/// starting poses, slow/fast pace, and interruptions. LAMP_PYTHON supports CI paths.
 #[test]
 fn all_gestures_match_live_python_traces_and_interruption() {
     let python = std::env::var_os("LAMP_PYTHON")
@@ -140,6 +141,10 @@ fn all_gestures_match_live_python_traces_and_interruption() {
                 scripted.set_speed(value.as_f64().unwrap()).unwrap();
             } else if let Some(value) = action.get("play") {
                 scripted.play(&gestures[value.as_str().unwrap()]).unwrap();
+            } else if let Some(value) = action.get("authored") {
+                scripted
+                    .play(&parse_gesture(value, &names()).unwrap())
+                    .unwrap();
             } else if let Some(value) = action.get("dt") {
                 scripted.step(value.as_f64().unwrap()).unwrap();
             } else if action.get("stop").is_some() {
@@ -160,17 +165,17 @@ fn all_gestures_match_live_python_traces_and_interruption() {
         }
         let case: ReferenceCase = serde_json::from_value(data).unwrap();
         assert!(
-            seen_cases.insert((case.name.clone(), case.start.clone())),
+            seen_cases.insert((case.name.clone(), case.start.clone(), case.speed.to_bits())),
             "Duplicate reference case"
         );
         let mut motion = MotionController::new(limits.clone()).unwrap();
         motion.synchronize(&case.origin).unwrap();
-        motion.set_speed(0.5).unwrap();
+        motion.set_speed(case.speed).unwrap();
         motion.play(&gestures[&case.name]).unwrap();
         for (index, frame) in case.frames.iter().enumerate() {
             let before = motion.positions.clone();
             motion.step(1.0 / 30.0).unwrap();
-            let context = format!("{} {} frame {index}", case.name, case.start);
+            let context = format!("{} {} {}x frame {index}", case.name, case.start, case.speed);
             check_snapshot(&motion, frame, &context);
             for (name, value) in &motion.positions {
                 let limit = motion.limits[name];
@@ -179,14 +184,15 @@ fn all_gestures_match_live_python_traces_and_interruption() {
                     "{context}: {name} exceeded limits"
                 );
                 assert!(
-                    (value - before[name]).abs() <= limit.velocity * motion.speed() / 30.0 + 1e-12,
+                    (value - before[name]).abs()
+                        <= limit.velocity * motion.speed().min(1.0) / 30.0 + 1e-12,
                     "{context}: {name} exceeded velocity"
                 );
             }
         }
         assert!(!motion.moving());
         motion.synchronize(&case.origin).unwrap();
-        motion.set_speed(1.0).unwrap();
+        motion.set_speed(case.speed.max(1.0)).unwrap();
         motion.play(&gestures[&case.name]).unwrap();
         motion.step(0.3).unwrap();
         check_snapshot(&motion, &case.interrupted, "interrupt");
@@ -196,17 +202,19 @@ fn all_gestures_match_live_python_traces_and_interruption() {
         total_frames += case.frames.len();
         cases += 1;
     }
-    assert_eq!(cases, gestures.len() * 3);
+    assert_eq!(cases, gestures.len() * 9);
     for name in gestures.keys() {
         for start in ["neutral", "lower", "upper"] {
-            assert!(
-                seen_cases.contains(&(name.clone(), start.into())),
-                "Missing {name} / {start}"
-            );
+            for speed in [0.5_f64, 2.0, 3.0] {
+                assert!(
+                    seen_cases.contains(&(name.clone(), start.into(), speed.to_bits())),
+                    "Missing {name} / {start} / {speed}x"
+                );
+            }
         }
     }
     println!(
-        "Matched {cases} gesture/start cases, {total_frames} frames, {cases} interruptions, and mixed command/pace/dt sequence against Python"
+        "Matched {cases} gesture/start/pace cases, {total_frames} frames, {cases} interruptions, and mixed command/pace/dt sequence against Python"
     );
 }
 
@@ -449,7 +457,7 @@ fn invalid_commands_preserve_active_motion() {
         assert!(motion.synchronize(&observed).is_err());
     }
     assert!(motion.step(-0.1).is_err());
-    for value in [0.0, -1.0, 1.1] {
+    for value in [0.0, -1.0, 3.01] {
         assert!(motion.set_speed(value).is_err());
     }
     assert!(
@@ -518,4 +526,67 @@ fn offsets_hold_and_large_dt_keep_python_segment_semantics() {
     motion.step(10.0).unwrap();
     assert!(!motion.moving());
     assert_eq!(motion.positions["head_pitch_joint"], 0.0);
+}
+
+#[test]
+fn fast_pace_shortens_authored_motion_without_jumping_or_exceeding_velocity() {
+    for speed in [2.0, 3.0] {
+        let mut motion = MotionController::new(limits()).unwrap();
+        let mut normal = motion.clone();
+        let clip = gesture(json!([
+            {"targets":{"base_yaw_joint":0.1},"duration_seconds":1.0}
+        ]));
+        motion.play(&clip).unwrap();
+        normal.play(&clip).unwrap();
+        assert_eq!(motion.step(0.2).unwrap(), normal.step(0.2).unwrap());
+        let held = motion.positions.clone();
+        motion.set_speed(speed).unwrap();
+        assert_eq!(motion.step(0.0).unwrap(), held);
+        assert_eq!(motion.step(0.3 / speed).unwrap(), normal.step(0.3).unwrap());
+        motion.step(0.5 / speed).unwrap();
+        assert!(!motion.moving());
+        assert_eq!(motion.positions["base_yaw_joint"], 0.1);
+        assert!(normal.moving());
+
+        motion.reset().unwrap();
+        normal.reset().unwrap();
+        motion.step(10.0).unwrap();
+        normal.step(10.0).unwrap();
+        let target = BTreeMap::from([("base_yaw_joint".into(), 1.5)]);
+        motion.set_targets(&target).unwrap();
+        normal.set_targets(&target).unwrap();
+        for _ in 0..240 {
+            let before = motion.positions.clone();
+            assert_eq!(
+                motion.step(1.0 / 120.0).unwrap(),
+                normal.step(1.0 / 120.0).unwrap()
+            );
+            assert!(
+                (motion.positions["base_yaw_joint"] - before["base_yaw_joint"]).abs()
+                    <= 1.5 / 120.0 + 1e-12
+            );
+        }
+        assert!(!motion.moving());
+    }
+}
+
+#[test]
+fn fast_pace_preserves_wall_time_across_holds_and_capped_moves() {
+    for speed in [2.0, 3.0] {
+        let mut motion = MotionController::new(limits()).unwrap();
+        motion
+            .play(&gesture(json!([
+                {"targets":{"base_yaw_joint":0.1},"duration_seconds":1.0},
+                {"hold_seconds":0.4},
+                {"targets":{"base_yaw_joint":1.3},"duration_seconds":0.25}
+            ])))
+            .unwrap();
+        motion.set_speed(speed).unwrap();
+        // Move and hold accelerate; the final capped move advances 0.3 seconds.
+        motion.step(1.4 / speed + 0.3).unwrap();
+        assert!((motion.positions["base_yaw_joint"] - 0.2875).abs() < 1e-12);
+        motion.step(0.91).unwrap();
+        assert!(!motion.moving());
+        assert_eq!(motion.positions["base_yaw_joint"], 1.3);
+    }
 }

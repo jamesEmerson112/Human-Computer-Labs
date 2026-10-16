@@ -102,7 +102,7 @@ def worker(output: Path, port: int) -> None:
 
     LampViewer.tick = measured_tick
     try:
-        run(port=port, backend="mujoco")
+        run(port=port, backend="mujoco", speed=0.5)
     finally:
         with (output / "server-ticks.csv").open("w", newline="", encoding="utf-8") as stream:
             writer = csv.writer(stream)

@@ -1,0 +1,90 @@
+{
+    "schema_version":  1,
+    "voice":  {
+                  "provider":  "Microsoft",
+                  "engine":  "Windows System.Speech.Synthesis.SpeechSynthesizer",
+                  "engine_assembly_version":  "4.0.0.0",
+                  "name":  "Microsoft David Desktop",
+                  "label":  "Microsoft David Desktop (prerecorded)",
+                  "id":  "TTS_MS_EN-US_DAVID_11.0",
+                  "culture":  "en-US",
+                  "rate":  0,
+                  "volume":  100,
+                  "sample_rate_hz":  22050,
+                  "channels":  1,
+                  "sample_width_bytes":  2,
+                  "mode":  "prerecorded local speech fixtures; fixed voice shared across emotions"
+              },
+    "scenes":  [
+                   {
+                       "id":  "greeting",
+                       "label":  "Welcome back",
+                       "text":  "Oh! You\u0027re back. I missed you.",
+                       "phrases":  [
+                                       {
+                                           "text":  "Oh!",
+                                           "audio":  "audio/greeting-1.wav",
+                                           "duration_s":  1.0494331065759637,
+                                           "frames":  23140,
+                                           "sha256":  "9bcd480036b5cefd300d4be5e2356a00d8e4015a8a7252fa2dd9279be3a50816"
+                                       },
+                                       {
+                                           "text":  "You\u0027re back.",
+                                           "audio":  "audio/greeting-2.wav",
+                                           "duration_s":  1.4843537414965986,
+                                           "frames":  32730,
+                                           "sha256":  "da8f76dd15d56dde9707c86eec7c6bee8fff52e93306d0faf839adca48580bf9"
+                                       },
+                                       {
+                                           "text":  "I missed you.",
+                                           "audio":  "audio/greeting-3.wav",
+                                           "duration_s":  1.5142857142857142,
+                                           "frames":  33390,
+                                           "sha256":  "bd20ae96c4d71d043b40a5447de36a6b60bd8b38f15551e40ca63c61f908e14c"
+                                       }
+                                   ]
+                   },
+                   {
+                       "id":  "question",
+                       "label":  "A closer look",
+                       "text":  "What\u0027s that? Can I take a closer look?",
+                       "phrases":  [
+                                       {
+                                           "text":  "What\u0027s that?",
+                                           "audio":  "audio/question-1.wav",
+                                           "duration_s":  1.4992743764172336,
+                                           "frames":  33059,
+                                           "sha256":  "51f907bacf401f2ba5837a26e016c64c9d8ab0b2aac8b1fb99e2664643c320bf"
+                                       },
+                                       {
+                                           "text":  "Can I take a closer look?",
+                                           "audio":  "audio/question-2.wav",
+                                           "duration_s":  2.30421768707483,
+                                           "frames":  50808,
+                                           "sha256":  "617528aa4e697862ee413dd43cae50f94c8a3c0da1ab72bd1a4b9e15c75a7d35"
+                                       }
+                                   ]
+                   },
+                   {
+                       "id":  "reassurance",
+                       "label":  "Work it out together",
+                       "text":  "It\u0027s okay. We can figure this out together.",
+                       "phrases":  [
+                                       {
+                                           "text":  "It\u0027s okay.",
+                                           "audio":  "audio/reassurance-1.wav",
+                                           "duration_s":  1.4643537414965986,
+                                           "frames":  32289,
+                                           "sha256":  "2e1282388c6d1a0c3ff1593f7424834cb8d117e13f2ff037638203bc9e42e2c1"
+                                       },
+                                       {
+                                           "text":  "We can figure this out together.",
+                                           "audio":  "audio/reassurance-2.wav",
+                                           "duration_s":  2.4239909297052153,
+                                           "frames":  53449,
+                                           "sha256":  "923f8a60ca478688dd3dee94aabef19b1f0b5fd6c5fc3167efb65b5904f91445"
+                                       }
+                                   ]
+                   }
+               ]
+}

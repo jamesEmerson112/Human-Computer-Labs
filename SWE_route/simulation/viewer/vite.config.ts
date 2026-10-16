@@ -28,6 +28,7 @@ export default defineConfig({
     proxy: {
       '/api': localProxy(),
       '/assets': localProxy(),
+      '/performances': localProxy(),
       '/ws': localProxy(true),
     },
   },

@@ -75,6 +75,7 @@ class MotionController:
         self._start = self.positions.copy()
         self._elapsed = 0.0
         self._duration = 0.0
+        self._pace_limit = math.inf
         self._waypoints: deque[_Segment] = deque()
         self._speed = 1.0
         self.activity = "Ready"
@@ -85,8 +86,8 @@ class MotionController:
 
     def set_speed(self, speed: float) -> None:
         """Scale playback time, never above the URDF velocity envelope."""
-        if not math.isfinite(speed) or not 0 < speed <= 1:
-            raise ValueError("Playback speed must be greater than zero and at most one")
+        if not math.isfinite(speed) or not 0 < speed <= 3:
+            raise ValueError("Playback speed must be greater than zero and at most three")
         self._speed = speed
 
     @property
@@ -97,10 +98,15 @@ class MotionController:
         self._start = self.positions.copy()
         self.targets = segment.targets.copy()
         self._elapsed = 0.0
+        minimum_duration = max(
+            1.5 * abs(self.targets[n] - self.positions[n]) / lim.velocity
+            for n, lim in self.limits.items()
+        )
         self._duration = segment.seconds if segment.hold else max(
-            0.25, segment.seconds,
-            *(1.5 * abs(self.targets[n] - self.positions[n]) / lim.velocity
-              for n, lim in self.limits.items()),
+            0.25, segment.seconds, minimum_duration,
+        )
+        self._pace_limit = (
+            self._duration / minimum_duration if minimum_duration > 0 else math.inf
         )
 
     def set_targets(self, targets: Mapping[str, float]) -> None:
@@ -171,12 +177,16 @@ class MotionController:
     def step(self, dt: float) -> dict[str, float]:
         if not math.isfinite(dt) or dt < 0:
             raise ValueError("dt must be finite and nonnegative")
-        dt *= self._speed
+        # Preserve the original timeline arithmetic at ordinary/slower pace.
+        # Faster playback consumes wall time per segment because each segment
+        # has different velocity headroom; holds can always use the full pace.
+        dt *= min(self._speed, 1.0)
         while dt > 0 and self.moving:
+            scale = min(self._speed, self._pace_limit) if self._speed > 1 else 1.0
             remaining = self._duration - self._elapsed
-            used = min(dt, remaining)
+            used = min(dt * scale, remaining)
             self._elapsed += used
-            dt -= used
+            dt -= used / scale
             fraction = min(1.0, self._elapsed / self._duration)
             eased = fraction * fraction * (3.0 - 2.0 * fraction)
             self.positions = {
