@@ -2,7 +2,12 @@
 # Any setting left out falls back to its default in main.rs's default_hyperparameters().
 
 # Data
-train_csv = "../data/MELD.Completed/train_sent_emo.csv"   # label file to train on
+# The CSVs come from MELD.Completed, the cleaned copy of MELD (fixed punctuation, misspellings and
+# cut-off lines in train and dev; test keeps MELD's published words). Here they supply only labels and
+# clip names, which cleaning did not change. The text features come from Whisper's transcripts
+# (MELD.Whisper), because the live demo reads Whisper's words. On the A40 (2026-10-15), cleaning helped
+# text-only heads: EmbeddingGemma MLP scored 58.51 on MELD.Raw, 60.70 on MELD.Completed, 49.89 on Whisper.
+train_csv ="../data/MELD.Completed/train_sent_emo.csv"   # label file to train on
 dev_csv   = "../data/MELD.Completed/dev_sent_emo.csv"     # label file to validate on
 test_csv  = "../data/MELD.Completed/test_sent_emo.csv"    # label file to test on, MELD's published words
 

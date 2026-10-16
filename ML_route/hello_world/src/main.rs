@@ -46,10 +46,14 @@ use std::io::{BufWriter, Write};
 // - Reply writer:    LFM2.5-1.2B-Instruct             1.17B   (LFM2.5-2.6B tried as a larger option)
 // - Emotion head:    trained here on MELD             under 1M
 
-// Steps to train the fusion head for this combo (2,816 -> 256 -> 7; voice is 1,024 wide either way):
+// Steps to train the fusion head for this combo (3,840 -> 256 -> 7):
 // 1. Get the features: copy the Whisper-text features of EmbeddingGemma (768) and EmoBERTa-large (1,024)
-//    and the voice features (1,024) for train, dev and test from the pod volume.
-// 2. Join them for Rust: line the three up by clip and write x_<split>.npy (2,816 per line) and
+//    and HuBERT-large's voice features (2,048: last-layer mean plus all-layer mean) for train, dev
+//    and test from the pod volume.
+//    Note on cleaning: MELD.Completed is our cleaned copy of MELD, but the head reads Whisper's
+//    words, so cleaning only reaches it through the labels. Cleaning raised text-only heads by
+//    about 2 points on the A40 (EmbeddingGemma 58.51 on Raw, 60.70 on Completed, 49.89 on Whisper).
+// 2. Join them for Rust: line the three up by clip and write x_<split>.npy (3,840 per line) and
 //    y_<split>.npy (labels 0 to 6). This side-by-side join is the "fusion".
 // 3. Train the head here, one lesson at a time:
 //    3.1 Load the data                      step3_1_load.rs     load_split
