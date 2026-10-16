@@ -1,8 +1,12 @@
-"""Serves the MELD player and transcribes its clips live with Whisper on the local GPU.
+"""Serves the MELD player and transcribes its clips live with Whisper, with Nemotron when serve_nemotron.py runs,
+and writes replies with LFM2.5 when serve_reply.py runs.
 
 Contents:
-- Handler: serves ML_route/data plus the /api/status and /api/transcribe endpoints
+- Handler: serves ML_route/data plus the /api/status, /api/transcribe and /api/reply endpoints
 - transcribe_clip: decodes one clip and runs Whisper on it, with timings
+- nemotron_status: asks serve_nemotron.py whether Nemotron is loaded
+- forward_nemotron: passes one clip to serve_nemotron.py, taking a turn on the GPU
+- forward_reply: passes one line to serve_reply.py, taking a turn on the GPU
 - main: loads Whisper, warms it up and starts the server
 """
 
@@ -11,9 +15,11 @@ import re
 import sys
 import threading
 import time
+import urllib.error
+import urllib.request
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
-from urllib.parse import parse_qs, urlparse
+from urllib.parse import parse_qs, urlencode, urlparse
 
 import numpy as np
 
@@ -29,9 +35,14 @@ DEVICE = "cuda"
 COMPUTE = "int8"
 CLIP_NAME = re.compile(r"^dia\d+_utt\d+$")
 """Description: The only clip names the server accepts, so no other file can be requested."""
+NEMOTRON_URL = "http://127.0.0.1:8766"
+"""Description: Where serve_nemotron.py listens."""
+REPLY_URL = "http://127.0.0.1:8768"
+"""Description: Where serve_reply.py listens."""
 
 model = None
-model_lock = threading.Lock()
+gpu_lock = threading.Lock()
+"""Description: Held while any model runs, so Whisper, Nemotron and LFM2.5 take turns on the one GPU."""
 
 
 def ms(seconds):
@@ -53,12 +64,12 @@ def transcribe_clip(split, clip):
     Outputs: a dict with the text, the audio length, and the time spent decoding, waiting for
     the GPU and running Whisper.
     Constraints: raises RuntimeError when ffmpeg cannot decode the clip. Calls take turns on
-    the GPU through model_lock.
+    the GPU through gpu_lock.
     """
     started = time.perf_counter()
     audio = load_audio(RAW / CLIP_DIRS[split] / f"{clip}.mp4")
     decoded = time.perf_counter()
-    with model_lock:
+    with gpu_lock:
         locked = time.perf_counter()
         segments, _ = model.transcribe(
             audio, language="en", beam_size=5, word_timestamps=False,
@@ -73,16 +84,86 @@ def transcribe_clip(split, clip):
         "audio_s": round(len(audio) / SAMPLE_RATE, 3),
         "decode_ms": ms(decoded - started),
         "wait_ms": ms(locked - decoded),
-        "whisper_ms": ms(done - locked),
+        "model_ms": ms(done - locked),
         "server_ms": ms(done - started),
     }
+
+
+def helper_status(base, script):
+    """
+    Description: Asks a helper server for its status.
+    Inputs:
+    - base: the helper's base URL.
+    - script: the helper's file name, for the error message.
+    Outputs: its status dict, or {"ready": False, "error": ...} when it is not running.
+    """
+    try:
+        with urllib.request.urlopen(f"{base}/api/status", timeout=1) as res:
+            return json.loads(res.read())
+    except (urllib.error.URLError, OSError, ValueError):
+        return {"ready": False, "error": f"start {script}"}
+
+
+def nemotron_status():
+    """
+    Description: Asks serve_nemotron.py for its status.
+    Inputs: none
+    Outputs: its status dict, or {"ready": False, "error": ...} when it is not running.
+    """
+    return helper_status(NEMOTRON_URL, "serve_nemotron.py")
+
+
+def forward(base, script, path, params):
+    """
+    Description: Passes one request to a helper server while holding the GPU turn.
+    Inputs:
+    - base: the helper's base URL.
+    - script: the helper's file name, for the error message.
+    - path: the API path on the helper.
+    - params: the query parameters to send.
+    Outputs: (HTTP status, response dict), with wait_ms set to the time spent waiting for the turn.
+    """
+    started = time.perf_counter()
+    with gpu_lock:
+        locked = time.perf_counter()
+        try:
+            with urllib.request.urlopen(f"{base}{path}?{urlencode(params)}", timeout=60) as res:
+                status, body = res.status, json.loads(res.read())
+        except urllib.error.HTTPError as err:
+            status, body = err.code, json.loads(err.read() or b"{}")
+        except (urllib.error.URLError, OSError) as err:
+            status, body = 502, {"error": f"{script} is not answering ({err})"}
+    body["wait_ms"] = ms(locked - started)
+    return status, body
+
+
+def forward_nemotron(split, clip):
+    """
+    Description: Passes one clip to serve_nemotron.py while holding the GPU turn.
+    Inputs:
+    - split, clip: which clip to transcribe.
+    Outputs: (HTTP status, response dict), with wait_ms set to the time spent waiting for the turn.
+    """
+    return forward(NEMOTRON_URL, "serve_nemotron.py", "/api/transcribe", {"split": split, "clip": clip})
+
+
+def forward_reply(text, emotion, speaker):
+    """
+    Description: Passes one line to serve_reply.py while holding the GPU turn.
+    Inputs:
+    - text: the spoken line.
+    - emotion: the emotion the reply should answer.
+    - speaker: the speaker's name.
+    Outputs: (HTTP status, response dict), with wait_ms set to the time spent waiting for the turn.
+    """
+    return forward(REPLY_URL, "serve_reply.py", "/api/reply", {"text": text, "emotion": emotion, "speaker": speaker})
 
 
 class Handler(SimpleHTTPRequestHandler):
     """
     Description: Serves the files in ML_route/data and answers the two API paths.
     Methods:
-    - do_GET: routes /api/status and /api/transcribe, and serves files otherwise.
+    - do_GET: routes /api/status, /api/transcribe and /api/reply, and serves files otherwise.
     - send_json: writes one JSON response.
     - log_message: logs API requests only, so video requests stay quiet.
     """
@@ -98,15 +179,26 @@ class Handler(SimpleHTTPRequestHandler):
         """
         url = urlparse(self.path)
         if url.path == "/api/status":
-            self.send_json(200, {"model": MODEL_NAME, "device": DEVICE,
-                                 "compute": COMPUTE, "ready": model is not None})
+            whisper = {"model": MODEL_NAME, "device": DEVICE, "compute": COMPUTE,
+                       "ready": model is not None}
+            self.send_json(200, {**whisper, "models": {"whisper": whisper, "nemotron": nemotron_status(),
+                                                       "reply": helper_status(REPLY_URL, "serve_reply.py")}})
+            return
+        if url.path == "/api/reply":
+            query = parse_qs(url.query)
+            self.send_json(*forward_reply(query.get("text", [""])[0], query.get("emotion", [""])[0],
+                                          query.get("speaker", [""])[0]))
             return
         if url.path == "/api/transcribe":
             query = parse_qs(url.query)
             split = query.get("split", [""])[0]
             clip = query.get("clip", [""])[0]
-            if split not in CLIP_DIRS or not CLIP_NAME.match(clip):
-                self.send_json(400, {"error": "unknown split or clip name"})
+            which = query.get("model", ["whisper"])[0]
+            if split not in CLIP_DIRS or not CLIP_NAME.match(clip) or which not in ("whisper", "nemotron"):
+                self.send_json(400, {"error": "unknown model, split or clip name"})
+                return
+            if which == "nemotron":
+                self.send_json(*forward_nemotron(split, clip))
                 return
             try:
                 self.send_json(200, transcribe_clip(split, clip))

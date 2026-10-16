@@ -225,8 +225,10 @@ kbd {
           <option value="off">Off</option>
         </select>
       </label>
-      <label><input type="checkbox" id="live"> Live Whisper</label>
+      <label><input type="checkbox" id="live"> Live speech-to-text</label>
       <span class="small" id="livestatus">checking…</span>
+      <label><input type="checkbox" id="livereply"> Live reply</label>
+      <span class="small" id="replystatus"></span>
     </div>
     <div class="tabs" role="tablist">
       <button role="tab" id="tab-output" aria-selected="true" aria-controls="panel-output">Output</button>
@@ -280,8 +282,12 @@ kbd {
     emotion when its clip ends. The grey
     tag is MELD's own label, and the guess turns green when the two agree. The
     time beside the guess is how long the emotion took after the clip ended.
-    With <code>serve.py</code> running, Live Whisper transcribes each clip's
-    audio on the GPU when the clip ends and shows how long that took.</p>
+    With <code>serve.py</code> running, live speech-to-text transcribes each
+    clip's audio on the GPU when the clip ends and shows how long that took.
+    Whisper always runs, and Nemotron runs too when <code>serve_nemotron.py</code>
+    is up. With <code>serve_reply.py</code> up, LFM2.5 also writes a live reply
+    to each line for its guessed emotion. The models take turns on the GPU, so
+    later ones wait.</p>
     <div class="lines" id="lines"></div>
   </section>
 </main>
@@ -384,7 +390,7 @@ function renderLines() {
       <button class="play" title="Play this line only" aria-label="Play line ${utt}">&#9654;</button>
       <div class="text" title="Click to play this line"><span class="utt">${utt}</span><span class="who">${esc(speaker)}</span>:
         ${esc(textOf(line))}${guess
-          ? `<div class="reply"><span>Reply:</span> ${esc(guess.reply)}</div>` : ""}${liveHtml(utt)}</div>
+          ? `<div class="reply"><span>Reply:</span> ${esc(guess.reply)}</div>` : ""}${liveHtml(utt)}${replyHtml(utt)}</div>
       <div class="tags"><div class="label">${emotion}</div>${guessHtml}${note}${fixed}</div>
     </div>`;
   }).join("");
@@ -601,52 +607,73 @@ function renderSwitch() {
   $("switch").textContent = `Clip switch ${Math.round(mean)} ms on average`;
 }
 
-/* ---------- live Whisper (needs serve.py) ---------- */
+/* ---------- live speech-to-text (needs serve.py; Nemotron also needs serve_nemotron.py) ---------- */
 
-let liveReady = false;
+const LIVE_MODELS = [
+  { id: "whisper", label: "Whisper" },
+  { id: "nemotron", label: "Nemotron" },
+];
+const liveReady = {};
+const replies = {};
+const replyTimes = [];
+let replyReady = false;
 const live = {};
-const liveTimes = [];
+const liveTimes = {};
+LIVE_MODELS.forEach((m) => { live[m.id] = {}; liveTimes[m.id] = []; });
 
 function seconds(ms) { return `${(ms / 1000).toFixed(2)} s`; }
 
 async function checkLive() {
+  let models = {};
   try {
     const res = await fetch("api/status", { cache: "no-store" });
     const status = await res.json();
-    liveReady = Boolean(status.ready);
-    $("livestatus").textContent = liveReady
-      ? `ready (${status.model}, ${status.compute}, ${status.device})`
-      : "the server is still loading Whisper";
+    models = status.models || { whisper: status };
   } catch (e) {
-    liveReady = false;
-    $("livestatus").textContent = "off, start serve.py to turn it on";
+    models = {};
   }
-  $("live").disabled = !liveReady;
-  $("live").checked = liveReady && recall("live") !== "0";
+  const parts = LIVE_MODELS.map((m) => {
+    const s = models[m.id];
+    liveReady[m.id] = Boolean(s && s.ready);
+    if (liveReady[m.id]) return `${m.label} ready (${s.model}, ${s.compute}, ${s.device})`;
+    if (s && s.error) return `${m.label} off (${s.error})`;
+    return s ? `${m.label} still loading` : `${m.label} off`;
+  });
+  const any = LIVE_MODELS.some((m) => liveReady[m.id]);
+  $("livestatus").textContent = Object.keys(models).length ? parts.join(" · ") : "off, start serve.py to turn it on";
+  $("live").disabled = !any;
+  $("live").checked = any && recall("live") !== "0";
+  const r = models.reply;
+  replyReady = Boolean(r && r.ready);
+  $("replystatus").textContent = replyReady ? `LFM2.5 ready (${r.compute}, ${r.device})`
+    : r && r.error ? `off (${r.error})` : r ? "still loading" : "off";
+  $("livereply").disabled = !replyReady;
+  $("livereply").checked = replyReady && recall("livereply") !== "0";
 }
 
-function startLive(split, dia, utt, record) {
-  if (!liveReady || !$("live").checked) return;
+function startReply(split, dia, utt, text, emotion, speaker, record) {
+  if (!$("livereply").checked || !replyReady) return;
   const lineKey = `${split}-${dia}-${utt}`;
   const sent = performance.now();
-  live[lineKey] = { pending: true };
-  fetch(`api/transcribe?split=${split}&clip=dia${dia}_utt${utt}`, { cache: "no-store" })
+  replies[lineKey] = { pending: true };
+  const query = new URLSearchParams({ text, emotion, speaker });
+  fetch(`api/reply?${query}`, { cache: "no-store" })
     .then(async (res) => {
       const body = await res.json();
       const total = performance.now() - sent;
       if (!res.ok) {
-        live[lineKey] = { error: body.error || `HTTP ${res.status}` };
-        record.live_error = live[lineKey].error;
+        replies[lineKey] = { error: body.error || `HTTP ${res.status}` };
+        record.live_reply_error = replies[lineKey].error;
         return;
       }
-      live[lineKey] = { ...body, total_ms: total };
-      liveTimes.push(total);
-      record.live_text = body.text;
-      record.transcribe_ms = Math.round(total);
+      replies[lineKey] = { ...body, total_ms: total };
+      replyTimes.push(total);
+      record.live_reply_text = body.reply;
+      record.live_reply_ms = Math.round(total);
     })
     .catch((err) => {
-      live[lineKey] = { error: String(err) };
-      record.live_error = live[lineKey].error;
+      replies[lineKey] = { error: String(err) };
+      record.live_reply_error = replies[lineKey].error;
     })
     .finally(() => {
       renderLines();
@@ -655,32 +682,87 @@ function startLive(split, dia, utt, record) {
     });
 }
 
+function replyHtml(utt) {
+  const result = replies[key(utt)];
+  if (!result) return "";
+  const label = `<span class="livelabel">Live reply (LFM2.5):</span>`;
+  if (result.pending) return `<div class="live">${label} writing&hellip;</div>`;
+  if (result.error) {
+    return `<div class="live">${label} could not reply ` +
+      `<span class="small" title="${esc(result.error)}">(${esc(shortError(result.error))})</span></div>`;
+  }
+  const queued = result.wait_ms > 20 ? `, waiting for the GPU ${seconds(result.wait_ms)}` : "";
+  return `<div class="live">${label} ${esc(result.reply)}` +
+    `<div class="livetime">${seconds(result.total_ms)} after the clip ended ` +
+    `(LFM2.5 ${seconds(result.model_ms)} for ${result.tokens} tokens${queued})</div></div>`;
+}
+
+function startLive(split, dia, utt, record) {
+  if (!$("live").checked) return;
+  LIVE_MODELS.filter((m) => liveReady[m.id]).forEach((m) => {
+    const lineKey = `${split}-${dia}-${utt}`;
+    const sent = performance.now();
+    live[m.id][lineKey] = { pending: true };
+    fetch(`api/transcribe?model=${m.id}&split=${split}&clip=dia${dia}_utt${utt}`, { cache: "no-store" })
+      .then(async (res) => {
+        const body = await res.json();
+        const total = performance.now() - sent;
+        if (!res.ok) {
+          live[m.id][lineKey] = { error: body.error || `HTTP ${res.status}` };
+          record[`live_${m.id}_error`] = live[m.id][lineKey].error;
+          return;
+        }
+        live[m.id][lineKey] = { ...body, total_ms: total };
+        liveTimes[m.id].push(total);
+        record[`live_${m.id}_text`] = body.text;
+        record[`live_${m.id}_ms`] = Math.round(total);
+      })
+      .catch((err) => {
+        live[m.id][lineKey] = { error: String(err) };
+        record[`live_${m.id}_error`] = live[m.id][lineKey].error;
+      })
+      .finally(() => {
+        renderLines();
+        renderLog();
+        renderLiveAverage();
+      });
+  });
+}
+
 function shortError(error) {
   if (error.includes("moov atom not found")) return "the clip file is broken";
   return error.split("\n")[0].slice(0, 60);
 }
 
 function liveHtml(utt) {
-  const result = live[key(utt)];
-  if (!result) return "";
-  const label = `<span class="livelabel">Live Whisper:</span>`;
-  if (result.pending) return `<div class="live">${label} transcribing&hellip;</div>`;
-  if (result.error) {
-    return `<div class="live">${label} could not transcribe ` +
-      `<span class="small" title="${esc(result.error)}">(${esc(shortError(result.error))})</span></div>`;
-  }
-  const queued = result.wait_ms > 20 ? `, waiting for the GPU ${seconds(result.wait_ms)}` : "";
-  return `<div class="live">${label} ${esc(result.text || "(no speech heard)")}` +
-    `<div class="livetime">${seconds(result.total_ms)} after the clip ended ` +
-    `(Whisper ${seconds(result.whisper_ms)}, audio decode ${seconds(result.decode_ms)}` +
-    `${queued}, ${result.audio_s.toFixed(1)} s of audio)</div></div>`;
+  return LIVE_MODELS.map((m) => {
+    const result = live[m.id][key(utt)];
+    if (!result) return "";
+    const label = `<span class="livelabel">Live ${m.label}:</span>`;
+    if (result.pending) return `<div class="live">${label} transcribing&hellip;</div>`;
+    if (result.error) {
+      return `<div class="live">${label} could not transcribe ` +
+        `<span class="small" title="${esc(result.error)}">(${esc(shortError(result.error))})</span></div>`;
+    }
+    const queued = result.wait_ms > 20 ? `, waiting for the GPU ${seconds(result.wait_ms)}` : "";
+    return `<div class="live">${label} ${esc(result.text || "(no speech heard)")}` +
+      `<div class="livetime">${seconds(result.total_ms)} after the clip ended ` +
+      `(${m.label} ${seconds(result.model_ms)}, audio decode ${seconds(result.decode_ms)}` +
+      `${queued}, ${result.audio_s.toFixed(1)} s of audio)</div></div>`;
+  }).join("");
 }
 
 function renderLiveAverage() {
-  if (!liveTimes.length) return;
-  const mean = liveTimes.reduce((a, b) => a + b, 0) / liveTimes.length;
-  $("liveavg").textContent =
-    `Live Whisper ${seconds(mean)} on average over ${liveTimes.length} lines`;
+  const parts = LIVE_MODELS.filter((m) => liveTimes[m.id].length).map((m) => {
+    const t = liveTimes[m.id];
+    return `${m.label} ${seconds(t.reduce((a, b) => a + b, 0) / t.length)}`;
+  });
+  if (replyTimes.length) {
+    parts.push(`LFM2.5 reply ${seconds(replyTimes.reduce((a, b) => a + b, 0) / replyTimes.length)}`);
+  }
+  if (!parts.length) return;
+  const lines = Math.max(replyTimes.length, ...LIVE_MODELS.map((m) => liveTimes[m.id].length));
+  $("liveavg").textContent = `Live models on average over ${lines} lines: ${parts.join(", ")}`;
 }
 
 function showFirstFrame(utt) {
@@ -737,6 +819,7 @@ for (const video of players) {
     };
     output.push(record);
     startLive(state.split, dialogueId(), playing, record);
+    startReply(state.split, dialogueId(), playing, textOf(line), guess, line[1], record);
     $("tag").innerHTML = `${esc(clipName(playing))} &rarr; <b>${guess}</b>: ` +
       `&ldquo;${esc(reply)}&rdquo;`;
     renderLog();
@@ -1006,6 +1089,7 @@ applyTheme(recall("theme") || "auto");
   if (speed) $("speed").value = speed;
   $("continue").checked = recall("continue") === "1";
   $("live").addEventListener("change", () => store("live", $("live").checked ? "1" : "0"));
+  $("livereply").addEventListener("change", () => store("livereply", $("livereply").checked ? "1" : "0"));
   checkLive();
   const captionMode = recall("caption-mode");
   if (["line", "words", "off"].includes(captionMode)) $("captions").value = captionMode;
