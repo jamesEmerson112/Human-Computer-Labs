@@ -222,6 +222,64 @@ The head scores **61.96 weighted F1** on MELD's 2,610 test lines, and 62.5 ± 0.
 
 EmoBERTa-large was released already trained on MELD, and its weights have likely seen MELD's test lines, so these scores may be higher than the head would reach on new speech. `ML_route/bench/results/README.md` gives the scores of heads built without it.
 
+### Model benchmarks on the A40
+
+On 2026-10-15 the candidate models were compared on one Runpod A40 with 48 GB, on MELD's 2,610 test lines. The heads here read one line at a time, and every score is weighted F1. These tables are screenshots of the [explainer page](https://jamesemerson112.github.io/Human-Computer-Labs/explainers/meld-head-training.html#measured), where they can be sorted. A green cell with a star is the best value in its column. The black tick on each bar marks 31.27, the score for always answering neutral.
+
+**Speech to text.**
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/media/bench/bench-asr-dark.png">
+  <img alt="Speech-to-text models on MELD test: word error rate, median and 95th percentile ms per line, real-time factor and GPU memory" src="docs/media/bench/bench-asr-light.png">
+</picture>
+
+The word error rates are high for every model, because many clips also hold words from the line before or after. Whisper's 167 ms here is on the A40, against 649 ms on the 1070 Ti above. GPU memory for the NVIDIA models includes PyTorch's cached pool, so it overstates what they need.
+
+**Text encoders with a trained head.**
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/media/bench/bench-text-dark.png">
+  <img alt="Text encoders with a logistic regression head and an MLP head, on MELD's text, the fixed text and Whisper's words" src="docs/media/bench/bench-text-light.png">
+</picture>
+
+Raw and Completed train on MELD's published text and on the fixed text, and both test on MELD's published test text. Whisper trains and tests on Whisper's transcripts, which are the words the live demo reads. EmoBERTa-large scores 77.9 here against 63.46 on its own model card, so its weights have likely seen MELD's test lines. Its rows are struck through and are never marked best.
+
+**Voice encoders alone.**
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/media/bench/bench-voice-dark.png">
+  <img alt="Voice encoders alone with a logistic regression head and an MLP head" src="docs/media/bench/bench-voice-light.png">
+</picture>
+
+**Voice encoders with EmbeddingGemma's words.**
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/media/bench/bench-both-dark.png">
+  <img alt="EmbeddingGemma paired with each voice encoder, with a logistic regression head and an MLP head" src="docs/media/bench/bench-both-light.png">
+</picture>
+
+The paired table is why HuBERT-large was chosen, even though emotion2vec+ large reads emotion best from the voice alone.
+
+**Reply writers.**
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/media/bench/bench-reply-dark.png">
+  <img alt="Reply writers: parameters loaded, time to first token, tokens per second and whole reply time" src="docs/media/bench/bench-reply-light.png">
+</picture>
+
+Each model wrote replies for 50 test lines in bf16, at batch size 1, greedy, with up to 40 new tokens. Nemotron 3 Nano, the Qwen3.5 family and LFM2.5 ran on slow reference kernels for their Mamba, gated delta-rule or short-convolution layers, so their speeds here understate what they can reach.
+
+**Vision-language models with no MELD training.**
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/media/bench/bench-vlm-dark.png">
+  <img alt="Vision-language models with no MELD training, scored on frames only and on frames with words" src="docs/media/bench/bench-vlm-light.png">
+</picture>
+
+Each model saw 8 frames from the clip, once alone and once with the spoken line, and its label is the one whose first token it scored highest. Each model had a 40-minute limit, so a row covers a random subset of the 2,457 test clips whose frames extracted.
+
+The pod ran for 7.4 hours, for about $4.35 of GPU time. The full tables, including the heads trained on vision features, are in `ML_route/bench/results/README.md`.
+
 ### Lamp
 
 ![The lamp playing one clip for each of MELD's seven emotions](docs/media/lamp-emotions.gif)
@@ -229,6 +287,47 @@ EmoBERTa-large was released already trained on MELD, and its weights have likely
 The lamp is a TypeScript port of the SWE route's gesture player. On all 126 clips it matches the Python reference's motion with a largest difference of 0, within the test's 1e-12 tolerance. It adds 0.74 MB to the 3.94 MB player page. At the default 7.5x pace an emotion clip takes a median of 1.35 s and at most 2.28 s. While it rests at home it draws no frames, so it costs nothing between lines.
 
 ## Decisions and trade-offs
+
+The chosen path runs left to right in solid boxes. Each dashed box is an option that lost, beside the choice that beat it and with the number that decided it.
+
+```mermaid
+flowchart LR
+  clip["MELD clip"]
+  subgraph s1["Speech to text"]
+    asr["Whisper large-v3-turbo, int8<br/>kept 11 of 23 exclamation marks"]
+    nem["Nemotron Streaming<br/>288 ms against 806 ms,<br/>kept no exclamation marks"]
+  end
+  subgraph s2["Encoders"]
+    text["EmoBERTa-large first,<br/>EmbeddingGemma-300m backup<br/>read Whisper's words"]
+    voice["HuBERT-large<br/>61.6 with the words"]
+    e2v["emotion2vec+ large<br/>57.7 with the words"]
+    vis["Vision encoders<br/>39.7 at best alone,<br/>1 to 4 points lower with text"]
+  end
+  head["Head trained in Rust<br/>gradient clipping kept,<br/>dev 61.89 to 62.45"]
+  subgraph s3["Outputs"]
+    reply["LFM2.5-1.2B-Instruct<br/>122 ms per reply"]
+    big["LFM2.5-2.6B<br/>5.1 GB, does not fit<br/>beside Whisper on 8 GB"]
+    lamp["Lamp copy in the page<br/>no install, opens by double-click"]
+    sim["SWE MuJoCo simulator<br/>rejects commands from the page"]
+  end
+
+  clip -->|sound| asr
+  asr -->|words| text
+  clip -->|sound| voice
+  text --> head
+  voice --> head
+  head -->|emotion| reply
+  head -->|emotion| lamp
+
+  asr -.-|beat| nem
+  voice -.-|beat| e2v
+  voice -.-|beat| vis
+  reply -.-|beat| big
+  lamp -.-|beat| sim
+
+  classDef cut stroke-dasharray: 5 4
+  class nem,vis,e2v,big,sim cut
+```
 
 - **Text plus audio, not text plus vision.** On the A40, vision features alone reached at most 39.7 weighted F1. Adding them to the text features lowered the score in almost every pairing, by about 1 to 4 points on the same clips. The vision results stay in the bench README as evidence.
 - **Whisper over NVIDIA Nemotron for speech to text.** Nemotron was faster on the 1070 Ti, at 288 ms per clip against Whisper's 806 ms, and the two had similar word error rates. But on 30 test clips Whisper kept 11 of MELD's 23 exclamation marks and 12 of 13 question marks, while Nemotron kept none and 5. Punctuation carries emotion, so Whisper was chosen.
@@ -241,6 +340,26 @@ The lamp is a TypeScript port of the SWE route's gesture player. On all 126 clip
 
 ## Limitations
 
+Each dashed note is a limitation, attached to the step of the path where it applies.
+
+```mermaid
+flowchart LR
+  subgraph pc["Measured on one PC, with other programs running"]
+    clip["Saved MELD clip"] --> asr["Whisper"] --> enc["Text and voice encoders"] --> head["Emotion head"] --> reply["Reply writer"]
+    head --> lamp["Lamp"]
+  end
+
+  l1["Replays saved clips at real-time speed,<br/>no live microphone or camera"] -.- clip
+  l2["Clips hold neighbouring lines,<br/>so the word error rate is about 32%"] -.- asr
+  l3["EmoBERTa-large has likely<br/>seen MELD's test lines"] -.- enc
+  l4["One line at a time, no emotion carried<br/>across a dialogue; fear and disgust<br/>read poorly, at 10.00 and 27.96 F1"] -.- head
+  l5["One short sentence,<br/>sometimes generic"] -.- reply
+  l6["No physics, and the joint speed limits<br/>keep some clips over 2 s at 7.5x"] -.- lamp
+
+  classDef note stroke-dasharray: 5 4
+  class l1,l2,l3,l4,l5,l6 note
+```
+
 - EmoBERTa-large has likely seen MELD's test lines, so the test score may be optimistic.
 - Many MELD test clips also hold words from the lines before and after, so Whisper often hears a different line than MELD's text. Its word error rate on test is about 32% for that reason.
 - The head reads one line at a time and carries no emotion across a dialogue. Only the reply writer sees the earlier lines.
@@ -251,6 +370,24 @@ The lamp is a TypeScript port of the SWE route's gesture player. On all 126 clip
 - The player replays saved MELD clips at real-time speed. It does not take live microphone or camera input.
 
 ## Completed and left out
+
+The solid boxes are what was built. Each dashed box was left out on purpose, and its arrow shows where it would plug in.
+
+```mermaid
+flowchart LR
+  subgraph done["Completed: the text plus audio track, in the player page and cargo run --bin demo"]
+    clip["MELD clip"] --> words["Whisper's words"] --> emotion["Head's emotion"] --> reply["Short reply"]
+    emotion --> lamp["Lamp clip"]
+  end
+
+  mic["Live microphone<br/>and camera"] -.->|would replace| clip
+  vision["Text plus vision track, and vision,<br/>voice and text together<br/>benchmarked, vision did not help"] -.->|would add frames to| emotion
+  rl["Reinforcement learning"] -.->|would tune| reply
+  bridge["Bridge to the SWE<br/>physics simulator"] -.->|would drive| lamp
+
+  classDef cut stroke-dasharray: 5 4
+  class mic,vision,rl,bridge cut
+```
 
 **Completed:** the core task on the text plus audio track. A MELD clip goes in, and the live player shows Whisper's words, the head's emotion and a short reply as each clip ends. The same chain runs in the terminal through `cargo run --bin demo`. The emotion head is trained in Rust, and the whole path holds about 2.8 billion parameters.
 
@@ -264,6 +401,6 @@ The lamp is a TypeScript port of the SWE route's gesture player. On all 126 clip
 ## Results and evidence
 
 - `ML_route/bench/live_latency.py` and `ML_route/bench/results/live_1070ti.json` hold the live latency and resource measurements above.
-- `ML_route/bench/results/README.md` holds the A40 benchmarks: speech-to-text models, frozen encoders with trained heads, reply-writer speed, and vision-language models.
+- `ML_route/bench/results/README.md` holds the full A40 benchmarks, which the Model benchmarks section above summarises: speech-to-text models, frozen encoders with trained heads, reply-writer speed, vision-language models, and heads on vision features.
 - `ML_route/hello_world/hyperparameters.toml` records the head's training settings and the measured effect of each technique.
 - The project site at https://jamesemerson112.github.io/Human-Computer-Labs/ hosts the explainer (`docs/explainers/meld-head-training.html`), which covers the approach, the model library and the training steps, and the sortable benchmark results (`docs/explainers/bench-results.html`).
